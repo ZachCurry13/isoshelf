@@ -1,0 +1,519 @@
+// Package web serves isoshelf's user interface: one page plus a small JSON
+// API over the same core packages the CLI uses. It is the only package that
+// knows about HTTP handlers and HTML.
+//
+// The server is meant to listen on localhost only. Every browser must bring
+// the random token from the link isoshelf prints (it's then kept in a
+// cookie), requests must name a localhost host (which blocks DNS
+// rebinding), and changes need a custom header that other websites can't
+// send.
+package web
+
+import (
+	"context"
+	"crypto/subtle"
+	"embed"
+	"encoding/json"
+	"errors"
+	"io/fs"
+	"net"
+	"net/http"
+	"os"
+	"path/filepath"
+	"slices"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/ZachCurry13/isoshelf/internal/appdir"
+	"github.com/ZachCurry13/isoshelf/internal/appupdate"
+	"github.com/ZachCurry13/isoshelf/internal/catalog"
+	"github.com/ZachCurry13/isoshelf/internal/check"
+	"github.com/ZachCurry13/isoshelf/internal/inventory"
+	"github.com/ZachCurry13/isoshelf/internal/remote"
+	"github.com/ZachCurry13/isoshelf/internal/scan"
+	"github.com/ZachCurry13/isoshelf/internal/state"
+)
+
+//go:embed static
+var staticFiles embed.FS
+
+const (
+	cookieName    = "isoshelf_token"
+	requestHeader = "X-Isoshelf"
+	settingsFile  = "ui.json"
+)
+
+// Config is what the server needs.
+type Config struct {
+	Dirs    appdir.Dirs
+	Catalog *catalog.Catalog
+	// HTTP makes requests to download sites; nil means the default client.
+	HTTP        *http.Client
+	GitHubToken string
+	Version     string
+	// Token must be presented by every browser.
+	Token string
+	// Target is the folder to open. Empty means the last one used, or the
+	// drive in portable mode.
+	Target string
+	// Now defaults to time.Now.
+	Now func() time.Time
+}
+
+// Server is the web UI. Create it with New.
+type Server struct {
+	cfg     Config
+	handler http.Handler
+
+	mu        sync.Mutex
+	target    string
+	st        *state.State
+	report    *check.Report
+	updatedAt time.Time
+	run       *run
+	lastErr   string
+	warnings  []string
+	notice    *appupdate.Notice
+}
+
+// run is a scan or check in progress.
+type run struct {
+	kind     string
+	started  time.Time
+	progress inventory.Progress
+	cancel   context.CancelFunc
+}
+
+// New creates the server and starts a background check for a newer isoshelf.
+func New(cfg Config) *Server {
+	if cfg.Now == nil {
+		cfg.Now = time.Now
+	}
+	s := &Server{cfg: cfg}
+
+	target := cfg.Target
+	if target == "" {
+		target = s.loadSettings().Target
+	}
+	if target == "" && cfg.Dirs.Portable {
+		target = cfg.Dirs.DefaultTarget
+	}
+	if target != "" {
+		s.openTarget(target, "") // a folder that's gone just means choosing again
+	}
+
+	static, _ := fs.Sub(staticFiles, "static")
+	mux := http.NewServeMux()
+	mux.Handle("GET /{$}", http.FileServerFS(static))
+	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServerFS(static)))
+	mux.HandleFunc("GET /api/state", s.getState)
+	mux.HandleFunc("GET /api/catalog", s.getCatalog)
+	mux.HandleFunc("GET /api/browse", s.browse)
+	mux.HandleFunc("POST /api/target", s.setTarget)
+	mux.HandleFunc("POST /api/scan", func(w http.ResponseWriter, r *http.Request) { s.start(w, false) })
+	mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) { s.start(w, true) })
+	mux.HandleFunc("POST /api/cancel", s.cancel)
+	mux.HandleFunc("POST /api/track", s.setTrack)
+	s.handler = s.guard(mux)
+
+	go s.checkAppUpdate()
+	return s
+}
+
+func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	s.handler.ServeHTTP(w, r)
+}
+
+// guard enforces the localhost, token and same-origin rules.
+func (s *Server) guard(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		h := w.Header()
+		h.Set("X-Content-Type-Options", "nosniff")
+		h.Set("Referrer-Policy", "no-referrer")
+		h.Set("X-Frame-Options", "DENY")
+		h.Set("Content-Security-Policy", "default-src 'self'; img-src 'self' data:; frame-ancestors 'none'")
+
+		if !isLocalhost(r.Host) {
+			http.Error(w, "isoshelf only answers on localhost", http.StatusForbidden)
+			return
+		}
+		if token := r.URL.Query().Get("token"); token != "" && r.Method == http.MethodGet && r.URL.Path == "/" {
+			if s.validToken(token) {
+				http.SetCookie(w, &http.Cookie{Name: cookieName, Value: token, Path: "/", HttpOnly: true, SameSite: http.SameSiteStrictMode})
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+				return
+			}
+		}
+		if c, err := r.Cookie(cookieName); err != nil || !s.validToken(c.Value) {
+			h.Set("Content-Type", "text/html; charset=utf-8")
+			w.WriteHeader(http.StatusForbidden)
+			w.Write([]byte(forbiddenPage))
+			return
+		}
+		if r.Method != http.MethodGet && r.Method != http.MethodHead {
+			origin := r.Header.Get("Origin")
+			if r.Header.Get(requestHeader) != "1" || (origin != "" && origin != "http://"+r.Host) {
+				writeError(w, http.StatusForbidden, "request refused")
+				return
+			}
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+const forbiddenPage = `<!doctype html><meta charset="utf-8"><title>isoshelf</title>
+<body>
+<h1>Open isoshelf from its link</h1>
+<p>For your safety, isoshelf only opens from the link it shows when it starts.
+Go back to the isoshelf window and open that link, or start isoshelf again.</p>`
+
+func (s *Server) validToken(t string) bool {
+	return s.cfg.Token != "" && subtle.ConstantTimeCompare([]byte(t), []byte(s.cfg.Token)) == 1
+}
+
+func isLocalhost(hostport string) bool {
+	host, _, err := net.SplitHostPort(hostport)
+	if err != nil {
+		host = hostport
+	}
+	host = strings.Trim(host, "[]")
+	return host == "localhost" || host == "127.0.0.1" || host == "::1"
+}
+
+// stateJSON is everything the page shows.
+type stateJSON struct {
+	Version   string                 `json:"version"`
+	Portable  bool                   `json:"portable"`
+	Target    string                 `json:"target"`
+	Profile   string                 `json:"profile"`
+	UpdatedAt *time.Time             `json:"updated_at,omitempty"`
+	Run       *runJSON               `json:"run,omitempty"`
+	Error     string                 `json:"error,omitempty"`
+	Warnings  []string               `json:"warnings"`
+	Report    *check.ReportJSON      `json:"report,omitempty"`
+	Tracks    map[string]state.Track `json:"tracks"`
+	UsualSet  []string               `json:"usual_set"`
+	Recent    []string               `json:"recent_targets"`
+	AppUpdate *appupdate.Notice      `json:"app_update,omitempty"`
+}
+
+type runJSON struct {
+	Kind    string    `json:"kind"`
+	Stage   string    `json:"stage"`
+	File    string    `json:"file,omitempty"`
+	Done    int64     `json:"done"`
+	Total   int64     `json:"total"`
+	Started time.Time `json:"started"`
+}
+
+func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
+	recent := s.recentTargets()
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	writeJSON(w, http.StatusOK, s.stateLocked(recent))
+}
+
+// stateLocked builds the page state; s.mu must be held.
+func (s *Server) stateLocked(recent []string) stateJSON {
+	out := stateJSON{
+		Version:   s.cfg.Version,
+		Portable:  s.cfg.Dirs.Portable,
+		Target:    s.target,
+		Error:     s.lastErr,
+		Warnings:  nonNil(s.warnings),
+		Tracks:    map[string]state.Track{},
+		UsualSet:  []string{},
+		Recent:    recent,
+		AppUpdate: s.notice,
+	}
+	if s.st != nil {
+		out.Profile = string(s.st.Profile)
+		out.Tracks = s.st.Tracks
+		out.UsualSet = nonNil(s.st.UsualSet())
+	}
+	if s.report != nil {
+		j := s.report.JSON()
+		out.Report = &j
+		t := s.updatedAt
+		out.UpdatedAt = &t
+	}
+	if s.run != nil {
+		out.Run = &runJSON{
+			Kind:    s.run.kind,
+			Stage:   string(s.run.progress.Stage),
+			File:    s.run.progress.File,
+			Done:    s.run.progress.Done,
+			Total:   s.run.progress.Total,
+			Started: s.run.started,
+		}
+	}
+	return out
+}
+
+type catalogEntryJSON struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Arch     string `json:"arch"`
+	Updates  string `json:"updates"`
+	Page     string `json:"page,omitempty"`
+	OnTarget bool   `json:"on_target"`
+}
+
+func (s *Server) getCatalog(w http.ResponseWriter, r *http.Request) {
+	s.mu.Lock()
+	onTarget := map[string]bool{}
+	if s.report != nil {
+		for _, it := range s.report.Items {
+			if it.Entry != nil && it.Path != "" {
+				onTarget[it.Entry.ID] = true
+			}
+		}
+	}
+	s.mu.Unlock()
+
+	entries := []catalogEntryJSON{}
+	for i := range s.cfg.Catalog.Entries {
+		e := &s.cfg.Catalog.Entries[i]
+		entries = append(entries, catalogEntryJSON{
+			ID: e.ID, Name: e.Name, Arch: e.Arch, Updates: e.Updates(), Page: e.Page, OnTarget: onTarget[e.ID],
+		})
+	}
+	slices.SortFunc(entries, func(a, b catalogEntryJSON) int {
+		return strings.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
+	})
+	writeJSON(w, http.StatusOK, map[string]any{"entries": entries})
+}
+
+func (s *Server) setTarget(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Path    string `json:"path"`
+		Profile string `json:"profile"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, http.StatusBadRequest, "bad request")
+		return
+	}
+	s.mu.Lock()
+	busy := s.run != nil
+	s.mu.Unlock()
+	if busy {
+		writeError(w, http.StatusConflict, "Wait until the current scan finishes, or stop it.")
+		return
+	}
+	if err := s.openTarget(req.Path, req.Profile); err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	s.getState(w, r)
+}
+
+// openTarget makes path the current folder, with profile if given.
+func (s *Server) openTarget(path, profile string) error {
+	if strings.TrimSpace(path) == "" {
+		return errors.New("Choose a folder.")
+	}
+	abs, err := filepath.Abs(path)
+	if err != nil {
+		return err
+	}
+	if info, err := os.Stat(abs); err != nil || !info.IsDir() {
+		return errors.New("That folder doesn't exist or can't be opened: " + abs)
+	}
+	st, err := state.Load(abs)
+	if err != nil {
+		return err
+	}
+	if profile != "" {
+		p, err := scan.ParseProfile(profile)
+		if err != nil {
+			return err
+		}
+		st.Profile = p
+	}
+
+	s.mu.Lock()
+	s.target, s.st, s.report, s.lastErr, s.warnings = abs, st, nil, "", nil
+	s.mu.Unlock()
+	s.saveSettings(settings{Target: abs})
+	return nil
+}
+
+func (s *Server) start(w http.ResponseWriter, online bool) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	switch {
+	case s.target == "":
+		writeError(w, http.StatusBadRequest, "Choose a folder first.")
+		return
+	case s.run != nil:
+		writeError(w, http.StatusConflict, "A scan is already running.")
+		return
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	kind := "scan"
+	if online {
+		kind = "check"
+	}
+	s.run = &run{kind: kind, started: s.cfg.Now(), progress: inventory.Progress{Stage: inventory.Scanning}, cancel: cancel}
+	s.lastErr = ""
+	go s.execute(ctx, s.target, s.st.Profile, online)
+	writeJSON(w, http.StatusAccepted, map[string]string{"status": "started"})
+}
+
+func (s *Server) execute(ctx context.Context, target string, profile scan.Profile, online bool) {
+	client := remote.New(s.cfg.Version)
+	client.HTTP = s.cfg.HTTP
+	client.GitHubToken = s.cfg.GitHubToken
+	res, err := inventory.Run(ctx, inventory.Options{
+		Target:  target,
+		Profile: profile,
+		Online:  online,
+		Client:  client,
+		Catalog: s.cfg.Catalog,
+		Dirs:    s.cfg.Dirs,
+		Now:     s.cfg.Now,
+		Progress: func(p inventory.Progress) {
+			s.mu.Lock()
+			if s.run != nil {
+				s.run.progress = p
+			}
+			s.mu.Unlock()
+		},
+	})
+
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.run = nil
+	if res != nil && s.target == target {
+		s.report, s.st, s.warnings, s.updatedAt = res.Report, res.State, res.Warnings, s.cfg.Now()
+	}
+	switch {
+	case errors.Is(err, context.Canceled):
+		s.lastErr = "Stopped. What was found so far is shown."
+	case err != nil:
+		s.lastErr = err.Error()
+	}
+}
+
+func (s *Server) cancel(w http.ResponseWriter, r *http.Request) {
+	s.mu.Lock()
+	if s.run != nil {
+		s.run.cancel()
+	}
+	s.mu.Unlock()
+	writeJSON(w, http.StatusOK, map[string]string{"status": "stopping"})
+}
+
+func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Entry   string `json:"entry"`
+		KeepOld *bool  `json:"keep_old"`
+		Starred *bool  `json:"starred"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, http.StatusBadRequest, "bad request")
+		return
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	switch {
+	case s.run != nil:
+		writeError(w, http.StatusConflict, "Wait until the current scan finishes.")
+		return
+	case s.st == nil:
+		writeError(w, http.StatusBadRequest, "Choose a folder first.")
+		return
+	case s.cfg.Catalog.Entry(req.Entry) == nil:
+		writeError(w, http.StatusBadRequest, "Unknown image.")
+		return
+	}
+	t := s.st.Track(req.Entry)
+	if req.KeepOld != nil {
+		t.KeepOld = *req.KeepOld
+	}
+	if req.Starred != nil {
+		t.Starred = *req.Starred
+	}
+	s.st.SetTrack(req.Entry, t)
+	if err := s.st.Save(s.target); err != nil {
+		writeError(w, http.StatusInternalServerError, "Couldn't save the setting: "+err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"tracks": s.st.Tracks, "usual_set": nonNil(s.st.UsualSet())})
+}
+
+// checkAppUpdate looks for a newer isoshelf once, in the background.
+func (s *Server) checkAppUpdate() {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client := remote.New(s.cfg.Version)
+	client.HTTP = s.cfg.HTTP
+	n, err := appupdate.Check(ctx, client, s.cfg.Dirs.Config, s.cfg.Version, s.cfg.Now())
+	if err != nil || n == nil {
+		return
+	}
+	s.mu.Lock()
+	s.notice = n
+	s.mu.Unlock()
+}
+
+// recentTargets lists folders checked before, newest first. Portable mode
+// keeps no history on the computer.
+func (s *Server) recentTargets() []string {
+	out := []string{}
+	if s.cfg.Dirs.Portable || s.cfg.Dirs.Config == "" {
+		return out
+	}
+	mirrors, err := state.LoadMirrors(s.cfg.Dirs.Config)
+	if err != nil {
+		return out
+	}
+	for _, m := range mirrors {
+		if m.Path != "" && !slices.Contains(out, m.Path) {
+			out = append(out, m.Path)
+		}
+	}
+	return out
+}
+
+type settings struct {
+	Target string `json:"target,omitempty"`
+}
+
+func (s *Server) loadSettings() settings {
+	var st settings
+	if data, err := os.ReadFile(filepath.Join(s.cfg.Dirs.Config, settingsFile)); err == nil {
+		json.Unmarshal(data, &st)
+	}
+	return st
+}
+
+func (s *Server) saveSettings(st settings) {
+	if s.cfg.Dirs.Config == "" {
+		return
+	}
+	data, err := json.MarshalIndent(st, "", "  ")
+	if err == nil && os.MkdirAll(s.cfg.Dirs.Config, 0o755) == nil {
+		os.WriteFile(filepath.Join(s.cfg.Dirs.Config, settingsFile), data, 0o644) // best effort
+	}
+}
+
+// nonNil returns s, or an empty slice so JSON shows [] instead of null.
+func nonNil(s []string) []string {
+	if s == nil {
+		return []string{}
+	}
+	return s
+}
+
+func writeJSON(w http.ResponseWriter, code int, v any) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "no-store")
+	w.WriteHeader(code)
+	json.NewEncoder(w).Encode(v)
+}
+
+func writeError(w http.ResponseWriter, code int, msg string) {
+	writeJSON(w, code, map[string]string{"error": msg})
+}

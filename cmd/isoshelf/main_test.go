@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
+	"github.com/ZachCurry13/isoshelf/internal/check"
 	"github.com/ZachCurry13/isoshelf/internal/remote/remotetest"
 	"github.com/ZachCurry13/isoshelf/internal/sampledrive"
 	"github.com/ZachCurry13/isoshelf/internal/state"
@@ -55,16 +56,16 @@ func sampleDrive(t *testing.T) string {
 	return dir
 }
 
-func decode(t *testing.T, out string) jsonReport {
+func decode(t *testing.T, out string) jsonOutput {
 	t.Helper()
-	var r jsonReport
+	var r jsonOutput
 	if err := json.Unmarshal([]byte(out), &r); err != nil {
 		t.Fatalf("output is not JSON: %v\n%s", err, out)
 	}
 	return r
 }
 
-func item(r jsonReport, path string) *jsonItem {
+func item(r jsonOutput, path string) *check.ItemJSON {
 	for i := range r.Items {
 		if r.Items[i].Path == path {
 			return &r.Items[i]
@@ -228,7 +229,6 @@ func TestUsageErrors(t *testing.T) {
 		wantCode int
 		wantErr  string
 	}{
-		{nil, 2, "Usage:"},
 		{[]string{"frobnicate"}, 2, `unknown command "frobnicate"`},
 		{[]string{"scan"}, 1, "which folder?"},
 		{[]string{"scan", "a", "b"}, 2, "give one folder"},
@@ -245,5 +245,63 @@ func TestUsageErrors(t *testing.T) {
 
 	if res := runWith(t, dirs, "version"); res.code != 0 || res.stdout != "isoshelf dev\n" {
 		t.Errorf("version: exit %d, %q", res.code, res.stdout)
+	}
+}
+
+func TestUI(t *testing.T) {
+	dirs := installed(t)
+	drive := sampleDrive(t)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	urls := make(chan string, 1)
+	opened := make(chan string, 1)
+	done := make(chan int, 1)
+	var stdout, stderr bytes.Buffer
+	go func() {
+		done <- run(ctx, []string{"ui", "--port", "0", drive}, &env{
+			stdout:      &stdout,
+			stderr:      &stderr,
+			dirs:        &dirs,
+			http:        &http.Client{Transport: remotetest.Recorded()},
+			getenv:      func(string) string { return "" },
+			openBrowser: func(url string) error { opened <- url; return nil },
+			listening:   func(url string) { urls <- url },
+		})
+	}()
+
+	var url string
+	select {
+	case url = <-urls:
+	case code := <-done:
+		t.Fatalf("ui exited with %d: %s", code, stderr.String())
+	case <-time.After(10 * time.Second):
+		t.Fatal("ui didn't start")
+	}
+	if !strings.HasPrefix(url, "http://127.0.0.1:") || !strings.Contains(url, "/?token=") {
+		t.Errorf("url = %q", url)
+	}
+
+	noRedirect := &http.Client{CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }}
+	resp, err := noRedirect.Get(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusSeeOther {
+		t.Errorf("token link: %s", resp.Status)
+	}
+	if got := <-opened; got != url {
+		t.Errorf("opened %q, want %q", got, url)
+	}
+
+	cancel()
+	select {
+	case code := <-done:
+		if code != 0 {
+			t.Errorf("exit %d: %s", code, stderr.String())
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("ui didn't stop")
 	}
 }

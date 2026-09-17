@@ -24,9 +24,9 @@ const (
 
 // Notice says a newer release is available.
 type Notice struct {
-	Current string
-	Latest  string
-	URL     string
+	Current string `json:"current"`
+	Latest  string `json:"latest"`
+	URL     string `json:"url"`
 }
 
 func (n Notice) String() string {

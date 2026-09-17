@@ -13,8 +13,9 @@
 
 > [!WARNING]
 > isoshelf is in early development. It can already list the images in a folder
-> and check them for updates from the command line, but it can't download
-> anything yet. See the [roadmap](#roadmap) for progress.
+> and check them for updates, from a web page in your browser or the command
+> line, but it can't download anything yet. See the [roadmap](#roadmap) for
+> progress.
 
 ## Why
 
@@ -108,7 +109,7 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 - [x] Drive state and history, including portable mode
 - [x] Update sources: endoflife.date, GitHub, listings, manual
 - [x] Command line: `isoshelf scan` and `isoshelf check`, with `--json`
-- [ ] Web interface showing the same table, opened in your browser
+- [x] Web interface showing the same table, opened in your browser
 
 **v0.2:** downloads, verification, replacing old files, adding images from the
 catalog, installing an older version when a new one breaks something, and fixes
@@ -142,7 +143,15 @@ cd isoshelf
 go build ./cmd/isoshelf
 ```
 
-That creates `isoshelf` (`isoshelf.exe` on Windows) in the current folder. Then:
+That creates `isoshelf` (`isoshelf.exe` on Windows) in the current folder. Run it
+without arguments (or double-click it) to open isoshelf in your web browser:
+
+```bash
+./isoshelf
+```
+
+Only your own computer can reach that page. Keep the window it opens while you
+use it. From the command line instead:
 
 ```bash
 ./isoshelf check /path/to/your/isos

@@ -4,24 +4,29 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
 	"errors"
 	"flag"
 	"fmt"
 	"io"
 	"io/fs"
+	"net"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"runtime"
+	"strconv"
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
 	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
-	"github.com/ZachCurry13/isoshelf/internal/check"
+	inv "github.com/ZachCurry13/isoshelf/internal/inventory"
 	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
-	"github.com/ZachCurry13/isoshelf/internal/state"
+	"github.com/ZachCurry13/isoshelf/internal/web"
 )
 
 // version is set by release builds: -ldflags "-X main.version=v0.1.0".
@@ -30,6 +35,7 @@ var version = "dev"
 const usage = `isoshelf keeps the bootable images in a folder up to date.
 
 Usage:
+  isoshelf [ui] [flags] [folder]    open isoshelf in your web browser
   isoshelf scan  [flags] [folder]   list the images in a folder (offline)
   isoshelf check [flags] [folder]   list them and check for updates online
   isoshelf version                  print the version
@@ -38,12 +44,17 @@ The folder can be a Ventoy drive (like E:\ or /media/you/Ventoy), a folder on
 a NAS share, or Proxmox ISO storage (like /var/lib/vz/template/iso). In
 portable mode it defaults to the drive isoshelf runs from.
 
-Flags:
+Flags for scan and check:
   --profile ventoy|proxmox  what kind of folder it is; remembered for next time
   --json                    print JSON instead of a table
   --catalog FILE            use this catalog instead of the built-in one
   --no-hash                 don't hash images whose filename never changes
   --no-update-check         don't check for a newer version of isoshelf
+
+Flags for ui:
+  --port N                  listen on this port (default: any free port)
+  --no-browser              don't open the browser; just print the link
+  --catalog FILE            use this catalog instead of the built-in one
 
 isoshelf only writes to the .isoshelf folder inside the folder you give it,
 and to its own settings folder. Set GITHUB_TOKEN to raise GitHub's rate limit.
@@ -73,6 +84,10 @@ type env struct {
 	http        *http.Client     // nil: the default client
 	now         func() time.Time // nil: time.Now
 	getenv      func(string) string
+	// openBrowser opens a URL; nil means the system's browser.
+	openBrowser func(url string) error
+	// listening, if set, is told the UI's address once it listens.
+	listening func(url string)
 }
 
 func run(ctx context.Context, args []string, e *env) int {
@@ -82,35 +97,49 @@ func run(ctx context.Context, args []string, e *env) int {
 	if e.getenv == nil {
 		e.getenv = os.Getenv
 	}
-	if len(args) == 0 {
-		fmt.Fprint(e.stderr, usage)
-		return 2
+	if e.openBrowser == nil {
+		e.openBrowser = openBrowser
 	}
-	switch cmd := args[0]; cmd {
-	case "scan", "check":
-		opts, err := parseFlags(cmd, args[1:], e.stderr)
-		if err != nil {
-			if errors.Is(err, flag.ErrHelp) {
-				return 0
+
+	cmd := "ui"
+	if len(args) > 0 && (args[0] == "" || args[0][0] != '-') {
+		switch args[0] {
+		case "ui", "scan", "check":
+			cmd, args = args[0], args[1:]
+		case "version", "--version", "-version":
+			fmt.Fprintln(e.stdout, "isoshelf", version)
+			return 0
+		case "help":
+			fmt.Fprint(e.stdout, usage)
+			return 0
+		default:
+			// A folder given without a command opens the UI on it, unless it's
+			// clearly a mistyped command.
+			if _, err := os.Stat(args[0]); err != nil {
+				fmt.Fprintf(e.stderr, "isoshelf: unknown command %q\n\n%s", args[0], usage)
+				return 2
 			}
-			fmt.Fprintln(e.stderr, "isoshelf:", err)
-			return 2
 		}
-		if err := inventory(ctx, e, opts); err != nil {
-			fmt.Fprintln(e.stderr, "isoshelf:", err)
-			return 1
+	}
+
+	opts, err := parseFlags(cmd, args, e.stderr)
+	if err != nil {
+		if errors.Is(err, flag.ErrHelp) {
+			return 0
 		}
-		return 0
-	case "version", "--version", "-version":
-		fmt.Fprintln(e.stdout, "isoshelf", version)
-		return 0
-	case "help", "--help", "-help", "-h":
-		fmt.Fprint(e.stdout, usage)
-		return 0
-	default:
-		fmt.Fprintf(e.stderr, "isoshelf: unknown command %q\n\n%s", cmd, usage)
+		fmt.Fprintln(e.stderr, "isoshelf:", err)
 		return 2
 	}
+	if cmd == "ui" {
+		err = serveUI(ctx, e, opts)
+	} else {
+		err = inventory(ctx, e, opts)
+	}
+	if err != nil {
+		fmt.Fprintln(e.stderr, "isoshelf:", err)
+		return 1
+	}
+	return 0
 }
 
 type options struct {
@@ -121,6 +150,8 @@ type options struct {
 	catalog       string
 	noHash        bool
 	noUpdateCheck bool
+	port          int
+	noBrowser     bool
 }
 
 // parseFlags reads flags and the folder, in any order.
@@ -128,11 +159,16 @@ func parseFlags(cmd string, args []string, stderr io.Writer) (options, error) {
 	opts := options{online: cmd == "check"}
 	fs := flag.NewFlagSet(cmd, flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
-	fs.StringVar(&opts.profile, "profile", "", "")
-	fs.BoolVar(&opts.json, "json", false, "")
 	fs.StringVar(&opts.catalog, "catalog", "", "")
-	fs.BoolVar(&opts.noHash, "no-hash", false, "")
-	fs.BoolVar(&opts.noUpdateCheck, "no-update-check", false, "")
+	if cmd == "ui" {
+		fs.IntVar(&opts.port, "port", 0, "")
+		fs.BoolVar(&opts.noBrowser, "no-browser", false, "")
+	} else {
+		fs.StringVar(&opts.profile, "profile", "", "")
+		fs.BoolVar(&opts.json, "json", false, "")
+		fs.BoolVar(&opts.noHash, "no-hash", false, "")
+		fs.BoolVar(&opts.noUpdateCheck, "no-update-check", false, "")
+	}
 
 	var positional []string
 	for {
@@ -160,10 +196,14 @@ func parseFlags(cmd string, args []string, stderr io.Writer) (options, error) {
 			return opts, err
 		}
 	}
+	if opts.port < 0 || opts.port > 65535 {
+		return opts, fmt.Errorf("port %d is out of range", opts.port)
+	}
 	return opts, nil
 }
 
-// inventory runs a scan, and a check when opts.online is set.
+// inventory runs a scan, and a check when opts.online is set, and prints the
+// report.
 func inventory(ctx context.Context, e *env, opts options) error {
 	dirs, err := findDirs(e)
 	if err != nil {
@@ -180,18 +220,16 @@ func inventory(ctx context.Context, e *env, opts options) error {
 		}
 		target = dirs.DefaultTarget
 	}
-	if target, err = filepath.Abs(target); err != nil {
-		return err
-	}
 	cat, err := loadCatalog(dirs, opts.catalog)
 	if err != nil {
 		return err
 	}
 
-	// Ask GitHub about new isoshelf releases while the scan runs.
 	client := remote.New(version)
 	client.HTTP = e.http
 	client.GitHubToken = e.getenv("GITHUB_TOKEN")
+
+	// Ask GitHub about new isoshelf releases while the scan runs.
 	notices := make(chan *appupdate.Notice, 1)
 	if opts.online && !opts.noUpdateCheck && e.getenv("ISOSHELF_NO_UPDATE_CHECK") == "" {
 		go func() {
@@ -204,87 +242,131 @@ func inventory(ctx context.Context, e *env, opts options) error {
 		notices <- nil
 	}
 
-	st, err := state.Load(target)
-	if err != nil {
+	res, err := inv.Run(ctx, inv.Options{
+		Target:   target,
+		Profile:  scan.Profile(opts.profile),
+		Online:   opts.online,
+		Client:   client,
+		NoHash:   opts.noHash,
+		Catalog:  cat,
+		Dirs:     dirs,
+		Now:      e.now,
+		Progress: func(p inv.Progress) { progress(e, opts, p) },
+	})
+	progress(e, opts, inv.Progress{})
+	if res == nil {
 		return err
-	}
-	if opts.profile != "" {
-		st.Profile = scan.Profile(opts.profile)
-	}
-	res, err := scan.Scan(ctx, target, cat, scan.Options{Profile: st.Profile, Skip: []string{dirs.App}})
-	if err != nil {
-		return err
-	}
-	st.RecordScan(res, e.now())
-
-	var hashErr error
-	if !opts.noHash {
-		hashErr = hash(ctx, e, opts, res, st, cat)
-	}
-
-	report := check.Offline(res, st, cat)
-	if opts.online && ctx.Err() == nil {
-		progress(e, opts, "Checking for updates...")
-		report.Online(ctx, client, st)
-		progress(e, opts, "")
-	}
-
-	if err := st.Save(target); err != nil {
-		fmt.Fprintf(e.stderr, "isoshelf: couldn't save what it learned to %s: %v\n", filepath.Join(target, state.DirName), err)
-	}
-	if !dirs.Portable {
-		if err := st.SaveMirror(dirs.Config, target, e.now()); err != nil {
-			fmt.Fprintf(e.stderr, "isoshelf: couldn't save a copy of the history: %v\n", err)
-		}
 	}
 
 	notice := <-notices
 	if opts.json {
-		err = writeJSON(e.stdout, report, notice)
+		if err := writeJSON(e.stdout, res.Report, notice); err != nil {
+			return err
+		}
 	} else {
-		writeTable(e.stdout, report)
+		writeTable(e.stdout, res.Report)
 		if notice != nil {
 			fmt.Fprintln(e.stderr, "\n"+notice.String())
 		}
 	}
-	if err != nil {
-		return err
+	for _, w := range res.Warnings {
+		fmt.Fprintln(e.stderr, "isoshelf:", w)
 	}
-	if ctx.Err() != nil {
+	if err != nil {
 		return errors.New("interrupted; results so far are saved")
 	}
-	if hashErr != nil {
-		fmt.Fprintln(e.stderr, "isoshelf: some images couldn't be hashed:", hashErr)
-	}
-	return nil
-}
-
-// hash computes the hashes fixed-name images need, showing progress.
-func hash(ctx context.Context, e *env, opts options, res *scan.Result, st *state.State, cat *catalog.Catalog) error {
-	files := st.NeedsHash(res, cat)
-	for i := range files {
-		err := st.HashFiles(ctx, res.Root, files[i:i+1], func(f scan.File, done int64) {
-			if f.Size > 0 {
-				progress(e, opts, fmt.Sprintf("Hashing %s (%d of %d): %d%%", f.Name(), i+1, len(files), done*100/f.Size))
-			}
-		})
-		if err != nil {
-			progress(e, opts, "")
-			return err
-		}
-	}
-	progress(e, opts, "")
 	return nil
 }
 
 // progress shows a one-line status on stderr, replacing the previous one. An
-// empty message clears it. It stays quiet unless a person is watching and the
-// output is a table.
-func progress(e *env, opts options, msg string) {
+// empty Progress clears it. It stays quiet unless a person is watching and
+// the output is a table.
+func progress(e *env, opts options, p inv.Progress) {
 	if opts.json || !e.interactive {
 		return
 	}
+	var msg string
+	switch p.Stage {
+	case inv.Scanning:
+		msg = "Scanning..."
+	case inv.Hashing:
+		msg = "Hashing " + p.File
+		if p.Total > 0 {
+			msg += fmt.Sprintf(": %d%%", p.Done*100/p.Total)
+		}
+	case inv.Checking:
+		msg = "Checking for updates..."
+		if p.Total > 0 {
+			msg = fmt.Sprintf("Checking for updates (%d of %d)...", p.Done, p.Total)
+		}
+	case inv.Saving:
+		msg = "Saving..."
+	}
 	fmt.Fprintf(e.stderr, "\r%-78.78s\r%s", "", msg)
+}
+
+// serveUI runs the web UI on localhost until ctx is done.
+func serveUI(ctx context.Context, e *env, opts options) error {
+	dirs, err := findDirs(e)
+	if err != nil {
+		return err
+	}
+	cat, err := loadCatalog(dirs, opts.catalog)
+	if err != nil {
+		return err
+	}
+	listener, err := net.Listen("tcp", net.JoinHostPort("127.0.0.1", strconv.Itoa(opts.port)))
+	if err != nil {
+		return fmt.Errorf("can't listen on port %d (is isoshelf already running?): %w", opts.port, err)
+	}
+	token := rand.Text()
+	url := fmt.Sprintf("http://%s/?token=%s", listener.Addr(), token)
+
+	server := &http.Server{
+		Handler: web.New(web.Config{
+			Dirs:        dirs,
+			Catalog:     cat,
+			HTTP:        e.http,
+			GitHubToken: e.getenv("GITHUB_TOKEN"),
+			Version:     version,
+			Token:       token,
+			Target:      opts.folder,
+			Now:         e.now,
+		}),
+		ReadHeaderTimeout: 10 * time.Second,
+	}
+	serveErr := make(chan error, 1)
+	go func() { serveErr <- server.Serve(listener) }()
+
+	fmt.Fprintf(e.stdout, "isoshelf is running at:\n\n  %s\n\nKeep this window open while you use it. Press Ctrl+C to stop.\n", url)
+	if e.listening != nil {
+		e.listening(url)
+	}
+	if !opts.noBrowser {
+		if err := e.openBrowser(url); err != nil {
+			fmt.Fprintln(e.stderr, "isoshelf: couldn't open the browser; open the link above yourself:", err)
+		}
+	}
+
+	select {
+	case err := <-serveErr:
+		return err
+	case <-ctx.Done():
+	}
+	shutdown, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	return server.Shutdown(shutdown)
+}
+
+// openBrowser opens url in the system's default browser.
+func openBrowser(url string) error {
+	switch runtime.GOOS {
+	case "windows":
+		return exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+	case "darwin":
+		return exec.Command("open", url).Start()
+	}
+	return exec.Command("xdg-open", url).Start()
 }
 
 func findDirs(e *env) (appdir.Dirs, error) {

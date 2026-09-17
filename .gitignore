@@ -1,3 +1,6 @@
 # Binaries from "go build ./cmd/isoshelf"
 /isoshelf
 /isoshelf.exe
+
+# Local browser-preview config (holds machine-specific paths)
+/.claude/launch.json

@@ -85,6 +85,10 @@ Every catalog entry runs through four stages:
    hash state saved with the partial file, backoff on timeouts/5xx, no retry on
    404, show GitHub rate-limit reset time, optional read-back verification.
 
+`internal/inventory` runs one scan or check from start to finish (load state,
+scan, hash, check online, save state and mirror) with progress callbacks; the
+CLI and the web UI both call it. `check.Report.JSON()` is the shared JSON shape.
+
 Supporting packages: `internal/remote` fetches small documents (HTTPS only,
 including redirects; retries timeouts and 5xx but not 4xx; caches per client;
 sends an optional GitHub token and reports rate-limit reset times).
@@ -245,6 +249,7 @@ alone is not an update.
    "App updates"). *Done.*
 6. Local web UI (opened in the browser) showing the same table, plus catalog
    entries not on the target (listed only; adding them needs v0.2 downloads).
+   *Done.*
 
 **v0.2** - downloads, verification, keep/replace flow, adding catalog images
 that aren't on the target, installing older versions (below), Make bootable
@@ -314,11 +319,42 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   like the sample drive. This is how the kernel.org redirect for Linux Mint was
   found (the catalog now uses `mirrors.edge.kernel.org`).
 
+### Web UI (`internal/web`)
+
+- `isoshelf` with no arguments (double-click) or `isoshelf ui [--port N]
+  [--no-browser] [--catalog FILE] [folder]` listens on 127.0.0.1 (any free port
+  by default), prints a link with a random token and opens the browser.
+- Security: the token link sets an HttpOnly, SameSite=Strict cookie; every
+  request needs it and a localhost Host header (DNS rebinding); changes also
+  need the `X-Isoshelf: 1` header and a same-origin Origin; a self-only CSP. The
+  page inserts text from the drive with textContent only, never as HTML.
+- API: `GET /api/state`, `/api/catalog`, `/api/browse?path=`; `POST /api/target`
+  (folder + profile), `/api/scan`, `/api/check`, `/api/cancel`, `/api/track`
+  (keep_old, starred). One scan or check runs at a time, in the background;
+  the page polls `/api/state` while it runs. Changes are refused while one runs.
+- The folder picker lists subfolders through `/api/browse` (browsers can't see
+  the computer's folders), with drives or mount points and recent folders
+  (from the mirrors; none in portable mode). The last folder is remembered in
+  `<config>/ui.json`.
+- A filled star means the user starred the image; the replace switch shows only
+  for entries that can download.
+- Static files are embedded, so restart the server after changing them. To
+  preview while developing: `go run ./cmd/isoshelf ui --port 8765 --no-browser <folder>`
+  and open the printed link (with `localhost` or `127.0.0.1`).
+
 ### Where we stopped (2026-09-17)
 
-Steps 1-5 are done, and the catalog covers the maintainer's Proxmox folder
-(60 entries; only `Windows.iso` stays unrecognized there). Next: step 6, the
-local web UI (`internal/web`).
+v0.1 steps 1-6 are done: catalog (60 entries), scanner, state, sources, CLI and
+the local web UI, all tried against the maintainer's Proxmox folder on the NAS.
+Known gaps and next steps:
+
+- The web UI starts with a fresh scan; results of the last online check aren't
+  kept across restarts (save the last report in state).
+- Before a v0.1 release: GitHub Actions (build, vet, test on Windows and
+  Linux; release binaries, portable zip, SHA256SUMS), and the repository must be
+  public for the update notice and downloads.
+- Then v0.2: downloads, verification, keep/replace, adding catalog images,
+  older versions with a hold, Make bootable.
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 

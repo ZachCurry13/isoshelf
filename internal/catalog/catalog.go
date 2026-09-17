@@ -274,3 +274,21 @@ func decodeError(file string, err error) error {
 	}
 	return out
 }
+
+// What isoshelf can do for an entry, as returned by Entry.Updates.
+const (
+	UpdatesDownload  = "download"   // check for updates and download them
+	UpdatesCheckOnly = "check-only" // check for updates, nothing to download yet
+	UpdatesManual    = "manual"     // recognize files and link the download page
+)
+
+// Updates says what isoshelf can do for the entry.
+func (e *Entry) Updates() string {
+	switch {
+	case e.Source.Type == SourceManual:
+		return UpdatesManual
+	case e.Artifact != nil || (e.Source.Type == SourceGitHub && e.Source.Asset != ""):
+		return UpdatesDownload
+	}
+	return UpdatesCheckOnly
+}

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>isoshelf</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='5' width='26' height='5' rx='2' fill='%232f6fed'/%3E%3Crect x='3' y='13.5' width='26' height='5' rx='2' fill='%2360a5fa'/%3E%3Crect x='3' y='22' width='26' height='5' rx='2' fill='%2393c5fd'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/app.css">
+<script src="/static/app.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="3" y="5" width="26" height="5" rx="2"></rect>
+      <rect x="3" y="13.5" width="26" height="5" rx="2"></rect>
+      <rect x="3" y="22" width="26" height="5" rx="2"></rect>
+    </svg>
+    <span class="brand-name">isoshelf</span>
+    <span class="version" id="version"></span>
+  </div>
+  <a id="app-update" class="app-update" hidden target="_blank" rel="noopener noreferrer"></a>
+</header>
+
+<main>
+  <section class="card target">
+    <div class="target-info">
+      <div class="eyebrow">Folder</div>
+      <div class="target-path" id="target-path">No folder chosen yet</div>
+      <div class="target-meta">
+        <label class="inline-select">Type
+          <select id="profile" disabled>
+            <option value="ventoy">Ventoy drive</option>
+            <option value="proxmox">Proxmox ISO storage</option>
+          </select>
+        </label>
+        <span id="updated-at" class="muted"></span>
+      </div>
+    </div>
+    <div class="target-actions">
+      <button type="button" class="btn" id="choose">Choose folder…</button>
+      <button type="button" class="btn" id="scan" disabled>Scan</button>
+      <button type="button" class="btn primary" id="check" disabled>Check for updates</button>
+    </div>
+  </section>
+
+  <section class="card run" id="run" hidden>
+    <div class="run-text">
+      <span class="spinner" aria-hidden="true"></span>
+      <span id="run-text">Working…</span>
+    </div>
+    <div class="bar" id="run-bar"><div class="bar-fill" id="run-fill"></div></div>
+    <button type="button" class="btn small" id="cancel">Stop</button>
+  </section>
+
+  <div class="notice" id="notice" role="status" hidden></div>
+
+  <section class="summary" id="summary" aria-label="Filter by status"></section>
+
+  <section class="card images">
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Filter by name or file…" aria-label="Filter images">
+      <span class="muted" id="shown"></span>
+    </div>
+    <div class="table-wrap">
+      <table id="table">
+        <thead>
+          <tr>
+            <th class="col-star"><span class="sr-only">Usual set</span></th>
+            <th>Status</th>
+            <th>Image</th>
+            <th>Version</th>
+            <th>Latest</th>
+            <th>File</th>
+            <th class="col-replace" title="When an update is downloaded, replace the old file (on) or keep both (off). Downloads arrive in v0.2.">Replace old</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="empty" hidden></div>
+  </section>
+
+  <section class="card more">
+    <details id="more">
+      <summary>
+        <span class="more-title">More in the catalog</span>
+        <span class="muted" id="more-count"></span>
+      </summary>
+      <p class="muted more-hint">Images isoshelf knows that aren't in this folder. Adding them arrives with downloads in v0.2.</p>
+      <input type="search" id="more-search" placeholder="Filter the catalog…" aria-label="Filter the catalog">
+      <ul class="catalog" id="catalog"></ul>
+    </details>
+  </section>
+
+  <footer class="footer" id="footer"></footer>
+</main>
+
+<dialog id="picker" class="picker" aria-labelledby="picker-title">
+  <form method="dialog" class="picker-form">
+    <header class="picker-head">
+      <h2 id="picker-title">Choose a folder</h2>
+      <p class="muted">A Ventoy drive, a folder on a NAS share, or Proxmox ISO storage.</p>
+    </header>
+    <div class="picker-path">
+      <button type="button" class="btn small" id="picker-up" title="Up one folder">↑ Up</button>
+      <input type="text" id="picker-input" spellcheck="false" autocomplete="off" aria-label="Folder path">
+      <button type="button" class="btn small" id="picker-go">Go</button>
+    </div>
+    <div class="picker-body">
+      <nav class="picker-roots" id="picker-roots" aria-label="Places"></nav>
+      <div class="picker-list">
+        <div class="picker-error" id="picker-error" hidden></div>
+        <ul id="picker-folders"></ul>
+      </div>
+    </div>
+    <footer class="picker-foot">
+      <label class="inline-select">Type
+        <select id="picker-profile">
+          <option value="ventoy">Ventoy drive</option>
+          <option value="proxmox">Proxmox ISO storage</option>
+        </select>
+      </label>
+      <span class="spacer"></span>
+      <button type="submit" class="btn" value="cancel">Cancel</button>
+      <button type="button" class="btn primary" id="picker-use">Use this folder</button>
+    </footer>
+  </form>
+</dialog>
+</body>
+</html>

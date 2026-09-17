@@ -138,8 +138,9 @@ func notBootableNote(e *catalog.Entry, profile scan.Profile) string {
 
 // Online asks each recognized entry's source for its latest release and fills
 // in the statuses. Entries are checked a few at a time; a failure affects only
-// that entry's items.
-func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.State) {
+// that entry's items. progress, if not nil, is called after each entry with
+// how many of them are done.
+func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.State, progress func(done, total int)) {
 	byEntry := map[string][]int{}
 	for i, it := range r.Items {
 		if it.Entry != nil && it.Entry.Source.Type != catalog.SourceManual {
@@ -150,6 +151,7 @@ func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.St
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	limit := make(chan struct{}, 4)
+	done := 0
 	for _, indexes := range byEntry {
 		wg.Go(func() {
 			limit <- struct{}{}
@@ -161,6 +163,10 @@ func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.St
 			for _, i := range indexes {
 				it := &r.Items[i]
 				decide(it, rel, art, err, st.Files[it.Path].SHA256)
+			}
+			done++
+			if progress != nil {
+				progress(done, len(byEntry))
 			}
 		})
 	}

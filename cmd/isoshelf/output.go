@@ -105,78 +105,14 @@ func size(bytes int64) string {
 	return fmt.Sprintf("%.1f %cB", float64(bytes)/float64(div), "KMGTPE"[exp])
 }
 
-// The JSON output. Field names are part of isoshelf's interface for scripts,
-// so change them with care.
-type jsonReport struct {
-	Target    string        `json:"target"`
-	Profile   string        `json:"profile"`
-	Checked   bool          `json:"checked"`
-	Items     []jsonItem    `json:"items"`
-	Trash     []jsonTrash   `json:"trash"`
-	Problems  []jsonProblem `json:"problems"`
-	AppUpdate *jsonUpdate   `json:"app_update,omitempty"`
-}
-
-type jsonItem struct {
-	Path       string `json:"path,omitempty"`
-	Size       int64  `json:"size,omitempty"`
-	Kind       string `json:"kind,omitempty"`
-	Entry      string `json:"entry,omitempty"`
-	Name       string `json:"name"`
-	Version    string `json:"version,omitempty"`
-	Status     string `json:"status"`
-	EOL        bool   `json:"eol,omitempty"`
-	Latest     string `json:"latest,omitempty"`
-	LatestFile string `json:"latest_file,omitempty"`
-	Note       string `json:"note,omitempty"`
-}
-
-type jsonTrash struct {
-	Path  string `json:"path"`
-	Bytes int64  `json:"bytes"`
-}
-
-type jsonProblem struct {
-	Path  string `json:"path"`
-	Error string `json:"error"`
-}
-
-type jsonUpdate struct {
-	Current string `json:"current"`
-	Latest  string `json:"latest"`
-	URL     string `json:"url"`
+// jsonOutput is the --json output: the report plus the app update notice.
+type jsonOutput struct {
+	check.ReportJSON
+	AppUpdate *appupdate.Notice `json:"app_update,omitempty"`
 }
 
 func writeJSON(w io.Writer, r *check.Report, notice *appupdate.Notice) error {
-	out := jsonReport{
-		Target:   r.Target,
-		Profile:  string(r.Profile),
-		Checked:  r.Checked,
-		Items:    []jsonItem{},
-		Trash:    []jsonTrash{},
-		Problems: []jsonProblem{},
-	}
-	for _, it := range r.Items {
-		j := jsonItem{
-			Path: it.Path, Size: it.Size, Kind: string(it.Kind), Name: it.Name(),
-			Version: it.Version, Status: string(it.Status), EOL: it.EOL,
-			Latest: it.Latest, LatestFile: it.LatestFile, Note: it.Note,
-		}
-		if it.Entry != nil {
-			j.Entry = it.Entry.ID
-		}
-		out.Items = append(out.Items, j)
-	}
-	for _, t := range r.Trash {
-		out.Trash = append(out.Trash, jsonTrash{Path: t.Path, Bytes: t.Bytes})
-	}
-	for _, p := range r.Problems {
-		out.Problems = append(out.Problems, jsonProblem{Path: p.Path, Error: p.Err.Error()})
-	}
-	if notice != nil {
-		out.AppUpdate = &jsonUpdate{Current: notice.Current, Latest: notice.Latest, URL: notice.URL}
-	}
 	enc := json.NewEncoder(w)
 	enc.SetIndent("", "  ")
-	return enc.Encode(out)
+	return enc.Encode(jsonOutput{ReportJSON: r.JSON(), AppUpdate: notice})
 }
