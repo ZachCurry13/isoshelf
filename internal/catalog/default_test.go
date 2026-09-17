@@ -7,7 +7,8 @@ import (
 )
 
 // The built-in catalog ships inside the binary, so it must always be valid,
-// and it must recognize every image on the sample drive.
+// and it must recognize every image on the sample drive and in the Proxmox
+// folder.
 func TestDefaultCatalog(t *testing.T) {
 	c, err := Default()
 	if err != nil {
@@ -20,7 +21,7 @@ func TestDefaultCatalog(t *testing.T) {
 		wantVersion string
 	}
 	var tests []test
-	for _, f := range sampledrive.Files {
+	for _, f := range append(sampledrive.Files, sampledrive.ProxmoxFolder...) {
 		tests = append(tests, test{f.Name, f.Entry, f.Version})
 	}
 	// Other tracks must not be mistaken for the sample drive's.
@@ -30,7 +31,14 @@ func TestDefaultCatalog(t *testing.T) {
 		test{"manjaro-xfce-26.1.0-minimal-260812-linux71.iso", "", ""},
 		test{"netboot.xyz-arm64.iso", "", ""},
 		test{"CorePure64-current.iso", "", ""},
-		test{"CentOS-7-i386-Everything-2009.iso", "", ""},
+		test{"CentOS-7-x86_64-DVD-2009.iso", "", ""},
+		test{"ubuntu-25.10-desktop-amd64.iso", "", ""}, // interim release, not LTS
+		test{"proxmox-ve_9.2-1-arm64.iso", "", ""},
+		test{"TrueNAS-26.0.0-BETA.3.iso", "", ""},
+		test{"Qubes-R4.3.1-rc1-x86_64.iso", "", ""},
+		test{"kali-linux-2026.2-installer-netinst-amd64.iso", "", ""},
+		test{"debian-edu-13.7.0-amd64-netinst.iso", "", ""},
+		test{"rescuezilla-2.6.1-32bit.bionic.iso", "", ""},
 	)
 
 	for _, tt := range tests {

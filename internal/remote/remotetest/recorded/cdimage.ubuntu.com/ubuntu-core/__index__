@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /ubuntu-core</title>
+ </head>
+ <body>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Ubuntu Core 16</title>
+<!-- Main style sheets for CSS2 capable browsers -->
+<style type="text/css" media="screen">
+  @import url(//releases.ubuntu.com/include/style.css);
+body { margin: 2em; }
+</style>
+
+</head>
+<body><div id="pageWrapper">
+
+<div id="header"><a href="http://www.ubuntu.com/"></a></div>
+
+<h1>Ubuntu Core</h1>
+
+<div id="main">
+
+
+
+<pre><img src="/icons/blank.gif" alt="Icon "> <a href="?C=N;O=D">Name</a>                    <a href="?C=M;O=A">Last modified</a>      <a href="?C=S;O=A">Size</a>  <a href="?C=D;O=A">Description</a><hr><img src="/icons/back.gif" alt="[PARENTDIR]"> <a href="/">Parent Directory</a>                             -   
+<img src="/icons/folder.gif" alt="[DIR]"> <a href="16/">16/</a>                     2026-05-29 16:01    -   
+<img src="/icons/folder.gif" alt="[DIR]"> <a href="18/">18/</a>                     2020-05-06 17:07    -   
+<img src="/icons/folder.gif" alt="[DIR]"> <a href="20/">20/</a>                     2021-08-13 17:12    -   
+<img src="/icons/folder.gif" alt="[DIR]"> <a href="22/">22/</a>                     2024-02-09 13:42    -   
+<img src="/icons/folder.gif" alt="[DIR]"> <a href="24/">24/</a>                     2024-05-05 20:42    -   
+<img src="/icons/folder.gif" alt="[DIR]"> <a href="26/">26/</a>                     2026-05-06 05:40    -   
+<img src="/icons/folder.gif" alt="[DIR]"> <a href="appliances/">appliances/</a>             2023-11-27 10:36    -   
+<img src="/icons/folder.gif" alt="[DIR]"> <a href="streams/">streams/</a>                2024-02-19 17:48    -   
+<hr></pre>
+<address>Apache/2.4.29 (Ubuntu) Server at cdimage.ubuntu.com Port 443</address>
+</body></html>

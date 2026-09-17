@@ -1,0 +1,348 @@
+[
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.2/rescuezilla-2.6.2-64bit.noble.iso",
+        "digest": "sha256:285db0af83213e2297490ca1cfd74ecd607c3b0a2f1d14e11a8412c0b71eea50",
+        "name": "rescuezilla-2.6.2-64bit.noble.iso",
+        "size": 1594339328
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.2/rescuezilla-2.6.2-64bit.oracular.iso",
+        "digest": "sha256:b34dd78e80104a4e3b8b7bd18dfec95ba3719e7919b12b06769c5285e5487664",
+        "name": "rescuezilla-2.6.2-64bit.oracular.iso",
+        "size": 1486694400
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.2/rescuezilla-2.6.2-64bit.questing.iso",
+        "digest": "sha256:3283cc24ac0c9a2ada5045a8182e5dd628cc5d5f59ae80fea5b6bd34bfb9043a",
+        "name": "rescuezilla-2.6.2-64bit.questing.iso",
+        "size": 1665757184
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.2/rescuezilla-2.6.2-64bit.resolute.iso",
+        "digest": "sha256:20dfdad31d3da56b8dd3978159721f19071916f65e123003a850fdecec85ae3f",
+        "name": "rescuezilla-2.6.2-64bit.resolute.iso",
+        "size": 1722134528
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.6.2",
+    "name": "v2.6.2 (2026-05-16)",
+    "prerelease": false,
+    "published_at": "2026-05-16T20:04:34Z",
+    "tag_name": "2.6.2"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.1/rescuezilla-2.6.1-32bit.bionic.iso",
+        "digest": "sha256:d45bb66881a48499242bb41f4c0ba64406404c961024ddb6695184fba5fa1feb",
+        "name": "rescuezilla-2.6.1-32bit.bionic.iso",
+        "size": 861503488
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.1/rescuezilla-2.6.1-64bit.focal.iso",
+        "digest": "sha256:28807a95ec6b9ef8dd3b3b20edb07b53e8c20e7023d52ed6eb2682400f7bb664",
+        "name": "rescuezilla-2.6.1-64bit.focal.iso",
+        "size": 1079986176
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.1/rescuezilla-2.6.1-64bit.jammy.iso",
+        "digest": "sha256:bb1ba6841b952cf4b0b3e326f20c39ecd0c242ab259d269fa0b212a59390c3fb",
+        "name": "rescuezilla-2.6.1-64bit.jammy.iso",
+        "size": 1331410944
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.1/rescuezilla-2.6.1-64bit.noble.iso",
+        "digest": "sha256:2e1ad07614a49f2d0fc951929ff2807547386eefbaa1e505ba5cda7c4210d5b1",
+        "name": "rescuezilla-2.6.1-64bit.noble.iso",
+        "size": 1461252096
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.1/rescuezilla-2.6.1-64bit.oracular.iso",
+        "digest": "sha256:7eaa7318634d4831d9bdf2b683acdcd68fb8dd42835fee0db8cb908ddfed2c74",
+        "name": "rescuezilla-2.6.1-64bit.oracular.iso",
+        "size": 1498515456
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.1/rescuezilla-2.6.1-64bit.plucky.iso",
+        "digest": "sha256:a0c9c4e5eef57ea17cfb764e54740fa9b79b137acc92e68ad85063ad4f358c2e",
+        "name": "rescuezilla-2.6.1-64bit.plucky.iso",
+        "size": 1587517440
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.6.1",
+    "name": "v2.6.1 (2025-07-16)",
+    "prerelease": false,
+    "published_at": "2025-07-16T22:22:06Z",
+    "tag_name": "2.6.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6/rescuezilla-2.6-32bit.bionic.iso",
+        "digest": null,
+        "name": "rescuezilla-2.6-32bit.bionic.iso",
+        "size": 852969472
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6/rescuezilla-2.6-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.6-64bit.focal.iso",
+        "size": 1065711616
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6/rescuezilla-2.6-64bit.jammy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.6-64bit.jammy.iso",
+        "size": 1316835328
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6/rescuezilla-2.6-64bit.noble.iso",
+        "digest": null,
+        "name": "rescuezilla-2.6-64bit.noble.iso",
+        "size": 1442797568
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6/rescuezilla-2.6-64bit.oracular.iso",
+        "digest": null,
+        "name": "rescuezilla-2.6-64bit.oracular.iso",
+        "size": 1427816448
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.6",
+    "name": "v2.6 (2025-03-23)",
+    "prerelease": false,
+    "published_at": "2025-03-23T10:23:27Z",
+    "tag_name": "2.6"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5.1/rescuezilla-2.5.1-32bit.bionic.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5.1-32bit.bionic.iso",
+        "size": 849244160
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5.1/rescuezilla-2.5.1-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5.1-64bit.focal.iso",
+        "size": 1061922816
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5.1/rescuezilla-2.5.1-64bit.jammy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5.1-64bit.jammy.iso",
+        "size": 1264959488
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5.1/rescuezilla-2.5.1-64bit.lunar.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5.1-64bit.lunar.iso",
+        "size": 1230194688
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5.1/rescuezilla-2.5.1-64bit.mantic.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5.1-64bit.mantic.iso",
+        "size": 1319352320
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5.1/rescuezilla-2.5.1-64bit.noble.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5.1-64bit.noble.iso",
+        "size": 1414330368
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.5.1",
+    "name": "v2.5.1 (2024-09-08)",
+    "prerelease": false,
+    "published_at": "2024-09-09T05:08:42Z",
+    "tag_name": "2.5.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5/rescuezilla-2.5-32bit.bionic.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5-32bit.bionic.iso",
+        "size": 849270784
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5/rescuezilla-2.5-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5-64bit.focal.iso",
+        "size": 1058543616
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5/rescuezilla-2.5-64bit.jammy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5-64bit.jammy.iso",
+        "size": 1260421120
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5/rescuezilla-2.5-64bit.lunar.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5-64bit.lunar.iso",
+        "size": 1230186496
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5/rescuezilla-2.5-64bit.mantic.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5-64bit.mantic.iso",
+        "size": 1373544448
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.5/rescuezilla-2.5-64bit.noble.iso",
+        "digest": null,
+        "name": "rescuezilla-2.5-64bit.noble.iso",
+        "size": 1376456704
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.5",
+    "name": "v2.5 (2024-05-12)",
+    "prerelease": false,
+    "published_at": "2024-05-13T06:12:56Z",
+    "tag_name": "2.5"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/rolling-release.2023-11-26/rescuezilla-rolling-release.2023-11-26-32bit.bionic.iso",
+        "digest": null,
+        "name": "rescuezilla-rolling-release.2023-11-26-32bit.bionic.iso",
+        "size": 851279872
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/rolling-release.2023-11-26/rescuezilla-rolling-release.2023-11-26-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-rolling-release.2023-11-26-64bit.focal.iso",
+        "size": 1053177856
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/rolling-release.2023-11-26/rescuezilla-rolling-release.2023-11-26-64bit.jammy.iso",
+        "digest": null,
+        "name": "rescuezilla-rolling-release.2023-11-26-64bit.jammy.iso",
+        "size": 1232754688
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/rolling-release.2023-11-26/rescuezilla-rolling-release.2023-11-26-64bit.lunar.iso",
+        "digest": null,
+        "name": "rescuezilla-rolling-release.2023-11-26-64bit.lunar.iso",
+        "size": 1281298432
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/rolling-release.2023-11-26/rescuezilla-rolling-release.2023-11-26-64bit.mantic.iso",
+        "digest": null,
+        "name": "rescuezilla-rolling-release.2023-11-26-64bit.mantic.iso",
+        "size": 1355403264
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/rolling-release.2023-11-26/rescuezilla-rolling-release.2023-11-26-64bit.noble.iso",
+        "digest": null,
+        "name": "rescuezilla-rolling-release.2023-11-26-64bit.noble.iso",
+        "size": 1324453888
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/rolling-release.2023-11-26",
+    "name": "\"Weekly\" Rolling Release (2023-11-26)",
+    "prerelease": true,
+    "published_at": "2023-11-27T00:21:02Z",
+    "tag_name": "rolling-release.2023-11-26"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.4.2/rescuezilla-2.4.2-32bit.bionic.iso",
+        "digest": null,
+        "name": "rescuezilla-2.4.2-32bit.bionic.iso",
+        "size": 848275456
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.4.2/rescuezilla-2.4.2-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.4.2-64bit.focal.iso",
+        "size": 1047048192
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.4.2/rescuezilla-2.4.2-64bit.jammy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.4.2-64bit.jammy.iso",
+        "size": 1202202624
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.4.2/rescuezilla-2.4.2-64bit.kinetic.iso",
+        "digest": null,
+        "name": "rescuezilla-2.4.2-64bit.kinetic.iso",
+        "size": 1208434688
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.4.2",
+    "name": "v2.4.2 (2023-03-05)",
+    "prerelease": false,
+    "published_at": "2023-03-06T03:27:15Z",
+    "tag_name": "2.4.2"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.4.1/rescuezilla-2.4.1-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.4.1-64bit.focal.iso",
+        "size": 996141056
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.4.1/rescuezilla-2.4.1-64bit.jammy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.4.1-64bit.jammy.iso",
+        "size": 1149517824
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.4.1",
+    "name": "v2.4.1 (2022-09-05)",
+    "prerelease": false,
+    "published_at": "2022-09-05T23:04:37Z",
+    "tag_name": "2.4.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.4/rescuezilla-2.4-64bit.jammy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.4-64bit.jammy.iso",
+        "size": 1138098176
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.4",
+    "name": "v2.4 (2022-08-07)",
+    "prerelease": false,
+    "published_at": "2022-08-29T05:16:52Z",
+    "tag_name": "2.4"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/rolling-release.2022-07-24/rescuezilla-rolling-release.2022-07-24.amd64.jammy.iso",
+        "digest": null,
+        "name": "rescuezilla-rolling-release.2022-07-24.amd64.jammy.iso",
+        "size": 1136138240
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/rolling-release.2022-07-24",
+    "name": "Rescuezilla Pre-release (2022-07-24)",
+    "prerelease": true,
+    "published_at": "2022-07-24T20:18:34Z",
+    "tag_name": "rolling-release.2022-07-24"
+  }
+]

@@ -13,6 +13,26 @@ schema = 1
 # 1. Download
 # ---------------------------------------------------------------------------
 
+# --- Desktop Linux ---------------------------------------------------------
+
+[[entry]]
+id = "ubuntu-desktop-lts"
+name = "Ubuntu Desktop LTS"
+arch = "x86_64"
+match = 'ubuntu-(?P<version>\d[02468]\.04(?:\.\d+)*)-desktop-amd64\.iso' # LTS = even year, .04
+samples = ["ubuntu-20.04.3-desktop-amd64.iso", "ubuntu-22.04-desktop-amd64.iso", "ubuntu-22.04.3-desktop-amd64.iso", "ubuntu-26.04.1-desktop-amd64.iso"]
+page = "https://ubuntu.com/download"
+
+[entry.source]
+type = "endoflife"
+product = "ubuntu"
+channel = "lts"
+
+[entry.artifact]
+base = "https://releases.ubuntu.com/{cycle}/"
+file = 'ubuntu-{cycle}(?:\.\d+)*-desktop-amd64\.iso'
+manifest = "SHA256SUMS"
+
 [[entry]]
 id = "linuxmint-cinnamon"
 name = "Linux Mint Cinnamon"
@@ -33,6 +53,42 @@ file = 'linuxmint-{cycle}-cinnamon-64bit\.iso'
 manifest = "sha256sum.txt"
 
 [[entry]]
+id = "debian-netinst-amd64"
+name = "Debian netinst (64-bit)"
+arch = "x86_64"
+match = 'debian-(?P<version>\d+\.\d+\.\d+)-amd64-netinst\.iso'
+samples = ["debian-13.7.0-amd64-netinst.iso"]
+page = "https://www.debian.org/distrib/"
+
+[entry.source]
+type = "endoflife"
+product = "debian"
+channel = "latest"
+
+[entry.artifact]
+base = "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/"
+file = 'debian-{cycle}\.\d+\.\d+-amd64-netinst\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "debian-12-i386-dvd"
+name = "Debian 12 DVD (32-bit)"
+arch = "x86"
+match = 'debian-(?P<version>\d+\.\d+\.\d+)-i386-DVD-1(?:_x32)?\.iso'
+samples = ["debian-12.6.0-i386-DVD-1_x32.iso", "debian-12.15.0-i386-DVD-1.iso"]
+page = "https://www.debian.org/distrib/"
+
+[entry.source]
+type = "endoflife"
+product = "debian"
+channel = "12" # Debian 13 has no 32-bit PC installer images
+
+[entry.artifact]
+base = "https://cdimage.debian.org/cdimage/archive/{version}.0/i386/iso-dvd/"
+file = 'debian-{version}\.0-i386-DVD-1\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
 id = "popos-2204-intel"
 name = "Pop!_OS 22.04 (Intel/AMD)"
 arch = "x86_64"
@@ -48,6 +104,60 @@ regex = '"build":\s*"(?P<version>\d+)"'
 [entry.artifact]
 base = "https://iso.pop-os.org/22.04/amd64/intel/{version}/"
 file = 'pop-os_22\.04_amd64_intel_{version}\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "popos-2204-nvidia"
+name = "Pop!_OS 22.04 (NVIDIA)"
+arch = "x86_64"
+match = 'pop-os_22\.04_amd64_nvidia_(?P<version>\d+)\.iso'
+samples = ["pop-os_22.04_amd64_nvidia_21.iso"]
+page = "https://system76.com/pop/download/"
+
+[entry.source]
+type = "listing"
+url = "https://api.pop-os.org/builds/22.04/nvidia"
+regex = '"build":\s*"(?P<version>\d+)"'
+
+[entry.artifact]
+base = "https://iso.pop-os.org/22.04/amd64/nvidia/{version}/"
+file = 'pop-os_22\.04_amd64_nvidia_{version}\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "popos-2404-intel"
+name = "Pop!_OS 24.04 (Intel/AMD)"
+arch = "x86_64"
+match = 'pop-os_24\.04_amd64_intel_(?P<version>\d+)\.iso'
+samples = ["pop-os_24.04_amd64_intel_20.iso"]
+page = "https://system76.com/pop/download/"
+
+[entry.source]
+type = "listing"
+url = "https://api.pop-os.org/builds/24.04/intel"
+regex = '"build":\s*"(?P<version>\d+)"'
+
+[entry.artifact]
+base = "https://iso.pop-os.org/24.04/amd64/intel/{version}/"
+file = 'pop-os_24\.04_amd64_intel_{version}\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "popos-2404-nvidia"
+name = "Pop!_OS 24.04 (NVIDIA)"
+arch = "x86_64"
+match = 'pop-os_24\.04_amd64_nvidia_(?P<version>\d+)\.iso'
+samples = ["pop-os_24.04_amd64_nvidia_27.iso"]
+page = "https://system76.com/pop/download/"
+
+[entry.source]
+type = "listing"
+url = "https://api.pop-os.org/builds/24.04/nvidia"
+regex = '"build":\s*"(?P<version>\d+)"'
+
+[entry.artifact]
+base = "https://iso.pop-os.org/24.04/amd64/nvidia/{version}/"
+file = 'pop-os_24\.04_amd64_nvidia_{version}\.iso'
 manifest = "SHA256SUMS"
 
 [[entry]]
@@ -88,6 +198,405 @@ file = 'bazzite-deck-gnome-stable-live-amd64\.iso'
 manifest = "bazzite-deck-gnome-stable-live-amd64.iso-CHECKSUM"
 
 [[entry]]
+id = "alpine-extended"
+name = "Alpine Linux Extended"
+arch = "x86_64"
+match = 'alpine-extended-(?P<version>\d+\.\d+\.\d+)-x86_64\.iso'
+samples = ["alpine-extended-3.19.0-x86_64.iso"]
+page = "https://www.alpinelinux.org/downloads/"
+
+[entry.source]
+type = "endoflife"
+product = "alpine-linux"
+channel = "latest"
+
+[entry.artifact]
+base = "https://dl-cdn.alpinelinux.org/alpine/v{cycle}/releases/x86_64/"
+file = 'alpine-extended-{version}-x86_64\.iso'
+manifest = "alpine-extended-{version}-x86_64.iso.sha256"
+
+[[entry]]
+id = "alpine-standard"
+name = "Alpine Linux Standard"
+arch = "x86_64"
+match = 'alpine-standard-(?P<version>\d+\.\d+\.\d+)-x86_64\.iso'
+samples = ["alpine-standard-3.24.1-x86_64.iso"]
+page = "https://www.alpinelinux.org/downloads/"
+
+[entry.source]
+type = "endoflife"
+product = "alpine-linux"
+channel = "latest"
+
+[entry.artifact]
+base = "https://dl-cdn.alpinelinux.org/alpine/v{cycle}/releases/x86_64/"
+file = 'alpine-standard-{version}-x86_64\.iso'
+manifest = "alpine-standard-{version}-x86_64.iso.sha256"
+
+[[entry]]
+id = "alpine-virt"
+name = "Alpine Linux Virtual"
+arch = "x86_64"
+match = 'alpine-virt-(?P<version>\d+\.\d+\.\d+)-x86_64\.iso'
+samples = ["alpine-virt-3.24.1-x86_64.iso"]
+page = "https://www.alpinelinux.org/downloads/"
+
+[entry.source]
+type = "endoflife"
+product = "alpine-linux"
+channel = "latest"
+
+[entry.artifact]
+base = "https://dl-cdn.alpinelinux.org/alpine/v{cycle}/releases/x86_64/"
+file = 'alpine-virt-{version}-x86_64\.iso'
+manifest = "alpine-virt-{version}-x86_64.iso.sha256"
+
+# --- Servers, homelab and firewalls ------------------------------------------
+
+[[entry]]
+id = "ubuntu-server-lts"
+name = "Ubuntu Server LTS"
+arch = "x86_64"
+match = 'ubuntu-(?P<version>\d[02468]\.04(?:\.\d+)*)-live-server-amd64\.iso'
+samples = ["ubuntu-22.04.3-live-server-amd64.iso", "ubuntu-26.04.1-live-server-amd64.iso"]
+page = "https://ubuntu.com/download/server"
+
+[entry.source]
+type = "endoflife"
+product = "ubuntu"
+channel = "lts"
+
+[entry.artifact]
+base = "https://releases.ubuntu.com/{cycle}/"
+file = 'ubuntu-{cycle}(?:\.\d+)*-live-server-amd64\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "proxmox-ve"
+name = "Proxmox VE"
+arch = "x86_64"
+match = 'proxmox-ve_(?P<version>\d+\.\d+-\d+)\.iso'
+samples = ["proxmox-ve_7.3-1.iso", "proxmox-ve_8.1-1.iso", "proxmox-ve_9.2-1.iso"]
+page = "https://www.proxmox.com/en/downloads"
+
+[entry.source]
+type = "endoflife"
+product = "proxmox-ve"
+channel = "latest"
+
+[entry.artifact]
+base = "https://enterprise.proxmox.com/iso/"
+file = 'proxmox-ve_{cycle}\.\d+-\d+\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "proxmox-backup-server"
+name = "Proxmox Backup Server"
+arch = "x86_64"
+match = 'proxmox-backup-server_(?P<version>\d+\.\d+-\d+)\.iso'
+samples = ["proxmox-backup-server_4.2-1.iso"]
+page = "https://www.proxmox.com/en/downloads"
+
+[entry.source]
+type = "endoflife"
+product = "proxmox-backup-server"
+channel = "latest"
+
+[entry.artifact]
+base = "https://enterprise.proxmox.com/iso/"
+file = 'proxmox-backup-server_{cycle}\.\d+-\d+\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "truenas-core-13"
+name = "TrueNAS CORE 13.0"
+arch = "x86_64"
+match = 'TrueNAS-(?P<version>13\.0-U\d+(?:\.\d+)*)\.iso'
+samples = ["TrueNAS-13.0-U3.1.iso", "TrueNAS-13.0-U6.iso"]
+page = "https://www.truenas.com/download/"
+
+[entry.source]
+type = "listing"
+url = "https://download.freenas.org/13.0/STABLE/latest/x64/"
+regex = 'TrueNAS-(?P<version>13\.0-U\d+(?:\.\d+)*)\.iso'
+
+[entry.artifact]
+base = "https://download.freenas.org/13.0/STABLE/latest/x64/"
+file = 'TrueNAS-{version}\.iso'
+manifest = "TrueNAS-{version}.iso.sha256"
+
+[[entry]]
+id = "freebsd-bootonly-amd64"
+name = "FreeBSD bootonly (64-bit)"
+arch = "x86_64"
+match = 'FreeBSD-(?P<version>\d+\.\d+)-RELEASE-amd64-bootonly\.iso'
+samples = ["FreeBSD-14.0-RELEASE-amd64-bootonly.iso"]
+page = "https://www.freebsd.org/where/"
+
+[entry.source]
+type = "listing" # endoflife.date orders FreeBSD's two branches by date, not version
+url = "https://download.freebsd.org/releases/amd64/amd64/ISO-IMAGES/"
+regex = 'href="(?P<version>\d+\.\d+)/"'
+
+[entry.artifact]
+base = "https://download.freebsd.org/releases/amd64/amd64/ISO-IMAGES/{version}/"
+file = 'FreeBSD-{version}-RELEASE-amd64-bootonly\.iso'
+manifest = "CHECKSUM.SHA256-FreeBSD-{version}-RELEASE-amd64"
+
+[[entry]]
+id = "freebsd-bootonly-i386"
+name = "FreeBSD bootonly (32-bit)"
+arch = "x86"
+match = 'FreeBSD-(?P<version>\d+\.\d+)-RELEASE-i386-bootonly\.iso'
+samples = ["FreeBSD-14.0-RELEASE-i386-bootonly.iso"]
+page = "https://www.freebsd.org/where/"
+
+[entry.source]
+type = "listing" # FreeBSD 15 has no i386 images, so this stays on 14.x
+url = "https://download.freebsd.org/releases/i386/i386/ISO-IMAGES/"
+regex = 'href="(?P<version>\d+\.\d+)/"'
+
+[entry.artifact]
+base = "https://download.freebsd.org/releases/i386/i386/ISO-IMAGES/{version}/"
+file = 'FreeBSD-{version}-RELEASE-i386-bootonly\.iso'
+manifest = "CHECKSUM.SHA256-FreeBSD-{version}-RELEASE-i386"
+
+[[entry]]
+id = "pfsense-ce-amd64"
+name = "pfSense CE installer"
+arch = "x86_64"
+match = 'pfSense-CE-(?P<version>\d+\.\d+\.\d+)-RELEASE-amd64\.iso(?:\.gz)?'
+samples = ["pfSense-CE-2.6.0-RELEASE-amd64.iso", "pfSense-CE-2.7.1-RELEASE-amd64.iso.gz"]
+page = "https://www.pfsense.org/download/"
+fixup = "extract" # published as .iso.gz; newer releases only have Netgate's online installer
+
+[entry.source]
+type = "listing"
+url = "https://atxfiles.netgate.com/mirror/downloads/"
+regex = 'href="pfSense-CE-(?P<version>\d+\.\d+\.\d+)-RELEASE-amd64\.iso\.gz"'
+
+[entry.artifact]
+base = "https://atxfiles.netgate.com/mirror/downloads/"
+file = 'pfSense-CE-{version}-RELEASE-amd64\.iso\.gz'
+manifest = "pfSense-CE-{version}-RELEASE-amd64.iso.gz.sha256"
+
+[[entry]]
+id = "ubuntu-core-amd64"
+name = "Ubuntu Core (amd64)"
+arch = "x86_64"
+match = 'ubuntu-core-(?P<version>\d+)-amd64\.img(?:\.xz)?'
+samples = ["ubuntu-core-20-amd64.img", "ubuntu-core-26-amd64.img.xz"]
+page = "https://ubuntu.com/download/iot"
+fixup = "extract"
+
+[entry.source]
+type = "listing"
+url = "https://cdimage.ubuntu.com/ubuntu-core/"
+regex = 'href="(?P<version>\d+)/"'
+
+[entry.artifact]
+base = "https://cdimage.ubuntu.com/ubuntu-core/{version}/stable/current/"
+file = 'ubuntu-core-{version}-amd64\.img\.xz'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "ubuntu-core-arm64-raspi"
+name = "Ubuntu Core (Raspberry Pi, arm64)"
+arch = "arm64"
+match = 'ubuntu-core-(?P<version>\d+)-arm64\+raspi\.img(?:\.xz)?'
+samples = ["ubuntu-core-20-arm64+raspi.img"]
+page = "https://ubuntu.com/download/raspberry-pi-core"
+fixup = "extract"
+
+[entry.source]
+type = "listing"
+url = "https://cdimage.ubuntu.com/ubuntu-core/"
+regex = 'href="(?P<version>\d+)/"'
+
+[entry.artifact]
+base = "https://cdimage.ubuntu.com/ubuntu-core/{version}/stable/current/"
+file = 'ubuntu-core-{version}-arm64\+raspi\.img\.xz'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "ubuntu-core-amd64-intel-iot"
+name = "Ubuntu Core 20 (amd64, Intel IoT)"
+arch = "x86_64"
+match = 'ubuntu-core-(?P<version>\d+)-amd64\+intel-iot\.img(?:\.xz)?'
+samples = ["ubuntu-core-20-amd64+intel-iot.img"]
+page = "https://ubuntu.com/download/iot"
+fixup = "extract"
+
+[entry.source]
+type = "static" # only Ubuntu Core 20 has this image
+version = "20"
+
+[entry.artifact]
+base = "https://cdimage.ubuntu.com/ubuntu-core/{version}/stable/current/"
+file = 'ubuntu-core-{version}-amd64\+intel-iot\.img\.xz'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "ubuntu-core-armhf-raspi"
+name = "Ubuntu Core 20 (Raspberry Pi, armhf)"
+arch = "arm"
+match = 'ubuntu-core-(?P<version>\d+)-armhf\+raspi\.img(?:\.xz)?'
+samples = ["ubuntu-core-20-armhf+raspi.img"]
+page = "https://ubuntu.com/download/raspberry-pi-core"
+fixup = "extract"
+
+[entry.source]
+type = "static" # only Ubuntu Core 20 has this image
+version = "20"
+
+[entry.artifact]
+base = "https://cdimage.ubuntu.com/ubuntu-core/{version}/stable/current/"
+file = 'ubuntu-core-{version}-armhf\+raspi\.img\.xz'
+manifest = "SHA256SUMS"
+
+# --- Security, privacy and rescue ------------------------------------------
+
+[[entry]]
+id = "kali-installer-amd64"
+name = "Kali Linux installer"
+arch = "x86_64"
+match = 'kali-linux-(?P<version>\d{4}\.\d+)-installer-amd64\.iso'
+samples = ["kali-linux-2026.2-installer-amd64.iso"]
+page = "https://www.kali.org/get-kali/"
+
+[entry.source]
+type = "listing" # cdimage.kali.org redirects here
+url = "https://kali.download/base-images/"
+regex = 'href="kali-(?P<version>\d{4}\.\d+)/"'
+
+[entry.artifact]
+base = "https://kali.download/base-images/kali-{version}/"
+file = 'kali-linux-{version}-installer-amd64\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "kali-installer-purple-amd64"
+name = "Kali Purple installer"
+arch = "x86_64"
+match = 'kali-linux-(?P<version>\d{4}\.\d+)-installer-purple-amd64\.iso'
+samples = ["kali-linux-2023.4-installer-purple-amd64.iso"]
+page = "https://www.kali.org/get-kali/"
+
+[entry.source]
+type = "listing"
+url = "https://kali.download/base-images/"
+regex = 'href="kali-(?P<version>\d{4}\.\d+)/"'
+
+[entry.artifact]
+base = "https://kali.download/base-images/kali-{version}/"
+file = 'kali-linux-{version}-installer-purple-amd64\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "kali-live-amd64"
+name = "Kali Linux live"
+arch = "x86_64"
+match = 'kali-linux-(?P<version>\d{4}\.\d+)-live-amd64\.iso'
+samples = ["kali-linux-2026.2-live-amd64.iso"]
+page = "https://www.kali.org/get-kali/"
+
+[entry.source]
+type = "listing"
+url = "https://kali.download/base-images/"
+regex = 'href="kali-(?P<version>\d{4}\.\d+)/"'
+
+[entry.artifact]
+base = "https://kali.download/base-images/kali-{version}/"
+file = 'kali-linux-{version}-live-amd64\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "parrot-home-amd64"
+name = "Parrot OS Home"
+arch = "x86_64"
+match = 'Parrot-home-(?P<version>\d+\.\d+(?:\.\d+)?)_amd64\.iso'
+samples = ["Parrot-home-6.2_amd64.iso"]
+page = "https://www.parrotsec.org/download/"
+
+[entry.source]
+type = "listing"
+url = "https://deb.parrot.sh/parrot/iso/"
+regex = 'href="(?P<version>\d+\.\d+(?:\.\d+)?)/"'
+
+[entry.artifact]
+base = "https://deb.parrot.sh/parrot/iso/{version}/"
+file = 'Parrot-home-{version}_amd64\.iso'
+manifest = "signed-hashes.txt"
+
+[[entry]]
+id = "parrot-security-amd64"
+name = "Parrot OS Security"
+arch = "x86_64"
+match = 'Parrot-security-(?P<version>\d+\.\d+(?:\.\d+)?)_amd64\.iso'
+samples = ["Parrot-security-7.3_amd64.iso"]
+page = "https://www.parrotsec.org/download/"
+
+[entry.source]
+type = "listing"
+url = "https://deb.parrot.sh/parrot/iso/"
+regex = 'href="(?P<version>\d+\.\d+(?:\.\d+)?)/"'
+
+[entry.artifact]
+base = "https://deb.parrot.sh/parrot/iso/{version}/"
+file = 'Parrot-security-{version}_amd64\.iso'
+manifest = "signed-hashes.txt"
+
+[[entry]]
+id = "qubes"
+name = "Qubes OS"
+arch = "x86_64"
+match = 'Qubes-R(?P<version>\d+\.\d+(?:\.\d+)?)-x86_64\.iso'
+samples = ["Qubes-R4.2.0-x86_64.iso"]
+page = "https://www.qubes-os.org/downloads/"
+
+[entry.source]
+type = "listing" # final releases only: rc and beta names don't match
+url = "https://ftp.qubes-os.org/iso/"
+regex = 'href="Qubes-R(?P<version>\d+\.\d+\.\d+)-x86_64\.iso"'
+
+[entry.artifact]
+base = "https://ftp.qubes-os.org/iso/"
+file = 'Qubes-R{version}-x86_64\.iso'
+manifest = "Qubes-R{version}-x86_64.iso.DIGESTS"
+
+[[entry]]
+id = "systemrescue-amd64"
+name = "SystemRescue"
+arch = "x86_64"
+match = 'systemrescue-(?P<version>\d+\.\d+)-amd64\.iso'
+samples = ["systemrescue-10.02-amd64.iso"]
+page = "https://www.system-rescue.org/Download/"
+
+[entry.source]
+type = "listing"
+url = "https://www.system-rescue.org/Download/"
+regex = 'fastly-cdn\.system-rescue\.org/releases/(?P<version>\d+\.\d+)/systemrescue-'
+
+[entry.artifact]
+base = "https://fastly-cdn.system-rescue.org/releases/{version}/"
+file = 'systemrescue-{version}-amd64\.iso'
+manifest = "systemrescue-{version}-amd64.iso.sha256"
+
+[[entry]]
+id = "rescuezilla-64bit"
+name = "Rescuezilla (64-bit)"
+arch = "x86_64"
+match = 'rescuezilla-(?P<version>\d+\.\d+(?:\.\d+)?)-64bit\.[a-z]+\.iso' # any Ubuntu base
+samples = ["rescuezilla-2.4.2-64bit.jammy.iso", "rescuezilla-2.6.2-64bit.noble.iso"]
+page = "https://rescuezilla.com/download"
+
+[entry.source]
+type = "github"
+repo = "rescuezilla/rescuezilla"
+tag = '(?P<version>\d+\.\d+(?:\.\d+)?)'
+asset = 'rescuezilla-\d+\.\d+(?:\.\d+)?-64bit\.noble\.iso' # the Ubuntu 24.04 LTS build
+
+[[entry]]
 id = "netbootxyz"
 name = "netboot.xyz"
 arch = "x86_64"
@@ -117,6 +626,8 @@ repo = "netbootxyz/netboot.xyz"
 tag = '(?P<version>\d+\.\d+\.\d+)'
 asset = 'netboot\.xyz-multiarch\.iso'
 
+# --- Archival ----------------------------------------------------------------
+
 [[entry]]
 id = "centos-7-i386-minimal"
 name = "CentOS 7 Minimal (32-bit, archival)"
@@ -135,6 +646,60 @@ base = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
 file = 'CentOS-7-i386-Minimal-\d{4}\.iso'
 manifest = "sha256sum.txt"
 
+[[entry]]
+id = "centos-7-i386-everything"
+name = "CentOS 7 Everything (32-bit, archival)"
+arch = "x86"
+match = 'CentOS-7-i386-Everything-(?P<version>\d{4})\.iso'
+samples = ["CentOS-7-i386-Everything-2009.iso"]
+page = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
+
+[entry.source]
+type = "endoflife"
+product = "centos"
+channel = "7"
+
+[entry.artifact]
+base = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
+file = 'CentOS-7-i386-Everything-\d{4}\.iso'
+manifest = "sha256sum.txt"
+
+[[entry]]
+id = "centos-7-x64-minimal"
+name = "CentOS 7 Minimal (64-bit, archival)"
+arch = "x86_64"
+match = 'CentOS-7-x86_64-Minimal-(?P<version>\d{4}(?:-\d+)?)\.iso'
+samples = ["CentOS-7-x86_64-Minimal-2009.iso", "CentOS-7-x86_64-Minimal-2207-02.iso"]
+page = "https://vault.centos.org/7.9.2009/isos/x86_64/"
+
+[entry.source]
+type = "endoflife"
+product = "centos"
+channel = "7"
+
+[entry.artifact]
+base = "https://vault.centos.org/7.9.2009/isos/x86_64/"
+file = 'CentOS-7-x86_64-Minimal-\d{4}(?:-\d+)?\.iso'
+manifest = "sha256sum.txt"
+
+[[entry]]
+id = "centos-7-x64-everything"
+name = "CentOS 7 Everything (64-bit, archival)"
+arch = "x86_64"
+match = 'CentOS-7-x86_64-Everything-(?P<version>\d{4}(?:-\d+)?)\.iso'
+samples = ["CentOS-7-x86_64-Everything-2207-02.iso"]
+page = "https://vault.centos.org/7.9.2009/isos/x86_64/"
+
+[entry.source]
+type = "endoflife"
+product = "centos"
+channel = "7"
+
+[entry.artifact]
+base = "https://vault.centos.org/7.9.2009/isos/x86_64/"
+file = 'CentOS-7-x86_64-Everything-\d{4}(?:-\d+)?\.iso'
+manifest = "sha256sum.txt"
+
 # ---------------------------------------------------------------------------
 # 2. Check-only
 # ---------------------------------------------------------------------------
@@ -143,8 +708,9 @@ manifest = "sha256sum.txt"
 id = "mx-linux-xfce-x64"
 name = "MX Linux Xfce (64-bit)"
 arch = "x86_64"
-match = 'MX-(?P<version>\d+(?:\.\d+)*)_(?:Xfce_)?x64\.iso' # "Xfce_" since MX 25
-samples = ["MX-21.3_x64.iso", "MX-25.2_Xfce_x64.iso"]
+# "Xfce_" since MX 25; monthly respins add the month, like MX-23.1_November_x64.
+match = 'MX-(?P<version>\d+(?:\.\d+)*)_(?:(?:January|February|March|April|May|June|July|August|September|October|November|December)_)?(?:Xfce_)?x64\.iso'
+samples = ["MX-21.3_x64.iso", "MX-23.1_x64.iso", "MX-23.1_November_x64.iso", "MX-25.2_Xfce_x64.iso"]
 page = "https://mxlinux.org/download-links/"
 
 [entry.source]
@@ -171,11 +737,11 @@ name = "Manjaro Xfce"
 arch = "x86_64"
 match = 'manjaro-xfce-(?P<version>\d+(?:\.\d+)+)-\d{6}-linux\d+\.iso'
 samples = ["manjaro-xfce-23.0.4-231015-linux65.iso", "manjaro-xfce-26.1.0-260812-linux71.iso"]
-page = "https://manjaro.org/products/download/x86"
+page = "https://manjaro.org/products/download/x86/"
 
 [entry.source]
 type = "listing"
-url = "https://manjaro.org/products/download/x86"
+url = "https://manjaro.org/products/download/x86/"
 regex = 'download\.manjaro\.org/xfce/(?P<version>\d+(?:\.\d+)+)/manjaro-xfce-'
 
 [[entry]]
@@ -191,6 +757,47 @@ type = "listing"
 url = "https://sourceforge.net/projects/clonezilla/rss?path=/clonezilla_live_alternative"
 regex = 'clonezilla-live-(?P<version>\d{8})-[a-z]+-amd64\.iso'
 
+[[entry]]
+id = "manjaro-arm-xfce-generic"
+name = "Manjaro ARM Xfce (generic)"
+arch = "arm64"
+match = 'Manjaro-ARM-xfce-generic-(?P<version>\d+\.\d+)\.img(?:\.xz)?'
+samples = ["Manjaro-ARM-xfce-generic-23.02.img"]
+page = "https://manjaro.org/products/download/arm"
+fixup = "extract"
+
+[entry.source]
+type = "github" # its release assets predate GitHub's SHA-256 digests (only .sha1 files)
+repo = "manjaro-arm/generic-images"
+tag = '(?P<version>\d+\.\d+)'
+
+[[entry]]
+id = "truenas-scale"
+name = "TrueNAS Community Edition (SCALE)"
+arch = "x86_64"
+# 22.02 onwards; newer releases may drop "SCALE-". CORE (13.x) and HexOS don't match.
+match = 'TrueNAS-(?:SCALE-)?(?P<version>(?:2[2-9]|[3-9]\d)\.\d+(?:\.\d+)*)\.iso'
+samples = ["TrueNAS-SCALE-22.02.1.iso", "TrueNAS-SCALE-22.12.0.iso", "TrueNAS-SCALE-23.10.0.1.iso", "TrueNAS-SCALE-25.10.7.iso"]
+page = "https://www.truenas.com/download/"
+
+[entry.source]
+type = "endoflife" # download folders carry a codename (TrueNAS-SCALE-Goldeye/...)
+product = "truenas"
+channel = "latest"
+
+[[entry]]
+id = "tails-amd64"
+name = "Tails"
+arch = "x86_64"
+match = 'tails-amd64-(?P<version>\d+\.\d+(?:\.\d+)?)\.(?:img|iso)'
+samples = ["tails-amd64-5.21.img", "tails-amd64-7.13.iso"]
+page = "https://tails.net/install/"
+
+[entry.source]
+type = "endoflife" # checksums are only in a JSON file, and downloads redirect to mirrors
+product = "tails"
+channel = "latest"
+
 # ---------------------------------------------------------------------------
 # 3. Manual
 # ---------------------------------------------------------------------------
@@ -199,9 +806,20 @@ regex = 'clonezilla-live-(?P<version>\d{8})-[a-z]+-amd64\.iso'
 id = "windows-11-x64"
 name = "Windows 11"
 arch = "x86_64"
-match = 'Win11_(?:(?P<version>\d{2}H\d)_)?[A-Za-z]+(?:_[A-Za-z]+)*_x64(?:v\d+)?\.iso'
-samples = ["Win11_English_x64.iso", "Win11_23H2_English_x64v2.iso"]
+match = 'Windows11\.iso|Win11_(?:(?P<version>\d{2}H\d)_)?[A-Za-z]+(?:_[A-Za-z]+)*_x64(?:v\d+)?\.iso'
+samples = ["Win11_English_x64.iso", "Win11_23H2_English_x64v2.iso", "Windows11.iso"]
 page = "https://www.microsoft.com/software-download/windows11"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "windows-11-insider-x64"
+name = "Windows 11 Insider Preview"
+arch = "x86_64"
+match = 'Windows11_InsiderPreview_Client_x64_[a-z]{2}-[a-z]{2}_(?P<version>\d+)\.iso'
+samples = ["Windows11_InsiderPreview_Client_x64_en-us_26016.iso"]
+page = "https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso"
 
 [entry.source]
 type = "manual"
@@ -246,8 +864,41 @@ id = "hexos-installer"
 name = "HexOS installer"
 arch = "x86_64"
 match = 'TrueNAS-SCALE-(?P<version>\d+(?:\.\d+)+)-HexOS\.iso'
-samples = ["TrueNAS-SCALE-24.10.2.2-HexOS.iso"]
+samples = ["TrueNAS-SCALE-24.10.2.2-HexOS.iso", "TrueNAS-SCALE-24.10.0-HexOS.iso"]
 page = "https://hexos.com/"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "easyos"
+name = "EasyOS"
+arch = "x86_64"
+match = 'easy-(?P<version>\d+\.\d+(?:\.\d+)*)-amd64\.img(?:\.gz)?'
+samples = ["easy-5.6.1-amd64.img"]
+page = "https://easyos.org/"
+
+[entry.source]
+type = "manual" # download folders are named by codename (scarthgap, excalibur, ...)
+
+[[entry]]
+id = "nicehash-os"
+name = "NiceHash OS"
+arch = "x86_64"
+match = 'nhos-(?P<version>\d+\.\d+\.\d+)\.img(?:\.zip)?'
+samples = ["nhos-1.2.8.img"]
+page = "https://www.nicehash.com/nhos"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "popos-2204-raspi"
+name = "Pop!_OS 22.04 Raspberry Pi (discontinued)"
+arch = "arm64"
+match = 'pop-os_22\.04_arm64_raspi_(?P<version>\d+)\.img(?:\.xz)?'
+samples = ["pop-os_22.04_arm64_raspi_4.img"]
+page = "https://system76.com/pop/download/"
 
 [entry.source]
 type = "manual"

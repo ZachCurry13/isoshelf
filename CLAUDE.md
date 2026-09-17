@@ -103,7 +103,7 @@ alone is not an update.
 
 - Code: `internal/scan` walks a target, `internal/sniff` identifies content,
   `internal/state` keeps state, mirrors and hashes, `internal/sampledrive`
-  holds the sample drive as test fixtures.
+  holds the sample drive and the maintainer's Proxmox folder as test fixtures.
 - A target is any folder the user picks: a Ventoy drive, a folder on a NAS
   share, or Proxmox ISO storage. Each target has a profile, saved in its state.
   The profile only changes which files count as bootable and how deep the scan
@@ -192,7 +192,7 @@ alone is not an update.
 - Code: `internal/catalog`. The file starts with `schema = 1`.
 - One `[[entry]]` = one track:
   - `id` (lowercase, digits, dashes), `name`, `arch` (`x86_64`, `x86`,
-    `arm64`, `multi`).
+    `arm64`, `arm` (32-bit), `multi`).
   - `match`: regex over the whole filename. Needs a `version` group, unless
     `fixed_name = true` (then it must not have one) or the source is manual
     (then it's optional).
@@ -223,9 +223,12 @@ alone is not an update.
   sample filename matches exactly one entry. Every problem is reported at once.
 - Scope: the sample drive is only an example. The default catalog should cover
   common and trending images (desktop, server/homelab, rescue tools), so users
-  can add images that aren't on their target yet. Add entries in batches once
-  step 4 can resolve them, checking each one live before it goes in. Wish list:
-  `docs/catalog-sources.md`.
+  can add images that aren't on their target yet. It has 60 entries (the
+  sample drive and the maintainer's Proxmox folder). Add more in batches,
+  checking each one live before it goes in. Why each entry is set up the way
+  it is, and the wish list: `docs/catalog-sources.md`.
+- Every catalog URL is the final address: tests can't replay redirects, and a
+  checksum file that redirects to another host is refused.
 - Later: one file per distro under `catalog/`, validated in CI, plus a weekly
   workflow that resolves every entry and opens an issue when one breaks.
 
@@ -313,9 +316,9 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 
 ### Where we stopped (2026-09-17)
 
-Steps 1-5 are done. Next: step 6, the local web UI (`internal/web`), after
-feedback from the maintainer on running `isoshelf check` against the real drive
-and NAS folder.
+Steps 1-5 are done, and the catalog covers the maintainer's Proxmox folder
+(60 entries; only `Windows.iso` stays unrecognized there). Next: step 6, the
+local web UI (`internal/web`).
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 
@@ -353,9 +356,11 @@ notes.txt                                  # not an image: ignore
 - `go build ./...`, `go vet ./...` and `go test ./...` must pass before each
   commit.
 - Tests never touch real disks (temp dirs only) and never hit the live network.
-  `internal/remote/remotetest` replays responses recorded from the real sites;
-  refresh them with `go run ./internal/remote/remotetest/record` (the only
-  thing that goes online) when catalog sources change.
+  `internal/remote/remotetest` replays responses recorded from the real sites.
+  `go run ./internal/remote/remotetest/record` (the only thing that goes
+  online) resolves every catalog entry live, reports failures and redirects,
+  and re-records everything; run it after changing the catalog.
+  `TestEveryEntryRecorded` fails when an entry has no recording.
 - Small commits with clear messages. Update this file when a decision changes.
 - Explain in plain language any step the maintainer has to do by hand
   (installing tools, committing, pushing, releasing).

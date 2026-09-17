@@ -160,7 +160,7 @@ func TestLoadInvalid(t *testing.T) {
 		{"bad id", `id = "example-x64"`, `id = "Example_x64"`, `entry #1: id: "Example_x64" must be lowercase`},
 		{"duplicate id", `id = "example-tool"`, `id = "example-x64"`, "id: also used by entry #1"},
 		{"missing name", `name = "Example Tool"`, "", `entry "example-tool": name: required`},
-		{"bad arch", `arch = "x86_64"`, `arch = "amd64"`, `arch: "amd64" is not one of x86_64, x86, arm64, multi`},
+		{"bad arch", `arch = "x86_64"`, `arch = "amd64"`, `arch: "amd64" is not one of x86_64, x86, arm64, arm, multi`},
 
 		// Match patterns and samples.
 		{"bad match regex", `match = 'example-tool\.iso'`, `match = 'example-tool(\.iso'`, "match: error parsing regexp"},

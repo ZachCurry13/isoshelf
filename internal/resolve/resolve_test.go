@@ -214,3 +214,41 @@ manifest = "CHECKSUMS"`,
 		}
 	}
 }
+
+// TestEveryEntryRecorded checks that every entry of the built-in catalog that
+// has a source resolves against the recorded responses. When it fails after a
+// catalog change, refresh the recordings with
+// "go run ./internal/remote/remotetest/record".
+func TestEveryEntryRecorded(t *testing.T) {
+	cat, err := catalog.Default()
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := client(remotetest.Recorded())
+	for i := range cat.Entries {
+		e := &cat.Entries[i]
+		if e.Source.Type == catalog.SourceManual {
+			continue
+		}
+		rel, err := source.Latest(context.Background(), c, e)
+		if err != nil {
+			t.Errorf("%s: %v", e.ID, err)
+			continue
+		}
+		a, err := Resolve(context.Background(), c, e, rel)
+		switch {
+		case errors.Is(err, ErrNoArtifact):
+			if e.Artifact != nil || e.Source.Asset != "" {
+				t.Errorf("%s: has download information but resolved to nothing", e.ID)
+			}
+		case err != nil:
+			t.Errorf("%s: %v", e.ID, err)
+		case a.Checksum == nil:
+			t.Errorf("%s: %s has no published checksum", e.ID, a.Filename)
+		default:
+			if _, ok := e.MatchName(a.Filename); !ok && e.Fixup == "" {
+				t.Errorf("%s: the resolved file %s doesn't match the entry's own pattern", e.ID, a.Filename)
+			}
+		}
+	}
+}

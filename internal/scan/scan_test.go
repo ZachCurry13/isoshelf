@@ -215,3 +215,36 @@ func TestSuggestProfile(t *testing.T) {
 		}
 	}
 }
+
+// TestScanProxmoxFolder scans a copy of the maintainer's Proxmox ISO folder.
+func TestScanProxmoxFolder(t *testing.T) {
+	dir := t.TempDir()
+	files := map[string][]byte{"Files/ubuntu-24.04.4-desktop-amd64.iso": content("iso")}
+	for _, f := range sampledrive.ProxmoxFolder {
+		files[f.Name] = content(f.Content)
+	}
+	writeFiles(t, dir, files)
+
+	res, err := Scan(context.Background(), dir, defaultCatalog(t), Options{Profile: SuggestProfile(filepath.Join(dir, "template", "iso"))})
+	if err != nil {
+		t.Fatal(err)
+	}
+	listed := map[string]File{}
+	for _, f := range res.Files {
+		listed[f.Path] = f
+	}
+	for _, want := range sampledrive.ProxmoxFolder {
+		ext := strings.ToLower(filepath.Ext(want.Name))
+		wantListed := want.Entry != "" || ext == ".iso" || ext == ".img"
+		got, ok := listed[want.Name]
+		switch {
+		case ok != wantListed:
+			t.Errorf("%s: listed = %v, want %v", want.Name, ok, wantListed)
+		case ok && got.Bootable != (ext == ".iso" || ext == ".img"):
+			t.Errorf("%s: bootable = %v", want.Name, got.Bootable)
+		}
+	}
+	if _, ok := listed["Files/ubuntu-24.04.4-desktop-amd64.iso"]; ok {
+		t.Error("the Proxmox profile scanned a subfolder")
+	}
+}

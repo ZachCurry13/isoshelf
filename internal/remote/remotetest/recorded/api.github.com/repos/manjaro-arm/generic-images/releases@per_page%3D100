@@ -1,0 +1,462 @@
+[
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-gnome-generic-23.02.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-23.02.img.xz",
+        "size": 1261797688
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-kde-plasma-generic-23.02.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-23.02.img.xz",
+        "size": 1102882212
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-mate-generic-23.02.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-23.02.img.xz",
+        "size": 996198016
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-minimal-generic-23.02.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-23.02.img.xz",
+        "size": 432258524
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-sway-generic-23.02.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-23.02.img.xz",
+        "size": 1187723876
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-xfce-generic-23.02.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-23.02.img.xz",
+        "size": 937028936
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/23.02",
+    "name": "Release 23.02",
+    "prerelease": false,
+    "published_at": "2023-02-17T11:51:10Z",
+    "tag_name": "23.02"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.12/Manjaro-ARM-gnome-generic-22.12.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-22.12.img.xz",
+        "size": 1281262060
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.12/Manjaro-ARM-kde-plasma-generic-22.12.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-22.12.img.xz",
+        "size": 1119125772
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.12/Manjaro-ARM-mate-generic-22.12.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-22.12.img.xz",
+        "size": 1055761272
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.12/Manjaro-ARM-minimal-generic-22.12.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-22.12.img.xz",
+        "size": 389118860
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.12/Manjaro-ARM-sway-generic-22.12.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-22.12.img.xz",
+        "size": 1198939088
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.12/Manjaro-ARM-xfce-generic-22.12.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-22.12.img.xz",
+        "size": 974978452
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/22.12",
+    "name": "Release 22.12",
+    "prerelease": false,
+    "published_at": "2022-12-15T07:25:21Z",
+    "tag_name": "22.12"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.10/Manjaro-ARM-gnome-generic-22.10.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-22.10.img.xz",
+        "size": 1177721148
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.10/Manjaro-ARM-kde-plasma-generic-22.10.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-22.10.img.xz",
+        "size": 1082811028
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.10/Manjaro-ARM-mate-generic-22.10.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-22.10.img.xz",
+        "size": 987747620
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.10/Manjaro-ARM-minimal-generic-22.10.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-22.10.img.xz",
+        "size": 378466576
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.10/Manjaro-ARM-sway-generic-22.10.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-22.10.img.xz",
+        "size": 1155812828
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.10/Manjaro-ARM-xfce-generic-22.10.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-22.10.img.xz",
+        "size": 898833500
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/22.10",
+    "name": "22.10",
+    "prerelease": false,
+    "published_at": "2022-10-22T09:06:19Z",
+    "tag_name": "22.10"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.08/Manjaro-ARM-gnome-generic-22.08.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-22.08.img.xz",
+        "size": 1137811992
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.08/Manjaro-ARM-kde-plasma-generic-22.08.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-22.08.img.xz",
+        "size": 1066984908
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.08/Manjaro-ARM-mate-generic-22.08.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-22.08.img.xz",
+        "size": 933713948
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.08/Manjaro-ARM-minimal-generic-22.08.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-22.08.img.xz",
+        "size": 369827328
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.08/Manjaro-ARM-sway-generic-22.08.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-22.08.img.xz",
+        "size": 1104293300
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.08/Manjaro-ARM-xfce-generic-22.08.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-22.08.img.xz",
+        "size": 857407148
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/22.08",
+    "name": "22.08",
+    "prerelease": false,
+    "published_at": "2022-08-16T11:24:46Z",
+    "tag_name": "22.08"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.06/Manjaro-ARM-gnome-generic-22.06.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-22.06.img.xz",
+        "size": 1103311996
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.06/Manjaro-ARM-kde-plasma-generic-22.06.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-22.06.img.xz",
+        "size": 1029328104
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.06/Manjaro-ARM-mate-generic-22.06.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-22.06.img.xz",
+        "size": 932174768
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.06/Manjaro-ARM-minimal-generic-22.06.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-22.06.img.xz",
+        "size": 367429180
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.06/Manjaro-ARM-sway-generic-22.06.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-22.06.img.xz",
+        "size": 1094123252
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/22.06/Manjaro-ARM-xfce-generic-22.06.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-22.06.img.xz",
+        "size": 853740020
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/22.06",
+    "name": "22.06",
+    "prerelease": false,
+    "published_at": "2022-06-21T14:53:44Z",
+    "tag_name": "22.06"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220613/Manjaro-ARM-gnome-generic-20220613.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-20220613.img.xz",
+        "size": 1116792716
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220613/Manjaro-ARM-kde-plasma-generic-20220613.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-20220613.img.xz",
+        "size": 1017854204
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220613/Manjaro-ARM-mate-generic-20220613.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-20220613.img.xz",
+        "size": 914318612
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220613/Manjaro-ARM-minimal-generic-20220613.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-20220613.img.xz",
+        "size": 359743340
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220613/Manjaro-ARM-sway-generic-20220613.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-20220613.img.xz",
+        "size": 1085133176
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220613/Manjaro-ARM-xfce-generic-20220613.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-20220613.img.xz",
+        "size": 839078788
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/20220613",
+    "name": "Dev 20220613",
+    "prerelease": true,
+    "published_at": "2022-06-13T03:45:28Z",
+    "tag_name": "20220613"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220606/Manjaro-ARM-gnome-generic-20220606.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-20220606.img.xz",
+        "size": 1099819416
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220606/Manjaro-ARM-kde-plasma-generic-20220606.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-20220606.img.xz",
+        "size": 1018811368
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220606/Manjaro-ARM-mate-generic-20220606.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-20220606.img.xz",
+        "size": 912116676
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220606/Manjaro-ARM-minimal-generic-20220606.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-20220606.img.xz",
+        "size": 369716544
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220606/Manjaro-ARM-sway-generic-20220606.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-20220606.img.xz",
+        "size": 1077827616
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220606/Manjaro-ARM-xfce-generic-20220606.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-20220606.img.xz",
+        "size": 856299332
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/20220606",
+    "name": "Dev 20220606",
+    "prerelease": true,
+    "published_at": "2022-06-06T03:42:12Z",
+    "tag_name": "20220606"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220530/Manjaro-ARM-gnome-generic-20220530.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-20220530.img.xz",
+        "size": 1118245992
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220530/Manjaro-ARM-kde-plasma-generic-20220530.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-20220530.img.xz",
+        "size": 1030398940
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220530/Manjaro-ARM-mate-generic-20220530.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-20220530.img.xz",
+        "size": 935600848
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220530/Manjaro-ARM-minimal-generic-20220530.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-20220530.img.xz",
+        "size": 375601368
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220530/Manjaro-ARM-sway-generic-20220530.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-20220530.img.xz",
+        "size": 1089290092
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220530/Manjaro-ARM-xfce-generic-20220530.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-20220530.img.xz",
+        "size": 858878476
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/20220530",
+    "name": "Dev 20220530",
+    "prerelease": true,
+    "published_at": "2022-05-30T15:05:07Z",
+    "tag_name": "20220530"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220523/Manjaro-ARM-gnome-generic-20220523.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-20220523.img.xz",
+        "size": 1120384772
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220523/Manjaro-ARM-kde-plasma-generic-20220523.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-20220523.img.xz",
+        "size": 1029559036
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220523/Manjaro-ARM-mate-generic-20220523.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-20220523.img.xz",
+        "size": 941393128
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220523/Manjaro-ARM-minimal-generic-20220523.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-20220523.img.xz",
+        "size": 356669880
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220523/Manjaro-ARM-sway-generic-20220523.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-20220523.img.xz",
+        "size": 1097371104
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220523/Manjaro-ARM-xfce-generic-20220523.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-20220523.img.xz",
+        "size": 867697600
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/20220523",
+    "name": "Dev 20220523",
+    "prerelease": true,
+    "published_at": "2022-05-23T04:09:34Z",
+    "tag_name": "20220523"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220516/Manjaro-ARM-gnome-generic-20220516.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-gnome-generic-20220516.img.xz",
+        "size": 1128100836
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220516/Manjaro-ARM-kde-plasma-generic-20220516.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-kde-plasma-generic-20220516.img.xz",
+        "size": 1027048432
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220516/Manjaro-ARM-mate-generic-20220516.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-mate-generic-20220516.img.xz",
+        "size": 931942288
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220516/Manjaro-ARM-minimal-generic-20220516.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-minimal-generic-20220516.img.xz",
+        "size": 346852672
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220516/Manjaro-ARM-sway-generic-20220516.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-sway-generic-20220516.img.xz",
+        "size": 1093509476
+      },
+      {
+        "browser_download_url": "https://github.com/manjaro-arm/generic-images/releases/download/20220516/Manjaro-ARM-xfce-generic-20220516.img.xz",
+        "digest": null,
+        "name": "Manjaro-ARM-xfce-generic-20220516.img.xz",
+        "size": 863360144
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/manjaro-arm/generic-images/releases/tag/20220516",
+    "name": "Dev 20220516",
+    "prerelease": true,
+    "published_at": "2022-05-16T03:29:21Z",
+    "tag_name": "20220516"
+  }
+]

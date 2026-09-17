@@ -12,7 +12,7 @@ import (
 )
 
 // Arches are the valid values of Entry.Arch.
-var Arches = []string{"x86_64", "x86", "arm64", "multi"}
+var Arches = []string{"x86_64", "x86", "arm64", "arm", "multi"}
 
 // ImageExtensions are the file types Ventoy lists in its boot menu.
 var ImageExtensions = []string{".iso", ".wim", ".img", ".vhd", ".vhdx", ".efi"}
