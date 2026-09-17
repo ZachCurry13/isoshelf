@@ -4,7 +4,18 @@ package verify
 import (
 	"bufio"
 	"bytes"
+	"context"
+	"crypto/md5"
+	"crypto/sha1"
+	"crypto/sha256"
+	"crypto/sha512"
+	"encoding/hex"
+	"fmt"
+	"hash"
+	"io"
+	"os"
 	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -114,4 +125,88 @@ func Strongest(checksums []Checksum, name string) (Checksum, bool) {
 
 func baseName(name string) string {
 	return path.Base(strings.ReplaceAll(strings.TrimSpace(name), `\`, "/"))
+}
+
+// Hash computes a file's digest with the given algorithm, as lowercase hex.
+// It stops when ctx is cancelled, and reports the bytes read so far to
+// progress, if not nil.
+func Hash(ctx context.Context, name string, algo Algorithm, progress func(done int64)) (string, error) {
+	h, err := New(algo)
+	if err != nil {
+		return "", err
+	}
+	f, err := os.Open(name)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+
+	buf := make([]byte, 1<<20)
+	var done int64
+	for {
+		if err := ctx.Err(); err != nil {
+			return "", err
+		}
+		n, err := f.Read(buf)
+		h.Write(buf[:n])
+		done += int64(n)
+		if progress != nil && n > 0 {
+			progress(done)
+		}
+		if err == io.EOF {
+			return hex.EncodeToString(h.Sum(nil)), nil
+		}
+		if err != nil {
+			return "", err
+		}
+	}
+}
+
+// New returns a new hash for the algorithm.
+func New(algo Algorithm) (hash.Hash, error) {
+	switch algo {
+	case MD5:
+		return md5.New(), nil
+	case SHA1:
+		return sha1.New(), nil
+	case SHA256:
+		return sha256.New(), nil
+	case SHA512:
+		return sha512.New(), nil
+	}
+	return nil, fmt.Errorf("unknown checksum algorithm %q", algo)
+}
+
+// Mismatch is returned when a file doesn't match its published checksum.
+type Mismatch struct {
+	Name     string
+	Expected Checksum
+	Got      string
+}
+
+func (e *Mismatch) Error() string {
+	return fmt.Sprintf("%s doesn't match its published %s checksum (expected %s, got %s)",
+		e.Name, e.Expected.Algorithm, e.Expected.Hex, e.Got)
+}
+
+// Check reads a file and compares it with a published checksum. A mismatch
+// returns a *Mismatch error.
+func Check(ctx context.Context, name string, c Checksum, progress func(done int64)) error {
+	got, err := Hash(ctx, name, c.Algorithm, progress)
+	if err != nil {
+		return err
+	}
+	if !strings.EqualFold(got, c.Hex) {
+		return &Mismatch{Name: filepath.Base(name), Expected: c, Got: got}
+	}
+	return nil
+}
+
+// MustNew returns a new hash for an algorithm the caller knows is supported.
+func MustNew(algo Algorithm) hash.Hash {
+	h, err := New(algo)
+	if err != nil {
+		panic(err)
+	}
+	return h
 }

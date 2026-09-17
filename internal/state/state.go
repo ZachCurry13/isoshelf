@@ -377,3 +377,16 @@ func writeJSON(name string, v any) error {
 	}
 	return os.Rename(tmp.Name(), name)
 }
+
+// Placed records a file isoshelf downloaded into the target. Its size and
+// modification time come from the file itself, so later scans recognize it
+// without rehashing.
+func (s *State) Placed(target, rel string, rec FileRecord) error {
+	info, err := os.Stat(filepath.Join(target, filepath.FromSlash(rel)))
+	if err != nil {
+		return err
+	}
+	rec.Size, rec.ModTime = info.Size(), info.ModTime()
+	s.Files[rel] = rec
+	return nil
+}
