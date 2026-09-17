@@ -220,7 +220,7 @@ func (ec entryCheck) checkSource() {
 			ec.problem("source.channel", `%q must be "latest", "lts" or a release cycle such as "24.04"`, s.Channel)
 		}
 		if s.Cycles != "" {
-			if _, err := compileWhole(s.Cycles); err != nil {
+			if _, err := WholeRegexp(s.Cycles); err != nil {
 				ec.problem("source.cycles", "%v", err)
 			}
 		}
@@ -229,12 +229,12 @@ func (ec entryCheck) checkSource() {
 			ec.problem("source.repo", "%q must look like owner/name", s.Repo)
 		}
 		if s.Tag != "" {
-			if _, err := compileWhole(s.Tag); err != nil {
+			if _, err := WholeRegexp(s.Tag); err != nil {
 				ec.problem("source.tag", "%v", err)
 			}
 		}
 		if s.Asset != "" {
-			if _, err := compileWhole(s.Asset); err != nil {
+			if _, err := WholeRegexp(s.Asset); err != nil {
 				ec.problem("source.asset", "%v", err)
 			}
 		}
@@ -260,7 +260,7 @@ func (ec entryCheck) checkMatch() {
 		ec.problem("match", "required")
 		return
 	}
-	re, err := compileWhole(e.Match)
+	re, err := WholeRegexp(e.Match)
 	if err != nil {
 		ec.problem("match", "%v", err)
 		return

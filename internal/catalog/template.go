@@ -40,7 +40,7 @@ func ExpandRegexp(tmpl string, vars map[string]string) (*regexp.Regexp, error) {
 	if err != nil {
 		return nil, err
 	}
-	return compileWhole(expr)
+	return WholeRegexp(expr)
 }
 
 func expand(tmpl string, vars map[string]string, quote func(string) string) (string, error) {
@@ -73,10 +73,10 @@ func placeholders(tmpl string) [][]int {
 	return out
 }
 
-// compileWhole compiles expr so that it only matches an entire string. The
-// unwrapped expression is compiled first so error messages show what the
-// catalog author wrote.
-func compileWhole(expr string) (*regexp.Regexp, error) {
+// WholeRegexp compiles expr so that it only matches an entire string, the way
+// catalog patterns match. The unwrapped expression is compiled first so error
+// messages show what the catalog author wrote.
+func WholeRegexp(expr string) (*regexp.Regexp, error) {
 	if _, err := regexp.Compile(expr); err != nil {
 		return nil, err
 	}

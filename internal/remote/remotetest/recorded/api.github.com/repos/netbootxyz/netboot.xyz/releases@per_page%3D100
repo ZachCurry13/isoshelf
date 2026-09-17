@@ -1,0 +1,158 @@
+[
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3/netboot.xyz-arm64.iso",
+        "digest": "sha256:78bdf716c48a667ce6535082532347f4e2283cf5bcbf806f2bf12542b57b2496",
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2007040
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3/netboot.xyz-legacy.iso",
+        "digest": "sha256:92abb78d0bc6054fa5cb224f2d5148cbf0126291510d9e064c910ceb6eccd7ba",
+        "name": "netboot.xyz-legacy.iso",
+        "size": 2408448
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3/netboot.xyz-multiarch.iso",
+        "digest": "sha256:6b2420bc6a7811c1df0e021cbad1fc0889e45851d20be1205aa9706fce336209",
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 4100096
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3/netboot.xyz-sb-arm64.iso",
+        "digest": "sha256:968cb4675dcbb713dabec387773f877ccf0703142a9a72b83d56f402a49215d4",
+        "name": "netboot.xyz-sb-arm64.iso",
+        "size": 2629632
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3/netboot.xyz-sb.iso",
+        "digest": "sha256:8e76056e840fe16503715b2e9e4bd10a706e527588fdcba34b027483d63a4909",
+        "name": "netboot.xyz-sb.iso",
+        "size": 2629632
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3/netboot.xyz-sha256-checksums.txt",
+        "digest": "sha256:5016158778545bc976248ef9353eeebcbe9043391f7c7085bd128e654924df60",
+        "name": "netboot.xyz-sha256-checksums.txt",
+        "size": 4002
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3/netboot.xyz.iso",
+        "digest": "sha256:2206b05c1c7a8ec7a7a4356dd5f811e19c8081d7d5e2bc856f1f3f4059c5fed1",
+        "name": "netboot.xyz.iso",
+        "size": 2428928
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/3.0.3",
+    "name": "3.0.3",
+    "prerelease": false,
+    "published_at": "2026-08-29T03:36:01Z",
+    "tag_name": "3.0.3"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3-RC/netboot.xyz-arm64.iso",
+        "digest": "sha256:0b5547bcb96b4eaaaad6ae5de8c2303d3aabb6ed1b5a4708244d9b7a658c71bc",
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2007040
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3-RC/netboot.xyz-legacy.iso",
+        "digest": "sha256:b3a7f7b9e4acee3b7f03c9eba7aafde6f325eeb0b06f3817016a5b0b68fc4950",
+        "name": "netboot.xyz-legacy.iso",
+        "size": 2408448
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3-RC/netboot.xyz-multiarch.iso",
+        "digest": "sha256:be097ad95ce4ef7746faed5a1d7e2adf66f0a089a3540b6afe9e4b56ba1177ec",
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 4100096
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3-RC/netboot.xyz-sb-arm64.iso",
+        "digest": "sha256:7179e0cbd0eae148d4dfa78b544fc85c14eeb39de665ec44ec68c46837e35e60",
+        "name": "netboot.xyz-sb-arm64.iso",
+        "size": 2629632
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3-RC/netboot.xyz-sb.iso",
+        "digest": "sha256:ba5f4323bf0845de8342eeb19fe9378f3f3856345033ec7f946212fe92d85226",
+        "name": "netboot.xyz-sb.iso",
+        "size": 2629632
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3-RC/netboot.xyz-sha256-checksums.txt",
+        "digest": "sha256:164c8a489b8d9615bf0ca2a72f111698c595776f7f53095fdf373dd489a5571b",
+        "name": "netboot.xyz-sha256-checksums.txt",
+        "size": 4002
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.3-RC/netboot.xyz.iso",
+        "digest": "sha256:10b3bc824404d43bed730965d4b489bbc1b3c38252684a2afca029f3709ed0ad",
+        "name": "netboot.xyz.iso",
+        "size": 2428928
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/3.0.3-RC",
+    "name": "3.0.3-RC",
+    "prerelease": true,
+    "published_at": "2026-08-29T02:29:43Z",
+    "tag_name": "3.0.3-RC"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.2/netboot.xyz-arm64.iso",
+        "digest": "sha256:52155435f750040c6bb25663c8c49b6f45d1d46ef992495badf19e52fcdff925",
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2007040
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.2/netboot.xyz-legacy.iso",
+        "digest": "sha256:f784d5bfe6129e03b081f4d8600d4ff2fd1b86473e0c045ecb20694f40cf468d",
+        "name": "netboot.xyz-legacy.iso",
+        "size": 2404352
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.2/netboot.xyz-multiarch.iso",
+        "digest": "sha256:2d999d17bbf889128e11b7dd684f36e2ea5d4de274c6a4de4cfc048c194b08e2",
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 4096000
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.2/netboot.xyz-sb-arm64.iso",
+        "digest": "sha256:ae30106d72f1fce9a5530d65cd3b3ea02c39f70f4fcd3eea6c53f18c0929e68b",
+        "name": "netboot.xyz-sb-arm64.iso",
+        "size": 2629632
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.2/netboot.xyz-sb.iso",
+        "digest": "sha256:0d5a38ed09321837e5c5fd4b42b6d4f679aeb91b98c964efacc05dba76a25989",
+        "name": "netboot.xyz-sb.iso",
+        "size": 2629632
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.2/netboot.xyz-sha256-checksums.txt",
+        "digest": "sha256:5bf9486e7b78c415c94505849f9360146470d5872daebc34692b4057abf54c44",
+        "name": "netboot.xyz-sha256-checksums.txt",
+        "size": 4002
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/3.0.2/netboot.xyz.iso",
+        "digest": "sha256:e1b14fc231ff19fe72af87d93a360c6026c0d1d1d1481e651b19ccc0e1195039",
+        "name": "netboot.xyz.iso",
+        "size": 2424832
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/3.0.2",
+    "name": "3.0.2",
+    "prerelease": false,
+    "published_at": "2026-05-06T05:13:42Z",
+    "tag_name": "3.0.2"
+  }
+]

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="IE=edge">
+        <title>Nginx Directory</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/Nginx-Fancyindex-Theme-light/styles.css">
+        <script type="text/javascript" src="/Nginx-Fancyindex-Theme-light/jquery.min.js"></script>
+    </head>
+<body>
+<!--
+header.html
+© 2015-18, Lilian Besson (Naereen) and contributors,
+open-sourced under the MIT License, https://lbesson.mit-license.org/
+hosted on GitHub, https://GitHub.com/Naereen/Nginx-Fancyindex-Theme
+-->
+<div id="raw_include_HEADER_md"></div>
+<h1>Directory:
+/ISO/desktop/</h1>
+<table id="list"><thead><tr><th style="width:55%"><a href="?C=N&amp;O=A">File Name</a>&nbsp;<a href="?C=N&amp;O=D">&nbsp;&darr;&nbsp;</a></th><th style="width:20%"><a href="?C=S&amp;O=A">File Size</a>&nbsp;<a href="?C=S&amp;O=D">&nbsp;&darr;&nbsp;</a></th><th style="width:25%"><a href="?C=M&amp;O=A">Date</a>&nbsp;<a href="?C=M&amp;O=D">&nbsp;&darr;&nbsp;</a></th></tr></thead>
+<tbody><tr><td class="link"><a href="../">Parent directory/</a></td><td class="size">-</td><td class="date">-</td></tr>
+<tr><td class="link"><a href="260426/" title="260426">260426/</a></td><td class="size">-</td><td class="date">2026-Jun-28 11:26</td></tr>
+<tr><td class="link"><a href="260628/" title="260628">260628/</a></td><td class="size">-</td><td class="date">2026-Jun-28 12:47</td></tr>
+<tr><td class="link"><a href="260809/" title="260809">260809/</a></td><td class="size">-</td><td class="date">2026-Aug-09 19:16</td></tr>
+</tbody></table>    <div id="raw_include_README_md"></div>
+    <footer>
+        Theme available on <a href="https://GitHub.com/Naereen/Nginx-Fancyindex-Theme">GitHub</a> by <a href="https://GitHub.com/Naereen">Naereen</a>, © 2015-18, released under <a href="https://lbesson.mit-license.org/">the MIT License</a>.
+    </footer>
+    <script src="https://unpkg.com/xregexp/xregexp-all.js"></script>
+    <script type="text/javascript" src="/Nginx-Fancyindex-Theme-light/addNginxFancyIndexForm.js"></script>
+    <script type="text/javascript" src="/Nginx-Fancyindex-Theme-light/showdown.min.js"></script>
+    <script type="text/javascript" defer>
+        var converter = new showdown.Converter({tables: true});
+        $( "#raw_include_HEADER_md" ).load( "HEADER.md", function (){
+            var elem = document.querySelector("#raw_include_HEADER_md");
+            // strip leading whitespace so it isn't evaluated as code
+            var text = elem.innerHTML;
+            // console.log("text =", text);
+            text = text.replace(/\n[ ]*/g, '\n');
+            // console.log("text =", text);
+            var html = converter.makeHtml(text);
+            // console.log("html =", html);
+            // here, have some HTML
+            elem.innerHTML = html;
+        });
+        $( "#raw_include_README_md" ).load( "README.md", function (){
+            var elem = document.querySelector("#raw_include_README_md");
+            // strip leading whitespace so it isn't evaluated as code
+            var text = elem.innerHTML;
+            // console.log("text =", text);
+            text = text.replace(/\n[ ]*/g, '\n');
+            // console.log("text =", text);
+            var html = converter.makeHtml(text);
+            // console.log("html =", html);
+            // here, have some HTML
+            elem.innerHTML = html;
+        });
+    </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"c29036ed835f49b68ee392858e3c5742","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
+<!--
+footer.html
+© 2015-18, Lilian Besson (Naereen) and contributors,
+open-sourced under the MIT License, https://lbesson.mit-license.org/
+hosted on GitHub, https://GitHub.com/Naereen/Nginx-Fancyindex-Theme
+-->

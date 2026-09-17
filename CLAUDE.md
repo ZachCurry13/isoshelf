@@ -59,18 +59,23 @@ Every catalog entry runs through four stages:
    - `endoflife`: endoflife.date API v1,
      `https://endoflife.date/api/v1/products/{product}/`. `channel` is
      `latest`, `lts`, or a pinned cycle. Flavors reuse the parent product
-     (Kubuntu uses `ubuntu`).
+     (Kubuntu uses `ubuntu`). Cycles are ordered by release date; when a cycle
+     has no `latest`, its name is the version. The release carries every
+     track cycle, so a file's own cycle can be checked for EOL.
    - `github`: newest release whose tag matches a regex. File comes from the
      release assets (verify with the per-asset SHA-256 `digest` in the REST
      API), or the release is only a version label and the file lives elsewhere.
+     Drafts and prereleases never count.
    - `listing`: a checksum file, a mirror's directory index, or a JSON endpoint;
-     version extracted by regex.
+     version extracted by regex; the highest version found wins.
    - `static`: version + URL pinned by hand in the catalog.
    - `manual`: inventory only; optional known-good SHA-256 list; "open download
      page" action.
 2. **Resolver** (`internal/resolve`) - expands `{cycle}`/`{version}` templates,
-   fetches the checksum manifest, finds the exact filename by regex. Output:
-   `Artifact{Filename, URLs, Size, Hash}`.
+   fetches the checksum manifest, finds the exact filename by regex (or in the
+   directory index at `base`, when there's no manifest or its name uses
+   `{file}`). A manifest that redirects to another host is refused. Output:
+   `Artifact{Filename, URLs, Size, Checksum}`.
 3. **Verifier** (`internal/verify`) - GNU (`hash  file`) and BSD
    (`SHA256 (file) = hash`) manifests; MD5/SHA-1 count as weak integrity only.
    Signature shapes: detached over manifest, clearsigned manifest, detached over
@@ -79,6 +84,11 @@ Every catalog entry runs through four stages:
    files plus a sidecar (URL, ETag, offset), resume via `Range` + `If-Range`,
    hash state saved with the partial file, backoff on timeouts/5xx, no retry on
    404, show GitHub rate-limit reset time, optional read-back verification.
+
+Supporting packages: `internal/remote` fetches small documents (HTTPS only,
+including redirects; retries timeouts and 5xx but not 4xx; caches per client;
+sends an optional GitHub token and reports rate-limit reset times).
+`internal/version` compares versions naturally (`22.10` > `22.4`).
 
 Core packages take a target folder and report progress through plain Go
 callbacks or channels, with no UI assumptions, so the CLI, the local web UI and
@@ -214,7 +224,7 @@ alone is not an update.
 2. Scanner + filename matching + content sniffing + target profiles, with table
    tests built from the sample drive. *Done.*
 3. Drive state + usual-set history, including portable-mode storage. *Done.*
-4. Sources: `endoflife`, `github`, `listing`, `manual` (check only).
+4. Sources: `endoflife`, `github`, `listing`, `manual` (check only). *Done.*
 5. CLI: `isoshelf scan <folder>` and `isoshelf check <folder>` print a status
    table; `--json` for machine output. Includes the app update notice (see
    "App updates").
@@ -257,8 +267,12 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 
 ### Where we stopped (2026-09-17)
 
-Steps 1-3 are done. Next: step 4, sources (check only). Grouping several files
-per entry and "keep newest" wait for the status logic in step 5.
+Steps 1-4 are done. Next: step 5, the CLI. It needs the status logic first:
+- versioned entries with an artifact: update if the resolved filename differs
+  from the file on disk; check-only entries: compare versions;
+- fixed-name entries: compare the published checksum with the recorded hash;
+- EOL from the file's own cycle (or the pinned channel's cycle);
+- group several files per entry ("keep newest"), plus the app update notice.
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 
@@ -295,8 +309,10 @@ notes.txt                                  # not an image: ignore
 
 - `go build ./...`, `go vet ./...` and `go test ./...` must pass before each
   commit.
-- Tests never touch real disks (temp dirs only) and never hit the live network
-  (use `httptest` with recorded responses).
+- Tests never touch real disks (temp dirs only) and never hit the live network.
+  `internal/remote/remotetest` replays responses recorded from the real sites;
+  refresh them with `go run ./internal/remote/remotetest/record` (the only
+  thing that goes online) when catalog sources change.
 - Small commits with clear messages. Update this file when a decision changes.
 - Explain in plain language any step the maintainer has to do by hand
   (installing tools, committing, pushing, releasing).

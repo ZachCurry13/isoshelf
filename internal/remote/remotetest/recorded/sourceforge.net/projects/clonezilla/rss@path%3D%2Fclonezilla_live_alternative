@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:files="https://sourceforge.net/api/files.rdf#" xmlns:media="http://video.search.yahoo.com/mrss/" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:sf="https://sourceforge.net/api/sfelements.rdf#" version="2.0">
+  <channel xmlns:files="https://sourceforge.net/api/files.rdf#" xmlns:media="http://video.search.yahoo.com/mrss/" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:sf="https://sourceforge.net/api/sfelements.rdf#">
+    <title>Clonezilla</title>
+    <link>https://sourceforge.net</link>
+    <description><![CDATA[Files from Clonezilla Clonezilla is a partition and disk imaging/cloning program similar to True Image®. It saves and restores only used blocks in hard drive. Two types of Clonezilla are available, Clonezilla live and Clonezilla SE (Server Edition). ]]></description>
+    <pubDate>Thu, 17 Sep 2026 13:12:02 UT</pubDate>
+    <managingEditor>noreply@sourceforge.net (SourceForge.net)</managingEditor>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    <item>
+      <title><![CDATA[/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.zip]]></title>
+      <link>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.zip/download</link>
+      <guid>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.zip/download</guid>
+      <pubDate>Sun, 05 Jul 2026 03:28:20 UT</pubDate>
+      <description><![CDATA[/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">64847718</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">Zip archive data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.zip/download" filesize="561398042"><media:hash algo="md5">d6e359f28377a0745feb21e8f77e429e</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.iso]]></title>
+      <link>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.iso/download</link>
+      <guid>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.iso/download</guid>
+      <pubDate>Sun, 05 Jul 2026 03:28:06 UT</pubDate>
+      <description><![CDATA[/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.iso]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">64847705</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">ISO 9660 CD-ROM filesystem data (DOS/MBR boot sector) &#39;20260705-resolute-amd64&#39; (bootable)</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/x-iso9660-image; charset=binary" url="https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260705-resolute/clonezilla-live-20260705-resolute-amd64.iso/download" filesize="572522496"><media:hash algo="md5">294f5643699c9446d2cf40996399f574</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.zip]]></title>
+      <link>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.zip/download</link>
+      <guid>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.zip/download</guid>
+      <pubDate>Mon, 25 May 2026 13:23:30 UT</pubDate>
+      <description><![CDATA[/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">63875434</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">Zip archive data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.zip/download" filesize="561570807"><media:hash algo="md5">2a0a6773bfcb1857fc1a58a0c81a74e8</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.iso]]></title>
+      <link>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.iso/download</link>
+      <guid>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.iso/download</guid>
+      <pubDate>Mon, 25 May 2026 13:23:16 UT</pubDate>
+      <description><![CDATA[/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.iso]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">63875431</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">ISO 9660 CD-ROM filesystem data (DOS/MBR boot sector) &#39;20260525-resolute-amd64&#39; (bootable)</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/x-iso9660-image; charset=binary" url="https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260525-resolute/clonezilla-live-20260525-resolute-amd64.iso/download" filesize="572522496"><media:hash algo="md5">a6e3e66fbb631b0a6280a1e2590a69f0</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.zip]]></title>
+      <link>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.zip/download</link>
+      <guid>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.zip/download</guid>
+      <pubDate>Fri, 20 Feb 2026 08:04:47 UT</pubDate>
+      <description><![CDATA[/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">61477942</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">Zip archive data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.zip/download" filesize="608042396"><media:hash algo="md5">ea3c1f4603b2526edb63d1bd21f69fd6</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.iso]]></title>
+      <link>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.iso/download</link>
+      <guid>https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.iso/download</guid>
+      <pubDate>Fri, 20 Feb 2026 08:04:33 UT</pubDate>
+      <description><![CDATA[/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.iso]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">61477941</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">ISO 9660 CD-ROM filesystem data (DOS/MBR boot sector) &#39;20260220-questing-amd64&#39; (bootable)</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/x-iso9660-image; charset=binary" url="https://sourceforge.net/projects/clonezilla/files/clonezilla_live_alternative/20260220-questing/clonezilla-live-20260220-questing-amd64.iso/download" filesize="619708416"><media:hash algo="md5">defa68b81ebaf2f968cbc5aba8f5794b</media:hash></media:content>
+    </item>
+    </channel></rss>
