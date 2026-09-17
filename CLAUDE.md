@@ -92,7 +92,8 @@ alone is not an update.
 ## Targets, state and scanning
 
 - Code: `internal/scan` walks a target, `internal/sniff` identifies content,
-  `internal/sampledrive` holds the sample drive as test fixtures.
+  `internal/state` keeps state, mirrors and hashes, `internal/sampledrive`
+  holds the sample drive as test fixtures.
 - A target is any folder the user picks: a Ventoy drive, a folder on a NAS
   share, or Proxmox ISO storage. Each target has a profile, saved in its state.
   The profile only changes which files count as bootable and how deep the scan
@@ -106,10 +107,14 @@ alone is not an update.
   managing a NAS folder).
 - State lives in `.isoshelf/state.json` in the chosen folder: profile, placed
   files (entry, version, filename, SHA-256, source URL, date), the per-track
-  keep/replace choice, manual assignments for renamed files, and scan history.
-- History and the usual set are mirrored to the OS config dir so they survive a
-  dead drive (not in portable mode; offer "Export usual set" there instead).
-- Usual set = entries kept across scans + anything starred. "Missing" means
+  keep/replace choice, manual assignments for renamed files, and scan history
+  (last 100 scans). A random `target_id` tells targets apart when drive letters
+  change. File records stay valid while size and modification time are
+  unchanged; a changed file loses its hash and assignment.
+- History and the usual set are mirrored to `<config>/targets/<target_id>.json`
+  so they survive a dead drive (not in portable mode; offer "Export usual set" there instead).
+- Usual set = starred entries + entries seen in at least 2 of the last 10
+  scans. "Missing" means
   missing from the usual set, not from the whole catalog. Rebuild offers the
   usual set as a preset.
 - Scanner lists files that match a catalog entry or have a bootable extension.
@@ -127,6 +132,9 @@ alone is not an update.
 
 ## Portable mode
 
+- Code: `internal/appdir`. Portable: config in the app folder, temp in its
+  `tmp/`, default target = the folder holding the app folder. Installed:
+  `os.UserConfigDir()/isoshelf`.
 - Releases include a portable folder (`isoshelf/` with
   `isoshelf-windows-amd64.exe`, `isoshelf-linux-amd64`, and a `portable` marker
   file) that the user copies onto the drive.
@@ -200,7 +208,7 @@ alone is not an update.
 1. Catalog loader + validation. *Done.*
 2. Scanner + filename matching + content sniffing + target profiles, with table
    tests built from the sample drive. *Done.*
-3. Drive state + usual-set history, including portable-mode storage.
+3. Drive state + usual-set history, including portable-mode storage. *Done.*
 4. Sources: `endoflife`, `github`, `listing`, `manual` (check only).
 5. CLI: `isoshelf scan <folder>` and `isoshelf check <folder>` print a status
    table; `--json` for machine output.
@@ -227,9 +235,8 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 
 ### Where we stopped (2026-09-17)
 
-Steps 1 and 2 are done. Next: step 3, drive state and history (including
-hashing fixed-name images). Grouping several files per entry and "keep newest"
-wait for the status logic in step 5.
+Steps 1-3 are done. Next: step 4, sources (check only). Grouping several files
+per entry and "keep newest" wait for the status logic in step 5.
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 
