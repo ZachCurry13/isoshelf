@@ -87,10 +87,19 @@ Every catalog entry runs through four stages:
    (`SHA256 (file) = hash`) manifests; MD5/SHA-1 count as weak integrity only.
    Signature shapes: detached over manifest, clearsigned manifest, detached over
    the image. Keys are armored files with fingerprints pinned in the catalog.
-4. **Fetcher** (`internal/fetch`) - queue (2 concurrent, 1 per host), `.part`
-   files plus a sidecar (URL, ETag, offset), resume via `Range` + `If-Range`,
-   hash state saved with the partial file, backoff on timeouts/5xx, no retry on
-   404, show GitHub rate-limit reset time, optional read-back verification.
+4. **Fetcher** (`internal/fetch`) - `.part` files in `<target>/.isoshelf/partial/`
+   plus a sidecar (URL, ETag, offset, SHA-256 state), resume via `Range` +
+   `If-Range`, backoff on timeouts/5xx, no retry on 404, GitHub rate-limit
+   reset times, mirrors only when a checksum can prove the bytes. A checksum
+   mismatch deletes the partial file and places nothing. `BeforePlace` runs
+   after verification and just before the rename, which is how the old file is
+   moved aside for images whose filename never changes. Still to do: a queue
+   (2 concurrent, 1 per host) for several downloads at once.
+
+5. **Update** (`internal/update`) - resolves the entry again, downloads,
+   places, records it in state, then keeps, moves aside or deletes the old
+   files of that track. It also removes files the user no longer wants, and
+   empties `<target>/.isoshelf/removed/`.
 
 `internal/inventory` runs one scan or check from start to finish (load state,
 scan, hash, check online, save state and mirror) with progress callbacks; the
@@ -258,14 +267,15 @@ alone is not an update.
    entries not on the target (listed only; adding them needs v0.2 downloads).
    *Done.*
 
-**v0.2** - downloads and the actions around them, in this order:
+**v0.2** - downloads and the actions around them:
 1. Downloads: resumable fetch, checksum verification, place into the target.
-   An Update button per image (plus "Update all"); never all-or-nothing.
-   Replacing or keeping the old file follows the per-track checkbox.
+   An Update button per image plus "Update all". *Done.*
+3. Delete: remove images the user no longer wants. *Done.*
 2. Assign: suggest what an unrecognized file is and confirm it (below).
-3. Delete: remove images the user no longer wants (see the hard rules).
 4. Adding catalog images that aren't on the target (the "Add" button).
 5. Installing older versions with a hold (below), and Make bootable fix-ups.
+6. Still open: a CLI `isoshelf update` command (the web UI has it), a queue
+   for several downloads at once, and OpenPGP signature checking.
 **v0.3** - rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
@@ -371,17 +381,18 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 
 ### Where we stopped (2026-09-17)
 
-v0.1 steps 1-6 are done: catalog (60 entries), scanner, state, sources, CLI and
-the local web UI, all tried against the maintainer's Proxmox folder on the NAS.
-Known gaps and next steps:
+v0.1 is done (catalog of 60 entries, scanner, state, sources, CLI, web UI) and
+v0.2 has downloads and removal working, tried end to end against the real
+netboot.xyz release. Next, in order:
 
-- The web UI starts with a fresh scan; results of the last online check aren't
-  kept across restarts (save the last report in state).
-- Before a v0.1 release: GitHub Actions (build, vet, test on Windows and
-  Linux; release binaries, portable zip, SHA256SUMS), and the repository must be
+- Assign: suggest what unrecognized files are (volume label, hashes, name) and
+  confirm, so files like `Windows.iso` can be recognized and checked.
+- The "Add" button: download a catalog image the folder doesn't have yet.
+- `isoshelf update` on the command line, to match the web UI.
+- Older versions with a hold; Make bootable fix-ups; signature checking.
+- Before a release: GitHub Actions (build, vet, test on Windows and Linux;
+  release binaries, portable zip, SHA256SUMS), and the repository must be
   public for the update notice and downloads.
-- Then v0.2: downloads, verification, keep/replace, adding catalog images,
-  older versions with a hold, Make bootable.
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 

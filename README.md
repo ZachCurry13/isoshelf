@@ -12,10 +12,10 @@
 </div>
 
 > [!WARNING]
-> isoshelf is in early development. It can already list the images in a folder
-> and check them for updates, from a web page in your browser or the command
-> line, but it can't download anything yet. See the [roadmap](#roadmap) for
-> progress.
+> isoshelf is in early development, but it works: it lists the images in a
+> folder, checks them for updates, and downloads and verifies new ones, from a
+> web page in your browser or the command line. See the [roadmap](#roadmap) for
+> what's still missing.
 
 ## Why
 
@@ -111,9 +111,10 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 - [x] Command line: `isoshelf scan` and `isoshelf check`, with `--json`
 - [x] Web interface showing the same table, opened in your browser
 
-**v0.2:** downloads, verification, replacing old files, adding images from the
-catalog, installing an older version when a new one breaks something, and fixes
-for files the boot menu won't list.<br>
+**v0.2 (in progress):** downloads with verification, per-image updates and
+removal are done. Still to come: recognizing unknown files, adding images from
+the catalog, installing an older version when a new one breaks something, and
+fixes for files the boot menu won't list.<br>
 **Ongoing:** more images in the catalog: popular desktops, homelab and server
 systems, and rescue tools.<br>
 **v0.3:** rebuild a drive from your usual set, and repair mode.<br>
