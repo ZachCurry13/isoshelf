@@ -1,3 +1,9 @@
+# The catalog built into isoshelf. The field reference is in CLAUDE.md
+# ("Catalog") and internal/catalog/catalog.go.
+#
+# Only netboot.xyz so far. The rest of the sample drive is still to be added,
+# using the research in docs/catalog-sources.md.
+
 schema = 1
 
 [[entry]]

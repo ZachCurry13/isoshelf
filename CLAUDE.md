@@ -37,7 +37,9 @@ Independent project, not affiliated with Ventoy.
 - Free space and filesystem type: `golang.org/x/sys`.
 - Archives (pure Go only): stdlib `compress/gzip` and `archive/zip`,
   `github.com/ulikunitz/xz`, `github.com/bodgit/sevenzip`.
-- Catalog: TOML, regexes in single-quoted literal strings.
+- Catalog: TOML, regexes in single-quoted literal strings. Parsed with
+  `github.com/pelletier/go-toml/v2` in strict mode, so a misspelled key is an
+  error with a line number.
 
 ## Architecture
 
@@ -129,18 +131,41 @@ alone is not an update.
 
 - Default catalog embedded in the binary; user copy in the OS config dir, or in
   the app folder in portable mode.
-- One entry = one track: `id`, `name`, `arch`, `match` (regex with named group
-  `version`), `[source]`, `[artifact]` (`base`, `manifest`, `file`, `sig`),
-  optional `known_hashes`, `fixup`, `page`.
+- Code: `internal/catalog`. The file starts with `schema = 1`.
+- One `[[entry]]` = one track:
+  - `id` (lowercase, digits, dashes), `name`, `arch` (`x86_64`, `x86`,
+    `arm64`, `multi`).
+  - `match`: regex over the whole filename. Needs a `version` group, unless
+    `fixed_name = true` (then it must not have one) or the source is manual
+    (then it's optional).
+  - `samples`: at least one real filename; each must match its own entry only.
+  - Optional: `fixed_name`, `page` (required for manual), `fixup` (`extract`,
+    `convert`, `rename:<ext>`), `known_hashes` (SHA-256).
+- `[entry.source]`: `type` plus only that type's fields. endoflife: `product`,
+  `channel`. github: `repo`, `tag` (regex), optional `asset` (regex). listing:
+  `url` (https), `regex` (with a `version` group). static: `version`. manual:
+  none.
+- `[entry.artifact]`: required for endoflife, listing, static and github without
+  `asset`; not allowed for manual or github with `asset` (the file and its
+  digest come from the release). Fields: `base` (https, ends in `/`), `file`
+  (regex), optional `manifest`, `signature` (`manifest`, `clearsigned` or
+  `image`), `sig`, `key`, `mirrors` (need a `manifest`).
+- Placeholders: `{version}` everywhere, `{cycle}` for endoflife, `{tag}` for
+  github, `{file}` (the resolved filename) only in `manifest` and `sig`. Values
+  are regex-escaped inside `file`.
+- A fixed-name entry that isn't manual needs a published checksum
+  (`artifact.manifest` or a GitHub `asset`), since that is how updates show up.
+- `[keys.<name>]`: `file` (armored key, relative to the catalog file) and
+  `fingerprints`.
 - Validation: regexes compile, templates are valid, referenced keys exist, each
-  sample filename matches exactly one entry.
+  sample filename matches exactly one entry. Every problem is reported at once.
 - Later: one file per distro under `catalog/`, validated in CI, plus a weekly
   workflow that resolves every entry and opens an issue when one breaks.
 
 ## Milestones
 
 **v0.1 - read-only** (the only writes are to `.isoshelf/`)
-1. Catalog loader + validation.
+1. Catalog loader + validation. *In progress, see "Where we stopped".*
 2. Scanner + filename matching + content sniffing, with table tests built from
    the sample drive.
 3. Drive state + usual-set history, including portable-mode storage.
@@ -154,6 +179,21 @@ alone is not an update.
 **Later** - macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release.
+
+### Where we stopped (2026-09-16)
+
+Step 1: the loader and validation are done and tested. Still open:
+
+- Add an optional `cycles` regex to endoflife sources. endoflife.date lists
+  LMDE (`lmde7`) under `linuxmint`, so "latest" could move the Cinnamon track
+  to LMDE, which breaks the one-track rule.
+- Decide (proposed: yes) whether a non-manual entry may leave out `[artifact]`.
+  Such an entry would only compare versions and show EOL, with no download.
+  That fits MX Linux, Manjaro and Clonezilla, where it's unclear where the
+  official HTTPS checksums live.
+- Fill `internal/catalog/default.toml` with the sample-drive entries (it only
+  has netboot.xyz) and add a test mapping each sample-drive filename to its
+  entry. Findings so far: `docs/catalog-sources.md`.
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 
