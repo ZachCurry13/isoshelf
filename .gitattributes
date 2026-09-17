@@ -1,0 +1,6 @@
+# Use LF line endings in the repository and in every checkout, so gofmt and
+# the tests behave the same on Windows and Linux.
+* text=auto eol=lf
+
+# Recorded responses are replayed byte for byte.
+internal/remote/remotetest/recorded/** -text
