@@ -272,3 +272,88 @@ func TestRunNothingToDownload(t *testing.T) {
 		t.Errorf("got %v, want ErrNothingToDownload", err)
 	}
 }
+
+// fixedSite serves an image whose filename never changes.
+func fixedSite(t *testing.T) http.RoundTripper {
+	t.Helper()
+	sum := sha256.Sum256([]byte(newImage))
+	files := map[string]string{
+		"/isos/fixed.iso":  newImage,
+		"/isos/SHA256SUMS": hex.EncodeToString(sum[:]) + "  fixed.iso\n",
+		"/api/latest":      `{"version": "2"}`,
+	}
+	return remotetest.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, ok := files[r.URL.Path]
+		if !ok {
+			http.NotFound(w, r)
+			return
+		}
+		http.ServeContent(w, r, filepath.Base(r.URL.Path), time.Unix(0, 0), strings.NewReader(body))
+	}))
+}
+
+func fixedEntry(t *testing.T) *catalog.Entry {
+	t.Helper()
+	text := `schema = 1
+[[entry]]
+id = "fixed"
+name = "Fixed Name Image"
+arch = "x86_64"
+match = 'fixed\.iso'
+fixed_name = true
+samples = ["fixed.iso"]
+[entry.source]
+type = "listing"
+url = "https://example.org/api/latest"
+regex = '"version": "(?P<version>\d+)"'
+[entry.artifact]
+base = "https://example.org/isos/"
+file = 'fixed\.iso'
+manifest = "SHA256SUMS"
+`
+	cat, err := catalog.Load(fstest.MapFS{"c.toml": {Data: []byte(text)}}, "c.toml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	return cat.Entry("fixed")
+}
+
+// An image whose filename never changes lands on top of the old file, so the
+// old one has to be moved aside first, and only after the new one is verified.
+func TestRunSameFilename(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, "fixed.iso"), []byte("the old image"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	st := state.New(scan.Ventoy)
+	if err := st.Placed(dir, "fixed.iso", state.FileRecord{Entry: "fixed"}); err != nil {
+		t.Fatal(err)
+	}
+	rc, fc := clients(t, fixedSite(t))
+	opts := Options{
+		Target: dir, Entry: fixedEntry(t), Client: rc, Fetcher: fc, State: st,
+		Old: []string{"fixed.iso"}, Removal: MoveAside, Now: func() time.Time { return now },
+	}
+
+	res, err := Run(context.Background(), opts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, err := os.ReadFile(filepath.Join(dir, "fixed.iso")); err != nil || string(got) != newImage {
+		t.Fatalf("new file: %q, %v", got, err)
+	}
+	aside := filepath.Join(dir, state.DirName, RemovedDir, "fixed.iso")
+	if got, err := os.ReadFile(aside); err != nil || string(got) != "the old image" {
+		t.Errorf("the old file wasn't kept safe: %q, %v", got, err)
+	}
+	if !slices.Equal(res.Removed, []string{"fixed.iso"}) {
+		t.Errorf("removed = %v", res.Removed)
+	}
+
+	// Keeping both is impossible when the name is the same, and saying so
+	// beats quietly overwriting the old file.
+	opts.Removal = Keep
+	if _, err := Run(context.Background(), opts); err == nil || !strings.Contains(err.Error(), "same filename") {
+		t.Errorf("keeping both: got %v, want an explanation", err)
+	}
+}

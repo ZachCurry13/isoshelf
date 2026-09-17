@@ -62,6 +62,8 @@
     <div class="toolbar">
       <input type="search" id="search" placeholder="Filter by name or file…" aria-label="Filter images">
       <span class="muted" id="shown"></span>
+      <span class="spacer"></span>
+      <button type="button" class="btn small" id="update-all" hidden></button>
     </div>
     <div class="table-wrap">
       <table id="table">
@@ -73,7 +75,8 @@
             <th>Version</th>
             <th>Latest</th>
             <th>File</th>
-            <th class="col-replace" title="When an update is downloaded, replace the old file (on) or keep both (off). Downloads arrive in v0.2.">Replace old</th>
+            <th class="col-replace" title="When an update is downloaded, replace the old file (on) or keep both (off).">Replace old</th>
+            <th class="col-actions"><span class="sr-only">Actions</span></th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
@@ -88,7 +91,7 @@
         <span class="more-title">More in the catalog</span>
         <span class="muted" id="more-count"></span>
       </summary>
-      <p class="muted more-hint">Images isoshelf knows that aren't in this folder. Adding them arrives with downloads in v0.2.</p>
+      <p class="muted more-hint">Images isoshelf knows that aren't in this folder.</p>
       <input type="search" id="more-search" placeholder="Filter the catalog…" aria-label="Filter the catalog">
       <ul class="catalog" id="catalog"></ul>
     </details>
@@ -96,6 +99,14 @@
 
   <footer class="footer" id="footer"></footer>
 </main>
+
+<dialog id="ask" class="ask" aria-labelledby="ask-title">
+  <form method="dialog" class="ask-form">
+    <h2 id="ask-title"></h2>
+    <p id="ask-text"></p>
+    <div class="ask-buttons" id="ask-buttons"></div>
+  </form>
+</dialog>
 
 <dialog id="picker" class="picker" aria-labelledby="picker-title">
   <form method="dialog" class="picker-form">

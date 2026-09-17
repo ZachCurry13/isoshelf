@@ -59,7 +59,12 @@ async function refresh() {
     schedule(5000);
     return;
   }
-  render();
+  // A mistake while drawing must never stop the page from updating.
+  try {
+    render();
+  } catch (err) {
+    showNotice(`Something went wrong while drawing the page: ${err.message}`, true);
+  }
   if (state.run) {
     schedule(600);
     return;
@@ -143,7 +148,18 @@ function renderRun() {
   if (!run) return;
   let text = "Scanning the folder…";
   let fraction = null;
-  if (run.stage === "hashing") {
+  if (run.stage === "downloading") {
+    text = run.file ? `Downloading ${run.file}…` : "Downloading…";
+    if (run.total > 0) {
+      text += ` ${formatBytes(run.done)} of ${formatBytes(run.total)}`;
+      fraction = run.done / run.total;
+    }
+  } else if (run.stage === "verifying") {
+    text = "Checking the downloaded file…";
+    if (run.total > 0) fraction = run.done / run.total;
+  } else if (run.stage === "placing") {
+    text = "Putting the file in place…";
+  } else if (run.stage === "hashing") {
     text = `Hashing ${run.file}`;
     if (run.total > 0) fraction = run.done / run.total;
   } else if (run.stage === "checking") {
@@ -207,7 +223,13 @@ function renderRows() {
   for (const item of items) rows.append(renderRow(item));
 
   const total = state.report.items.length;
-  $("shown").textContent = items.length === total ? `${total} images` : `${items.length} of ${total} images`;
+  $("shown").textContent = items.length === total ? plural(total, "image") : `${items.length} of ${plural(total, "image")}`;
+
+  const updatable = state.report.items.filter((it) => it.entry && it.updates === "download" && it.status === "update available");
+  const all = $("update-all");
+  all.hidden = updatable.length === 0;
+  all.disabled = Boolean(state.run);
+  all.textContent = `Update all (${updatable.length})`;
   empty.hidden = items.length > 0;
   empty.textContent = total === 0 ? "No images found in this folder." : "Nothing matches the filter.";
 }
@@ -265,6 +287,23 @@ function renderRow(item) {
     replace = el("label", { class: "switch", title: "On: replace the old file after a verified update. Off: keep both." }, input, el("span", { class: "track" }));
   }
 
+  const actions = [];
+  if (item.entry && item.updates === "download" && item.status === "update available") {
+    actions.push(el("button", {
+      type: "button", class: "btn small primary", disabled: busy,
+      title: `Download ${item.latest || "the newest version"} and put it in this folder`,
+      onclick: () => updateItem(item),
+    }, "Update"));
+  }
+  if (item.path) {
+    actions.push(el("button", {
+      type: "button", class: "btn small", disabled: busy,
+      title: "Remove this file from the folder",
+      "aria-label": `Remove ${item.path}`,
+      onclick: () => removeItem(item),
+    }, "Remove"));
+  }
+
   return el("tr", {},
     el("td", { class: "col-star" }, star),
     statusCell,
@@ -272,12 +311,138 @@ function renderRow(item) {
     el("td", { class: "version-cell" }, item.version || "–"),
     latestCell,
     fileCell,
-    el("td", { class: "replace" }, replace));
+    el("td", { class: "replace" }, replace),
+    el("td", { class: "row-actions" }, actions));
+}
+
+// ---- Updating and removing -------------------------------------------------
+
+// ask shows a dialog and returns the value of the button the user picked, or
+// null if they closed it.
+function ask(title, text, choices) {
+  const dialog = $("ask");
+  $("ask-title").textContent = title;
+  $("ask-text").textContent = text;
+  const buttons = $("ask-buttons");
+  buttons.replaceChildren();
+  return new Promise((resolve) => {
+    for (const choice of choices) {
+      buttons.append(el("button", {
+        type: "button",
+        class: `btn ${choice.primary ? "primary" : ""}`,
+        onclick: () => { dialog.close(); resolve(choice.value); },
+      }, choice.label));
+    }
+    dialog.addEventListener("close", () => resolve(null), { once: true });
+    dialog.showModal();
+  });
+}
+
+// removalChoice asks what should happen to the files an update replaces.
+async function removalChoice(item) {
+  const track = (item.entry && state.tracks[item.entry]) || {};
+  if (!item.path) return "keep";
+  // Images whose filename never changes land on top of the old file, so
+  // keeping both isn't possible, whatever the switch says.
+  const sameName = item.latest_file && item.path.split("/").pop() === item.latest_file;
+  if (track.keep_old && !sameName) return "keep";
+
+  const choices = [
+    { label: "Move it aside", value: "move-aside", primary: true },
+    { label: "Delete it", value: "delete" },
+  ];
+  if (!sameName) choices.push({ label: "Keep it", value: "keep" });
+  choices.push({ label: "Cancel", value: null });
+
+  const text = sameName
+    ? `The new file has the same name, so it takes the place of ${item.path}. It is downloaded and checked first. What should happen to the old one?`
+    : `The new file is downloaded and checked first. What should happen to ${item.path} afterwards?`;
+  return ask(`Update ${item.name}`, text, choices);
+}
+
+async function updateItem(item) {
+  const removal = await removalChoice(item);
+  if (!removal) return;
+  await startUpdate(item.entry, removal);
+}
+
+async function startUpdate(entry, removal) {
+  try {
+    await api("POST", "/api/update", { entry, removal });
+    catalog = null;
+  } catch (err) {
+    showNotice(err.message, true);
+  }
+  await refresh();
+}
+
+async function updateAll() {
+  const items = state.report.items.filter((it) => it.entry && it.updates === "download" && it.status === "update available");
+  if (!items.length) return;
+  const removal = await ask(
+    `Update ${plural(items.length, "image")}`,
+    "Each one is downloaded and checked before anything is replaced. What should happen to the old files? Images set to keep old files are left alone.",
+    [
+      { label: "Move them aside", value: "move-aside", primary: true },
+      { label: "Delete them", value: "delete" },
+      { label: "Keep them", value: "keep" },
+      { label: "Cancel", value: null },
+    ]);
+  if (!removal) return;
+
+  for (const item of items) {
+    const track = state.tracks[item.entry] || {};
+    await startUpdate(item.entry, track.keep_old ? "keep" : removal);
+    // Wait for this download to finish before starting the next one.
+    while (state.run) {
+      await new Promise((done) => setTimeout(done, 600));
+      await refresh();
+    }
+    if (state.error) return;
+  }
+}
+
+async function removeItem(item) {
+  const how = await ask(
+    `Remove ${item.path}?`,
+    `This file uses ${formatBytes(item.size)}. Moving it aside puts it in .isoshelf/removed inside this folder, where you can get it back or empty it later.`,
+    [
+      { label: "Move it aside", value: "move-aside", primary: true },
+      { label: "Delete it now", value: "delete" },
+      { label: "Cancel", value: null },
+    ]);
+  if (!how) return;
+  try {
+    state = await api("POST", "/api/remove", { paths: [item.path], how });
+    catalog = null;
+    render();
+  } catch (err) {
+    showNotice(err.message, true);
+  }
+}
+
+async function emptyRemoved() {
+  const confirmed = await ask(
+    "Empty the removed folder?",
+    `${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)} will be deleted for good. This frees the space.`,
+    [{ label: "Delete them", value: "yes", primary: true }, { label: "Cancel", value: null }]);
+  if (!confirmed) return;
+  try {
+    state = await api("POST", "/api/removed/empty");
+    render();
+  } catch (err) {
+    showNotice(err.message, true);
+  }
 }
 
 function renderFooter() {
   const footer = $("footer");
   footer.replaceChildren();
+  if (state.removed && state.removed.files > 0) {
+    footer.append(el("div", { class: "footer-row" },
+      `Removed files waiting in .isoshelf/removed: ${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)}.`,
+      el("button", { type: "button", class: "btn small", disabled: Boolean(state.run), onclick: emptyRemoved }, "Empty it")));
+  }
   if (!state.report) return;
   for (const trash of state.report.trash) {
     footer.append(el("div", {}, `Trash folder ${trash.path} uses ${formatBytes(trash.bytes)}. Emptying it frees that space.`));
@@ -301,7 +466,7 @@ async function renderCatalog() {
     }
   }
   const missing = catalog.filter((e) => !e.on_target);
-  $("more-count").textContent = `${missing.length} images`;
+  $("more-count").textContent = plural(missing.length, "image");
   const query = $("more-search").value.trim().toLowerCase();
   const list = $("catalog");
   list.replaceChildren();
@@ -312,7 +477,7 @@ async function renderCatalog() {
         el("div", {}, el("span", { class: "name" }, entry.name), el("span", { class: "arch" }, entry.arch)),
         el("div", { class: "kind" }, UPDATES_LABEL[entry.updates] || entry.updates)),
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
-      el("button", { type: "button", class: "btn small", disabled: true, title: "Adding images arrives with downloads in v0.2" }, "Add")));
+      el("button", { type: "button", class: "btn small", disabled: true, title: "Adding images that aren't in this folder yet is coming next" }, "Add")));
   }
 }
 
@@ -402,6 +567,11 @@ async function useFolder() {
 
 // ---- Helpers ---------------------------------------------------------------
 
+// plural writes "1 image" but "2 images".
+function plural(count, word) {
+  return `${count} ${word}${count === 1 ? "" : "s"}`;
+}
+
 function formatBytes(bytes) {
   if (!bytes) return "0 B";
   const units = ["B", "KB", "MB", "GB", "TB"];
@@ -438,6 +608,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showNotice(err.message, true);
     }
   });
+  $("update-all").addEventListener("click", updateAll);
   $("search").addEventListener("input", renderRows);
   $("more-search").addEventListener("input", renderCatalog);
   $("picker-go").addEventListener("click", () => browse($("picker-input").value.trim()));

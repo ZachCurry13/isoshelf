@@ -33,6 +33,7 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
 	"github.com/ZachCurry13/isoshelf/internal/state"
+	"github.com/ZachCurry13/isoshelf/internal/update"
 )
 
 //go:embed static
@@ -113,6 +114,9 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/target", s.setTarget)
 	mux.HandleFunc("POST /api/scan", func(w http.ResponseWriter, r *http.Request) { s.start(w, false) })
 	mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) { s.start(w, true) })
+	mux.HandleFunc("POST /api/update", s.startUpdate)
+	mux.HandleFunc("POST /api/remove", s.remove)
+	mux.HandleFunc("POST /api/removed/empty", s.emptyRemoved)
 	mux.HandleFunc("POST /api/cancel", s.cancel)
 	mux.HandleFunc("POST /api/track", s.setTrack)
 	s.handler = s.guard(mux)
@@ -195,7 +199,14 @@ type stateJSON struct {
 	Tracks    map[string]state.Track `json:"tracks"`
 	UsualSet  []string               `json:"usual_set"`
 	Recent    []string               `json:"recent_targets"`
+	Removed   removedJSON            `json:"removed"`
 	AppUpdate *appupdate.Notice      `json:"app_update,omitempty"`
+}
+
+// removedJSON describes what waits in .isoshelf/removed.
+type removedJSON struct {
+	Files int   `json:"files"`
+	Bytes int64 `json:"bytes"`
 }
 
 type runJSON struct {
@@ -214,6 +225,18 @@ func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, s.stateLocked(recent))
 }
 
+// removedInfo counts what waits in the target's removed folder.
+func (s *Server) removedInfo(target string) removedJSON {
+	if target == "" {
+		return removedJSON{}
+	}
+	files, bytes, err := update.Removed(target)
+	if err != nil {
+		return removedJSON{}
+	}
+	return removedJSON{Files: len(files), Bytes: bytes}
+}
+
 // stateLocked builds the page state; s.mu must be held.
 func (s *Server) stateLocked(recent []string) stateJSON {
 	out := stateJSON{
@@ -225,6 +248,7 @@ func (s *Server) stateLocked(recent []string) stateJSON {
 		Tracks:    map[string]state.Track{},
 		UsualSet:  []string{},
 		Recent:    recent,
+		Removed:   s.removedInfo(s.target),
 		AppUpdate: s.notice,
 	}
 	if s.st != nil {

@@ -45,6 +45,11 @@ type Request struct {
 	Checksum *verify.Checksum
 	// Replace allows overwriting a file of the same name in Dir.
 	Replace bool
+	// BeforePlace, when set, runs after the download is verified and just
+	// before the file is renamed into place. It is where the caller moves the
+	// old file aside, so nothing is touched until the new file is known to be
+	// good. If it fails, the file is not placed.
+	BeforePlace func() error
 }
 
 // Stage says what a download is doing.
@@ -59,6 +64,8 @@ const (
 // Progress reports how a download is going.
 type Progress struct {
 	Stage Stage
+	// Filename is the file being downloaded.
+	Filename string
 	// Done and Total are bytes.
 	Done, Total int64
 	// Resumed reports whether this download continued an earlier one.
@@ -271,7 +278,7 @@ func (c *Client) attempt(ctx context.Context, req Request, url, part string, att
 			}
 			digest.Write(buf[:n])
 			offset += int64(n)
-			report(Progress{Stage: Downloading, Done: offset, Total: total, Resumed: resumed, URL: url, Attempt: attempt})
+			report(Progress{Stage: Downloading, Filename: req.Filename, Done: offset, Total: total, Resumed: resumed, URL: url, Attempt: attempt})
 			if time.Since(lastSave) > 5*time.Second {
 				saveSidecar(part, side, offset, digest)
 				lastSave = time.Now()
@@ -292,7 +299,7 @@ func (c *Client) attempt(ctx context.Context, req Request, url, part string, att
 		saveSidecar(part, side, offset, digest)
 		return nil, fmt.Errorf("the download stopped after %d of %d bytes", offset, total)
 	}
-	progress(Progress{Stage: Downloading, Done: offset, Total: total, Resumed: resumed, URL: url, Attempt: attempt})
+	progress(Progress{Stage: Downloading, Filename: req.Filename, Done: offset, Total: total, Resumed: resumed, URL: url, Attempt: attempt})
 	return &downloadState{size: offset, sha256: hex.EncodeToString(digest.Sum(nil)), resumed: resumed}, nil
 }
 
@@ -300,7 +307,7 @@ func (c *Client) attempt(ctx context.Context, req Request, url, part string, att
 func (c *Client) place(ctx context.Context, req Request, part, final, url string, st *downloadState, progress func(Progress)) (*Result, error) {
 	result := &Result{Path: final, Size: st.size, SHA256: st.sha256, URL: url, Resumed: st.resumed}
 	if req.Checksum != nil {
-		progress(Progress{Stage: Verifying, Done: 0, Total: st.size, URL: url})
+		progress(Progress{Stage: Verifying, Filename: req.Filename, Total: st.size, URL: url})
 		var err error
 		if req.Checksum.Algorithm == verify.SHA256 {
 			if !strings.EqualFold(st.sha256, req.Checksum.Hex) {
@@ -309,7 +316,7 @@ func (c *Client) place(ctx context.Context, req Request, part, final, url string
 		} else {
 			// Another algorithm: read the file back to compute it.
 			err = verify.Check(ctx, part, *req.Checksum, func(done int64) {
-				progress(Progress{Stage: Verifying, Done: done, Total: st.size, URL: url})
+				progress(Progress{Stage: Verifying, Filename: req.Filename, Done: done, Total: st.size, URL: url})
 			})
 		}
 		if err != nil {
@@ -325,7 +332,12 @@ func (c *Client) place(ctx context.Context, req Request, part, final, url string
 		result.Verified = true
 	}
 
-	progress(Progress{Stage: Placing, Done: st.size, Total: st.size, URL: url})
+	progress(Progress{Stage: Placing, Filename: req.Filename, Done: st.size, Total: st.size, URL: url})
+	if req.BeforePlace != nil {
+		if err := req.BeforePlace(); err != nil {
+			return nil, err
+		}
+	}
 	if err := os.Rename(part, final); err != nil {
 		return nil, err
 	}

@@ -118,17 +118,32 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	if progress == nil {
 		progress = func(fetch.Progress) {}
 	}
-	// Replacing a file of the same name is only safe once the new one is
-	// verified, which fetch guarantees before it renames anything.
+	// Images whose filename never changes land on top of the old file, so
+	// keeping both is impossible and the old one has to go first. It only
+	// moves once the new file is downloaded and verified.
 	sameName := slices.Contains(opts.Old, artifact.Filename)
-	downloaded, err := opts.Fetcher.Download(ctx, fetch.Request{
+	if sameName && (opts.Removal == Keep || opts.Removal == "") {
+		return nil, fmt.Errorf("%s always has the same filename, so the new file would take its place; choose to move the old one aside or delete it", artifact.Filename)
+	}
+	var replaced string
+	request := fetch.Request{
 		URLs:     artifact.URLs,
 		Filename: artifact.Filename,
 		Dir:      opts.Target,
 		Size:     artifact.Size,
 		Checksum: artifact.Checksum,
 		Replace:  sameName,
-	}, progress)
+	}
+	if sameName {
+		request.BeforePlace = func() error {
+			if err := removeFile(opts.Target, artifact.Filename, opts.Removal, opts.State, opts.Now()); err != nil {
+				return err
+			}
+			replaced = artifact.Filename
+			return nil
+		}
+	}
+	downloaded, err := opts.Fetcher.Download(ctx, request, progress)
 	if err != nil {
 		return nil, err
 	}
@@ -140,6 +155,9 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	result := &Result{
 		File: artifact.Filename, Version: version, Size: downloaded.Size,
 		SHA256: downloaded.SHA256, Verified: downloaded.Verified, URL: downloaded.URL,
+	}
+	if replaced != "" {
+		result.Removed = append(result.Removed, replaced)
 	}
 	if err := opts.State.Placed(opts.Target, artifact.Filename, state.FileRecord{
 		Entry:     opts.Entry.ID,
