@@ -1,0 +1,15 @@
+schema = 1
+
+[[entry]]
+id = "netbootxyz"
+name = "netboot.xyz"
+arch = "x86_64"
+match = 'netboot\.xyz\.iso'
+fixed_name = true
+samples = ["netboot.xyz.iso"]
+
+[entry.source]
+type = "github"
+repo = "netbootxyz/netboot.xyz"
+tag = '(?P<version>\d+\.\d+\.\d+)'
+asset = 'netboot\.xyz\.iso'
