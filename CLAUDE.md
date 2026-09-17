@@ -1,17 +1,22 @@
 # isoshelf
 
-Working name; rename freely. A desktop app (Windows + Linux, macOS later) that
+Working name; rename freely. An app (Windows + Linux, macOS later) that
 inventories, update-checks, downloads and verifies the bootable images on a
-Ventoy drive. It can be installed on a PC or run portably from the drive itself.
-Independent project, not affiliated with Ventoy.
+Ventoy drive or in any image folder (NAS share, Proxmox ISO storage). It can be
+installed on a PC, run portably from the drive itself, or (later) run as a
+server in Docker/LXC. The UI is a web page served by the app. Independent
+project, not affiliated with Ventoy.
 
 ## Hard rules
 
 - Never touch partitions, bootloaders, or Ventoy's `/ventoy` folder. Only work
   with image files inside the folder the user picks.
-- Never delete or overwrite anything without explicit per-item confirmation.
+- Never delete or overwrite anything the user hasn't chosen to replace. Each
+  track has a "replace old file" checkbox, on by default; off = keep old files.
   Replace = download -> verify -> rename into place -> only then delete the old
-  file, and only if the user chose that.
+  file(s) of that same track.
+- A download without a published checksum ("unverified") never replaces
+  anything on its own: the old file stays until the user confirms that item.
 - Only ever delete files the scanner matched to a catalog entry.
 - A mismatch against a published checksum always blocks placement. No published
   checksum -> allow, but mark the file "unverified".
@@ -26,11 +31,16 @@ Independent project, not affiliated with Ventoy.
 
 ## Stack
 
-- Go. One binary per OS, no runtime dependencies.
-- UI: Fyne, imported only by `internal/ui`. Everything else must build with
-  `CGO_ENABLED=0`, so it can be tested headless and reused by the CLI.
-- Fyne needs CGO: on Windows a MinGW-w64 gcc (e.g. via MSYS2). Only needed once
-  work on `internal/ui` starts.
+- Go. One binary per OS, no runtime dependencies. Everything builds with
+  `CGO_ENABLED=0`.
+- UI: a web UI served by the same binary (`internal/web`), with HTML/CSS/JS
+  embedded via `embed` and no Node build step. Only `internal/web` knows about
+  HTTP handlers and HTML.
+  - Desktop and portable: listen on `127.0.0.1` and open the browser. Guard with
+    a random per-launch token and check `Host`/`Origin` headers (blocks DNS
+    rebinding and cross-site requests).
+  - Server (`isoshelf serve`): configurable address and port, reached like other
+    homelab apps at `http://<nas-ip>:<port>`. Requires a login.
 - macOS later: same code, but needs a Mac or macOS CI runner, and Apple signing
   and notarization for a smooth first launch.
 - OpenPGP: `github.com/ProtonMail/go-crypto` (not deprecated `x/crypto/openpgp`).
@@ -70,26 +80,40 @@ Every catalog entry runs through four stages:
    hash state saved with the partial file, backoff on timeouts/5xx, no retry on
    404, show GitHub rate-limit reset time, optional read-back verification.
 
+Core packages take a target folder and report progress through plain Go
+callbacks or channels, with no UI assumptions, so the CLI, the local web UI and
+server mode all share them.
+
 Images whose filename never changes (`bazzite-...-stable-...iso`,
 `Core-current.iso`, `HBCD_PE_x64.iso`): "update available" means the published
 checksum differs from the checksum recorded in drive state. A new GitHub tag
 alone is not an update.
 
-## Drive state and scanning
+## Targets, state and scanning
 
-- State lives in `.isoshelf/state.json` in the chosen folder: placed files
-  (entry, version, filename, SHA-256, source URL, date), manual assignments for
-  renamed files, and scan history.
+- A target is any folder the user picks: a Ventoy drive, a folder on a NAS
+  share, or Proxmox ISO storage. Each target has a profile, saved in its state.
+  The profile only changes which files count as bootable and how deep the scan
+  goes:
+  - `ventoy` (default): recursive; bootable = `.iso .wim .img .vhd .vhdx .efi`.
+  - `proxmox`: top level only; bootable = `.iso .img`, case-insensitive
+    (Proxmox's `$ISO_EXT_RE_0`; it lists nothing else and ignores subfolders).
+    Suggested automatically when the path ends in `template/iso`.
+- Downloads and fix-up output are staged in `<target>/.isoshelf/`, so the final
+  rename never crosses filesystems (NAS shares, or a portable app on a USB drive
+  managing a NAS folder).
+- State lives in `.isoshelf/state.json` in the chosen folder: profile, placed
+  files (entry, version, filename, SHA-256, source URL, date), the per-track
+  keep/replace choice, manual assignments for renamed files, and scan history.
 - History and the usual set are mirrored to the OS config dir so they survive a
   dead drive (not in portable mode; offer "Export usual set" there instead).
 - Usual set = entries kept across scans + anything starred. "Missing" means
   missing from the usual set, not from the whole catalog. Rebuild offers the
   usual set as a preset.
-- Scanner is recursive; skips `.Trash-*`, `ventoy/`, `.isoshelf/` and the
-  portable app folder, but reports how much space `.Trash-*` folders use.
-- Images Ventoy lists: `.iso .wim .img .vhd .vhdx .efi`. Flag files that match
-  a catalog entry but have another extension (e.g. `.bin`) and offer
-  "Make bootable".
+- Scanner skips `.Trash-*`, `ventoy/`, `.isoshelf/` and the portable app
+  folder, but reports how much space `.Trash-*` folders use.
+- Flag files that match a catalog entry but have an extension the profile
+  doesn't list (e.g. `.bin`) as "not bootable" and offer "Make bootable".
 - First scan hashes fixed-filename images in the background (cancellable) and
   records the results.
 - Several files for one entry are grouped, with a "keep newest" action.
@@ -103,8 +127,8 @@ alone is not an update.
   `isoshelf-windows-amd64.exe`, `isoshelf-linux-amd64`, and a `portable` marker
   file) that the user copies onto the drive.
 - Marker next to the executable -> portable mode: store everything in that
-  folder, use a temp dir on the drive, and default the target to the drive the
-  app is running from.
+  folder, keep temp files on the drive (downloads are staged in the target, see
+  above), and default the target to the drive the app is running from.
 - No autorun. Windows ignores program autorun from USB drives (since Windows 7)
   and Linux/macOS don't auto-launch either; the user starts the app. Optional,
   off by default: an `autorun.inf` with icon/label only. Never overwrite an
@@ -139,17 +163,21 @@ alone is not an update.
     `fixed_name = true` (then it must not have one) or the source is manual
     (then it's optional).
   - `samples`: at least one real filename; each must match its own entry only.
-  - Optional: `fixed_name`, `page` (required for manual), `fixup` (`extract`,
-    `convert`, `rename:<ext>`), `known_hashes` (SHA-256).
+  - Optional: `fixed_name`, `page`, `fixup` (`extract`, `convert`,
+    `rename:<ext>`), `known_hashes` (SHA-256).
 - `[entry.source]`: `type` plus only that type's fields. endoflife: `product`,
-  `channel`. github: `repo`, `tag` (regex), optional `asset` (regex). listing:
-  `url` (https), `regex` (with a `version` group). static: `version`. manual:
-  none.
-- `[entry.artifact]`: required for endoflife, listing, static and github without
-  `asset`; not allowed for manual or github with `asset` (the file and its
-  digest come from the release). Fields: `base` (https, ends in `/`), `file`
-  (regex), optional `manifest`, `signature` (`manifest`, `clearsigned` or
-  `image`), `sig`, `key`, `mirrors` (need a `manifest`).
+  `channel`, optional `cycles` (regex over cycle names; only matching cycles
+  belong to the track, e.g. to keep LMDE out of Linux Mint). github: `repo`,
+  `tag` (regex), optional `asset` (regex). listing: `url` (https), `regex`
+  (with a `version` group). static: `version`. manual: none.
+- `[entry.artifact]` says where to download. Not allowed for manual or github
+  with `asset` (the file and its digest come from the release). Optional
+  otherwise: without it the entry is check-only (version compare and EOL, plus
+  "open download page"). Fields: `base` (https, ends in `/`), `file` (regex),
+  optional `manifest`, `signature` (`manifest`, `clearsigned` or `image`),
+  `sig`, `key`, `mirrors` (need a `manifest`).
+- `page` is required when there's nothing to download: manual entries and
+  check-only entries.
 - Placeholders: `{version}` everywhere, `{cycle}` for endoflife, `{tag}` for
   github, `{file}` (the resolved filename) only in `manifest` and `sig`. Values
   are regex-escaped inside `file`.
@@ -166,31 +194,39 @@ alone is not an update.
 
 **v0.1 - read-only** (the only writes are to `.isoshelf/`)
 1. Catalog loader + validation. *In progress, see "Where we stopped".*
-2. Scanner + filename matching + content sniffing, with table tests built from
-   the sample drive.
+2. Scanner + filename matching + content sniffing + target profiles, with table
+   tests built from the sample drive.
 3. Drive state + usual-set history, including portable-mode storage.
 4. Sources: `endoflife`, `github`, `listing`, `manual` (check only).
 5. CLI: `isoshelf scan <folder>` and `isoshelf check <folder>` print a status
    table; `--json` for machine output.
-6. Fyne window showing the same table (needs the CGO toolchain).
+6. Local web UI (opened in the browser) showing the same table.
 
-**v0.2** - downloads, verification, replace flow, Make bootable fix-ups.
+**v0.2** - downloads, verification, keep/replace flow, Make bootable fix-ups.
 **v0.3** - rebuild and repair modes.
-**Later** - macOS build.
+**Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release.
 
-### Where we stopped (2026-09-16)
+### Server mode (later, not started)
+
+Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
+
+- `isoshelf serve`: the same binary and web UI as the desktop. Ship a Docker
+  image (static binary + CA certificates). That also covers TrueNAS apps, which
+  are Docker-based. Also document a Proxmox LXC with the ISO storage
+  bind-mounted.
+- UI: browse the catalog and add tracks not on the shelf, update, the per-track
+  keep/replace checkbox, history.
+- Scheduler: check daily by default and download verified updates, replacing
+  old files where the checkbox says so. Unverified updates wait for the user.
+
+### Where we stopped (2026-09-17)
 
 Step 1: the loader and validation are done and tested. Still open:
 
-- Add an optional `cycles` regex to endoflife sources. endoflife.date lists
-  LMDE (`lmde7`) under `linuxmint`, so "latest" could move the Cinnamon track
-  to LMDE, which breaks the one-track rule.
-- Decide (proposed: yes) whether a non-manual entry may leave out `[artifact]`.
-  Such an entry would only compare versions and show EOL, with no download.
-  That fits MX Linux, Manjaro and Clonezilla, where it's unclear where the
-  official HTTPS checksums live.
+- Add the optional `cycles` regex to endoflife sources.
+- Allow non-manual entries without `[artifact]` (check-only; decided yes).
 - Fill `internal/catalog/default.toml` with the sample-drive entries (it only
   has netboot.xyz) and add a test mapping each sample-drive filename to its
   entry. Findings so far: `docs/catalog-sources.md`.
