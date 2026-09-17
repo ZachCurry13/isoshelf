@@ -91,6 +91,8 @@ alone is not an update.
 
 ## Targets, state and scanning
 
+- Code: `internal/scan` walks a target, `internal/sniff` identifies content,
+  `internal/sampledrive` holds the sample drive as test fixtures.
 - A target is any folder the user picks: a Ventoy drive, a folder on a NAS
   share, or Proxmox ISO storage. Each target has a profile, saved in its state.
   The profile only changes which files count as bootable and how deep the scan
@@ -110,8 +112,10 @@ alone is not an update.
 - Usual set = entries kept across scans + anything starred. "Missing" means
   missing from the usual set, not from the whole catalog. Rebuild offers the
   usual set as a preset.
-- Scanner skips `.Trash-*`, `ventoy/`, `.isoshelf/` and the portable app
-  folder, but reports how much space `.Trash-*` folders use.
+- Scanner lists files that match a catalog entry or have a bootable extension.
+  It skips `ventoy/` (top level), `.isoshelf/`, `System Volume Information` and
+  the portable app folder, and reports the size of trash folders (`.Trash-*`,
+  `.Trashes`, `$RECYCLE.BIN`) without listing their contents.
 - Flag files that match a catalog entry but have an extension the profile
   doesn't list (e.g. `.bin`) as "not bootable" and offer "Make bootable".
 - First scan hashes fixed-filename images in the background (cancellable) and
@@ -195,7 +199,7 @@ alone is not an update.
 **v0.1 - read-only** (the only writes are to `.isoshelf/`)
 1. Catalog loader + validation. *Done.*
 2. Scanner + filename matching + content sniffing + target profiles, with table
-   tests built from the sample drive.
+   tests built from the sample drive. *Done.*
 3. Drive state + usual-set history, including portable-mode storage.
 4. Sources: `endoflife`, `github`, `listing`, `manual` (check only).
 5. CLI: `isoshelf scan <folder>` and `isoshelf check <folder>` print a status
@@ -223,7 +227,9 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 
 ### Where we stopped (2026-09-17)
 
-Step 1 is done. Next: step 2, the scanner.
+Steps 1 and 2 are done. Next: step 3, drive state and history (including
+hashing fixed-name images). Grouping several files per entry and "keep newest"
+wait for the status logic in step 5.
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 
