@@ -28,7 +28,7 @@ channel = "latest"
 cycles = '\d+(?:\.\d+)*' # numbered releases only, not LMDE
 
 [entry.artifact]
-base = "https://mirrors.kernel.org/linuxmint/stable/{cycle}/"
+base = "https://mirrors.edge.kernel.org/linuxmint/stable/{cycle}/"
 file = 'linuxmint-{cycle}-cinnamon-64bit\.iso'
 manifest = "sha256sum.txt"
 

@@ -138,7 +138,19 @@ alone is not an update.
 - Several files for one entry are grouped, with a "keep newest" action.
 - Statuses: up to date, update available, missing, manual, unverified, checksum
   mismatch, EOL (endoflife.date `isEol`), not bootable, unrecognized, check
-  failed (showing the real error).
+  failed (showing the real error), plus unknown (can't decide, e.g. not hashed
+  yet) and not checked (before the online check).
+- Status rules (`internal/check`):
+  - Fixed-name: compare the published SHA-256 with the recorded hash.
+  - Versioned with an artifact: up to date if the resolved filename is the file
+    on disk (checksum mismatch if a recorded hash differs); otherwise compare
+    versions. Check-only: compare versions.
+  - EOL comes from the file's own endoflife cycle (the pinned channel's cycle
+    when pinned). "Up to date" + EOL shows as EOL; an update keeps its status
+    with an EOL flag.
+  - Not bootable keeps its status but still shows the latest version.
+  - Files of one entry with versions are grouped; older ones get an "older
+    copy" note. Files without a version in the name are never guessed.
 
 ## Portable mode
 
@@ -227,7 +239,7 @@ alone is not an update.
 4. Sources: `endoflife`, `github`, `listing`, `manual` (check only). *Done.*
 5. CLI: `isoshelf scan <folder>` and `isoshelf check <folder>` print a status
    table; `--json` for machine output. Includes the app update notice (see
-   "App updates").
+   "App updates"). *Done.*
 6. Local web UI (opened in the browser) showing the same table, plus catalog
    entries not on the target (listed only; adding them needs v0.2 downloads).
 
@@ -282,14 +294,28 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 - Scheduler: check daily by default and download verified updates, replacing
   old files where the checkbox says so. Unverified updates wait for the user.
 
+### CLI (`cmd/isoshelf`)
+
+- `scan [flags] [folder]` (offline) and `check [flags] [folder]` (online);
+  flags may come before or after the folder: `--profile ventoy|proxmox`
+  (saved in state), `--json`, `--catalog FILE`, `--no-hash`, `--no-update-check`.
+- The folder defaults to the drive in portable mode and is required otherwise.
+- Catalog: `--catalog`, else `<config>/catalog.toml` if present, else built in.
+- Env: `GITHUB_TOKEN` (rate limit), `ISOSHELF_NO_UPDATE_CHECK`.
+- Both commands record the scan, hash fixed-name images (progress only when
+  stderr is a terminal), save state and (not portable) the mirror. A state
+  that can't be saved (read-only share) is a warning, not an error.
+- Exit codes: 0 done, 1 failed, 2 usage error. The JSON field names are an
+  interface for scripts; change them with care.
+- Live smoke test: build it and run `check` on a folder of stand-in files named
+  like the sample drive. This is how the kernel.org redirect for Linux Mint was
+  found (the catalog now uses `mirrors.edge.kernel.org`).
+
 ### Where we stopped (2026-09-17)
 
-Steps 1-4 are done. Next: step 5, the CLI. It needs the status logic first:
-- versioned entries with an artifact: update if the resolved filename differs
-  from the file on disk; check-only entries: compare versions;
-- fixed-name entries: compare the published checksum with the recorded hash;
-- EOL from the file's own cycle (or the pinned channel's cycle);
-- group several files per entry ("keep newest"), plus the app update notice.
+Steps 1-5 are done. Next: step 6, the local web UI (`internal/web`), after
+feedback from the maintainer on running `isoshelf check` against the real drive
+and NAS folder.
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 

@@ -37,7 +37,7 @@ var recordings = []recording{
 	{"https://mirror.cachyos.org/ISO/desktop/", nil},
 	{"https://mirror.cachyos.org/ISO/desktop/260809/cachyos-desktop-linux-260809.iso.sha256", nil},
 	{"https://download.bazzite.gg/bazzite-deck-gnome-stable-live-amd64.iso-CHECKSUM", nil},
-	{"https://mirrors.kernel.org/linuxmint/stable/22.3/sha256sum.txt", nil},
+	{"https://mirrors.edge.kernel.org/linuxmint/stable/22.3/sha256sum.txt", nil},
 	{"https://vault.centos.org/altarch/7.9.2009/isos/i386/sha256sum.txt", nil},
 	{"https://api.github.com/repos/netbootxyz/netboot.xyz/releases?per_page=100", releases(3, `\.iso$|checksums`)},
 	{"https://api.github.com/repos/ublue-os/bazzite/releases?per_page=100", releases(6, `^$`)},

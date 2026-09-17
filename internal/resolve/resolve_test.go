@@ -38,7 +38,7 @@ func TestResolveRecorded(t *testing.T) {
 		sha256   string
 	}{
 		{"linuxmint-cinnamon", "linuxmint-22.3-cinnamon-64bit.iso",
-			"https://mirrors.kernel.org/linuxmint/stable/22.3/linuxmint-22.3-cinnamon-64bit.iso",
+			"https://mirrors.edge.kernel.org/linuxmint/stable/22.3/linuxmint-22.3-cinnamon-64bit.iso",
 			"a081ab202cfda17f6924128dbd2de8b63518ac0531bcfe3f1a1b88097c459bd4"},
 		{"popos-2204-intel", "pop-os_22.04_amd64_intel_58.iso",
 			"https://iso.pop-os.org/22.04/amd64/intel/58/pop-os_22.04_amd64_intel_58.iso",

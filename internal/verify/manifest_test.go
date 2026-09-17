@@ -66,7 +66,7 @@ func TestStrongest(t *testing.T) {
 // The recorded manifests from real projects all parse.
 func TestParseRecordedManifests(t *testing.T) {
 	tests := map[string]string{
-		"https://mirrors.kernel.org/linuxmint/stable/22.3/sha256sum.txt":                        "linuxmint-22.3-cinnamon-64bit.iso",
+		"https://mirrors.edge.kernel.org/linuxmint/stable/22.3/sha256sum.txt":                   "linuxmint-22.3-cinnamon-64bit.iso",
 		"https://vault.centos.org/altarch/7.9.2009/isos/i386/sha256sum.txt":                     "CentOS-7-i386-Minimal-2009.iso",
 		"https://iso.pop-os.org/22.04/amd64/intel/58/SHA256SUMS":                                "pop-os_22.04_amd64_intel_58.iso",
 		"https://download.bazzite.gg/bazzite-deck-gnome-stable-live-amd64.iso-CHECKSUM":         "bazzite-deck-gnome-stable-live-amd64.iso",

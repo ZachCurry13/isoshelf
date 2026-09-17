@@ -8,7 +8,7 @@ re-check anything that looks stale. Nothing here is guaranteed to be up to date.
 
 | Image | Source | Checksums |
 |---|---|---|
-| Linux Mint Cinnamon | endoflife `linuxmint`. Each point release is its own cycle (`22.3`, `22.2`), with no `latest` field. The same product also lists `lmde7`, so the track needs a cycle filter. | Mint's download page links `https://mirrors.kernel.org/linuxmint/stable/{cycle}/sha256sum.txt` and `sha256sum.txt.gpg`. |
+| Linux Mint Cinnamon | endoflife `linuxmint`. Each point release is its own cycle (`22.3`, `22.2`), with no `latest` field. The same product also lists `lmde7`, so the track needs a cycle filter. | Mint's download page links `https://mirrors.kernel.org/linuxmint/stable/{cycle}/sha256sum.txt` and `sha256sum.txt.gpg`, which redirect (301) to `mirrors.edge.kernel.org` (checked 2026-09-17); the catalog uses the edge address directly. |
 | netboot.xyz, netboot.xyz multiarch | github `netbootxyz/netboot.xyz`, tags like `3.0.3`. Assets `netboot.xyz.iso` and `netboot.xyz-multiarch.iso` (also `-arm64`, `-sb`, `-legacy`: other tracks). | Per-asset `digest` in the API. |
 | Pop!_OS 22.04 Intel/AMD | listing `https://api.pop-os.org/builds/22.04/intel` (JSON: `build`, `url`, `sha_sum`). Build was 58. endoflife `pop-os` has cycles `24.04`, `22.04`, without `latest`. | `https://iso.pop-os.org/22.04/amd64/intel/{build}/SHA256SUMS` and `SHA256SUMS.gpg`. |
 | CachyOS Desktop | listing `https://mirror.cachyos.org/ISO/desktop/` (index of `YYMMDD/` folders). `cdn77.cachyos.org` and `iso.cachyos.org` returned 404. | `{version}/cachyos-desktop-linux-{version}.iso.sha256` (GNU format), plus `.sig`. |

@@ -12,9 +12,9 @@
 </div>
 
 > [!WARNING]
-> isoshelf is in early development and doesn't do anything useful yet. This page
-> describes what it's being built to do. See the [roadmap](#roadmap) for
-> progress.
+> isoshelf is in early development. It can already list the images in a folder
+> and check them for updates from the command line, but it can't download
+> anything yet. See the [roadmap](#roadmap) for progress.
 
 ## Why
 
@@ -83,34 +83,38 @@ identifies it (for example `linuxmint-22.3-cinnamon-64bit.iso`), where to find
 its latest version, and where its checksums are published. You can keep your
 own copy of the catalog to add images the default one doesn't know about.
 
-This is what `isoshelf check` is meant to print. It's an illustration, not real
-output yet:
+Here's `isoshelf check` on a test drive (trimmed, and the NOTE column shortened):
 
 ```text
 $ isoshelf check E:\
-STATUS            TRACK                      FILE                                  LATEST
-up to date        Linux Mint Cinnamon        linuxmint-22.3-cinnamon-64bit.iso     22.3
-update available  Pop!_OS 22.04 Intel/AMD    pop-os_22.04_amd64_intel_56.iso       58
-update available  MX Linux (64-bit)          MX-21.3_x64.iso                       25.2
-EOL               CentOS 7 (32-bit)          CentOS-7-i386-Minimal-2009.iso        -
-not bootable      FydeOS for PC              FydeOS_for_PC_iris_v22.0-SP1-io.bin   -
-manual            Hiren's BootCD PE          HBCD_PE_x64.iso                       -
-unrecognized      -                          Windows.iso                           -
+STATUS                  TRACK                                VERSION   LATEST    FILE                                 NOTE
+update available        Pop!_OS 22.04 (Intel/AMD)            56        58        pop-os_22.04_amd64_intel_56.iso
+update available (EOL)  MX Linux Xfce (64-bit)               21.3      25.2      MX-21.3_x64.iso
+EOL                     CentOS 7 Minimal (32-bit, archival)  2009      2009      CentOS-7-i386-Minimal-2009.iso
+not bootable            FydeOS for PC (Intel Iris)           22.0-SP1  -         FydeOS_for_PC_iris_v22.0-SP1-io.bin  ... Make bootable can fix this
+unrecognized            -                                    -         -         Windows.iso
+manual                  Hiren's BootCD PE                    -         -         HBCD_PE_x64.iso
+up to date              Linux Mint Cinnamon                  22.3      22.3      linuxmint-22.3-cinnamon-64bit.iso
+
+25 image(s): 9 updates available, 1 EOL, 1 not bootable, 1 unrecognized, 12 manual, 1 up to date.
 ```
 
 ## Roadmap
 
 **v0.1: read-only.** isoshelf only writes to its own `.isoshelf/` folder.
 
-- [ ] Catalog loader and validation *(in progress)*
-- [ ] Scanner: filename matching and content sniffing
-- [ ] Drive state and history, including portable mode
-- [ ] Update sources: endoflife.date, GitHub, listings, manual
-- [ ] Command line: `isoshelf scan` and `isoshelf check`, with `--json`
+- [x] Catalog loader and validation
+- [x] Scanner: filename matching and content sniffing
+- [x] Drive state and history, including portable mode
+- [x] Update sources: endoflife.date, GitHub, listings, manual
+- [x] Command line: `isoshelf scan` and `isoshelf check`, with `--json`
 - [ ] Web interface showing the same table, opened in your browser
 
-**v0.2:** downloads, verification, replacing old files, and fixes for files the
-boot menu won't list.<br>
+**v0.2:** downloads, verification, replacing old files, adding images from the
+catalog, installing an older version when a new one breaks something, and fixes
+for files the boot menu won't list.<br>
+**Ongoing:** more images in the catalog: popular desktops, homelab and server
+systems, and rescue tools.<br>
 **v0.3:** rebuild a drive from your usual set, and repair mode.<br>
 **Later:** server mode (Docker, TrueNAS, Proxmox LXC) and a macOS build.
 
@@ -135,10 +139,21 @@ You need [Go](https://go.dev/dl/) 1.27 or newer.
 ```bash
 git clone https://github.com/ZachCurry13/isoshelf.git
 cd isoshelf
-go test ./...
+go build ./cmd/isoshelf
 ```
 
-There's no program to run yet; for now this builds the code and runs the tests.
+That creates `isoshelf` (`isoshelf.exe` on Windows) in the current folder. Then:
+
+```bash
+./isoshelf check /path/to/your/isos
+```
+
+Use `scan` instead of `check` to stay offline, add `--profile proxmox` for
+Proxmox ISO storage, or `--json` for scripts. `./isoshelf help` lists
+everything. isoshelf only writes to a `.isoshelf` folder inside the folder you
+check, plus its own settings folder.
+
+To run the tests: `go test ./...`
 
 ## License
 
