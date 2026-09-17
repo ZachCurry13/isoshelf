@@ -199,6 +199,11 @@ alone is not an update.
   `fingerprints`.
 - Validation: regexes compile, templates are valid, referenced keys exist, each
   sample filename matches exactly one entry. Every problem is reported at once.
+- Scope: the sample drive is only an example. The default catalog should cover
+  common and trending images (desktop, server/homelab, rescue tools), so users
+  can add images that aren't on their target yet. Add entries in batches once
+  step 4 can resolve them, checking each one live before it goes in. Wish list:
+  `docs/catalog-sources.md`.
 - Later: one file per distro under `catalog/`, validated in CI, plus a weekly
   workflow that resolves every entry and opens an issue when one breaks.
 
@@ -211,14 +216,31 @@ alone is not an update.
 3. Drive state + usual-set history, including portable-mode storage. *Done.*
 4. Sources: `endoflife`, `github`, `listing`, `manual` (check only).
 5. CLI: `isoshelf scan <folder>` and `isoshelf check <folder>` print a status
-   table; `--json` for machine output.
-6. Local web UI (opened in the browser) showing the same table.
+   table; `--json` for machine output. Includes the app update notice (see
+   "App updates").
+6. Local web UI (opened in the browser) showing the same table, plus catalog
+   entries not on the target (listed only; adding them needs v0.2 downloads).
 
-**v0.2** - downloads, verification, keep/replace flow, Make bootable fix-ups.
+**v0.2** - downloads, verification, keep/replace flow, adding catalog images
+that aren't on the target, Make bootable fix-ups.
 **v0.3** - rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release.
+
+### App updates
+
+- Release builds embed their version (`-ldflags "-X main.version=v0.1.0"`).
+  Development builds report `dev` and never check.
+- On start (and daily in server mode), ask the GitHub API for the latest
+  release of `ZachCurry13/isoshelf`. If it's newer, show a notice with a link
+  to the release notes: one line on stderr in the CLI, a banner in the web UI.
+  The check can be turned off; the last check time lives in the config folder.
+- Only a notice for now: users download the new build themselves (portable:
+  replace the files on the drive; Docker: pull the new image). A later
+  "install update" must verify the release's `SHA256SUMS` first.
+- The repo must be public by the first release, or both the check and
+  downloads fail for users.
 
 ### Server mode (later, not started)
 

@@ -50,3 +50,19 @@ No update source. Download pages (all returned HTTP 200 unless noted):
 - Windows 10 and 11: `https://www.microsoft.com/software-download/windows10`
   and `.../windows11` (blocked the scripted check, HTTP 403)
 - Tiny Core: `http://tinycorelinux.net/downloads.html`
+
+## Wish list
+
+Images to add beyond the sample drive. Nothing here has been researched yet.
+Each one gets its sources checked live before it goes into the catalog.
+
+- **Desktop:** Ubuntu (LTS and latest), Kubuntu, Xubuntu, Linux Mint MATE and
+  Xfce, LMDE, Fedora Workstation and KDE, Debian live, Pop!_OS 24.04, Zorin OS,
+  elementary OS, openSUSE Tumbleweed and Leap, Manjaro KDE and GNOME,
+  EndeavourOS, Arch Linux.
+- **Trending:** more Bazzite variants (KDE, desktop, NVIDIA), Nobara, Aurora,
+  Bluefin, NixOS.
+- **Server and homelab:** Ubuntu Server, Debian netinst, Proxmox VE, Proxmox
+  Backup Server, TrueNAS, Rocky Linux, AlmaLinux, OPNsense, Talos Linux.
+- **Rescue and tools:** SystemRescue, GParted Live, Clonezilla stable,
+  Rescuezilla, Memtest86+, ShredOS, Kali Linux, Tails.
