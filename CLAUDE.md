@@ -232,11 +232,28 @@ alone is not an update.
    entries not on the target (listed only; adding them needs v0.2 downloads).
 
 **v0.2** - downloads, verification, keep/replace flow, adding catalog images
-that aren't on the target, Make bootable fix-ups.
+that aren't on the target, installing older versions (below), Make bootable
+fix-ups.
 **v0.3** - rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release.
+
+### Older versions
+
+For when a new release breaks something and the user needs the previous one.
+
+- Sources can list every version still published, newest first: each
+  endoflife cycle that belongs to the track (its latest version), each matching
+  GitHub release, each version a listing shows. Manual and check-only entries
+  can't. Only versions of the same track are offered.
+- The chosen version is resolved and verified like any download. If the project
+  no longer publishes it or its checksum, say so; never take checksums from
+  anywhere but the official site.
+- Installing an older version puts the track on hold (`hold` in state): checks
+  show "held at <version>" instead of "update available", and the scheduler
+  never updates or replaces a held track until the user releases the hold.
+  The keep/replace checkbox applies as usual.
 
 ### App updates
 
