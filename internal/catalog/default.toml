@@ -1,10 +1,91 @@
 # The catalog built into isoshelf. The field reference is in CLAUDE.md
-# ("Catalog") and internal/catalog/catalog.go.
+# ("Catalog") and internal/catalog/catalog.go. Where each source was found, and
+# when it was last checked: docs/catalog-sources.md.
 #
-# Only netboot.xyz so far. The rest of the sample drive is still to be added,
-# using the research in docs/catalog-sources.md.
+# Entries are grouped by what isoshelf can do with them:
+#   1. download: update checks plus a place to download from
+#   2. check-only: update checks, but no confirmed official checksums yet
+#   3. manual: recognized, with a download page link
 
 schema = 1
+
+# ---------------------------------------------------------------------------
+# 1. Download
+# ---------------------------------------------------------------------------
+
+[[entry]]
+id = "linuxmint-cinnamon"
+name = "Linux Mint Cinnamon"
+arch = "x86_64"
+match = 'linuxmint-(?P<version>\d+(?:\.\d+)*)-cinnamon-64bit\.iso'
+samples = ["linuxmint-22.3-cinnamon-64bit.iso"]
+page = "https://linuxmint.com/download.php"
+
+[entry.source]
+type = "endoflife"
+product = "linuxmint"
+channel = "latest"
+cycles = '\d+(?:\.\d+)*' # numbered releases only, not LMDE
+
+[entry.artifact]
+base = "https://mirrors.kernel.org/linuxmint/stable/{cycle}/"
+file = 'linuxmint-{cycle}-cinnamon-64bit\.iso'
+manifest = "sha256sum.txt"
+
+[[entry]]
+id = "popos-2204-intel"
+name = "Pop!_OS 22.04 (Intel/AMD)"
+arch = "x86_64"
+match = 'pop-os_22\.04_amd64_intel_(?P<version>\d+)\.iso'
+samples = ["pop-os_22.04_amd64_intel_56.iso"]
+page = "https://system76.com/pop/download/"
+
+[entry.source]
+type = "listing"
+url = "https://api.pop-os.org/builds/22.04/intel"
+regex = '"build":\s*"(?P<version>\d+)"'
+
+[entry.artifact]
+base = "https://iso.pop-os.org/22.04/amd64/intel/{version}/"
+file = 'pop-os_22\.04_amd64_intel_{version}\.iso'
+manifest = "SHA256SUMS"
+
+[[entry]]
+id = "cachyos-desktop"
+name = "CachyOS Desktop"
+arch = "x86_64"
+match = 'cachyos-desktop-linux-(?P<version>\d{6})\.iso'
+samples = ["cachyos-desktop-linux-260308.iso"]
+page = "https://cachyos.org/download/"
+
+[entry.source]
+type = "listing"
+url = "https://mirror.cachyos.org/ISO/desktop/"
+regex = 'href="(?P<version>\d{6})/"'
+
+[entry.artifact]
+base = "https://mirror.cachyos.org/ISO/desktop/{version}/"
+file = 'cachyos-desktop-linux-{version}\.iso'
+manifest = "cachyos-desktop-linux-{version}.iso.sha256"
+
+[[entry]]
+id = "bazzite-deck-gnome"
+name = "Bazzite Deck (GNOME, stable)"
+arch = "x86_64"
+match = 'bazzite-deck-gnome-stable-live-amd64\.iso'
+fixed_name = true
+samples = ["bazzite-deck-gnome-stable-live-amd64.iso"]
+page = "https://bazzite.gg/"
+
+[entry.source]
+type = "github"
+repo = "ublue-os/bazzite"
+tag = '(?P<version>\d+\.\d{8}(?:\.\d+)?)' # stable tags; unstable ones have a prefix
+
+[entry.artifact]
+base = "https://download.bazzite.gg/"
+file = 'bazzite-deck-gnome-stable-live-amd64\.iso'
+manifest = "bazzite-deck-gnome-stable-live-amd64.iso-CHECKSUM"
 
 [[entry]]
 id = "netbootxyz"
@@ -13,9 +94,233 @@ arch = "x86_64"
 match = 'netboot\.xyz\.iso'
 fixed_name = true
 samples = ["netboot.xyz.iso"]
+page = "https://netboot.xyz/"
 
 [entry.source]
 type = "github"
 repo = "netbootxyz/netboot.xyz"
 tag = '(?P<version>\d+\.\d+\.\d+)'
 asset = 'netboot\.xyz\.iso'
+
+[[entry]]
+id = "netbootxyz-multiarch"
+name = "netboot.xyz (multiarch)"
+arch = "multi"
+match = 'netboot\.xyz-multiarch\.iso'
+fixed_name = true
+samples = ["netboot.xyz-multiarch.iso"]
+page = "https://netboot.xyz/"
+
+[entry.source]
+type = "github"
+repo = "netbootxyz/netboot.xyz"
+tag = '(?P<version>\d+\.\d+\.\d+)'
+asset = 'netboot\.xyz-multiarch\.iso'
+
+[[entry]]
+id = "centos-7-i386-minimal"
+name = "CentOS 7 Minimal (32-bit, archival)"
+arch = "x86"
+match = 'CentOS-7-i386-Minimal-(?P<version>\d{4})\.iso'
+samples = ["CentOS-7-i386-Minimal-2009.iso"]
+page = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
+
+[entry.source]
+type = "endoflife"
+product = "centos"
+channel = "7"
+
+[entry.artifact]
+base = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
+file = 'CentOS-7-i386-Minimal-\d{4}\.iso'
+manifest = "sha256sum.txt"
+
+# ---------------------------------------------------------------------------
+# 2. Check-only
+# ---------------------------------------------------------------------------
+
+[[entry]]
+id = "mx-linux-xfce-x64"
+name = "MX Linux Xfce (64-bit)"
+arch = "x86_64"
+match = 'MX-(?P<version>\d+(?:\.\d+)*)_(?:Xfce_)?x64\.iso' # "Xfce_" since MX 25
+samples = ["MX-21.3_x64.iso", "MX-25.2_Xfce_x64.iso"]
+page = "https://mxlinux.org/download-links/"
+
+[entry.source]
+type = "endoflife"
+product = "mxlinux"
+channel = "latest"
+
+[[entry]]
+id = "mx-linux-xfce-x32"
+name = "MX Linux Xfce (32-bit)"
+arch = "x86"
+match = 'MX-(?P<version>\d+(?:\.\d+)*)_x32\.iso'
+samples = ["MX-23.3_x32.iso"]
+page = "https://mxlinux.org/download-links/"
+
+[entry.source]
+type = "endoflife"
+product = "mxlinux"
+channel = "23" # no 32-bit ISO found for MX 25
+
+[[entry]]
+id = "manjaro-xfce"
+name = "Manjaro Xfce"
+arch = "x86_64"
+match = 'manjaro-xfce-(?P<version>\d+(?:\.\d+)+)-\d{6}-linux\d+\.iso'
+samples = ["manjaro-xfce-23.0.4-231015-linux65.iso", "manjaro-xfce-26.1.0-260812-linux71.iso"]
+page = "https://manjaro.org/products/download/x86"
+
+[entry.source]
+type = "listing"
+url = "https://manjaro.org/products/download/x86"
+regex = 'download\.manjaro\.org/xfce/(?P<version>\d+(?:\.\d+)+)/manjaro-xfce-'
+
+[[entry]]
+id = "clonezilla-alternative"
+name = "Clonezilla Live (Ubuntu-based)"
+arch = "x86_64"
+match = 'clonezilla-live-(?P<version>\d{8})-[a-z]+-amd64\.iso'
+samples = ["clonezilla-live-20231102-mantic-amd64.iso", "clonezilla-live-20260705-resolute-amd64.iso"]
+page = "https://clonezilla.org/downloads.php"
+
+[entry.source]
+type = "listing"
+url = "https://sourceforge.net/projects/clonezilla/rss?path=/clonezilla_live_alternative"
+regex = 'clonezilla-live-(?P<version>\d{8})-[a-z]+-amd64\.iso'
+
+# ---------------------------------------------------------------------------
+# 3. Manual
+# ---------------------------------------------------------------------------
+
+[[entry]]
+id = "windows-11-x64"
+name = "Windows 11"
+arch = "x86_64"
+match = 'Win11_(?:(?P<version>\d{2}H\d)_)?[A-Za-z]+(?:_[A-Za-z]+)*_x64(?:v\d+)?\.iso'
+samples = ["Win11_English_x64.iso", "Win11_23H2_English_x64v2.iso"]
+page = "https://www.microsoft.com/software-download/windows11"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "windows-10"
+name = "Windows 10"
+arch = "x86_64"
+match = 'Windows10\.iso|Win10_(?:(?P<version>\d{2}H\d)_)?[A-Za-z]+(?:_[A-Za-z]+)*_x64(?:v\d+)?\.iso'
+samples = ["Windows10.iso"]
+page = "https://www.microsoft.com/software-download/windows10"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "hirens-bootcd-pe"
+name = "Hiren's BootCD PE"
+arch = "x86_64"
+match = 'HBCD_PE_x64\.iso'
+fixed_name = true
+samples = ["HBCD_PE_x64.iso"]
+page = "https://www.hirensbootcd.org/download/"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "fydeos-pc-iris"
+name = "FydeOS for PC (Intel Iris)"
+arch = "x86_64"
+match = 'FydeOS_for_PC_iris_v(?P<version>\d+(?:\.\d+)*(?:-SP\d+)?)-io(?:-stable)?\.(?:iso|img|bin)'
+samples = ["FydeOS_for_PC_iris_v22.0-io-stable.iso", "FydeOS_for_PC_iris_v22.0-SP1-io.bin"]
+page = "https://fydeos.io/download/"
+fixup = "rename:.img" # Ventoy boots FydeOS only as .img
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "hexos-installer"
+name = "HexOS installer"
+arch = "x86_64"
+match = 'TrueNAS-SCALE-(?P<version>\d+(?:\.\d+)+)-HexOS\.iso'
+samples = ["TrueNAS-SCALE-24.10.2.2-HexOS.iso"]
+page = "https://hexos.com/"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "atlasos"
+name = "AtlasOS (archival ISO)"
+arch = "x86_64"
+match = 'Atlas_v(?P<version>\d+(?:\.\d+)*)\.iso'
+samples = ["Atlas_v0.5.2.iso"]
+page = "https://atlasos.net/"
+
+[entry.source]
+type = "manual"
+
+# Tiny Core's official site is http:// only and publishes MD5 checksums only,
+# and the -current files have no checksum file of their own.
+
+[[entry]]
+id = "tinycore-core"
+name = "Tiny Core Linux: Core (32-bit)"
+arch = "x86"
+match = 'Core-current\.iso'
+fixed_name = true
+samples = ["Core-current.iso"]
+page = "http://tinycorelinux.net/downloads.html"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "tinycore-coreplus"
+name = "Tiny Core Linux: CorePlus (32-bit)"
+arch = "x86"
+match = 'CorePlus-current\.iso'
+fixed_name = true
+samples = ["CorePlus-current.iso"]
+page = "http://tinycorelinux.net/downloads.html"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "tinycore-tinycore"
+name = "Tiny Core Linux: TinyCore (32-bit)"
+arch = "x86"
+match = 'TinyCore-current\.iso'
+fixed_name = true
+samples = ["TinyCore-current.iso"]
+page = "http://tinycorelinux.net/downloads.html"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "q4os-instcd-x32"
+name = "Q4OS install CD (32-bit)"
+arch = "x86"
+match = 'q4os-(?P<version>\d+(?:\.\d+)*)-i386-instcd(?:\.r\d+)?(?:_x32)?\.iso'
+samples = ["q4os-5.5-i386-instcd.r1_x32.iso"]
+page = "https://www.q4os.org/downloads2.html"
+
+[entry.source]
+type = "manual"
+
+[[entry]]
+id = "batocera-x86"
+name = "Batocera (32-bit x86, archival)"
+arch = "x86"
+match = 'batocera-(?P<version>\d+(?:\.\d+)*)-x86-\d{8}\.img(?:\.gz)?'
+samples = ["batocera-5.25-x86-20200310.img"]
+page = "https://batocera.org/download"
+fixup = "extract" # published as .img.gz
+
+[entry.source]
+type = "manual"

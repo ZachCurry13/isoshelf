@@ -151,6 +151,13 @@ func (ec entryCheck) manual() bool {
 	return ec.e.Source.Type == SourceManual
 }
 
+// checkOnly reports whether a non-manual entry has nowhere to download from.
+func (ec entryCheck) checkOnly() bool {
+	s := ec.e.Source
+	fromAsset := s.Type == SourceGitHub && s.Asset != ""
+	return templateVars(s.Type) != nil && ec.e.Artifact == nil && !fromAsset
+}
+
 func (ec entryCheck) checkIdentity(ids map[string]int) {
 	e := ec.e
 	switch {
@@ -188,6 +195,7 @@ func (ec entryCheck) checkSource() {
 	for _, f := range []struct{ name, value, owner string }{
 		{"product", s.Product, SourceEndOfLife},
 		{"channel", s.Channel, SourceEndOfLife},
+		{"cycles", s.Cycles, SourceEndOfLife},
 		{"repo", s.Repo, SourceGitHub},
 		{"tag", s.Tag, SourceGitHub},
 		{"asset", s.Asset, SourceGitHub},
@@ -198,7 +206,7 @@ func (ec entryCheck) checkSource() {
 		switch {
 		case f.owner != s.Type && f.value != "":
 			ec.problem("source."+f.name, "not used by %s sources", s.Type)
-		case f.owner == s.Type && f.value == "" && f.name != "asset":
+		case f.owner == s.Type && f.value == "" && f.name != "asset" && f.name != "cycles":
 			ec.problem("source."+f.name, "required for %s sources", s.Type)
 		}
 	}
@@ -210,6 +218,11 @@ func (ec entryCheck) checkSource() {
 		}
 		if s.Channel != "" && s.Channel != "latest" && s.Channel != "lts" && !cyclePattern.MatchString(s.Channel) {
 			ec.problem("source.channel", `%q must be "latest", "lts" or a release cycle such as "24.04"`, s.Channel)
+		}
+		if s.Cycles != "" {
+			if _, err := compileWhole(s.Cycles); err != nil {
+				ec.problem("source.cycles", "%v", err)
+			}
 		}
 	case SourceGitHub:
 		if s.Repo != "" && !repoPattern.MatchString(s.Repo) {
@@ -296,6 +309,8 @@ func (ec entryCheck) checkExtras(hashes map[string]string) {
 		ec.checkURL("page", e.Page, nil, webURL)
 	case ec.manual():
 		ec.problem("page", `required for manual entries (used by "Open download page")`)
+	case ec.checkOnly():
+		ec.problem("page", `required for entries without [entry.artifact] (used by "Open download page")`)
 	}
 
 	switch {
@@ -353,8 +368,7 @@ func (ec entryCheck) checkArtifact(keys map[string]SigningKey) {
 		}
 		return
 	case a == nil:
-		ec.problem("artifact", "required for %s sources", t)
-		return
+		return // check-only
 	}
 
 	withFile := append(slices.Clone(vars), "file")

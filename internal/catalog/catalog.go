@@ -88,9 +88,12 @@ type Source struct {
 	Type string `toml:"type"`
 
 	// endoflife: Product is the endoflife.date product id. Channel is
-	// "latest", "lts" or a pinned release cycle.
+	// "latest", "lts" or a pinned release cycle. Cycles, if set, must match a
+	// whole cycle name for that cycle to belong to the track (endoflife.date
+	// lists LMDE under Linux Mint, for example).
 	Product string `toml:"product"`
 	Channel string `toml:"channel"`
+	Cycles  string `toml:"cycles"`
 
 	// github: Repo is "owner/name". Tag matches the release tag and may
 	// capture a version. Asset, if set, matches the image among the release
@@ -109,7 +112,8 @@ type Source struct {
 	Version string `toml:"version"`
 }
 
-// Artifact says where the image and its checksums are published. Its fields
+// Artifact says where the image and its checksums are published. An entry
+// without one is check-only: it compares versions but can't download. Its fields
 // are templates: {version} is available for all sources, {cycle} for
 // endoflife and {tag} for github. Manifest and Sig may also use {file}, the
 // resolved image filename.

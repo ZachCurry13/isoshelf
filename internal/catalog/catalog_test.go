@@ -9,7 +9,7 @@ import (
 
 // validCatalog passes validation. It has one entry of each common shape: a
 // versioned endoflife track with a signed manifest, a fixed-name GitHub
-// asset, and a manual entry.
+// asset, a manual entry, and a check-only listing without an artifact.
 const validCatalog = `schema = 1
 
 [keys.example]
@@ -27,6 +27,7 @@ samples = ["example-1.2-amd64.iso"]
 type = "endoflife"
 product = "example"
 channel = "latest"
+cycles = '\d+(?:\.\d+)*'
 
 [entry.artifact]
 base = "https://example.org/releases/{cycle}/"
@@ -61,6 +62,19 @@ known_hashes = ["E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B85
 
 [entry.source]
 type = "manual"
+
+[[entry]]
+id = "example-beta"
+name = "Example Beta"
+arch = "arm64"
+match = 'example-beta-(?P<version>\d+)-arm64\.iso'
+samples = ["example-beta-7-arm64.iso"]
+page = "https://example.org/beta"
+
+[entry.source]
+type = "listing"
+url = "https://example.org/beta/"
+regex = 'example-beta-(?P<version>\d+)-arm64\.iso'
 `
 
 // load reads a catalog from an in-memory folder that also holds the key file
@@ -90,6 +104,7 @@ func TestLoadValid(t *testing.T) {
 		{"example-tool.iso", "example-tool", ""},
 		{"ExampleSetup_x86.iso", "example-setup", ""},
 		{"ExampleSetup_7_x86.iso", "example-setup", "7"},
+		{"example-beta-12-arm64.iso", "example-beta", "12"},
 		{"example-1.2-i386.iso", "", ""},
 		{"old-example-tool.iso", "", ""}, // patterns match whole names only
 		{"example-tool.iso.bak", "", ""},
@@ -162,6 +177,8 @@ func TestLoadInvalid(t *testing.T) {
 		{"field of another source type", `type = "manual"`, "type = \"manual\"\nrepo = \"example/tool\"", "source.repo: not used by manual sources"},
 		{"missing channel", `channel = "latest"`, "", "source.channel: required for endoflife sources"},
 		{"bad channel", `channel = "latest"`, `channel = "latest please"`, `must be "latest", "lts" or a release cycle`},
+		{"bad cycles regex", `cycles = '\d+(?:\.\d+)*'`, `cycles = '\d+(('`, "source.cycles: error parsing regexp"},
+		{"cycles on another source type", `type = "manual"`, "type = \"manual\"\ncycles = '1'", "source.cycles: not used by manual sources"},
 		{"bad repo", `repo = "example/tool"`, `repo = "example"`, "must look like owner/name"},
 		{"bad tag regex", `tag = 'v(?P<version>\d+\.\d+\.\d+)'`, `tag = 'v(\d+'`, "source.tag: error parsing regexp"},
 		{"listing regex without version", "type = \"github\"\nrepo = \"example/tool\"\ntag = 'v(?P<version>\\d+\\.\\d+\\.\\d+)'\nasset = 'example-tool\\.iso'", "type = \"listing\"\nurl = \"https://example.org/tool/\"\nregex = 'tool v\\d+'", "source.regex: needs a (?P<version>...) group"},
@@ -175,7 +192,8 @@ func TestLoadInvalid(t *testing.T) {
 
 		// Artifacts.
 		{"github asset with artifact", `asset = 'example-tool\.iso'`, "asset = 'example-tool\\.iso'\n\n[entry.artifact]\nbase = \"https://example.org/\"\nfile = 'x\\.iso'", "not used when source.asset is set"},
-		{"missing artifact", `asset = 'example-tool\.iso'`, "", "artifact: required for github sources"},
+		{"check-only entry without page", `page = "https://example.org/beta"`, "", "page: required for entries without [entry.artifact]"},
+		{"github label without artifact or page", `asset = 'example-tool\.iso'`, "", "page: required for entries without [entry.artifact]"},
 		{"fixed name without checksum", `asset = 'example-tool\.iso'`, "", "fixed_name: needs a published checksum"},
 		{"http base", `base = "https://example.org/releases/{cycle}/"`, `base = "http://example.org/releases/{cycle}/"`, "must be an https:// URL"},
 		{"base without slash", `base = "https://example.org/releases/{cycle}/"`, `base = "https://example.org/releases/{cycle}"`, "artifact.base: must end with /"},

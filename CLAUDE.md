@@ -193,7 +193,7 @@ alone is not an update.
 ## Milestones
 
 **v0.1 - read-only** (the only writes are to `.isoshelf/`)
-1. Catalog loader + validation. *In progress, see "Where we stopped".*
+1. Catalog loader + validation. *Done.*
 2. Scanner + filename matching + content sniffing + target profiles, with table
    tests built from the sample drive.
 3. Drive state + usual-set history, including portable-mode storage.
@@ -223,13 +223,7 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 
 ### Where we stopped (2026-09-17)
 
-Step 1: the loader and validation are done and tested. Still open:
-
-- Add the optional `cycles` regex to endoflife sources.
-- Allow non-manual entries without `[artifact]` (check-only; decided yes).
-- Fill `internal/catalog/default.toml` with the sample-drive entries (it only
-  has netboot.xyz) and add a test mapping each sample-drive filename to its
-  entry. Findings so far: `docs/catalog-sources.md`.
+Step 1 is done. Next: step 2, the scanner.
 
 ## Sample drive (real filenames - use as scanner test fixtures)
 
