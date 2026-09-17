@@ -17,7 +17,14 @@ project, not affiliated with Ventoy.
   file(s) of that same track.
 - A download without a published checksum ("unverified") never replaces
   anything on its own: the old file stays until the user confirms that item.
-- Only ever delete files the scanner matched to a catalog entry.
+- Only ever delete image files inside the folder the user picked: recognized
+  images, and unrecognized ones such as a renamed Windows ISO (decided
+  2026-09-17, replacing "only files matched to a catalog entry"). Never other
+  files (notes, archives, anything without an image extension or image
+  content), and never anything outside that folder.
+- Every delete asks first, per file, and offers both: move aside into
+  `<target>/.isoshelf/removed/` (instant and undoable; the space is freed when
+  the user empties it, and isoshelf shows how much it holds), or delete now.
 - A mismatch against a published checksum always blocks placement. No published
   checksum -> allow, but mark the file "unverified".
 - Updates never change an entry's architecture, edition or channel. A 32-bit
@@ -251,13 +258,33 @@ alone is not an update.
    entries not on the target (listed only; adding them needs v0.2 downloads).
    *Done.*
 
-**v0.2** - downloads, verification, keep/replace flow, adding catalog images
-that aren't on the target, installing older versions (below), Make bootable
-fix-ups.
+**v0.2** - downloads and the actions around them, in this order:
+1. Downloads: resumable fetch, checksum verification, place into the target.
+   An Update button per image (plus "Update all"); never all-or-nothing.
+   Replacing or keeping the old file follows the per-track checkbox.
+2. Assign: suggest what an unrecognized file is and confirm it (below).
+3. Delete: remove images the user no longer wants (see the hard rules).
+4. Adding catalog images that aren't on the target (the "Add" button).
+5. Installing older versions with a hold (below), and Make bootable fix-ups.
 **v0.3** - rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release.
+
+### Assign: suggesting what an unrecognized file is
+
+For files the catalog doesn't match by name, such as `Windows.iso` from the
+Media Creation Tool:
+
+- Read the ISO 9660 volume label (32 bytes at 0x8028) and creation date from
+  the primary volume descriptor: Windows images carry labels like
+  `CCCOMA_X64FRE_EN-US_DV9`, Ubuntu ones `Ubuntu 24.04.3 LTS amd64`.
+- Rank candidates by label, by known_hashes and published checksums that match
+  the file's hash, by content kind, and by name similarity.
+- Show the best guesses with the reason ("its label says Windows 11"), and let
+  the user confirm or pick any catalog entry. Never assign silently.
+- A confirmed assignment is stored in the target's state against the file's
+  size and hash, so later scans recognize it and check it for updates.
 
 ### Older versions
 
