@@ -150,16 +150,27 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 - [x] Command line: `isoshelf scan` and `isoshelf check`, with `--json`
 - [x] Web interface showing the same table, opened in your browser
 
-**v0.2 (in progress):** downloads with verification, per-image updates,
-removal with put-back, the archive of images that have left, filters, sorting,
-logos, working out what unrecognized files are, naming the ones no list will
-ever know, adding images from the catalog, and a catalog that updates itself.
-Still to come: installing an older version when a new one breaks something,
-and fixes for files the boot menu won't list.<br>
+**v0.2: doing something about it.** The first released version.
+
+- [x] Verified, resumable downloads
+- [x] An Update button per image, and "Update all"
+- [x] Removing images, with put-back, and an archive of what has left
+- [x] Working out what unrecognized files are, and naming the rest yourself
+- [x] Adding images from the catalog, with sizes and the room left
+- [x] Filters, sorting, logos and links
+- [x] A catalog that keeps itself current
+
+**v0.3 (next):** [`isoshelf update` on the command
+line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
+version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
+[fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
+[several downloads at once](https://github.com/ZachCurry13/isoshelf/issues/4),
+and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
 **Ongoing:** more images in the catalog. 72 so far; the wish list is in
-[docs/catalog-sources.md](docs/catalog-sources.md), and requests are welcome.<br>
-**v0.3:** rebuild a drive from your usual set, and repair mode.<br>
-**Later:** server mode (Docker, TrueNAS, Proxmox LXC) and a macOS build.
+[docs/catalog-sources.md](docs/catalog-sources.md), and
+[requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
+**Later:** rebuild a drive from your usual set; server mode (Docker, TrueNAS,
+Proxmox LXC); a macOS build.
 
 ## Running from a USB drive on Linux
 
@@ -174,6 +185,24 @@ chmod +x ~/isoshelf-linux-amd64
 ```
 
 Adjust the first path to wherever your drive is mounted.
+
+## Getting it
+
+Download it from the [latest
+release](https://github.com/ZachCurry13/isoshelf/releases/latest). There's no
+installer and nothing to set up — it's one file.
+
+| You're on | Download | Then |
+|---|---|---|
+| **Windows** | `isoshelf-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
+| **Linux** | `isoshelf-linux-amd64` (or `-arm64`) | `chmod +x isoshelf-linux-amd64` then `./isoshelf-linux-amd64` |
+| **A USB drive** | `isoshelf-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
+
+Every release also has a `SHA256SUMS` file, if you'd like to check what you
+downloaded is what was built.
+
+isoshelf opens a page in your browser that only your own computer can reach.
+Pick the folder your images live in, and it takes it from there.
 
 ## Building from source
 
@@ -205,6 +234,38 @@ everything. isoshelf only writes to a `.isoshelf` folder inside the folder you
 check, plus its own settings folder.
 
 To run the tests: `go test ./...`
+
+## How this was built
+
+isoshelf was written with the help of [Claude Code](https://claude.com/claude-code).
+The commits carry a co-author line saying so, and it seems better to state it
+plainly than to let anyone feel they'd caught me out.
+
+I've wanted this tool for years. I have a drive full of ISOs, a NAS full of
+more, and no realistic chance of hand-writing a checksum-verifying downloader
+for sixty-odd distributions in my spare time. The choice was never "carefully
+hand-written or machine-assisted" — it was "this exists or it doesn't".
+
+What that did and did not change:
+
+- **The rules are mine.** What it may delete and when it has to ask, that a
+  failed checksum always blocks a file, that Windows images are a link and
+  never a download, that it mirrors nothing — those decisions came first and
+  are written down in [CLAUDE.md](CLAUDE.md), which the code follows.
+- **Nothing in the catalog is guessed.** Every entry was checked against the
+  project's own site by hand before it went in, and a live run resolves all 57
+  downloadable ones. Where a project's checksums can't be reached safely, the
+  entry says so and refuses to download rather than pretending.
+- **It's tested, and it's used.** The tests replay recorded responses so they
+  never touch the network or a real disk, they run on Windows and Linux for
+  every commit, and the thing itself runs against a real ISO folder on a NAS.
+  The test fixtures are real filenames off a real Ventoy drive.
+- **It's my responsibility.** If it deletes something it shouldn't, that's on
+  me, not on a tool. [Tell me](https://github.com/ZachCurry13/isoshelf/issues)
+  and I'll fix it.
+
+If you'd rather not run software built this way, that's a fair call to make,
+and the source is right here to judge for yourself.
 
 ## License
 

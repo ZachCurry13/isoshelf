@@ -292,7 +292,8 @@ alone is not an update.
    entries not on the target (listed only; adding them needs v0.2 downloads).
    *Done.*
 
-**v0.2** - downloads and the actions around them:
+**v0.2** - downloads and the actions around them. *Released as v0.2.0 on
+2026-09-18, the first released version.*
 1. Downloads: resumable fetch, checksum verification, place into the target.
    An Update button per image plus "Update all". *Done.*
 2. Delete: remove images the user no longer wants. *Done.*
