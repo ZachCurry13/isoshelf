@@ -95,3 +95,17 @@ Not researched yet. Each one gets checked live before it goes in.
 - **Server and homelab:** Rocky Linux, AlmaLinux, OPNsense, Talos Linux,
   Proxmox Mail Gateway and Datacenter Manager.
 - **Rescue and tools:** GParted Live, Clonezilla stable, Memtest86+, ShredOS.
+
+## Entry metadata
+
+Besides sources, every entry carries what the page needs to show it: a
+`category` (desktop, server, security, rescue, windows, other), a `family` so
+one product's tracks group together, `site` and `forum` links, and an `icon`
+(a [Simple Icons](https://simpleicons.org) name) with its `icon_color`. All the
+links were checked on 2026-09-17; a few sites answer scripted requests with 403
+or 406 but are fine in a browser (MX Linux, Kali's forums, Q4OS, Microsoft).
+
+Twenty-one projects have a logo in Simple Icons and ship inside isoshelf;
+refresh them with `go run ./internal/web/logos/fetch`. The rest show coloured
+initials. Entries added later, or from a user's own catalog, have their logo
+fetched once at runtime and kept in the settings folder.

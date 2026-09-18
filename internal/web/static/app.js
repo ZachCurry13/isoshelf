@@ -170,6 +170,7 @@ function render() {
   renderRows();
   renderFooter();
   renderCatalog();
+  renderPast();
 }
 
 function renderRun() {
@@ -232,6 +233,18 @@ function renderSummary() {
   }
 }
 
+function clearFilters() {
+  statusFilter = null;
+  view.category = view.arch = "";
+  view.updatesOnly = view.favoritesOnly = false;
+  $("search").value = "";
+  $("category").value = $("arch").value = "";
+  $("only-updates").checked = $("only-favorites").checked = false;
+  saveView();
+  renderSummary();
+  renderRows();
+}
+
 function renderRows() {
   const rows = $("rows");
   rows.replaceChildren();
@@ -268,7 +281,25 @@ function renderRows() {
   all.disabled = Boolean(state.run);
   all.textContent = `Update all (${updatable.length})`;
   empty.hidden = items.length > 0;
-  empty.textContent = total === 0 ? "No images found in this folder." : "Nothing matches the filter.";
+  empty.replaceChildren();
+  if (items.length === 0) {
+    if (total === 0) {
+      empty.append("No images found in this folder.");
+    } else {
+      const active = [
+        statusFilter && `status "${statusFilter}"`,
+        view.category && $("category").selectedOptions[0].textContent,
+        view.arch && $("arch").selectedOptions[0].textContent,
+        view.updatesOnly && "updates only",
+        view.favoritesOnly && "favourites only",
+        $("search").value.trim() && `search "${$("search").value.trim()}"`,
+      ].filter(Boolean);
+      empty.append(
+        `None of the ${plural(total, "image")} here match ${active.join(", ")}.`,
+        el("div", {},
+          el("button", { type: "button", class: "btn small", onclick: clearFilters }, "Clear filters")));
+    }
+  }
 }
 
 const STATUS_ORDER = STATUSES.map(([status]) => status);
@@ -615,6 +646,73 @@ async function renderCatalog() {
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
       el("button", { type: "button", class: "btn small", disabled: true, title: "Adding images that aren't in this folder yet is coming next" }, "Add")));
   }
+}
+
+// ---- Images that were here -------------------------------------------------
+
+const GONE_LABEL = {
+  "removed": "deleted",
+  "moved-aside": "moved aside",
+  "replaced": "replaced by a newer file",
+  "vanished": "gone from the folder",
+};
+
+async function renderPast() {
+  if (!state.target) {
+    $("past-count").textContent = "";
+    $("past-list").replaceChildren();
+    return;
+  }
+  let items;
+  try {
+    items = (await api("GET", "/api/archive")).items;
+  } catch {
+    return;
+  }
+  $("past").hidden = items.length === 0;
+  $("past-count").textContent = plural(items.length, "image");
+
+  const list = $("past-list");
+  list.replaceChildren();
+  for (const item of items) {
+    const when = item.gone_at ? timeAgo(item.gone_at) : "";
+    const detail = [GONE_LABEL[item.gone] || item.gone, when, formatBytes(item.size)].filter(Boolean).join(" \u00b7 ");
+    const buttons = [];
+    if (item.restorable) {
+      buttons.push(el("button", {
+        type: "button", class: "btn small", disabled: Boolean(state.run),
+        title: "Move it back into the folder",
+        onclick: () => restore(item),
+      }, "Put back"));
+    }
+    if (item.downloadable) {
+      buttons.push(el("button", {
+        type: "button", class: "btn small", disabled: Boolean(state.run),
+        title: "Download the current version again",
+        onclick: () => startUpdate(item.entry, "keep"),
+      }, "Download again"));
+    }
+    if (item.page) {
+      buttons.push(el("a", { class: "btn small", href: item.page, target: "_blank", rel: "noopener noreferrer" }, "Page"));
+    }
+    list.append(el("li", {},
+      logoTile(item),
+      el("div", { class: "info" },
+        el("div", {}, el("span", { class: "name" }, item.name),
+          item.version ? el("span", { class: "arch" }, item.version) : null),
+        el("div", { class: "kind" }, `${item.path} \u00b7 ${detail}`)),
+      buttons));
+  }
+}
+
+async function restore(item) {
+  try {
+    await api("POST", "/api/restore", { name: item.path.split("/").pop() });
+  } catch (err) {
+    showNotice(err.message, true);
+    return;
+  }
+  await start("scan");
 }
 
 async function setTrack(entry, change) {

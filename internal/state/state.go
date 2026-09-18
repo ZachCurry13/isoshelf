@@ -55,6 +55,8 @@ type State struct {
 	// default settings are left out.
 	Tracks  map[string]Track `json:"tracks"`
 	History []ScanRecord     `json:"history"`
+	// Past remembers images that used to be here, newest first.
+	Past []ArchiveEntry `json:"past,omitempty"`
 }
 
 // FileRecord is what isoshelf knows about one file. It stays valid while the
@@ -165,9 +167,18 @@ func (s *State) RecordScan(res *scan.Result, now time.Time) {
 		}
 	}
 
+	// Anything that isn't here any more is remembered, so it can be found or
+	// downloaded again later.
+	for path, rec := range s.Files {
+		if _, kept := files[path]; !kept && !inScan(res, path) {
+			s.archive(path, rec, GoneVanished, now)
+		}
+	}
+
 	found := map[string]bool{}
 	unrecognized := 0
 	for _, f := range res.Files {
+		s.forgetArchived(f.Path)
 		rec, ok := s.Files[f.Path]
 		if !ok || !rec.current(f) {
 			rec = FileRecord{Size: f.Size, ModTime: f.ModTime}
@@ -195,6 +206,11 @@ func (s *State) RecordScan(res *scan.Result, now time.Time) {
 	if extra := len(s.History) - maxHistory; extra > 0 {
 		s.History = slices.Clone(s.History[extra:])
 	}
+}
+
+// inScan reports whether the scan listed this path.
+func inScan(res *scan.Result, path string) bool {
+	return slices.ContainsFunc(res.Files, func(f scan.File) bool { return f.Path == path })
 }
 
 // Assign records that the file at path belongs to an entry the catalog didn't

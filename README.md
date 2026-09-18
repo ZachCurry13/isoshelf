@@ -32,10 +32,18 @@ isoshelf does that for you:
   [endoflife.date](https://endoflife.date), GitHub releases, or the project's
   own download listings.
 - **Verified downloads.** Downloads the new image, checks it against the
-  project's published checksum (and signature, where one exists), and only
-  then puts it in place.
+  project's published checksum, and only then puts it in place. Interrupted
+  downloads carry on where they stopped.
+- **One image at a time.** Every image has its own Update button, so you're
+  never forced to update everything at once.
+- **Tidying up.** Remove images you no longer want, and put them back later if
+  you change your mind. isoshelf remembers what left the folder and can
+  download it again.
 - **Flags problems.** Reports end-of-life releases, checksum mismatches,
   files your boot menu won't list, and files it doesn't recognize.
+- **Finds things fast.** Filter by kind, architecture, updates or favourites;
+  sort by name, size, version or age; and jump to each project's website,
+  forum or release notes.
 
 ## Safety first
 
@@ -111,10 +119,11 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 - [x] Command line: `isoshelf scan` and `isoshelf check`, with `--json`
 - [x] Web interface showing the same table, opened in your browser
 
-**v0.2 (in progress):** downloads with verification, per-image updates and
-removal are done. Still to come: recognizing unknown files, adding images from
-the catalog, installing an older version when a new one breaks something, and
-fixes for files the boot menu won't list.<br>
+**v0.2 (in progress):** downloads with verification, per-image updates,
+removal with put-back, the archive of images that have left, filters, sorting
+and logos are done. Still to come: recognizing unknown files, adding images
+from the catalog, installing an older version when a new one breaks something,
+and fixes for files the boot menu won't list.<br>
 **Ongoing:** more images in the catalog: popular desktops, homelab and server
 systems, and rescue tools.<br>
 **v0.3:** rebuild a drive from your usual set, and repair mode.<br>

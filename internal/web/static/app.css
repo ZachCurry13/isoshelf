@@ -313,7 +313,7 @@ td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-spac
 .switch input:disabled { cursor: default; }
 .switch input:disabled + .track { opacity: 0.5; }
 
-.empty { padding: 40px 16px; text-align: center; color: var(--muted); }
+.empty { padding: 40px 16px; text-align: center; color: var(--muted); display: grid; gap: 10px; justify-items: center; }
 
 /* Catalog */
 
@@ -477,3 +477,9 @@ td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-spac
 }
 .menu-items a { padding: 6px 10px; border-radius: 6px; color: var(--text); }
 .menu-items a:hover { background: color-mix(in srgb, var(--accent), transparent 88%); text-decoration: none; }
+
+/* The list of images that were here needs more room than the catalog grid. */
+.past-list { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+.past-list li { flex-wrap: wrap; row-gap: 8px; }
+.past-list .info { flex: 1 1 220px; }
+.past-list .kind { overflow-wrap: anywhere; }

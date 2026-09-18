@@ -137,7 +137,8 @@ alone is not an update.
   managing a NAS folder).
 - State lives in `.isoshelf/state.json` in the chosen folder: profile, placed
   files (entry, version, filename, SHA-256, source URL, date), the per-track
-  keep/replace choice, manual assignments for renamed files, and scan history
+  keep/replace and star choices, manual assignments for renamed files, the
+  archive of images that have left (`past`), and scan history
   (last 100 scans). A random `target_id` tells targets apart when drive letters
   change. File records stay valid while size and modification time are
   unchanged; a changed file loses its hash and assignment.
@@ -219,6 +220,9 @@ alone is not an update.
   - `samples`: at least one real filename; each must match its own entry only.
   - Optional: `fixed_name`, `page`, `fixup` (`extract`, `convert`,
     `rename:<ext>`), `known_hashes` (SHA-256).
+  - For the UI: `category` (desktop, server, security, rescue, windows,
+    other), `family` (groups one product's tracks), `site`, `forum`, and
+    `icon` + `icon_color` (a Simple Icons name and brand colour).
 - `[entry.source]`: `type` plus only that type's fields. endoflife: `product`,
   `channel`, optional `cycles` (regex over cycle names; only matching cycles
   belong to the track, e.g. to keep LMDE out of Linux Mint). github: `repo`,
@@ -270,16 +274,27 @@ alone is not an update.
 **v0.2** - downloads and the actions around them:
 1. Downloads: resumable fetch, checksum verification, place into the target.
    An Update button per image plus "Update all". *Done.*
-3. Delete: remove images the user no longer wants. *Done.*
-2. Assign: suggest what an unrecognized file is and confirm it (below).
-4. Adding catalog images that aren't on the target (the "Add" button).
-5. Installing older versions with a hold (below), and Make bootable fix-ups.
-6. Still open: a CLI `isoshelf update` command (the web UI has it), a queue
+2. Delete: remove images the user no longer wants. *Done.*
+3. The archive of images that have left, with put back and download again,
+   plus filters, sorting, logos and links. *Done.*
+4. Assign: suggest what an unrecognized file is and confirm it (below).
+5. Adding catalog images that aren't on the target (the "Add" button).
+6. Installing older versions with a hold (below), and Make bootable fix-ups.
+7. Still open: a CLI `isoshelf update` command (the web UI has it), a queue
    for several downloads at once, and OpenPGP signature checking.
 **v0.3** - rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release.
+
+### The archive of images that have left
+
+- `state.Past` remembers every image that leaves a folder: what it was, its
+  version, size, hash and where it came from, when it was last seen, and how it
+  went (`removed`, `moved-aside`, `replaced`, `vanished`). Capped at 500, newest
+  first, and a path is forgotten as soon as that file is back.
+- Files moved aside wait in `<target>/.isoshelf/removed/` and can be put back
+  while they are there; catalog images can always be downloaded again.
 
 ### Assign: suggesting what an unrecognized file is
 
@@ -373,17 +388,31 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   the computer's folders), with drives or mount points and recent folders
   (from the mirrors; none in portable mode). The last folder is remembered in
   `<config>/ui.json`.
-- A filled star means the user starred the image; the replace switch shows only
-  for entries that can download.
+- A filled star means the user starred the image: it is a favourite, sorts
+  first, and is reported if it goes missing. The replace switch shows only for
+  entries that can download.
+- The list filters by kind, architecture, updates-only and favourites, and
+  sorts by attention, favourites, name, size, version or when the file changed.
+  The choices live in the browser's localStorage. When a filter hides
+  everything, the empty message names the filters and offers to clear them.
+- Each row has a "…" menu with the download page, website, forum and release
+  notes, an Update button when there is one, and Remove.
+- Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
+  with `go run ./internal/web/logos/fetch`. `/logo/{slug}` serves those, then
+  ones fetched earlier from `<config>/logos`, then fetches from the CDN once
+  and remembers misses. Entries without one get coloured initials, drawn from
+  the name.
+- "Images that were here" lists the archive, with Put back for files still in
+  `.isoshelf/removed` and Download again for catalog images.
 - Static files are embedded, so restart the server after changing them. To
   preview while developing: `go run ./cmd/isoshelf ui --port 8765 --no-browser <folder>`
   and open the printed link (with `localhost` or `127.0.0.1`).
 
 ### Where we stopped (2026-09-17)
 
-v0.1 is done (catalog of 60 entries, scanner, state, sources, CLI, web UI) and
-v0.2 has downloads and removal working, tried end to end against the real
-netboot.xyz release. Next, in order:
+v0.1 is done. v0.2 has downloads, per-image updates, removal with put-back, the
+archive, filters and sorting, logos and links, all tried against the
+maintainer's Proxmox folder. Next, in order:
 
 - Assign: suggest what unrecognized files are (volume label, hashes, name) and
   confirm, so files like `Windows.iso` can be recognized and checked.

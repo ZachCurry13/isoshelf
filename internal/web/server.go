@@ -112,6 +112,8 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("GET /api/catalog", s.getCatalog)
 	mux.HandleFunc("GET /api/browse", s.browse)
 	mux.HandleFunc("GET /logo/{slug}", s.logo)
+	mux.HandleFunc("GET /api/archive", s.getArchive)
+	mux.HandleFunc("POST /api/restore", s.restore)
 	mux.HandleFunc("POST /api/target", s.setTarget)
 	mux.HandleFunc("POST /api/scan", func(w http.ResponseWriter, r *http.Request) { s.start(w, false) })
 	mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) { s.start(w, true) })

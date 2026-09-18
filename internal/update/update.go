@@ -139,6 +139,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 			if err := removeFile(opts.Target, artifact.Filename, opts.Removal, opts.State, opts.Now()); err != nil {
 				return err
 			}
+			opts.State.Archived(artifact.Filename, state.GoneReplaced, opts.Now())
 			replaced = artifact.Filename
 			return nil
 		}
@@ -249,7 +250,9 @@ func removeFile(target, rel string, how Removal, st *state.State, now time.Time)
 	if err != nil {
 		return err
 	}
+	gone := state.GoneRemoved
 	if how == MoveAside {
+		gone = state.GoneMovedAside
 		dir := filepath.Join(target, state.DirName, RemovedDir)
 		if err := os.MkdirAll(dir, 0o755); err != nil {
 			return err
@@ -266,9 +269,25 @@ func removeFile(target, rel string, how Removal, st *state.State, now time.Time)
 		return err
 	}
 	if st != nil {
-		delete(st.Files, rel)
+		st.Archived(rel, gone, now)
 	}
 	return nil
+}
+
+// Restore moves a file back from .isoshelf/removed into the folder.
+func Restore(target, name string) error {
+	if name == "" || strings.ContainsAny(name, `/\`) {
+		return fmt.Errorf("%q is not a plain filename", name)
+	}
+	aside := filepath.Join(target, state.DirName, RemovedDir, name)
+	if _, err := os.Stat(aside); err != nil {
+		return fmt.Errorf("%s is no longer waiting in the removed folder", name)
+	}
+	back := filepath.Join(target, name)
+	if _, err := os.Stat(back); err == nil {
+		return fmt.Errorf("%s is already in the folder", name)
+	}
+	return os.Rename(aside, back)
 }
 
 // Removed lists the files waiting in .isoshelf/removed and the space they use.
