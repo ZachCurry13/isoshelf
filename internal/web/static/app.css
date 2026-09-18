@@ -574,3 +574,69 @@ th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
   margin-top: 3px; font-size: 12px;
 }
 .meta-line .arch { margin-left: 0; }
+
+/* Downloads: a bar along the bottom of the window while anything is queued,
+   running or just finished, which opens into the queue. */
+body.has-dock { padding-bottom: 76px; }
+.dock {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 16px rgba(16, 24, 40, 0.08);
+}
+.dock-bar {
+  display: flex; align-items: center; gap: 14px;
+  max-width: 1320px; margin: 0 auto; padding: 10px 20px;
+}
+.dock-summary { flex: 0 1 auto; min-width: 0; display: flex; gap: 8px; align-items: baseline; }
+.dock-summary span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dock .bar { flex: 1 1 120px; min-width: 80px; }
+.dock-actions { display: flex; gap: 6px; flex: none; margin-left: auto; }
+#dock-waiting { flex: none; font-size: 13px; }
+.dock-panel {
+  max-height: min(55vh, 520px); overflow-y: auto;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.dock-list { list-style: none; margin: 0 auto; padding: 6px 20px 12px; max-width: 1320px; }
+.dock-heading {
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--muted); padding: 12px 0 6px;
+}
+.dock-heading .muted { text-transform: none; letter-spacing: 0; font-weight: 400; }
+.dock-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; margin-bottom: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+}
+.dock-item .info { flex: 1; min-width: 0; }
+.dock-item .name { font-weight: 600; overflow-wrap: break-word; }
+.dock-item .kind { font-size: 12px; color: var(--muted); }
+.dock-item .bar { margin-top: 6px; }
+.dock-item.queued { cursor: grab; }
+.dock-item.dragging { opacity: 0.5; }
+.dock-item.drop-before { box-shadow: 0 -3px 0 var(--accent); }
+.dock-item.drop-after { box-shadow: 0 3px 0 var(--accent); }
+.dock-item .grip { color: var(--muted); font-size: 16px; line-height: 1; }
+.dock-item .place {
+  min-width: 1.6em; text-align: center; font-variant-numeric: tabular-nums;
+  color: var(--muted); font-weight: 600;
+}
+.dock-item .mark { min-width: 1.8em; text-align: center; }
+.dock-buttons { display: flex; gap: 4px; flex: none; }
+.btn.icon { min-width: 30px; padding-left: 6px; padding-right: 6px; }
+
+/* An Add or Update button while its image is in the downloads. */
+.btn.job-state { color: var(--accent); border-color: color-mix(in srgb, var(--accent), transparent 55%); font-variant-numeric: tabular-nums; }
+.job-done { color: var(--ok-fg); font-size: 13px; font-weight: 600; white-space: nowrap; padding: 4px 6px; }
+
+@media (max-width: 720px) {
+  body.has-dock { padding-bottom: 120px; }
+  .dock-bar { flex-wrap: wrap; padding: 10px 16px; gap: 8px 12px; }
+  .dock-summary { flex-basis: 100%; }
+  .dock-summary span { white-space: normal; }
+  .dock-list { padding: 6px 16px 12px; }
+  .dock-item { flex-wrap: wrap; }
+  .dock-buttons { margin-left: auto; }
+}

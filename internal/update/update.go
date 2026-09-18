@@ -125,6 +125,17 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	if sameName && (opts.Removal == Keep || opts.Removal == "") {
 		return nil, fmt.Errorf("%s always has the same filename, so the new file would take its place; choose to move the old one aside or delete it", artifact.Filename)
 	}
+	// A download nothing can check never replaces anything on its own: the old
+	// files stay until the user has looked at the new one. The built-in
+	// catalog only lists downloads with a published checksum, but a catalog
+	// of the user's own, or a GitHub release from before GitHub published
+	// digests, can lack one. An old file with the same name can't stay where
+	// it is, so it is archived, which can be undone, and never deleted.
+	unverified := artifact.Checksum == nil
+	beforeRemoval := opts.Removal
+	if unverified {
+		beforeRemoval = MoveAside
+	}
 	var replaced string
 	request := fetch.Request{
 		URLs:     artifact.URLs,
@@ -136,7 +147,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}
 	if sameName {
 		request.BeforePlace = func() error {
-			if err := removeFile(opts.Target, artifact.Filename, opts.Removal, opts.State, opts.Now()); err != nil {
+			if err := removeFile(opts.Target, artifact.Filename, beforeRemoval, opts.State, opts.Now()); err != nil {
 				return err
 			}
 			opts.State.Archived(artifact.Filename, state.GoneReplaced, opts.Now())
@@ -175,7 +186,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		if old == artifact.Filename {
 			continue // the new file took its place
 		}
-		if opts.Removal == Keep || opts.Removal == "" {
+		if opts.Removal == Keep || opts.Removal == "" || unverified {
 			result.Kept = append(result.Kept, old)
 			continue
 		}

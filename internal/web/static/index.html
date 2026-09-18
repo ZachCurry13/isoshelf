@@ -312,5 +312,24 @@
     </footer>
   </form>
 </dialog>
+
+<aside class="dock" id="dock" aria-label="Downloads" hidden>
+  <div class="dock-panel" id="dock-panel" hidden>
+    <ol class="dock-list" id="dock-list"></ol>
+  </div>
+  <div class="dock-bar">
+    <div class="dock-summary">
+      <strong>Downloads</strong>
+      <span id="dock-text" aria-live="polite"></span>
+    </div>
+    <div class="bar" id="dock-bar"><div class="bar-fill" id="dock-fill"></div></div>
+    <span class="muted" id="dock-waiting"></span>
+    <div class="dock-actions">
+      <button type="button" class="btn small" id="dock-toggle" aria-expanded="false" aria-controls="dock-panel">Show</button>
+      <button type="button" class="btn small" id="dock-stop">Stop all</button>
+      <button type="button" class="btn small" id="dock-clear" title="Forget the downloads that have finished">Clear finished</button>
+    </div>
+  </div>
+</aside>
 </body>
 </html>

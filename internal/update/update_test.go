@@ -357,3 +357,68 @@ func TestRunSameFilename(t *testing.T) {
 		t.Errorf("keeping both: got %v, want an explanation", err)
 	}
 }
+
+// A download with no published checksum never replaces anything on its own,
+// whatever was asked: the old file stays until the user has looked.
+func TestRunUnverifiedKeepsOldFile(t *testing.T) {
+	dir, st := target(t)
+	rc, fc := clients(t, site(t, newImageSHA256()))
+	entry := testEntry(t)
+	entry.Artifact.Manifest = ""
+
+	res, err := Run(context.Background(), Options{
+		Target: dir, Entry: entry, Client: rc, Fetcher: fc, State: st,
+		Old: []string{"example-1.iso"}, Removal: DeleteNow, Now: func() time.Time { return now },
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res.Verified || len(res.Removed) != 0 || !slices.Equal(res.Kept, []string{"example-1.iso"}) {
+		t.Errorf("verified %v, removed %v, kept %v", res.Verified, res.Removed, res.Kept)
+	}
+	if _, err := os.Stat(filepath.Join(dir, "example-1.iso")); err != nil {
+		t.Error("an unverified download replaced the old file")
+	}
+	if _, err := os.Stat(filepath.Join(dir, "example-2.iso")); err != nil {
+		t.Errorf("the new file isn't there: %v", err)
+	}
+}
+
+// With the same filename the old file can't stay where it is, so an
+// unverified download archives it, even when deleting was asked for.
+func TestRunUnverifiedSameFilenameArchives(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(dir, "fixed.iso"), []byte("the old image"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	st := state.New(scan.Ventoy)
+	if err := st.Placed(dir, "fixed.iso", state.FileRecord{Entry: "fixed"}); err != nil {
+		t.Fatal(err)
+	}
+	files := map[string]string{
+		"/isos/":          `<a href="fixed.iso">fixed.iso</a>`,
+		"/isos/fixed.iso": newImage,
+		"/api/latest":     `{"version": "2"}`,
+	}
+	rc, fc := clients(t, remotetest.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, ok := files[r.URL.Path]
+		if !ok {
+			http.NotFound(w, r)
+			return
+		}
+		http.ServeContent(w, r, filepath.Base(r.URL.Path), time.Unix(0, 0), strings.NewReader(body))
+	})))
+	entry := fixedEntry(t)
+	entry.Artifact.Manifest = ""
+
+	if _, err := Run(context.Background(), Options{
+		Target: dir, Entry: entry, Client: rc, Fetcher: fc, State: st,
+		Old: []string{"fixed.iso"}, Removal: DeleteNow, Now: func() time.Time { return now },
+	}); err != nil {
+		t.Fatal(err)
+	}
+	aside := filepath.Join(dir, state.DirName, RemovedDir, "fixed.iso")
+	if got, err := os.ReadFile(aside); err != nil || string(got) != "the old image" {
+		t.Errorf("the old file was deleted instead of archived: %q, %v", got, err)
+	}
+}

@@ -84,8 +84,8 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 	case s.target == "" || s.st == nil || s.scan == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder and scan it first.")
 		return
-	case s.run != nil:
-		writeError(w, http.StatusConflict, "Wait until the current job finishes.")
+	case s.busyLocked() != "":
+		writeError(w, http.StatusConflict, s.busyLocked())
 		return
 	}
 

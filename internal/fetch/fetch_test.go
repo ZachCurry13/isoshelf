@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"io"
 	"math/rand/v2"
 	"net/http"
 	"net/http/httptest"
@@ -258,5 +259,25 @@ func TestDownloadCancel(t *testing.T) {
 	}
 	if _, err := os.Stat(part + ".json"); err != nil {
 		t.Errorf("no sidecar for the unfinished download: %v", err)
+	}
+}
+
+func TestRetryable(t *testing.T) {
+	tests := []struct {
+		err  error
+		want bool
+	}{
+		{io.ErrUnexpectedEOF, true},
+		{errors.New("the download stopped after 5 of 10 bytes"), true},
+		{errors.New("stream error: stream ID 1; PROTOCOL_ERROR; received from peer"), true},
+		{errors.New("http2: server sent GOAWAY and closed the connection; LastStreamID=1"), true},
+		{&remote.StatusError{Code: http.StatusBadGateway}, true},
+		{&remote.StatusError{Code: http.StatusNotFound}, false},
+		{errors.New("checksum mismatch"), false},
+	}
+	for _, tt := range tests {
+		if got := retryable(tt.err); got != tt.want {
+			t.Errorf("retryable(%v) = %v, want %v", tt.err, got, tt.want)
+		}
 	}
 }

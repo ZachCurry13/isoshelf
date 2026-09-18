@@ -86,18 +86,29 @@ type Server struct {
 	updatedAt time.Time
 	// room is the free space where images are kept, and roomAt when it was
 	// last asked for, of the folder roomOf.
-	room     space.Usage
-	roomAt   time.Time
-	roomOf   string
-	run      *run
+	room   space.Usage
+	roomAt time.Time
+	roomOf string
+	run    *run
+	// queue holds the downloads waiting their turn, in order; finished the
+	// ones that ended, newest first. placed says a download has put a file in
+	// the folder since the last scan.
+	queue    []*job
+	finished []finishedJob
+	nextJob  int
+	placed   bool
+	// runJob downloads one queued image. Tests replace it.
+	runJob   func(context.Context, *job) (note string, err error)
 	lastErr  string
 	warnings []string
 	notice   *appupdate.Notice
 }
 
-// run is a scan or check in progress.
+// run is a scan, check or download in progress.
 type run struct {
-	kind     string
+	kind string
+	// job is the download, when it is one.
+	job      *job
 	started  time.Time
 	progress inventory.Progress
 	cancel   context.CancelFunc
@@ -109,6 +120,7 @@ func New(cfg Config) *Server {
 		cfg.Now = time.Now
 	}
 	s := &Server{cfg: cfg, cat: cfg.Catalog, catSource: cfg.CatalogSource}
+	s.runJob = s.runUpdate
 	if s.catSource == "" {
 		s.catSource = catalogBuiltIn
 	}
@@ -138,6 +150,9 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/scan", func(w http.ResponseWriter, r *http.Request) { s.start(w, false) })
 	mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) { s.start(w, true) })
 	mux.HandleFunc("POST /api/update", s.startUpdate)
+	mux.HandleFunc("POST /api/queue/move", s.moveQueued)
+	mux.HandleFunc("POST /api/queue/drop", s.dropQueued)
+	mux.HandleFunc("POST /api/queue/clear", s.clearFinished)
 	mux.HandleFunc("POST /api/remove", s.remove)
 	mux.HandleFunc("POST /api/removed/empty", s.emptyRemoved)
 	mux.HandleFunc("POST /api/cancel", s.cancel)
@@ -243,6 +258,9 @@ type stateJSON struct {
 	// FolderChanged is set when the folder has been written to since the last
 	// scan, so the page can offer to look again.
 	FolderChanged bool `json:"folder_changed,omitempty"`
+	// Downloads is the download queue: the one running, the ones waiting and
+	// the ones that ended.
+	Downloads downloadsJSON `json:"downloads"`
 }
 
 // spaceJSON is the room left where images are kept.
@@ -358,6 +376,7 @@ func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 		Catalog:       s.catalogStatusLocked(),
 		ReportURL:     "https://github.com/" + appupdate.Repo + "/issues/new",
 		AppUpdate:     s.notice,
+		Downloads:     s.downloadsLocked(),
 	}
 	if room.Known() {
 		out.Space = &spaceJSON{Free: room.Free, Total: room.Total}
@@ -445,10 +464,10 @@ func (s *Server) setTarget(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.mu.Lock()
-	busy := s.run != nil
+	busy := s.busyLocked()
 	s.mu.Unlock()
-	if busy {
-		writeError(w, http.StatusConflict, "Wait until the current scan finishes, or stop it.")
+	if busy != "" {
+		writeError(w, http.StatusConflict, busy)
 		return
 	}
 	if err := s.openTarget(req.Path, req.Profile); err != nil {
@@ -498,19 +517,25 @@ func (s *Server) start(w http.ResponseWriter, online bool) {
 	case s.target == "":
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
-	case s.run != nil:
-		writeError(w, http.StatusConflict, "A scan is already running.")
+	case s.busyLocked() != "":
+		writeError(w, http.StatusConflict, s.busyLocked())
 		return
 	}
+	s.lastErr = ""
+	s.startScanLocked(online)
+	writeJSON(w, http.StatusAccepted, map[string]string{"status": "started"})
+}
+
+// startScanLocked starts a scan, or a check when online; s.mu must be held
+// and nothing may be running.
+func (s *Server) startScanLocked(online bool) {
 	ctx, cancel := context.WithCancel(context.Background())
 	kind := "scan"
 	if online {
 		kind = "check"
 	}
 	s.run = &run{kind: kind, started: s.cfg.Now(), progress: inventory.Progress{Stage: inventory.Scanning}, cancel: cancel}
-	s.lastErr = ""
 	go s.execute(ctx, s.target, s.st.Profile, online)
-	writeJSON(w, http.StatusAccepted, map[string]string{"status": "started"})
 }
 
 func (s *Server) execute(ctx context.Context, target string, profile scan.Profile, online bool) {
@@ -555,11 +580,18 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 	case err != nil:
 		s.lastErr = err.Error()
 	}
+	// Downloads added while the scan ran go now.
+	s.startNextLocked()
 }
 
+// cancel stops what is running. For downloads that means all of them: the
+// one running stops, and the ones waiting are taken off the queue.
 func (s *Server) cancel(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
 	if s.run != nil {
+		if s.run.job != nil {
+			s.queue = nil
+		}
 		s.run.cancel()
 	}
 	s.mu.Unlock()
@@ -579,8 +611,8 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	switch {
-	case s.run != nil:
-		writeError(w, http.StatusConflict, "Wait until the current scan finishes.")
+	case s.run != nil && s.run.job == nil:
+		writeError(w, http.StatusConflict, "Wait until the scan finishes.")
 		return
 	case s.st == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
@@ -597,7 +629,7 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		t.Starred = *req.Starred
 	}
 	s.st.SetTrack(req.Entry, t)
-	if err := s.st.Save(s.target); err != nil {
+	if err := s.saveTrackLocked(req.Entry, t); err != nil {
 		writeError(w, http.StatusInternalServerError, "Couldn't save the setting: "+err.Error())
 		return
 	}
@@ -682,4 +714,20 @@ func writeJSON(w http.ResponseWriter, code int, v any) {
 
 func writeError(w http.ResponseWriter, code int, msg string) {
 	writeJSON(w, code, map[string]string{"error": msg})
+}
+
+// saveTrackLocked writes one track's settings to the folder's state; s.mu
+// must be held. While a download runs, the state on disk is ahead of the one
+// in memory (it knows the files placed since the last scan), so the setting
+// goes into the copy on disk rather than overwriting it with an older one.
+func (s *Server) saveTrackLocked(entry string, t state.Track) error {
+	if s.run == nil || s.run.job == nil {
+		return s.st.Save(s.target)
+	}
+	disk, err := state.Load(s.target)
+	if err != nil {
+		return err
+	}
+	disk.SetTrack(entry, t)
+	return disk.Save(s.target)
 }

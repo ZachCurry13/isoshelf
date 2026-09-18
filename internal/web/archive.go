@@ -71,8 +71,8 @@ func (s *Server) restore(w http.ResponseWriter, r *http.Request) {
 	case s.target == "" || s.st == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
-	case s.run != nil:
-		writeError(w, http.StatusConflict, "Wait until the current job finishes.")
+	case s.busyLocked() != "":
+		writeError(w, http.StatusConflict, s.busyLocked())
 		return
 	}
 	if err := update.Restore(s.target, req.Name); err != nil {

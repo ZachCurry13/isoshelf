@@ -3,24 +3,24 @@ package web
 import (
 	"context"
 	"encoding/json"
-	"errors"
+	"maps"
 	"net/http"
 
 	"github.com/ZachCurry13/isoshelf/internal/fetch"
 	"github.com/ZachCurry13/isoshelf/internal/inventory"
-	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 	"github.com/ZachCurry13/isoshelf/internal/update"
 )
 
-// startUpdate downloads an entry's newest file and puts it in place. What
-// happens to the old files follows the track's "replace old file" setting and
-// the way of removing the page asked for.
+// startUpdate queues a download of an entry's newest file. What happens to
+// the old files follows the track's "replace old file" setting and the way of
+// removing the page asked for. Another download running is no reason to
+// refuse: this one waits its turn (see queue.go).
 func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Entry string `json:"entry"`
-		// Removal is "move-aside" or "delete"; ignored when the track keeps
-		// old files.
+		// Removal is "keep", "move-aside" or "delete": what happens to the
+		// files the new one replaces.
 		Removal string `json:"removal"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -35,18 +35,18 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 	case s.target == "" || s.st == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
-	case s.run != nil:
-		writeError(w, http.StatusConflict, "Something is already running.")
-		return
 	case entry == nil:
 		writeError(w, http.StatusBadRequest, "Unknown image.")
 		return
+	case s.queuedLocked(entry.ID):
+		writeError(w, http.StatusConflict, entry.Name+" is already in the downloads.")
+		return
 	}
 
+	// The page sends "keep" when the replace switch is off. It asks instead
+	// for images whose filename never changes, where keeping both is
+	// impossible, and that answer is the one to follow.
 	removal := update.Removal(req.Removal)
-	if s.st.Track(entry.ID).KeepOld {
-		removal = update.Keep
-	}
 	if removal != update.Keep && removal != update.MoveAside && removal != update.DeleteNow {
 		writeError(w, http.StatusBadRequest, "Say what to do with the old file.")
 		return
@@ -54,9 +54,7 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 
 	// The entry's current files, so they can be replaced afterwards.
 	var old []string
-	checked := false
 	if s.report != nil {
-		checked = s.report.Checked
 		for _, it := range s.report.Items {
 			if it.Path != "" && it.Entry != nil && it.Entry.ID == entry.ID {
 				old = append(old, it.Path)
@@ -64,72 +62,32 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	s.run = &run{kind: "update", started: s.cfg.Now(), cancel: cancel,
-		progress: inventory.Progress{Stage: inventory.Stage(fetch.Downloading), File: entry.Name}}
-	// The filename replaces the entry name as soon as the download starts.
+	s.nextJob++
+	id := s.nextJob
+	s.queue = append(s.queue, &job{
+		id: id, target: s.target, entry: entry.ID, name: entry.Name,
+		size: entry.Size, removal: removal, old: old,
+	})
 	s.lastErr = ""
-	target := s.target
-	go s.executeUpdate(ctx, target, entry.ID, removal, old, checked)
-	writeJSON(w, http.StatusAccepted, map[string]string{"status": "started"})
-}
-
-func (s *Server) executeUpdate(ctx context.Context, target, entryID string, removal update.Removal, old []string, checked bool) {
-	err := s.runUpdate(ctx, target, entryID, removal, old)
-
-	// Whatever happened, take a fresh look at the folder so the page shows
-	// what is really there now.
-	if ctx.Err() == nil {
-		client := remote.New(s.cfg.Version)
-		client.HTTP = s.cfg.HTTP
-		client.GitHubToken = s.cfg.GitHubToken
-		res, runErr := inventory.Run(ctx, inventory.Options{
-			Target: target, Online: checked, Client: client, Catalog: s.catalog(),
-			Dirs: s.cfg.Dirs, Now: s.cfg.Now,
-			Progress: func(p inventory.Progress) {
-				s.mu.Lock()
-				if s.run != nil {
-					s.run.progress = p
-				}
-				s.mu.Unlock()
-			},
-		})
-		s.mu.Lock()
-		if res != nil && s.target == target {
-			s.report, s.st, s.warnings, s.updatedAt = res.Report, res.State, res.Warnings, s.cfg.Now()
-		}
-		if err == nil && runErr != nil {
-			err = runErr
-		}
-		s.mu.Unlock()
-	}
-
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	s.run = nil
-	switch {
-	case errors.Is(err, context.Canceled):
-		s.lastErr = "The update was stopped. A part-finished download is kept, so it can carry on later."
-	case err != nil:
-		s.lastErr = err.Error()
-	}
+	s.startNextLocked()
+	writeJSON(w, http.StatusAccepted, map[string]any{"status": "queued", "id": id})
 }
 
 // runUpdate does the download itself, on a state loaded fresh from disk so
 // the page can keep reading the current one.
-func (s *Server) runUpdate(ctx context.Context, target, entryID string, removal update.Removal, old []string) error {
-	st, err := state.Load(target)
+func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
+	st, err := state.Load(j.target)
 	if err != nil {
-		return err
+		return "", err
 	}
 	client := s.client()
 	fetcher := fetch.New(s.cfg.Version)
 	fetcher.HTTP = s.cfg.HTTP
 	fetcher.GitHubToken = s.cfg.GitHubToken
 
-	_, err = update.Run(ctx, update.Options{
-		Target: target, Entry: s.catalog().Entry(entryID), Client: client, Fetcher: fetcher,
-		State: st, Old: old, Removal: removal, Now: s.cfg.Now,
+	res, err := update.Run(ctx, update.Options{
+		Target: j.target, Entry: s.catalog().Entry(j.entry), Client: client, Fetcher: fetcher,
+		State: st, Old: j.old, Removal: j.removal, Now: s.cfg.Now,
 		Progress: func(p fetch.Progress) {
 			s.mu.Lock()
 			if s.run != nil {
@@ -140,10 +98,33 @@ func (s *Server) runUpdate(ctx context.Context, target, entryID string, removal 
 			s.mu.Unlock()
 		},
 	})
-	if saveErr := st.Save(target); err == nil {
+
+	// Stars and replace switches can be changed while a download runs, and
+	// those changes are already on disk: keep them rather than the copy
+	// loaded before the download started.
+	s.mu.Lock()
+	if s.st != nil && s.target == j.target {
+		st.Tracks = maps.Clone(s.st.Tracks)
+	}
+	saveErr := st.Save(j.target)
+	s.mu.Unlock()
+	if err == nil {
 		err = saveErr
 	}
-	return err
+	return unverifiedNote(res, err), err
+}
+
+// unverifiedNote explains a download nothing could check, which is why the
+// old file is still there.
+func unverifiedNote(res *update.Result, err error) string {
+	switch {
+	case err != nil || res == nil || res.Verified:
+		return ""
+	case len(res.Kept) > 0:
+		return "The project publishes no checksum for this file, so isoshelf couldn't check it, and your old file was kept. Remove it yourself once you're happy with the new one."
+	default:
+		return "The project publishes no checksum for this file, so isoshelf couldn't check it."
+	}
 }
 
 // remove moves files aside or deletes them, after the page has asked.
@@ -162,8 +143,8 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 	case s.target == "" || s.st == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
-	case s.run != nil:
-		writeError(w, http.StatusConflict, "Wait until the current job finishes.")
+	case s.busyLocked() != "":
+		writeError(w, http.StatusConflict, s.busyLocked())
 		return
 	case len(req.Paths) == 0:
 		writeError(w, http.StatusBadRequest, "Nothing to remove.")
