@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -229,4 +230,35 @@ func TestPublishedCatalogHasARevision(t *testing.T) {
 	if cat.Revision < 20260101 {
 		t.Errorf("revision = %d; it should be the date the catalog last changed", cat.Revision)
 	}
+}
+
+// Catalog updates reach people without an isoshelf release, so the only
+// place they're announced is CATALOG-CHANGES.md. Its newest entry has to be
+// for the day the catalog last changed.
+func TestCatalogChangesAreWrittenDown(t *testing.T) {
+	cat, err := catalog.Default()
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(filepath.Join("..", "..", "CATALOG-CHANGES.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Revisions are YYYYMMDDNN: the first eight digits are the date.
+	digits := strconv.Itoa(cat.Revision)
+	if len(digits) < 8 {
+		t.Fatalf("revision %d isn't a date", cat.Revision)
+	}
+	want := "## " + digits[0:4] + "-" + digits[4:6] + "-" + digits[6:8]
+
+	for _, line := range strings.Split(string(data), "\n") {
+		if strings.HasPrefix(line, "## ") {
+			if strings.TrimSpace(line) != want {
+				t.Errorf("CATALOG-CHANGES.md starts with %q, but the catalog changed on %s; add a section for it",
+					line, strings.TrimPrefix(want, "## "))
+			}
+			return
+		}
+	}
+	t.Error("CATALOG-CHANGES.md has no dated sections")
 }

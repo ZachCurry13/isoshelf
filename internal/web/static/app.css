@@ -272,7 +272,7 @@ td.replace { text-align: center; }
 .arch { margin-left: 6px; font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; font-weight: 500; }
 td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .latest-new { font-weight: 650; color: var(--update-fg); }
-.file { font-family: var(--mono); font-size: 12.5px; overflow-wrap: anywhere; }
+.file { font-family: var(--mono); font-size: 12.5px; overflow-wrap: break-word; min-width: 170px; }
 .size { color: var(--muted); font-size: 12px; }
 .note { color: var(--muted); font-size: 12.5px; margin-top: 3px; max-width: 520px; overflow-wrap: anywhere; }
 
@@ -564,3 +564,13 @@ th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
 .legend { margin: 10px 16px 4px; font-size: 13px; color: var(--muted); }
 .legend .caution { margin-left: 0; }
 .added-cell { white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* A name wraps as a whole; its badges go on the line below, never dangling
+   off the end of a wrapped name. */
+.image-text { min-width: 200px; }
+.name-line .name { overflow-wrap: break-word; }
+.meta-line {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-top: 3px; font-size: 12px;
+}
+.meta-line .arch { margin-left: 0; }

@@ -7,9 +7,11 @@ import (
 	"net/http"
 	"path"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
+	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/catupdate"
 	"github.com/ZachCurry13/isoshelf/internal/check"
@@ -38,6 +40,27 @@ type catalogStatusJSON struct {
 	// Note is what the last update changed, and Error why one didn't happen.
 	Note  string `json:"note,omitempty"`
 	Error string `json:"error,omitempty"`
+	// Changed is the day the list itself last changed (YYYY-MM-DD), and
+	// ChangesURL where those changes are written down.
+	Changed    string `json:"changed,omitempty"`
+	ChangesURL string `json:"changes_url"`
+}
+
+// changesURL is the catalog's own changelog, separate from isoshelf's.
+const changesURL = "https://github.com/" + appupdate.Repo + "/blob/main/CATALOG-CHANGES.md"
+
+// revisionDate reads the day out of a YYYYMMDDNN revision, or "" if it isn't
+// one.
+func revisionDate(revision int) string {
+	digits := strconv.Itoa(revision)
+	if len(digits) < 8 {
+		return ""
+	}
+	day, err := time.Parse("20060102", digits[:8])
+	if err != nil {
+		return ""
+	}
+	return day.Format("2006-01-02")
 }
 
 // catalog returns the catalog in use. It can be replaced while isoshelf runs.
@@ -69,6 +92,9 @@ func (s *Server) catalogStatusLocked() catalogStatusJSON {
 		CanAuto: !s.ownCatalog() && s.cfg.Dirs.Config != "",
 		Note:    s.catNote,
 		Error:   s.catErr,
+		Changed: revisionDate(s.cat.Revision),
+
+		ChangesURL: changesURL,
 	}
 	out.Auto = out.CanAuto && s.catalogAuto()
 	if at := catupdate.Downloaded(s.cfg.Dirs.Config); !at.IsZero() {

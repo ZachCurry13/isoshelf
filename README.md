@@ -132,7 +132,8 @@ It currently knows **86 images**, grouped by what they're for:
   netboot.xyz, Hiren's BootCD PE.
 - **Windows**, which it recognizes and links to but never downloads.
 
-Something missing? [Tell it about the image](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
+The list updates itself without a new isoshelf; [CATALOG-CHANGES.md](CATALOG-CHANGES.md)
+says what changed and when. Something missing? [Tell it about the image](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
 
 Here's `isoshelf check` on a test drive (trimmed, and the NOTE column shortened):
 

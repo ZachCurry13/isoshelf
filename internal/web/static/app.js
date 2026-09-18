@@ -574,10 +574,12 @@ function renderRow(item) {
   const imageCell = el("td", {}, el("div", { class: "image-cell" },
     logoTile(item),
     el("div", { class: "image-text" },
-      el("div", {},
+      // The name may wrap; the badges sit on their own line underneath so a
+      // wrapped name never leaves one dangling at the end of it.
+      el("div", { class: "name-line" },
         el("span", { class: "name" }, name),
-        caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null,
-        item.arch ? el("span", { class: "arch" }, item.arch) : null),
+        caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null),
+      item.arch ? el("div", { class: "meta-line" }, el("span", { class: "arch" }, item.arch)) : null,
       item.note ? el("div", { class: "note" }, item.note) : null)));
 
   const newer = item.latest && item.status === "update available";
@@ -587,7 +589,7 @@ function renderRow(item) {
   const fileCell = el("td", {},
     item.path
       ? [
-        el("div", { class: "file" }, item.path),
+        el("div", { class: "file", title: item.path }, breakable(item.path)),
         item.kind && item.kind !== "unknown" ? el("div", { class: "size" }, item.kind) : null,
       ]
       : el("span", { class: "muted" }, "Not in this folder"));
@@ -657,6 +659,15 @@ function renderRow(item) {
       item.added ? shortDate(item.added) : el("span", { class: "muted" }, "–")),
     el("td", { class: "replace" }, replace),
     el("td", { class: "row-actions" }, actions));
+}
+
+// breakable lets a long filename wrap after its separators — the _ - and .
+// between words — instead of in the middle of one.
+function breakable(text) {
+  const parts = [];
+  for (const piece of text.split(/(?<=[_\-.])/)) parts.push(piece, el("wbr"));
+  parts.pop();
+  return parts;
 }
 
 // cautionOf says what's worth knowing before using an image, if anything:
@@ -837,7 +848,12 @@ function renderCatalogStatus(footer) {
   const when = cat.source === "downloaded" && cat.updated_at ? `, checked ${timeAgo(cat.updated_at)}` : "";
   const mine = cat.mine ? `, plus ${plural(cat.mine, "image")} you named yourself` : "";
   const row = el("div", { class: "footer-row" },
-    el("span", {}, `${plural(cat.entries, "image")} known: ${where}${when}${mine}.`));
+    el("span", {}, `${plural(cat.entries, "image")} known: ${where}${when}${mine}.`),
+    // The list changes separately from isoshelf, so it says when it last did
+    // and where the changes are written down.
+    cat.changed ? el("span", { class: "muted" },
+      `List last changed ${new Date(cat.changed + "T12:00:00").toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })} · `,
+      el("a", { href: cat.changes_url, target: "_blank", rel: "noopener noreferrer" }, "What's new")) : null);
 
   if (cat.can_auto) {
     row.append(
@@ -922,12 +938,12 @@ async function renderCatalog() {
     list.append(el("li", {},
       logoTile(entry),
       el("div", { class: "info" },
-        el("div", { class: "info-line" },
-          el("span", { class: "name" }, entry.name),
+        el("div", { class: "info-line" }, el("span", { class: "name" }, entry.name)),
+        el("div", { class: "meta-line" },
           el("span", { class: "arch" }, entry.arch),
-          entry.popular ? el("span", { class: "pill s-ok", title: "Turns up in public round-ups of what people are running. A hand-picked hint, not a rating." }, "popular") : null),
+          entry.popular ? el("span", { class: "pill s-ok", title: "Turns up in public round-ups of what people are running. A hand-picked hint, not a rating." }, "popular") : null,
+          entry.size ? el("span", { class: "muted" }, `about ${formatBytes(entry.size)}`) : null),
         el("div", { class: "kind" },
-          entry.size ? `about ${formatBytes(entry.size)} · ` : "",
           UPDATES_LABEL[entry.updates] || entry.updates,
           room === false ? el("span", { class: "wont-fit" }, " · bigger than the room left here") : null)),
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
@@ -973,6 +989,7 @@ function filterCatalog(entries) {
   const arch = $("more-arch").value;
   const updates = $("more-updates").value;
   const fitsOnly = $("more-fits").checked;
+  const popularOnly = $("more-popular").checked;
 
   const shown = entries.filter((entry) => {
     if (query && !`${entry.name} ${entry.id} ${entry.family || ""}`.toLowerCase().includes(query)) return false;
@@ -980,6 +997,7 @@ function filterCatalog(entries) {
     if (arch && entry.arch !== arch) return false;
     if (updates && entry.updates !== updates) return false;
     if (fitsOnly && fitsHere(entry) === false) return false;
+    if (popularOnly && !entry.popular) return false;
     return true;
   });
 
@@ -1468,7 +1486,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $(id).addEventListener("change", (e) => { view[key] = e.target.checked; saveView(); renderRows(); });
   }
   $("more-search").addEventListener("input", renderCatalog);
-  for (const id of ["more-category", "more-arch", "more-sort", "more-updates", "more-fits"]) {
+  for (const id of ["more-category", "more-arch", "more-sort", "more-updates", "more-fits", "more-popular"]) {
     $(id).addEventListener("change", renderCatalog);
   }
   $("identify-search").addEventListener("input", renderIdentifyCatalog);

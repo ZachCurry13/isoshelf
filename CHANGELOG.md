@@ -6,6 +6,22 @@ Version numbers: the middle number rises for new abilities (v0.3.0 will be
 installing older versions and fixing files the boot menu can't read); the last
 number rises for improvements to what it already does.
 
+## [v0.2.7] - 2026-09-18
+
+### Added
+- **The catalog has its own changelog**, [CATALOG-CHANGES.md](CATALOG-CHANGES.md):
+  dated, no version numbers, saying which images were added and what changed.
+  The list of images updates itself separately from isoshelf, so this is the
+  one place those changes are written down. The page says when the list last
+  changed, with a *What's new* link.
+- A **Popular** filter in the catalog, beside "Fits in this folder".
+
+### Fixed
+- Long image names no longer leave their badges dangling at the end of a
+  wrapped line: the architecture and "popular" badges sit on a line of their
+  own, underneath.
+- Filenames wrap at their `_`, `-` and `.` instead of in the middle of a word.
+
 ## [v0.2.6] - 2026-09-18
 
 ### Added
@@ -130,6 +146,7 @@ The first release.
 - Keeps that catalog current from this repository without a new release.
 - Runs as a page in your browser, or from the command line.
 
+[v0.2.7]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.7
 [v0.2.6]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.4
