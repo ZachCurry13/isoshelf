@@ -113,7 +113,7 @@ func Offline(res *scan.Result, st *state.State, cat *catalog.Catalog) *Report {
 				}
 				it.Note = "matches several catalog entries: " + strings.Join(ids, ", ")
 			}
-		case !f.Bootable:
+		case !f.Bootable && res.Profile.Boots():
 			it.Status = NotBootable
 			it.Note = notBootableNote(it.Entry, res.Profile)
 		case it.Entry.Source.Type == catalog.SourceManual:

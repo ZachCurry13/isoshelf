@@ -376,6 +376,26 @@ function readableBrand(color) {
   return color;
 }
 
+// problemLink reports an image whose source has moved or broken. Projects
+// rearrange their download folders without warning, and the person who hits
+// it is the one who can say what happened.
+function problemLink(item) {
+  if (!state.report_url || !item.entry) return null;
+  const title = `Catalog: ${item.name} ${item.status === "check failed" ? "can't be checked" : "needs fixing"}`;
+  const body = [
+    `**Image:** ${item.name} (\`${item.entry}\`)`,
+    `**isoshelf:** ${state.version}`,
+    item.version ? `**Version here:** ${item.version}` : null,
+    item.latest ? `**Newest isoshelf found:** ${item.latest}` : null,
+    `**Status:** ${item.status}`,
+    item.note ? `**What it said:** ${item.note}` : null,
+    "",
+    "What's wrong? For a moved download, the new address helps most — especially",
+    "where the project publishes its checksums now.",
+  ].filter((line) => line !== null).join("\n");
+  return ["Report a problem", `${state.report_url}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=catalog`];
+}
+
 // linksMenu holds the project pages, out of the way until asked for.
 function linksMenu(item) {
   const links = [
@@ -383,7 +403,8 @@ function linksMenu(item) {
     ["Website", item.site],
     ["Forum", item.forum],
     ["Release notes", item.release],
-  ].filter(([, url]) => url);
+    problemLink(item),
+  ].filter((link) => link && link[1]);
   if (!links.length) return null;
 
   const menu = el("details", { class: "menu" },
@@ -724,7 +745,8 @@ async function renderCatalog() {
         el("div", {},
           el("span", { class: "name" }, entry.name),
           el("span", { class: "arch" }, entry.arch),
-          entry.size ? el("span", { class: "arch" }, `about ${formatBytes(entry.size)}`) : null),
+          entry.size ? el("span", { class: "arch" }, `about ${formatBytes(entry.size)}`) : null,
+          entry.popular ? el("span", { class: "pill s-ok", title: "Turns up in public round-ups of what people are running. A hand-picked hint, not a rating." }, "popular") : null),
         el("div", { class: "kind" },
           UPDATES_LABEL[entry.updates] || entry.updates,
           room === false ? el("span", { class: "wont-fit" }, " · bigger than the room left here") : null)),
@@ -734,6 +756,19 @@ async function renderCatalog() {
   $("more-shown").textContent = shown.length === missing.length
     ? ""
     : `showing ${shown.length} of ${missing.length}`;
+
+  // Whatever isoshelf knows, someone's favourite image won't be in it.
+  const request = $("catalog-request");
+  request.replaceChildren();
+  if (state.report_url) {
+    request.append(
+      "Looking for an image that isn't listed? ",
+      el("a", {
+        href: `${state.report_url}?template=missing-image.yml`,
+        target: "_blank", rel: "noopener noreferrer",
+      }, "Ask for it to be added"),
+      " — the form asks where the project publishes its checksums, which is the part that decides whether isoshelf can download it or only link to it.");
+  }
   if (!shown.length) {
     list.append(el("li", { class: "muted more-hint" }, missing.length
       ? "None of these match the filters."
@@ -779,6 +814,9 @@ function filterCatalog(entries) {
       break;
     case "kind":
       shown.sort((a, b) => (a.category || "other").localeCompare(b.category || "other") || byName(a, b));
+      break;
+    case "popular":
+      shown.sort((a, b) => Number(Boolean(b.popular)) - Number(Boolean(a.popular)) || byName(a, b));
       break;
     default:
       shown.sort(byName);
@@ -1221,6 +1259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") { e.preventDefault(); browse($("picker-input").value.trim()); }
   });
   $("picker-use").addEventListener("click", useFolder);
+  $("picker-refresh").addEventListener("click", () => browse(pickerPath));
   refresh();
   // Keep "checked 5 min ago" fresh.
   setInterval(() => { if (state && !state.run) render(); }, 60000);

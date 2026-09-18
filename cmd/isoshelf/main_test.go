@@ -78,7 +78,9 @@ func TestScanJSON(t *testing.T) {
 	dirs := installed(t)
 	drive := sampleDrive(t)
 
-	res := runWith(t, dirs, "scan", "--json", drive)
+	// The sample drive is a Ventoy drive, which is what makes an image Ventoy
+	// can't list worth flagging.
+	res := runWith(t, dirs, "scan", "--json", "--profile", "ventoy", drive)
 	if res.code != 0 {
 		t.Fatalf("exit %d: %s", res.code, res.stderr)
 	}

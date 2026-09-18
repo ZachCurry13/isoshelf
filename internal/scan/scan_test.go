@@ -200,19 +200,60 @@ func TestScanErrors(t *testing.T) {
 }
 
 func TestSuggestProfile(t *testing.T) {
+	// Proxmox is recognized by its path; anything else that isn't a Ventoy
+	// drive is just a folder.
 	tests := map[string]Profile{
 		"/var/lib/vz/template/iso":          Proxmox,
 		"/mnt/pve/nas-isos/template/iso/":   Proxmox,
 		`\\truenas\isos\template\iso`:       Proxmox,
-		"E:\\":                              Ventoy,
-		"/media/zach/Ventoy":                Ventoy,
-		"/mnt/nas/isos":                     Ventoy,
-		"/var/lib/vz/template/iso/archived": Ventoy,
+		"E:\\":                              Folder,
+		"/media/zach/Ventoy":                Folder,
+		"/mnt/nas/isos":                     Folder,
+		"/var/lib/vz/template/iso/archived": Folder,
 	}
 	for dir, want := range tests {
 		if got := SuggestProfile(dir); got != want {
 			t.Errorf("SuggestProfile(%q) = %q, want %q", dir, got, want)
 		}
+	}
+
+	// A drive with Ventoy on it has a ventoy folder, which is how it is told
+	// from any other folder of images.
+	drive := t.TempDir()
+	if got := SuggestProfile(drive); got != Folder {
+		t.Errorf("an empty folder suggested %q", got)
+	}
+	if err := os.Mkdir(filepath.Join(drive, "ventoy"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if got := SuggestProfile(drive); got != Ventoy {
+		t.Errorf("a drive with a ventoy folder suggested %q, want ventoy", got)
+	}
+}
+
+// A plain folder keeps compressed images, which a boot menu can't read, and
+// doesn't complain about them.
+func TestFolderProfileListsArchives(t *testing.T) {
+	listed := []string{
+		"raspios.img.xz", "LibreELEC-RPi5.arm-13.0.img.gz", "something.iso.xz",
+		"ubuntu-26.04-desktop-amd64.iso", "disk.img",
+	}
+	for _, name := range listed {
+		if !Folder.Lists(name) {
+			t.Errorf("a folder should keep %s", name)
+		}
+		if Ventoy.Lists(name) && strings.Contains(name, ".xz") {
+			t.Errorf("a Ventoy drive can't boot %s, so it shouldn't be listed", name)
+		}
+	}
+	// An ordinary archive is somebody's downloads, not an image.
+	for _, name := range []string{"photos.zip", "backup.tar.gz", "notes.xz"} {
+		if Folder.Lists(name) {
+			t.Errorf("%s is not an image", name)
+		}
+	}
+	if !Ventoy.Boots() || !Proxmox.Boots() || Folder.Boots() {
+		t.Error("only a boot menu cares whether a file is bootable")
 	}
 }
 

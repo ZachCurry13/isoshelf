@@ -42,7 +42,9 @@ const (
 // Catalog is a parsed and validated catalog.
 type Catalog struct {
 	Schema int `toml:"schema"`
-	// Revision rises every time the catalog changes, as a date: 20260918.
+	// Revision rises every time the catalog changes, written YYYYMMDDNN: the
+	// date plus a two-digit counter, so a second change on one day still
+	// sorts after the first and before tomorrow.
 	// isoshelf uses it to tell a downloaded catalog from the one built into
 	// the binary, so a copy downloaded months ago never shadows a newer
 	// built-in one after an upgrade.
@@ -91,6 +93,10 @@ type Entry struct {
 	// Fixup makes a downloaded file bootable: "extract", "convert" or
 	// "rename:<extension>".
 	Fixup string `toml:"fixup"`
+	// Popular marks images that turn up in public "best of" round-ups. It is
+	// a hand-picked hint for sorting, dated in docs/catalog-sources.md, not a
+	// rating and not a count of anything users did.
+	Popular bool `toml:"popular"`
 	// Size is roughly how big the download is, in bytes. It is a hint for the
 	// page and the free-space check, not a promise: it changes with every
 	// release. Filled in from a live run of the recorder.

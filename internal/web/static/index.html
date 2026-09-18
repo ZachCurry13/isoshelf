@@ -31,6 +31,7 @@
       <div class="target-meta">
         <label class="inline-select">Type
           <select id="profile" disabled>
+            <option value="folder">Folder of images</option>
             <option value="ventoy">Ventoy drive</option>
             <option value="proxmox">Proxmox ISO storage</option>
           </select>
@@ -154,6 +155,7 @@
           <option value="name">Name</option>
           <option value="size">Largest first</option>
           <option value="smallest">Smallest first</option>
+          <option value="popular">Popular first</option>
           <option value="kind">Kind</option>
         </select>
         <label class="check"><input type="checkbox" id="more-downloadable"> Can be downloaded</label>
@@ -161,6 +163,7 @@
         <span class="muted" id="more-shown"></span>
       </div>
       <ul class="catalog" id="catalog"></ul>
+      <p class="muted more-hint" id="catalog-request"></p>
     </details>
   </section>
 
@@ -238,12 +241,15 @@
   <form method="dialog" class="picker-form">
     <header class="picker-head">
       <h2 id="picker-title">Choose a folder</h2>
-      <p class="muted">A Ventoy drive, a folder on a NAS share, or Proxmox ISO storage.</p>
+      <p class="muted">A Ventoy drive, any folder of images (a NAS share, your downloads, card
+        images waiting to be written), or Proxmox ISO storage. Just plugged a drive in?
+        Press Refresh.</p>
     </header>
     <div class="picker-path">
       <button type="button" class="btn small" id="picker-up" title="Up one folder">↑ Up</button>
       <input type="text" id="picker-input" spellcheck="false" autocomplete="off" aria-label="Folder path">
       <button type="button" class="btn small" id="picker-go">Go</button>
+      <button type="button" class="btn small" id="picker-refresh" title="Look again, for a drive plugged in since isoshelf started">Refresh</button>
     </div>
     <div class="picker-body">
       <nav class="picker-roots" id="picker-roots" aria-label="Places"></nav>
@@ -255,6 +261,7 @@
     <footer class="picker-foot">
       <label class="inline-select">Type
         <select id="picker-profile">
+          <option value="folder">Folder of images</option>
           <option value="ventoy">Ventoy drive</option>
           <option value="proxmox">Proxmox ISO storage</option>
         </select>

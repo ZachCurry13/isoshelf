@@ -42,12 +42,14 @@ Usage:
   isoshelf check [flags] [folder]   list them and check for updates online
   isoshelf version                  print the version
 
-The folder can be a Ventoy drive (like E:\ or /media/you/Ventoy), a folder on
-a NAS share, or Proxmox ISO storage (like /var/lib/vz/template/iso). In
-portable mode it defaults to the drive isoshelf runs from.
+The folder can be a Ventoy drive (like E:\ or /media/you/Ventoy), any folder
+of images (a NAS share, a downloads folder, card images waiting to be
+written), or Proxmox ISO storage (like /var/lib/vz/template/iso). In portable
+mode it defaults to the drive isoshelf runs from.
 
 Flags for scan and check:
-  --profile ventoy|proxmox  what kind of folder it is; remembered for next time
+  --profile folder|ventoy|proxmox
+                            what kind of folder it is; remembered for next time
   --json                    print JSON instead of a table
   --catalog FILE            use this catalog instead of the built-in one
   --no-hash                 don't hash images whose filename never changes

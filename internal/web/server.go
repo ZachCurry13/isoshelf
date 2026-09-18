@@ -355,6 +355,7 @@ type catalogEntryJSON struct {
 	Arch string `json:"arch"`
 	// Size is roughly how big the download is, from the catalog.
 	Size      int64  `json:"size,omitempty"`
+	Popular   bool   `json:"popular,omitempty"`
 	Updates   string `json:"updates"`
 	Page      string `json:"page,omitempty"`
 	Site      string `json:"site,omitempty"`
@@ -383,7 +384,8 @@ func (s *Server) getCatalog(w http.ResponseWriter, r *http.Request) {
 	for i := range cat.Entries {
 		e := &cat.Entries[i]
 		entries = append(entries, catalogEntryJSON{
-			ID: e.ID, Name: e.Name, Arch: e.Arch, Size: e.Size, Updates: e.Updates(), Page: e.Page,
+			ID: e.ID, Name: e.Name, Arch: e.Arch, Size: e.Size, Popular: e.Popular,
+			Updates: e.Updates(), Page: e.Page,
 			Site: e.Site, Forum: e.Forum, Category: e.Category, Family: e.Family,
 			Icon: e.Icon, IconColor: e.IconColor, OnTarget: onTarget[e.ID],
 		})
