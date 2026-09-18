@@ -50,7 +50,11 @@ isoshelf does that for you:
   files your boot menu won't list, and files it doesn't recognize.
 - **Finds things fast.** Filter by kind, architecture, updates or favourites;
   sort by name, size, version or age; and jump to each project's website,
-  forum or release notes.
+  forum or release notes. The catalog of images you *could* add filters the
+  same way, plus "can be downloaded" and "fits in this folder".
+- **Knows what will fit.** Every image in the catalog shows about how big its
+  download is, and the folder shows how much room is left. An image too big
+  for the space says so instead of failing half way through.
 - **Learns about new images on its own.** The list of images isoshelf knows is
   data, not code, so it refreshes itself from this repository — you get new
   distributions without installing a new isoshelf. It's a checkbox you can
@@ -111,6 +115,14 @@ it keeps itself current from this repository, so new images don't wait for a
 new release. You can also keep your own catalog file, which isoshelf then
 leaves alone.
 
+It currently knows **72 images**: Ubuntu and its flavours, Linux Mint and
+LMDE, Debian and Debian Live, Fedora, Arch, openSUSE Tumbleweed, Kali, Parrot,
+Qubes, Alpine, Pop!_OS, CachyOS, Bazzite, MX, Manjaro, Q4OS, Tiny Core;
+Proxmox VE and Backup Server, TrueNAS, FreeBSD, pfSense, Ubuntu Core;
+Clonezilla, GParted Live, SystemRescue, Rescuezilla, netboot.xyz, Hiren's
+BootCD PE; and Windows, which it inventories but never downloads. Something
+missing? [Tell it about the image](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
+
 Here's `isoshelf check` on a test drive (trimmed, and the NOTE column shortened):
 
 ```text
@@ -144,8 +156,8 @@ logos, working out what unrecognized files are, naming the ones no list will
 ever know, adding images from the catalog, and a catalog that updates itself.
 Still to come: installing an older version when a new one breaks something,
 and fixes for files the boot menu won't list.<br>
-**Ongoing:** more images in the catalog: popular desktops, homelab and server
-systems, and rescue tools.<br>
+**Ongoing:** more images in the catalog. 72 so far; the wish list is in
+[docs/catalog-sources.md](docs/catalog-sources.md), and requests are welcome.<br>
 **v0.3:** rebuild a drive from your usual set, and repair mode.<br>
 **Later:** server mode (Docker, TrueNAS, Proxmox LXC) and a macOS build.
 

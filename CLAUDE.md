@@ -221,7 +221,11 @@ alone is not an update.
 
 - Default catalog embedded in the binary; user copy in the OS config dir, or in
   the app folder in portable mode.
-- Code: `internal/catalog`. The file starts with `schema = 1`.
+- Code: `internal/catalog`. The file starts with `schema = 1` and a
+  `revision`, written as the date it last changed (`20260918`). Raise the
+  revision with every catalog change: it is how a downloaded catalog and the
+  one built into the binary are told apart, so installing a newer isoshelf
+  never steps back to a list downloaded months ago (`Catalog.Newer`).
 - One `[[entry]]` = one track:
   - `id` (lowercase, digits, dashes), `name`, `arch` (`x86_64`, `x86`,
     `arm64`, `arm` (32-bit), `multi`).
@@ -230,7 +234,9 @@ alone is not an update.
     (then it's optional).
   - `samples`: at least one real filename; each must match its own entry only.
   - Optional: `fixed_name`, `page`, `fixup` (`extract`, `convert`,
-    `rename:<ext>`), `known_hashes` (SHA-256).
+    `rename:<ext>`), `known_hashes` (SHA-256), `size` (roughly how big the
+    download is, in bytes; measured by `record -sizes`, refused if too small
+    or too large to be an image).
   - For the UI: `category` (desktop, server, security, rescue, windows,
     other), `family` (groups one product's tracks), `site`, `forum`, and
     `icon` + `icon_color` (a Simple Icons name and brand colour).
@@ -258,10 +264,14 @@ alone is not an update.
   sample filename matches exactly one entry. Every problem is reported at once.
 - Scope: the sample drive is only an example. The default catalog should cover
   common and trending images (desktop, server/homelab, rescue tools), so users
-  can add images that aren't on their target yet. It has 60 entries (the
-  sample drive and the maintainer's Proxmox folder). Add more in batches,
-  checking each one live before it goes in. Why each entry is set up the way
-  it is, and the wish list: `docs/catalog-sources.md`.
+  can add images that aren't on their target yet. It has 72 entries: the
+  sample drive, the maintainer's Proxmox folder, and the images people ask
+  for first. Add more in batches, checking each one live before it goes in.
+  Why each entry is set up the way it is, and the wish list:
+  `docs/catalog-sources.md`.
+- A few entries pin a release number in their URLs because nothing else gives
+  the version their checksum file is named after (Fedora). Those need raising
+  by hand each release; `docs/catalog-sources.md` lists them.
 - Every catalog URL is the final address: tests can't replay redirects, and a
   checksum file that redirects to another host is refused.
 - Later: one file per distro under `catalog/`, validated in CI, plus a weekly
@@ -466,6 +476,16 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   sorts by attention, favourites, name, size, version or when the file changed.
   The choices live in the browser's localStorage. When a filter hides
   everything, the empty message names the filters and offers to clear them.
+- "More in the catalog" has its own copy of those filters, plus "can be
+  downloaded" and "fits in this folder", and sorts by name, largest, smallest
+  or kind. The two sets are deliberately separate: one list answers what have
+  I got, the other what could I add. Each entry shows about how big its
+  download is, and one too big for the room left says so instead of failing
+  part way through.
+- The folder's free space (`internal/space`) sits next to the scan time. It is
+  read before the server's lock is taken and cached for five seconds, because
+  the page polls twice a second during a scan and a NAS answers over the
+  network. A folder that won't say leaves the line out.
 - Each row has a "…" menu with the download page, website, forum and release
   notes, an Update button when there is one, and Remove.
 - Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
@@ -479,7 +499,25 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   preview while developing: `go run ./cmd/isoshelf ui --port 8765 --no-browser <folder>`
   and open the printed link (with `localhost` or `127.0.0.1`).
 
-### Where we stopped (2026-09-17)
+### Where we stopped (2026-09-18)
+
+The repository is public. Issues, Discussions (Q&A and Ideas), the three issue
+forms, the `catalog` and `maintainer` labels, Dependabot, secret scanning and
+push protection are all on; the wiki is off on purpose, so documentation stays
+in the repository where it is reviewed. CI builds, vets, gofmt-checks and
+tests on Windows and Linux, and a `v*` tag builds the release.
+
+The catalog holds 72 entries, all 57 downloadable ones resolved live today,
+with measured sizes. The page shows those sizes, the room left in the folder,
+and filters for the catalog list. Next, in order:
+
+- `isoshelf update` on the command line, to match the web UI.
+- Older versions with a hold; Make bootable fix-ups; signature checking.
+- A download queue (2 concurrent, 1 per host).
+- More catalog entries from the wish list in `docs/catalog-sources.md`.
+- The first release: tag `v0.1.0` and let the release workflow build it.
+
+### Where we were before that (2026-09-17)
 
 v0.1 is done. v0.2 has downloads, per-image updates, removal with put-back, the
 archive, filters and sorting, logos and links, Assign, the Add button, a
@@ -538,7 +576,9 @@ notes.txt                                  # not an image: ignore
   `go run ./internal/remote/remotetest/record` (the only thing that goes
   online) resolves every catalog entry live, reports failures and redirects,
   and re-records everything; run it after changing the catalog.
-  `TestEveryEntryRecorded` fails when an entry has no recording.
+  `TestEveryEntryRecorded` fails when an entry has no recording. Add `-sizes`
+  to measure every image with a HEAD request (or a one-byte range where HEAD
+  is refused) and print the `size =` lines for the catalog.
 - Small commits with clear messages. Update this file when a decision changes.
 - Explain in plain language any step the maintainer has to do by hand
   (installing tools, committing, pushing, releasing).

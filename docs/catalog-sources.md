@@ -138,3 +138,36 @@ second, which is how `Windows.iso` in that folder was recognized: same size as
 `Windows11.iso`, same build time, so it is the same image under another name.
 The `preparer` field is ignored on purpose, because it names the build tool
 (xorriso, mkisofs, IMAPI2) rather than the product.
+
+## Added 2026-09-18
+
+Checked live the same day, and all of them resolve in a full recorder run.
+
+| Entry | Source | Checksums | Notes |
+|---|---|---|---|
+| Kubuntu LTS, Xubuntu LTS | endoflife `ubuntu`, channel `lts` | `cdimage.ubuntu.com/{flavour}/releases/{cycle}/release/SHA256SUMS` | The flavours follow Ubuntu's cycles. Xubuntu's folder also holds "minimal" images, which are a separate track. |
+| Linux Mint Xfce | endoflife `linuxmint`, cycles filter keeps LMDE out | `mirrors.edge.kernel.org/linuxmint/stable/{cycle}/sha256sum.txt` | Same shape as the Cinnamon entry. |
+| LMDE | listing of `linuxmint/debian/sha256sum.txt` | the same file | endoflife.date files LMDE under `linuxmint` with cycles like `lmde7`, which don't give the plain number the filenames use. The checksum file lists every LMDE released, so the highest wins. |
+| Debian Live (GNOME, KDE) | endoflife `debian`, latest | `cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/SHA256SUMS` | endoflife says 13.7 and the files say 13.7.0, so the pattern uses `{cycle}\.\d+\.\d+`. The file lists `.iso.contents` and `.iso.log` beside each image; matching the whole name keeps them out. |
+| Fedora Workstation, Fedora KDE | listing of the release folder | `Fedora-{edition}-{version}-x86_64-CHECKSUM` | The checksum file is named after the compose (`44-1.7`), which no version source gives, so the folder is read instead. **The release number is pinned in two URLs and has to be raised by hand when a new Fedora ships.** `dl.fedoraproject.org` is the master and doesn't redirect; `download.fedoraproject.org` sends you to a mirror. |
+| Arch Linux | listing of `geo.mirror.pkgbuild.com/iso/latest/sha256sums.txt` | the same file | Monthly, named by date. The folder also holds an unversioned `archlinux-x86_64.iso` copy, which stays unrecognized on purpose. |
+| openSUSE Tumbleweed | listing of `download.opensuse.org/tumbleweed/iso/` | `…-Snapshot{version}-Media.iso.sha256` | Rolling, one snapshot per day. The `-Current` names redirect to whichever snapshot is newest, so the dated name is read from the folder. |
+| Clonezilla Live (stable) | listing of `free.nchc.org.tw/clonezilla-live/stable/CHECKSUMS.TXT` | the same file | Clonezilla is developed at NCHC, whose server carries the stable images and checksums without redirecting. The file has MD5, SHA1 and SHA256 sections; the strongest wins. The older `clonezilla-alternative` entry is the Ubuntu-based build and stays check-only. |
+| GParted Live | listing of `gparted.org/gparted-live/stable/CHECKSUMS.TXT` | the same file, by absolute URL | Images are on SourceForge, checksums on gparted.org: bytes from a mirror, checksums from the origin. It must be the `/project/gparted/gparted-live-stable/{version}/` path — the short `/gparted/<file>` one serves a "your download is starting" web page, which is how the size check caught it at 143 KB. |
+
+### Entries pinned to a release number
+
+These need a catalog edit when the project ships a new release, because the
+checksum file is named after something no version source reports:
+
+- `fedora-workstation` and `fedora-kde`: the folder `…/releases/44/…` in both
+  `source.url` and `artifact.base`.
+
+### Sizes
+
+Every downloadable entry carries a `size`, measured with
+`go run ./internal/remote/remotetest/record -sizes` (a HEAD request, or a
+one-byte range where a server refuses HEAD). It is a hint, not a promise: it
+changes with each release, and the page says "about". Re-measure whenever the
+catalog is re-recorded. 49 of the 72 entries had a size on 2026-09-18; the
+rest are manual or check-only entries with nothing to measure.
