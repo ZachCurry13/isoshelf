@@ -278,7 +278,7 @@ What that did and did not change:
 - **The rules are mine.** What it may delete and when it has to ask, that a
   failed checksum always blocks a file, that Windows images are a link and
   never a download, that it mirrors nothing — those decisions came first and
-  are written down in [CLAUDE.md](CLAUDE.md), which the code follows.
+  are written down in [docs/design.md](docs/design.md), which the code follows.
 - **Nothing in the catalog is guessed.** Every entry was checked against the
   project's own site before it went in, and every downloadable one is resolved
   live, from the project's own servers, before a catalog change goes out. Where a project's checksums can't be reached safely, the

@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/node_modules/**)",
+      "Read(**/dist/**)",
+      "Read(**/build/**)",
+      "Read(**/portable/**)",
+      "Read(./isoshelf)",
+      "Read(./isoshelf.exe)",
+      "Read(**/*.iso)",
+      "Read(**/*.ISO)"
+    ]
+  }
+}
