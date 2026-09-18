@@ -60,6 +60,11 @@
 
   <section class="summary" id="summary" aria-label="Filter by status"></section>
 
+  <section class="card updates" id="updates-banner" hidden>
+    <span id="updates-text"></span>
+    <button type="button" class="btn primary" id="update-all"></button>
+  </section>
+
   <section class="card images">
     <div class="toolbar">
       <input type="search" id="search" placeholder="Filter by name or file…" aria-label="Filter images">
@@ -85,26 +90,28 @@
         <option value="favorites">Favorites first</option>
         <option value="name">Name</option>
         <option value="size">Largest first</option>
-        <option value="version">Newest version</option>
+        <option value="version">Newest version here</option>
+        <option value="latest">Newest available</option>
+        <option value="file">File name</option>
+        <option value="replace">Replace setting</option>
         <option value="modified">Recently changed</option>
       </select>
       <label class="check"><input type="checkbox" id="only-updates"> Updates only</label>
       <label class="check"><input type="checkbox" id="only-favorites"> Favorites</label>
       <span class="muted" id="shown"></span>
-      <span class="spacer"></span>
-      <button type="button" class="btn small" id="update-all" hidden></button>
     </div>
     <div class="table-wrap">
       <table id="table">
         <thead>
           <tr>
             <th class="col-star"><span class="sr-only">Usual set</span></th>
-            <th>Status</th>
-            <th>Image</th>
-            <th>Version</th>
-            <th>Latest</th>
-            <th>File</th>
-            <th class="col-replace" title="When an update is downloaded, replace the old file (on) or keep both (off).">Replace old</th>
+            <th id="col-status" class="sortable" aria-sort="none">Status</th>
+            <th id="col-image" class="sortable" aria-sort="none">Image</th>
+            <th id="col-version" class="sortable" aria-sort="none">Version</th>
+            <th id="col-latest" class="sortable" aria-sort="none">Latest</th>
+            <th id="col-file" class="sortable" aria-sort="none">File</th>
+            <th id="col-size" class="sortable" aria-sort="none">Size</th>
+            <th id="col-replace" class="col-replace sortable" aria-sort="none">Replace old</th>
             <th class="col-actions"><span class="sr-only">Actions</span></th>
           </tr>
         </thead>

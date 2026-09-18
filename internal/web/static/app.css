@@ -535,3 +535,17 @@ td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-spac
 .wont-fit { color: var(--bad-fg); }
 .more .toolbar { padding: 0 20px 12px; border: 0; }
 #more-shown { margin-left: auto; }
+
+/* Sortable column headings */
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { color: var(--text); }
+th.sortable.sorted::after { content: " ▲"; font-size: 10px; color: var(--accent); }
+th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
+.size-cell { white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
+
+.updates {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  border-left: 3px solid var(--accent);
+}
+.updates #updates-text { font-weight: 600; }
+.updates .btn { margin-left: auto; }

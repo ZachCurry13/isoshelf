@@ -35,6 +35,7 @@ const view = {
   category: "",
   arch: "",
   sort: "attention",
+  desc: false,
   updatesOnly: false,
   favoritesOnly: false,
 };
@@ -170,6 +171,7 @@ function render() {
   else $("notice").hidden = true;
 
   renderSummary();
+  renderHeadings();
   renderRows();
   renderFooter();
   renderCatalog();
@@ -281,11 +283,20 @@ function renderRows() {
   const total = state.report.items.length;
   $("shown").textContent = items.length === total ? plural(total, "image") : `${items.length} of ${plural(total, "image")}`;
 
+  // Updates get their own line above the list rather than a button at the
+  // end of the filters, where it was easy to miss.
   const updatable = state.report.items.filter((it) => it.entry && it.updates === "download" && it.status === "update available");
+  const banner = $("updates-banner");
+  banner.hidden = updatable.length === 0;
+  if (updatable.length) {
+    const bytes = updatable.reduce((sum, it) => sum + (it.size || 0), 0);
+    $("updates-text").textContent = updatable.length === 1
+      ? `${updatable[0].name} has an update.`
+      : `${plural(updatable.length, "image")} have updates${bytes ? `, replacing about ${formatBytes(bytes)}` : ""}.`;
+  }
   const all = $("update-all");
-  all.hidden = updatable.length === 0;
   all.disabled = Boolean(state.run);
-  all.textContent = `Update all (${updatable.length})`;
+  all.textContent = updatable.length === 1 ? "Update it" : `Update all ${updatable.length}`;
   empty.hidden = items.length > 0;
   empty.replaceChildren();
   if (items.length === 0) {
@@ -325,19 +336,91 @@ function compareVersions(a, b) {
   return 0;
 }
 
-function sortItems(items) {
+// Each sorter puts the most useful end first, so "descending" means the
+// reverse of what the column's name suggests: largest, newest, most urgent.
+function sorters() {
   const byName = (a, b) => a.name.localeCompare(b.name) || (a.path || "").localeCompare(b.path || "");
   const starred = (item) => (item.entry && (state.tracks[item.entry] || {}).starred ? 0 : 1);
   const rank = (item) => STATUS_ORDER.indexOf(item.status);
-  const sorters = {
+  const text = (value) => (value || "").toLowerCase();
+  // An image with nothing to replace sorts after both settings, because the
+  // switch isn't shown for it at all.
+  const replace = (item) => {
+    if (!item.entry || item.updates !== "download") return 2;
+    return (state.tracks[item.entry] || {}).keep_old ? 1 : 0;
+  };
+  return {
     attention: (a, b) => rank(a) - rank(b) || byName(a, b),
     favorites: (a, b) => starred(a) - starred(b) || rank(a) - rank(b) || byName(a, b),
     name: byName,
     size: (a, b) => (b.size || 0) - (a.size || 0) || byName(a, b),
     version: (a, b) => compareVersions(b.version, a.version) || byName(a, b),
+    latest: (a, b) => compareVersions(b.latest, a.latest) || byName(a, b),
+    file: (a, b) => text(a.path).localeCompare(text(b.path)) || byName(a, b),
+    replace: (a, b) => replace(a) - replace(b) || byName(a, b),
     modified: (a, b) => new Date(b.modified || 0) - new Date(a.modified || 0) || byName(a, b),
   };
-  return [...items].sort(sorters[view.sort] || sorters.attention);
+}
+
+// blank says whether a row has nothing to compare in this column: an image
+// that isn't in the folder has no file, size or version. Those always sort
+// last, whichever way round the column is, because a list that starts with
+// blanks is a list you have to scroll past.
+const BLANK = {
+  size: (item) => !item.path || !item.size,
+  version: (item) => !item.version,
+  latest: (item) => !item.latest,
+  file: (item) => !item.path,
+  modified: (item) => !item.modified,
+};
+
+function sortItems(items) {
+  const all = sorters();
+  const compare = all[view.sort] || all.attention;
+  const isBlank = BLANK[view.sort] || (() => false);
+
+  const filled = [], blanks = [];
+  for (const item of items) (isBlank(item) ? blanks : filled).push(item);
+  filled.sort(compare);
+  if (view.desc) filled.reverse();
+  blanks.sort(all.name);
+  return [...filled, ...blanks];
+}
+
+// Columns that can be sorted by clicking their heading, and what each one
+// means the first time it's clicked.
+const COLUMN_SORTS = [
+  ["col-status", "attention", "Most urgent first"],
+  ["col-image", "name", "By name, A to Z"],
+  ["col-version", "version", "Newest version here first"],
+  ["col-latest", "latest", "Newest available first"],
+  ["col-file", "file", "By filename, A to Z"],
+  ["col-size", "size", "Largest first"],
+  ["col-replace", "replace", "Images set to replace first"],
+];
+
+// renderHeadings makes the column titles sort the list, and shows which one
+// is doing it.
+function renderHeadings() {
+  for (const [id, key, hint] of COLUMN_SORTS) {
+    const heading = $(id);
+    if (!heading) continue;
+    const active = view.sort === key;
+    heading.classList.toggle("sorted", active);
+    heading.setAttribute("aria-sort", active ? (view.desc ? "descending" : "ascending") : "none");
+    heading.title = active
+      ? `Sorted ${view.desc ? "the other way round" : "this way"}. Click to reverse it.`
+      : hint;
+    heading.onclick = () => {
+      // The same column again turns it round; a different one starts fresh.
+      view.desc = active ? !view.desc : false;
+      view.sort = key;
+      $("sort").value = key;
+      saveView();
+      renderHeadings();
+      renderRows();
+    };
+  }
 }
 
 // logoTile is the project logo, or coloured initials when there is none.
@@ -463,8 +546,16 @@ function renderRow(item) {
 
   const fileCell = el("td", {},
     item.path
-      ? [el("div", { class: "file" }, item.path), el("div", { class: "size" }, formatBytes(item.size), item.kind && item.kind !== "unknown" ? ` · ${item.kind}` : "")]
+      ? [
+        el("div", { class: "file" }, item.path),
+        item.kind && item.kind !== "unknown" ? el("div", { class: "size" }, item.kind) : null,
+      ]
       : el("span", { class: "muted" }, "Not in this folder"));
+
+  // Size gets a column of its own, so the shelf can be sorted by what's
+  // taking up the room.
+  const sizeCell = el("td", { class: "size-cell" },
+    item.path && item.size ? formatBytes(item.size) : el("span", { class: "muted" }, "–"));
 
   let replace = el("span", { class: "muted", title: "Nothing to download for this image" }, "–");
   if (item.entry && item.updates === "download") {
@@ -521,6 +612,7 @@ function renderRow(item) {
     el("td", { class: "version-cell" }, item.version || "–"),
     latestCell,
     fileCell,
+    sizeCell,
     el("td", { class: "replace" }, replace),
     el("td", { class: "row-actions" }, actions));
 }
@@ -1273,9 +1365,18 @@ document.addEventListener("DOMContentLoaded", () => {
   $("update-all").addEventListener("click", updateAll);
   $("search").addEventListener("input", renderRows);
   loadView();
-  for (const [id, key] of [["category", "category"], ["arch", "arch"], ["sort", "sort"]]) {
+  for (const [id, key] of [["category", "category"], ["arch", "arch"]]) {
     $(id).addEventListener("change", (e) => { view[key] = e.target.value; saveView(); renderRows(); });
   }
+  // Picking a sort from the list means the way that option is worded:
+  // "largest first" is already the right way round.
+  $("sort").addEventListener("change", (e) => {
+    view.sort = e.target.value;
+    view.desc = false;
+    saveView();
+    renderHeadings();
+    renderRows();
+  });
   for (const [id, key] of [["only-updates", "updatesOnly"], ["only-favorites", "favoritesOnly"]]) {
     $(id).addEventListener("change", (e) => { view[key] = e.target.checked; saveView(); renderRows(); });
   }
