@@ -631,8 +631,9 @@ function renderCatalogStatus(footer) {
   if (!cat || !cat.entries) return;
   const where = CATALOG_SOURCE[cat.source] || cat.source;
   const when = cat.source === "downloaded" && cat.updated_at ? `, checked ${timeAgo(cat.updated_at)}` : "";
+  const mine = cat.mine ? `, plus ${plural(cat.mine, "image")} you named yourself` : "";
   const row = el("div", { class: "footer-row" },
-    el("span", {}, `${plural(cat.entries, "image")} known: ${where}${when}.`));
+    el("span", {}, `${plural(cat.entries, "image")} known: ${where}${when}${mine}.`));
 
   if (cat.can_auto) {
     row.append(
@@ -757,14 +758,84 @@ function sureness(score) {
 // identifyPath is the file the dialog is about, so a slow answer for one file
 // never lands in the dialog for another.
 let identifyPath = null;
+let identifyItem = null;
+
+// suggestedName turns a filename into a first guess at a title, so the user
+// edits rather than types: "WinServer_2022_x64.iso" -> "WinServer 2022".
+function suggestedName(path) {
+  const file = path.split("/").pop().replace(/\.[a-z0-9]{1,4}$/i, "");
+  return file
+    .replace(/[_.+]+/g, " ")
+    .replace(/\b(x86[-_]?64|amd64|x64|i386|i686|arm64|aarch64|iso|img)\b/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim()
+    .slice(0, 80);
+}
+
+// renderReportLink offers to tell the project about an image its catalog is
+// missing. It opens a prefilled report the user reads and sends themselves;
+// isoshelf sends nothing on its own.
+function renderReportLink(item, label) {
+  const box = $("identify-report");
+  box.replaceChildren();
+  if (!state.report_url) return;
+  const title = `Catalog: ${item.path.split("/").pop()}`;
+  const body = [
+    "An image isoshelf didn't recognize.",
+    "",
+    `- File: ${item.path.split("/").pop()}`,
+    `- Size: ${formatBytes(item.size)}`,
+    item.kind ? `- Content: ${item.kind}` : null,
+    label ? `- The disc calls itself: ` : null,
+    "",
+    "What is it, and where is it published?",
+  ].filter(Boolean).join("\n");
+  const url = `${state.report_url}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=catalog`;
+
+  box.append(
+    "Should isoshelf know this image? ",
+    el("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, "Tell the project about it"),
+    " — it opens a report you can read and change before sending. Nothing is sent by isoshelf.");
+}
+
+// saveMyName writes the user's own name for a file into their own catalog.
+async function saveMyName() {
+  const name = $("mine-name").value.trim();
+  if (!name) {
+    showNotice("Give the image a name first.", true);
+    return;
+  }
+  let result;
+  try {
+    result = await api("POST", "/api/catalog/mine", {
+      path: identifyPath,
+      name,
+      arch: $("mine-arch").value,
+      category: $("mine-category").value,
+      page: $("mine-page").value.trim(),
+    });
+  } catch (err) {
+    showNotice(err.message, true);
+    return;
+  }
+  $("identify").close();
+  showNotice(result.message);
+  catalog = null;
+  await refresh();
+}
 
 async function openIdentify(item) {
   identifyPath = item.path;
+  identifyItem = item;
   $("identify-file").textContent = item.path;
   $("identify-forget").hidden = !item.assigned;
   $("identify-search").value = "";
   $("identify-list").replaceChildren();
   $("identify-all").open = false;
+  $("identify-mine").open = false;
+  $("mine-name").value = suggestedName(item.path);
+  $("mine-page").value = "";
+  $("identify-report").replaceChildren();
   $("identify-guesses").replaceChildren(el("p", { class: "muted" }, "Looking at what the file says about itself…"));
   $("identify").showModal();
 
@@ -778,6 +849,7 @@ async function openIdentify(item) {
   if (data.path !== identifyPath) return;
   renderGuesses(data.guesses);
   renderIdentifyCatalog();
+  renderReportLink(item, data.label);
 }
 
 function renderGuesses(guesses) {
@@ -1071,6 +1143,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("more-search").addEventListener("input", renderCatalog);
   $("identify-search").addEventListener("input", renderIdentifyCatalog);
   $("identify-forget").addEventListener("click", () => confirmIdentity("", ""));
+  $("mine-save").addEventListener("click", saveMyName);
   $("picker-go").addEventListener("click", () => browse($("picker-input").value.trim()));
   $("picker-input").addEventListener("keydown", (e) => {
     if (e.key === "Enter") { e.preventDefault(); browse($("picker-input").value.trim()); }

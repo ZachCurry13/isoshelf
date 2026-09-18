@@ -184,7 +184,6 @@ func TestLoadInvalid(t *testing.T) {
 		{"listing regex without version", "type = \"github\"\nrepo = \"example/tool\"\ntag = 'v(?P<version>\\d+\\.\\d+\\.\\d+)'\nasset = 'example-tool\\.iso'", "type = \"listing\"\nurl = \"https://example.org/tool/\"\nregex = 'tool v\\d+'", "source.regex: needs a (?P<version>...) group"},
 
 		// Manual entries and extras.
-		{"manual without page", `page = "https://example.org/download"`, "", "page: required for manual entries"},
 		{"manual with artifact", `type = "manual"`, "type = \"manual\"\n\n[entry.artifact]\nbase = \"https://example.org/\"\nfile = 'x\\.iso'", "manual entries have no artifact"},
 		{"bad fixup", `fixed_name = true`, "fixed_name = true\nfixup = \"rename:.bin\"", `rename target ".bin" is not a type Ventoy lists`},
 		{"bad known hash", `"E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"`, `"abc"`, `"abc" is not a SHA-256`},
@@ -260,5 +259,22 @@ func TestLoadUnknownKeyLine(t *testing.T) {
 func TestLoadMissingFile(t *testing.T) {
 	if _, err := Load(fstest.MapFS{}, "catalog.toml"); err == nil {
 		t.Error("want an error for a missing file")
+	}
+}
+
+// Every manual entry in the published catalog needs a download page: it is
+// the only thing isoshelf can offer for an image it can't fetch. Entries
+// someone adds for themselves are not held to this, since a homemade image
+// may have nowhere to point at.
+func TestPublishedManualEntriesHaveAPage(t *testing.T) {
+	cat, err := Default()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i := range cat.Entries {
+		e := &cat.Entries[i]
+		if e.Source.Type == SourceManual && e.Page == "" {
+			t.Errorf("%s is manual but has no page", e.ID)
+		}
 	}
 }

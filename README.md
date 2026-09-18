@@ -44,7 +44,8 @@ isoshelf does that for you:
   gets a "What is this?" button. isoshelf reads what the disc says about
   itself, looks for the same image elsewhere in the folder, and suggests what
   it is, with the reason and how sure it is. You confirm; nothing is renamed
-  or moved.
+  or moved. If it's something no list will ever know — an image you built or
+  customized — name it yourself and isoshelf remembers it from then on.
 - **Flags problems.** Reports end-of-life releases, checksum mismatches,
   files your boot menu won't list, and files it doesn't recognize.
 - **Finds things fast.** Filter by kind, architecture, updates or favourites;
@@ -139,11 +140,10 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 
 **v0.2 (in progress):** downloads with verification, per-image updates,
 removal with put-back, the archive of images that have left, filters, sorting,
-logos, working out what unrecognized files are, adding images from the catalog,
-and a catalog that updates itself. Still to come: naming an image the catalog
-will never know, reporting a missing one in a click, installing an older
-version when a new one breaks something, and fixes for files the boot menu
-won't list.<br>
+logos, working out what unrecognized files are, naming the ones no list will
+ever know, adding images from the catalog, and a catalog that updates itself.
+Still to come: installing an older version when a new one breaks something,
+and fixes for files the boot menu won't list.<br>
 **Ongoing:** more images in the catalog: popular desktops, homelab and server
 systems, and rescue tools.<br>
 **v0.3:** rebuild a drive from your usual set, and repair mode.<br>

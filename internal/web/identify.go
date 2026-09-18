@@ -49,8 +49,17 @@ func (s *Server) getGuesses(w http.ResponseWriter, r *http.Request) {
 	if rec, ok := s.st.Files[file]; ok && rec.Assigned {
 		assigned = rec.Entry
 	}
+	// The label goes to the page so a report about a missing image can say
+	// what the disc calls itself.
+	var label string
+	for _, f := range s.scan.Files {
+		if f.Path == file {
+			label = f.Volume.Label
+		}
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"path": file, "name": path.Base(file), "assigned": assigned, "guesses": guesses,
+		"label": label,
 	})
 }
 

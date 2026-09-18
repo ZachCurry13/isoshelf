@@ -291,8 +291,7 @@ alone is not an update.
 4. Assign: suggest what an unrecognized file is and confirm it (below).
    *Done.*
 5. Adding catalog images that aren't on the target (the "Add" button).
-6. Growing the catalog without a new release (below): the self-updating
-   catalog is done; "Add my own image" and the one-click report are not.
+6. Growing the catalog without a new release (below). *Done.*
 7. Installing older versions with a hold (below), and Make bootable fix-ups.
 8. Still open: a CLI `isoshelf update` command (the web UI has it), a queue
    for several downloads at once, and OpenPGP signature checking.
@@ -362,13 +361,18 @@ wrong image gets trusted. So the split is deliberate.
   - The checkbox lives in `ui.json` as `catalog_auto` (absent = on). A test
     asserts the catalog in the repository would be accepted as an update, so a
     broken catalog can't be published.
-- **Add my own image.** Anything unrecognized can be given a name, category and
-  page by hand; isoshelf writes a `manual` entry into the user's catalog file.
-  That is inventory only: it never invents a download address.
-- **Tell isoshelf about this image.** One click opens a prefilled report (the
-  filename, the disc label, size, and the site if the user gives one) as a new
-  issue on the repository. The user sees it before sending; nothing is sent
-  automatically, and nothing personal goes in it. That is how new download
+- **Add my own image.** *Done:* `internal/usercat`. Anything unrecognized can
+  be given a name, kind, architecture and (optionally) a page in the "What is
+  this file?" dialog. isoshelf appends a `manual` entry to
+  `<config>/catalog-mine.toml`, a file of the user's own that is merged onto
+  whichever catalog is in use (`catalog.Merge`), so the published catalog
+  underneath keeps updating itself. Entry ids start with `my-`. The file is
+  only kept if the merged result still validates, so a name that clashes
+  leaves nothing behind. Inventory only: no download address is ever invented.
+- **Tell isoshelf about this image.** *Done:* the same dialog offers a link to
+  a prefilled issue (filename, size, content kind, disc label). It opens in
+  the browser for the user to read, change and send; isoshelf never sends
+  anything itself, and nothing personal goes in it. That is how new download
   sources arrive: a person checks each one once.
 
 ### Ventoy and other tools
@@ -478,13 +482,13 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 ### Where we stopped (2026-09-17)
 
 v0.1 is done. v0.2 has downloads, per-image updates, removal with put-back, the
-archive, filters and sorting, logos and links, and now Assign, all tried
-against the maintainer's Proxmox folder. `Windows.iso` there is recognized as
-Windows 11 because it is the same size as `Windows11.iso` and both discs carry
-the same build time. Next, in order:
+archive, filters and sorting, logos and links, Assign, the Add button, a
+catalog that updates itself, images the user names themselves, and the
+one-click report. All tried against the maintainer's Proxmox folder, except
+the catalog update, which can't work until the repository is public.
+`Windows.iso` there is recognized as Windows 11 because it is the same size as
+`Windows11.iso` and both discs carry the same build time. Next, in order:
 
-- "Add my own image": write a manual entry into the user's catalog for a file
-  the catalog will never know, and the one-click report for a missing image.
 - Make the repository public: the self-updating catalog, the "new isoshelf is
   available" notice and release downloads all need it (asked 2026-09-17; the
   maintainer said yes and is doing it).

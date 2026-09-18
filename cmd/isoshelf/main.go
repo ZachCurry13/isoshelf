@@ -27,6 +27,7 @@ import (
 	inv "github.com/ZachCurry13/isoshelf/internal/inventory"
 	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
+	"github.com/ZachCurry13/isoshelf/internal/usercat"
 	"github.com/ZachCurry13/isoshelf/internal/web"
 )
 
@@ -225,6 +226,7 @@ func inventory(ctx context.Context, e *env, opts options) error {
 	if err != nil {
 		return err
 	}
+	cat = withOwnImages(cat, dirs, e.stderr)
 
 	client := remote.New(version)
 	client.HTTP = e.http
@@ -316,6 +318,7 @@ func serveUI(ctx context.Context, e *env, opts options) error {
 	if err != nil {
 		return err
 	}
+	cat = withOwnImages(cat, dirs, e.stderr)
 	listener, err := net.Listen("tcp", net.JoinHostPort("127.0.0.1", strconv.Itoa(opts.port)))
 	if err != nil {
 		return fmt.Errorf("can't listen on port %d (is isoshelf already running?): %w", opts.port, err)
@@ -402,4 +405,22 @@ func loadCatalog(dirs appdir.Dirs, flagPath string) (*catalog.Catalog, string, e
 	}
 	cat, err := catalog.Load(os.DirFS(filepath.Dir(abs)), filepath.Base(abs))
 	return cat, catupdate.SourceOwn, err
+}
+
+// withOwnImages adds the images the user named themselves. They live in their
+// own file so that the catalog underneath can still update itself. A file
+// that no longer loads is reported, not fatal: isoshelf carries on with the
+// images it knows.
+func withOwnImages(cat *catalog.Catalog, dirs appdir.Dirs, warn io.Writer) *catalog.Catalog {
+	mine, err := usercat.Load(dirs.Config)
+	if err == nil && mine != nil {
+		var merged *catalog.Catalog
+		if merged, err = catalog.Merge(cat, mine); err == nil {
+			return merged
+		}
+	}
+	if err != nil {
+		fmt.Fprintf(warn, "isoshelf: %s: %v\n", usercat.Path(dirs.Config), err)
+	}
+	return cat
 }

@@ -327,11 +327,13 @@ func (ec entryCheck) checkExtras(hashes map[string]string) {
 		ec.problem("icon_color", "%q is not a colour like #0078d4", e.IconColor)
 	}
 
+	// An entry isoshelf can't download from needs somewhere to send the user
+	// instead. The exception is a manual entry, because an image someone
+	// named themselves ("my old install disc") may have nowhere to point at;
+	// a test holds the published catalog to the stricter rule.
 	switch {
 	case e.Page != "":
 		ec.checkURL("page", e.Page, nil, webURL)
-	case ec.manual():
-		ec.problem("page", `required for manual entries (used by "Open download page")`)
 	case ec.checkOnly():
 		ec.problem("page", `required for entries without [entry.artifact] (used by "Open download page")`)
 	}

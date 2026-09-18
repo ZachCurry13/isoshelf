@@ -140,6 +140,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/identify", s.identifyFile)
 	mux.HandleFunc("POST /api/catalog/refresh", s.updateCatalog)
 	mux.HandleFunc("POST /api/settings", s.setSettings)
+	mux.HandleFunc("POST /api/catalog/mine", s.addMyImage)
 	s.handler = s.guard(mux)
 
 	go s.checkAppUpdate()
@@ -224,6 +225,8 @@ type stateJSON struct {
 	Removed   removedJSON            `json:"removed"`
 	Catalog   catalogStatusJSON      `json:"catalog"`
 	AppUpdate *appupdate.Notice      `json:"app_update,omitempty"`
+	// ReportURL is where a missing image can be reported.
+	ReportURL string `json:"report_url,omitempty"`
 }
 
 // removedJSON describes what waits in .isoshelf/removed.
@@ -273,6 +276,7 @@ func (s *Server) stateLocked(recent []string) stateJSON {
 		Recent:    recent,
 		Removed:   s.removedInfo(s.target),
 		Catalog:   s.catalogStatusLocked(),
+		ReportURL: "https://github.com/" + appupdate.Repo + "/issues/new",
 		AppUpdate: s.notice,
 	}
 	if s.st != nil {
