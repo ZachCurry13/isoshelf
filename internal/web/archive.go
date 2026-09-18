@@ -46,7 +46,7 @@ func (s *Server) getArchive(w http.ResponseWriter, r *http.Request) {
 			Size: past.Size, Gone: past.Gone, GoneAt: past.GoneAt,
 			Restorable: past.Gone == state.GoneMovedAside && slices.Contains(waiting, path.Base(past.Path)),
 		}
-		if e := s.cfg.Catalog.Entry(past.Entry); e != nil {
+		if e := s.cat.Entry(past.Entry); e != nil {
 			item.Name = e.Name
 			item.Page, item.Icon, item.IconColor = e.Page, e.Icon, e.IconColor
 			item.Downloadable = e.Updates() == "download"

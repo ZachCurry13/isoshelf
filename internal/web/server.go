@@ -30,7 +30,6 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/check"
 	"github.com/ZachCurry13/isoshelf/internal/inventory"
-	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 	"github.com/ZachCurry13/isoshelf/internal/update"
@@ -58,6 +57,9 @@ type Config struct {
 	// Target is the folder to open. Empty means the last one used, or the
 	// drive in portable mode.
 	Target string
+	// CatalogSource says where Catalog came from: "built-in", "downloaded"
+	// or "yours". A catalog the user supplied is never replaced.
+	CatalogSource string
 	// Now defaults to time.Now.
 	Now func() time.Time
 }
@@ -70,6 +72,12 @@ type Server struct {
 	mu     sync.Mutex
 	target string
 	st     *state.State
+	// cat is the catalog in use. A newer published one can replace it while
+	// isoshelf runs, so it is read through s.catalog() or under the lock.
+	cat       *catalog.Catalog
+	catSource string
+	catNote   string
+	catErr    string
 	// scan is the last look at the folder, kept so a file can be identified
 	// without reading the disk again.
 	scan      *scan.Result
@@ -94,7 +102,10 @@ func New(cfg Config) *Server {
 	if cfg.Now == nil {
 		cfg.Now = time.Now
 	}
-	s := &Server{cfg: cfg}
+	s := &Server{cfg: cfg, cat: cfg.Catalog, catSource: cfg.CatalogSource}
+	if s.catSource == "" {
+		s.catSource = catalogBuiltIn
+	}
 
 	target := cfg.Target
 	if target == "" {
@@ -127,9 +138,12 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/track", s.setTrack)
 	mux.HandleFunc("GET /api/guesses", s.getGuesses)
 	mux.HandleFunc("POST /api/identify", s.identifyFile)
+	mux.HandleFunc("POST /api/catalog/refresh", s.updateCatalog)
+	mux.HandleFunc("POST /api/settings", s.setSettings)
 	s.handler = s.guard(mux)
 
 	go s.checkAppUpdate()
+	s.startCatalogRefresh(false)
 	return s
 }
 
@@ -208,6 +222,7 @@ type stateJSON struct {
 	UsualSet  []string               `json:"usual_set"`
 	Recent    []string               `json:"recent_targets"`
 	Removed   removedJSON            `json:"removed"`
+	Catalog   catalogStatusJSON      `json:"catalog"`
 	AppUpdate *appupdate.Notice      `json:"app_update,omitempty"`
 }
 
@@ -257,6 +272,7 @@ func (s *Server) stateLocked(recent []string) stateJSON {
 		UsualSet:  []string{},
 		Recent:    recent,
 		Removed:   s.removedInfo(s.target),
+		Catalog:   s.catalogStatusLocked(),
 		AppUpdate: s.notice,
 	}
 	if s.st != nil {
@@ -375,7 +391,9 @@ func (s *Server) openTarget(path, profile string) error {
 	s.mu.Lock()
 	s.target, s.st, s.report, s.scan, s.lastErr, s.warnings = abs, st, nil, nil, "", nil
 	s.mu.Unlock()
-	s.saveSettings(settings{Target: abs})
+	saved := s.loadSettings()
+	saved.Target = abs
+	s.saveSettings(saved)
 	return nil
 }
 
@@ -402,15 +420,13 @@ func (s *Server) start(w http.ResponseWriter, online bool) {
 }
 
 func (s *Server) execute(ctx context.Context, target string, profile scan.Profile, online bool) {
-	client := remote.New(s.cfg.Version)
-	client.HTTP = s.cfg.HTTP
-	client.GitHubToken = s.cfg.GitHubToken
+	client := s.client()
 	res, err := inventory.Run(ctx, inventory.Options{
 		Target:  target,
 		Profile: profile,
 		Online:  online,
 		Client:  client,
-		Catalog: s.cfg.Catalog,
+		Catalog: s.catalog(),
 		Dirs:    s.cfg.Dirs,
 		Now:     s.cfg.Now,
 		Progress: func(p inventory.Progress) {
@@ -464,7 +480,7 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 	case s.st == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
-	case s.cfg.Catalog.Entry(req.Entry) == nil:
+	case s.cat.Entry(req.Entry) == nil:
 		writeError(w, http.StatusBadRequest, "Unknown image.")
 		return
 	}
@@ -487,9 +503,7 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 func (s *Server) checkAppUpdate() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client := remote.New(s.cfg.Version)
-	client.HTTP = s.cfg.HTTP
-	n, err := appupdate.Check(ctx, client, s.cfg.Dirs.Config, s.cfg.Version, s.cfg.Now())
+	n, err := appupdate.Check(ctx, s.client(), s.cfg.Dirs.Config, s.cfg.Version, s.cfg.Now())
 	if err != nil || n == nil {
 		return
 	}
@@ -519,6 +533,8 @@ func (s *Server) recentTargets() []string {
 
 type settings struct {
 	Target string `json:"target,omitempty"`
+	// CatalogAuto is nil until the user says either way; the default is on.
+	CatalogAuto *bool `json:"catalog_auto,omitempty"`
 }
 
 func (s *Server) loadSettings() settings {

@@ -44,7 +44,7 @@ var Files = []File{
 }
 
 // ProxmoxFolder is the top level of the maintainer's Proxmox ISO storage on a
-// NAS (Z:\proxmox\template\iso), as listed on 2026-09-17. Content is empty for
+// NAS share, as listed on 2026-09-17. Content is empty for
 // files that are neither ISOs nor disk images. The folder also holds a
 // subfolder named "Files".
 var ProxmoxFolder = []File{

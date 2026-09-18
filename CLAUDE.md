@@ -35,6 +35,17 @@ project, not affiliated with Ventoy.
   history, temp files and logs all stay on the drive.
 - "Make bootable" fix-ups are manual, per file, and confirmed. Keep the
   original until the result is complete and checked.
+- isoshelf never hosts, mirrors or re-serves anyone's image. It downloads from
+  the project's own servers to the user's own machine, and that stays true in
+  server mode: a server downloads for itself, never for the public.
+- Never automate a vendor's download flow that isn't meant to be automated,
+  and never touch licensing: Windows entries are `manual` (a link to
+  Microsoft's page), with no product keys and nothing about activation.
+- Nothing is ever circumvented: no CAPTCHA solving, no rate-limit dodging, no
+  paywalls or DRM. Requests identify themselves as isoshelf with its version.
+- Project names and logos are only ever used to say which image a file is,
+  never as isoshelf's own branding, and always with the "not affiliated"
+  notice. If a project asks to be delisted, remove its entry.
 
 ## Stack
 
@@ -280,7 +291,8 @@ alone is not an update.
 4. Assign: suggest what an unrecognized file is and confirm it (below).
    *Done.*
 5. Adding catalog images that aren't on the target (the "Add" button).
-6. Growing the catalog without a new release (below).
+6. Growing the catalog without a new release (below): the self-updating
+   catalog is done; "Add my own image" and the one-click report are not.
 7. Installing older versions with a hold (below), and Make bootable fix-ups.
 8. Still open: a CLI `isoshelf update` command (the web UI has it), a queue
    for several downloads at once, and OpenPGP signature checking.
@@ -335,11 +347,21 @@ The catalog is data, so it must be able to grow without shipping a binary. It
 must also stay safe: a download address that nobody checked is exactly how the
 wrong image gets trusted. So the split is deliberate.
 
-- **The catalog updates itself.** Off or on from a checkbox in settings
-  (proposed default: on). It fetches the catalog file from isoshelf's own
-  repository over HTTPS, parses and validates it strictly before accepting it,
-  keeps the last good copy on any failure, and reports what changed ("4 images
-  added"). Never from any other address, and a user's own catalog wins.
+- **The catalog updates itself.** *Done:* `internal/catupdate`. One address
+  only (`SourceURL`, the catalog file in this repository), fetched over HTTPS
+  at most once a day, written to a temporary file, parsed and validated, and
+  only then renamed to `<config>/catalog-published.toml`. Anything wrong keeps
+  the copy already there and says so in plain words. The result names what was
+  added and removed ("Catalog updated: Fedora KDE and 2 more added.").
+  - Load order (`loadCatalog` in `cmd/isoshelf`): `--catalog` flag, then the
+    user's `catalog.toml`, then the downloaded copy, then the built-in one.
+    The first two are "yours" and are never replaced or overwritten.
+  - The server keeps the catalog behind its mutex (`s.cat`, read through
+    `s.catalog()`), because a refresh can swap it while isoshelf runs. A swap
+    rebuilds the offline report; new images turn up on the next scan.
+  - The checkbox lives in `ui.json` as `catalog_auto` (absent = on). A test
+    asserts the catalog in the repository would be accepted as an update, so a
+    broken catalog can't be published.
 - **Add my own image.** Anything unrecognized can be given a name, category and
   page by hand; isoshelf writes a `manual` entry into the user's catalog file.
   That is inventory only: it never invents a download address.
@@ -461,9 +483,11 @@ against the maintainer's Proxmox folder. `Windows.iso` there is recognized as
 Windows 11 because it is the same size as `Windows11.iso` and both discs carry
 the same build time. Next, in order:
 
-- The "Add" button: download a catalog image the folder doesn't have yet.
-- Growing the catalog: the auto-update toggle, "Add my own image", and the
-  one-click report for an image the catalog is missing.
+- "Add my own image": write a manual entry into the user's catalog for a file
+  the catalog will never know, and the one-click report for a missing image.
+- Make the repository public: the self-updating catalog, the "new isoshelf is
+  available" notice and release downloads all need it (asked 2026-09-17; the
+  maintainer said yes and is doing it).
 - `isoshelf update` on the command line, to match the web UI.
 - Older versions with a hold; Make bootable fix-ups; signature checking.
 - Before a release: GitHub Actions (build, vet, test on Windows and Linux;

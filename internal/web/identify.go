@@ -38,7 +38,7 @@ func (s *Server) getGuesses(w http.ResponseWriter, r *http.Request) {
 	}
 
 	guesses := []guessJSON{}
-	for _, g := range identify.Suggest(s.scan, s.st, s.cfg.Catalog, file) {
+	for _, g := range identify.Suggest(s.scan, s.st, s.cat, file) {
 		guesses = append(guesses, guessJSON{
 			Entry: g.Entry.ID, Name: g.Entry.Name, Arch: g.Entry.Arch, Version: g.Version,
 			Score: g.Score, Sure: g.Sure(), Reason: g.Reason, Updates: g.Entry.Updates(),
@@ -88,7 +88,7 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 		}
 		message = fmt.Sprintf("%s is unrecognized again.", path.Base(req.Path))
 	} else {
-		entry := s.cfg.Catalog.Entry(req.Entry)
+		entry := s.cat.Entry(req.Entry)
 		if entry == nil {
 			writeError(w, http.StatusBadRequest, "Unknown image.")
 			return
@@ -108,7 +108,7 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 	// the offline part: what the file is has changed, not what the newest
 	// version is. The page picks the online check up again if it had run.
 	wasChecked := s.report != nil && s.report.Checked
-	s.report = check.Offline(s.scan, s.st, s.cfg.Catalog)
+	s.report = check.Offline(s.scan, s.st, s.cat)
 	s.updatedAt = s.cfg.Now()
 	writeJSON(w, http.StatusOK, map[string]any{"status": "saved", "message": message, "recheck": wasChecked})
 }

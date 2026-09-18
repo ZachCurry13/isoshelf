@@ -30,7 +30,7 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	entry := s.cfg.Catalog.Entry(req.Entry)
+	entry := s.cat.Entry(req.Entry)
 	switch {
 	case s.target == "" || s.st == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
@@ -84,7 +84,7 @@ func (s *Server) executeUpdate(ctx context.Context, target, entryID string, remo
 		client.HTTP = s.cfg.HTTP
 		client.GitHubToken = s.cfg.GitHubToken
 		res, runErr := inventory.Run(ctx, inventory.Options{
-			Target: target, Online: checked, Client: client, Catalog: s.cfg.Catalog,
+			Target: target, Online: checked, Client: client, Catalog: s.catalog(),
 			Dirs: s.cfg.Dirs, Now: s.cfg.Now,
 			Progress: func(p inventory.Progress) {
 				s.mu.Lock()
@@ -122,15 +122,13 @@ func (s *Server) runUpdate(ctx context.Context, target, entryID string, removal 
 	if err != nil {
 		return err
 	}
-	client := remote.New(s.cfg.Version)
-	client.HTTP = s.cfg.HTTP
-	client.GitHubToken = s.cfg.GitHubToken
+	client := s.client()
 	fetcher := fetch.New(s.cfg.Version)
 	fetcher.HTTP = s.cfg.HTTP
 	fetcher.GitHubToken = s.cfg.GitHubToken
 
 	_, err = update.Run(ctx, update.Options{
-		Target: target, Entry: s.cfg.Catalog.Entry(entryID), Client: client, Fetcher: fetcher,
+		Target: target, Entry: s.catalog().Entry(entryID), Client: client, Fetcher: fetcher,
 		State: st, Old: old, Removal: removal, Now: s.cfg.Now,
 		Progress: func(p fetch.Progress) {
 			s.mu.Lock()
@@ -172,7 +170,7 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	removed, err := update.Remove(s.target, req.Paths, update.Removal(req.How), s.st, s.cfg.Catalog, s.cfg.Now())
+	removed, err := update.Remove(s.target, req.Paths, update.Removal(req.How), s.st, s.cat, s.cfg.Now())
 	if saveErr := s.st.Save(s.target); err == nil {
 		err = saveErr
 	}

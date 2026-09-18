@@ -618,9 +618,67 @@ async function emptyRemoved() {
   }
 }
 
+const CATALOG_SOURCE = {
+  "built-in": "the list isoshelf was built with",
+  "downloaded": "kept up to date from the project",
+  "yours": "your own catalog file",
+};
+
+// renderCatalogStatus shows where the list of known images comes from, and
+// lets the user decide whether isoshelf keeps it current by itself.
+function renderCatalogStatus(footer) {
+  const cat = state.catalog;
+  if (!cat || !cat.entries) return;
+  const where = CATALOG_SOURCE[cat.source] || cat.source;
+  const when = cat.source === "downloaded" && cat.updated_at ? `, checked ${timeAgo(cat.updated_at)}` : "";
+  const row = el("div", { class: "footer-row" },
+    el("span", {}, `${plural(cat.entries, "image")} known: ${where}${when}.`));
+
+  if (cat.can_auto) {
+    row.append(
+      el("label", { class: "check", title: "New images arrive without a new isoshelf. Only the project's own repository is ever fetched, and a list that doesn't pass every check is refused." },
+        el("input", {
+          type: "checkbox", checked: cat.auto,
+          onchange: (e) => setCatalogAuto(e.target.checked),
+        }), " Keep this list up to date"),
+      el("button", {
+        type: "button", class: "btn small",
+        title: "Ask the project for a newer list right now",
+        onclick: refreshCatalog,
+      }, "Check now"));
+  } else if (cat.source === "yours") {
+    row.append(el("span", { class: "muted" }, "isoshelf never changes a catalog you wrote."));
+  }
+  if (cat.note) row.append(el("span", { class: "muted" }, cat.note));
+  if (cat.error) row.append(el("span", { class: "muted" }, cat.error));
+  footer.append(row);
+}
+
+async function setCatalogAuto(on) {
+  try {
+    state = await api("POST", "/api/settings", { catalog_auto: on });
+    catalog = null;
+    render();
+  } catch (err) {
+    showNotice(err.message, true);
+  }
+}
+
+async function refreshCatalog() {
+  try {
+    const result = await api("POST", "/api/catalog/refresh");
+    if (result.message) showNotice(result.message);
+  } catch (err) {
+    showNotice(err.message, true);
+  }
+  catalog = null;
+  await refresh();
+}
+
 function renderFooter() {
   const footer = $("footer");
   footer.replaceChildren();
+  renderCatalogStatus(footer);
   if (state.removed && state.removed.files > 0) {
     footer.append(el("div", { class: "footer-row" },
       `Removed files waiting in .isoshelf/removed: ${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)}.`,

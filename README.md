@@ -50,6 +50,11 @@ isoshelf does that for you:
 - **Finds things fast.** Filter by kind, architecture, updates or favourites;
   sort by name, size, version or age; and jump to each project's website,
   forum or release notes.
+- **Learns about new images on its own.** The list of images isoshelf knows is
+  data, not code, so it refreshes itself from this repository — you get new
+  distributions without installing a new isoshelf. It's a checkbox you can
+  turn off, it only ever reads from here, and a list that doesn't pass every
+  check is refused.
 
 ## Safety first
 
@@ -98,10 +103,12 @@ flowchart LR
     E --> F[("Your folder")]
 ```
 
-A built-in **catalog** describes each track: the filename pattern that
-identifies it (for example `linuxmint-22.3-cinnamon-64bit.iso`), where to find
-its latest version, and where its checksums are published. You can keep your
-own copy of the catalog to add images the default one doesn't know about.
+A **catalog** describes each track: the filename pattern that identifies it
+(for example `linuxmint-22.3-cinnamon-64bit.iso`), where to find its latest
+version, and where its checksums are published. One ships inside isoshelf, and
+it keeps itself current from this repository, so new images don't wait for a
+new release. You can also keep your own catalog file, which isoshelf then
+leaves alone.
 
 Here's `isoshelf check` on a test drive (trimmed, and the NOTE column shortened):
 
@@ -132,8 +139,9 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 
 **v0.2 (in progress):** downloads with verification, per-image updates,
 removal with put-back, the archive of images that have left, filters, sorting,
-logos, and working out what unrecognized files are. Still to come: adding
-images from the catalog, a catalog that updates itself, installing an older
+logos, working out what unrecognized files are, adding images from the catalog,
+and a catalog that updates itself. Still to come: naming an image the catalog
+will never know, reporting a missing one in a click, installing an older
 version when a new one breaks something, and fixes for files the boot menu
 won't list.<br>
 **Ongoing:** more images in the catalog: popular desktops, homelab and server
@@ -195,4 +203,19 @@ are used to identify the projects they belong to.
 
 isoshelf is an independent project. It isn't affiliated with or endorsed by
 Ventoy, Proxmox, TrueNAS or any of the distributions it tracks. All names and
-trademarks belong to their owners.
+trademarks belong to their owners, and are used only to say which image a file
+is.
+
+isoshelf hosts nothing. It downloads images from each project's own servers to
+your own machine, the same as clicking their download link, and checks them
+against the checksums those projects publish. It doesn't mirror images, script
+any vendor's download flow that isn't meant to be scripted, or have anything
+to do with product keys or activation — Windows images are a link to
+Microsoft's page and nothing more.
+
+**Maintainers:** if one of these projects is yours and you'd rather not be
+listed, or your entry points somewhere it shouldn't, please open an issue.
+Entries are removed or corrected on request.
+
+Update dates come from [endoflife.date](https://endoflife.date) (MIT), and
+version information from each project's own releases and checksum files.

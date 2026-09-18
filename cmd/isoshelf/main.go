@@ -23,6 +23,7 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
 	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
+	"github.com/ZachCurry13/isoshelf/internal/catupdate"
 	inv "github.com/ZachCurry13/isoshelf/internal/inventory"
 	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
@@ -220,7 +221,7 @@ func inventory(ctx context.Context, e *env, opts options) error {
 		}
 		target = dirs.DefaultTarget
 	}
-	cat, err := loadCatalog(dirs, opts.catalog)
+	cat, _, err := loadCatalog(dirs, opts.catalog)
 	if err != nil {
 		return err
 	}
@@ -311,7 +312,7 @@ func serveUI(ctx context.Context, e *env, opts options) error {
 	if err != nil {
 		return err
 	}
-	cat, err := loadCatalog(dirs, opts.catalog)
+	cat, catSource, err := loadCatalog(dirs, opts.catalog)
 	if err != nil {
 		return err
 	}
@@ -324,14 +325,15 @@ func serveUI(ctx context.Context, e *env, opts options) error {
 
 	server := &http.Server{
 		Handler: web.New(web.Config{
-			Dirs:        dirs,
-			Catalog:     cat,
-			HTTP:        e.http,
-			GitHubToken: e.getenv("GITHUB_TOKEN"),
-			Version:     version,
-			Token:       token,
-			Target:      opts.folder,
-			Now:         e.now,
+			Dirs:          dirs,
+			Catalog:       cat,
+			CatalogSource: catSource,
+			HTTP:          e.http,
+			GitHubToken:   e.getenv("GITHUB_TOKEN"),
+			Version:       version,
+			Token:         token,
+			Target:        opts.folder,
+			Now:           e.now,
 		}),
 		ReadHeaderTimeout: 10 * time.Second,
 	}
@@ -377,18 +379,27 @@ func findDirs(e *env) (appdir.Dirs, error) {
 }
 
 // loadCatalog loads the catalog named by the --catalog flag, else the user's
-// copy in the config folder, else the built-in one.
-func loadCatalog(dirs appdir.Dirs, flagPath string) (*catalog.Catalog, error) {
+// own copy in the config folder, else the copy isoshelf has downloaded, else
+// the built-in one. It also reports which of those it used, because isoshelf
+// only ever replaces its own copy.
+func loadCatalog(dirs appdir.Dirs, flagPath string) (*catalog.Catalog, string, error) {
 	name := flagPath
 	if name == "" {
 		name = filepath.Join(dirs.Config, "catalog.toml")
 		if _, err := os.Stat(name); errors.Is(err, fs.ErrNotExist) {
-			return catalog.Default()
+			// A downloaded catalog that no longer loads is skipped rather
+			// than fatal: the built-in one always works.
+			if cat, err := catupdate.Load(dirs.Config); err == nil && cat != nil {
+				return cat, catupdate.SourceDownloaded, nil
+			}
+			cat, err := catalog.Default()
+			return cat, catupdate.SourceBuiltIn, err
 		}
 	}
 	abs, err := filepath.Abs(name)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
-	return catalog.Load(os.DirFS(filepath.Dir(abs)), filepath.Base(abs))
+	cat, err := catalog.Load(os.DirFS(filepath.Dir(abs)), filepath.Base(abs))
+	return cat, catupdate.SourceOwn, err
 }
