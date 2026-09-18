@@ -111,6 +111,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("GET /api/state", s.getState)
 	mux.HandleFunc("GET /api/catalog", s.getCatalog)
 	mux.HandleFunc("GET /api/browse", s.browse)
+	mux.HandleFunc("GET /logo/{slug}", s.logo)
 	mux.HandleFunc("POST /api/target", s.setTarget)
 	mux.HandleFunc("POST /api/scan", func(w http.ResponseWriter, r *http.Request) { s.start(w, false) })
 	mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) { s.start(w, true) })
@@ -276,12 +277,18 @@ func (s *Server) stateLocked(recent []string) stateJSON {
 }
 
 type catalogEntryJSON struct {
-	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Arch     string `json:"arch"`
-	Updates  string `json:"updates"`
-	Page     string `json:"page,omitempty"`
-	OnTarget bool   `json:"on_target"`
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Arch      string `json:"arch"`
+	Updates   string `json:"updates"`
+	Page      string `json:"page,omitempty"`
+	Site      string `json:"site,omitempty"`
+	Forum     string `json:"forum,omitempty"`
+	Category  string `json:"category,omitempty"`
+	Family    string `json:"family,omitempty"`
+	Icon      string `json:"icon,omitempty"`
+	IconColor string `json:"icon_color,omitempty"`
+	OnTarget  bool   `json:"on_target"`
 }
 
 func (s *Server) getCatalog(w http.ResponseWriter, r *http.Request) {
@@ -300,7 +307,9 @@ func (s *Server) getCatalog(w http.ResponseWriter, r *http.Request) {
 	for i := range s.cfg.Catalog.Entries {
 		e := &s.cfg.Catalog.Entries[i]
 		entries = append(entries, catalogEntryJSON{
-			ID: e.ID, Name: e.Name, Arch: e.Arch, Updates: e.Updates(), Page: e.Page, OnTarget: onTarget[e.ID],
+			ID: e.ID, Name: e.Name, Arch: e.Arch, Updates: e.Updates(), Page: e.Page,
+			Site: e.Site, Forum: e.Forum, Category: e.Category, Family: e.Family,
+			Icon: e.Icon, IconColor: e.IconColor, OnTarget: onTarget[e.ID],
 		})
 	}
 	slices.SortFunc(entries, func(a, b catalogEntryJSON) int {

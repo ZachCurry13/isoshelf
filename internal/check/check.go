@@ -12,6 +12,7 @@ import (
 	"slices"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/remote"
@@ -70,6 +71,10 @@ type Item struct {
 	LatestFile string
 	// Note explains the status: an error, or "older copy" and so on.
 	Note string
+	// Release is a page about the newest release, when the source has one.
+	Release string
+	// ModTime is when the file last changed.
+	ModTime time.Time
 }
 
 // Report is the state of every image on a target.
@@ -89,7 +94,7 @@ func Offline(res *scan.Result, st *state.State, cat *catalog.Catalog) *Report {
 	r := &Report{Target: res.Root, Profile: res.Profile, Trash: res.Trash, Problems: res.Problems}
 	found := map[string]bool{}
 	for _, f := range res.Files {
-		it := Item{Path: f.Path, Size: f.Size, Kind: f.Kind}
+		it := Item{Path: f.Path, Size: f.Size, Kind: f.Kind, ModTime: f.ModTime}
 		rec := st.Files[f.Path]
 		if e := cat.Entry(rec.Entry); e != nil {
 			it.Entry, it.Version = e, rec.Version
@@ -203,7 +208,7 @@ func decide(it *Item, rel *source.Release, art *resolve.Artifact, err error, rec
 		return
 	}
 	e := it.Entry
-	it.Latest = rel.Version
+	it.Latest, it.Release = rel.Version, rel.URL
 	if art != nil {
 		it.LatestFile = art.Filename
 		if v, ok := e.MatchName(art.Filename); ok && v != "" {

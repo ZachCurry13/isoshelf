@@ -14,6 +14,9 @@ import (
 // Arches are the valid values of Entry.Arch.
 var Arches = []string{"x86_64", "x86", "arm64", "arm", "multi"}
 
+// Categories group entries in lists. An entry without one counts as "other".
+var Categories = []string{"desktop", "server", "security", "rescue", "windows", "other"}
+
 // ImageExtensions are the file types Ventoy lists in its boot menu.
 var ImageExtensions = []string{".iso", ".wim", ".img", ".vhd", ".vhdx", ".efi"}
 
@@ -23,6 +26,8 @@ var (
 	cyclePattern       = regexp.MustCompile(`^[A-Za-z0-9]+(?:[-._][A-Za-z0-9]+)*$`)
 	repoPattern        = regexp.MustCompile(`^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$`)
 	sha256Pattern      = regexp.MustCompile(`^[0-9a-f]{64}$`)
+	iconPattern        = regexp.MustCompile(`^[a-z0-9][a-z0-9.-]*$`)
+	colorPattern       = regexp.MustCompile(`^#[0-9a-fA-F]{6}$`)
 	fingerprintPattern = regexp.MustCompile(`^(?:[0-9A-F]{40}|[0-9A-F]{64})$`)
 )
 
@@ -304,6 +309,24 @@ func (ec entryCheck) checkSamples() {
 // hash to the label of the entry that listed it first.
 func (ec entryCheck) checkExtras(hashes map[string]string) {
 	e := ec.e
+	for _, link := range []struct{ field, url string }{{"site", e.Site}, {"forum", e.Forum}} {
+		if link.url != "" {
+			ec.checkURL(link.field, link.url, nil, webURL)
+		}
+	}
+	if e.Category != "" && !slices.Contains(Categories, e.Category) {
+		ec.problem("category", "%q is not one of %s", e.Category, strings.Join(Categories, ", "))
+	}
+	if e.Family != "" && !idPattern.MatchString(e.Family) {
+		ec.problem("family", "%q must be lowercase letters, digits and single dashes", e.Family)
+	}
+	if e.Icon != "" && !iconPattern.MatchString(e.Icon) {
+		ec.problem("icon", "%q is not a Simple Icons name", e.Icon)
+	}
+	if e.IconColor != "" && !colorPattern.MatchString(e.IconColor) {
+		ec.problem("icon_color", "%q is not a colour like #0078d4", e.IconColor)
+	}
+
 	switch {
 	case e.Page != "":
 		ec.checkURL("page", e.Page, nil, webURL)

@@ -30,6 +30,36 @@ let statusFilter = null;
 let pollTimer = null;
 let autoScanned = false;
 
+// What the list shows, kept in the browser between visits.
+const view = {
+  category: "",
+  arch: "",
+  sort: "attention",
+  updatesOnly: false,
+  favoritesOnly: false,
+};
+
+function loadView() {
+  try {
+    Object.assign(view, JSON.parse(localStorage.getItem("isoshelf.view") || "{}"));
+  } catch {
+    // A browser that will not remember settings is fine; the defaults apply.
+  }
+  $("category").value = view.category;
+  $("arch").value = view.arch;
+  $("sort").value = view.sort;
+  $("only-updates").checked = view.updatesOnly;
+  $("only-favorites").checked = view.favoritesOnly;
+}
+
+function saveView() {
+  try {
+    localStorage.setItem("isoshelf.view", JSON.stringify(view));
+  } catch {
+    // Not being able to remember the choice does not matter.
+  }
+}
+
 // ---- Talking to isoshelf -------------------------------------------------
 
 async function api(method, path, body) {
@@ -216,9 +246,16 @@ function renderRows() {
   }
 
   const query = $("search").value.trim().toLowerCase();
-  const items = state.report.items.filter((item) =>
-    (!statusFilter || item.status === statusFilter) &&
-    (!query || `${item.name} ${item.path || ""} ${item.entry || ""}`.toLowerCase().includes(query)));
+  const items = sortItems(state.report.items.filter((item) => {
+    const haystack = `${item.name} ${item.path || ""} ${item.entry || ""} ${item.family || ""}`.toLowerCase();
+    const starred = item.entry && (state.tracks[item.entry] || {}).starred;
+    return (!statusFilter || item.status === statusFilter) &&
+      (!query || haystack.includes(query)) &&
+      (!view.category || item.category === view.category) &&
+      (!view.arch || item.arch === view.arch) &&
+      (!view.updatesOnly || item.status === "update available") &&
+      (!view.favoritesOnly || starred);
+  }));
 
   for (const item of items) rows.append(renderRow(item));
 
@@ -232,6 +269,100 @@ function renderRows() {
   all.textContent = `Update all (${updatable.length})`;
   empty.hidden = items.length > 0;
   empty.textContent = total === 0 ? "No images found in this folder." : "Nothing matches the filter.";
+}
+
+const STATUS_ORDER = STATUSES.map(([status]) => status);
+
+// compareVersions reads versions the way people do: 22.10 is newer than 22.4.
+function compareVersions(a, b) {
+  const partsOf = (v) => (v || "").split(/[^a-zA-Z0-9]+/).flatMap((part) => part.match(/\d+|[a-zA-Z]+/g) || []);
+  const left = partsOf(a), right = partsOf(b);
+  for (let i = 0; i < Math.max(left.length, right.length); i++) {
+    const x = left[i], y = right[i];
+    if (x === undefined) return -1;
+    if (y === undefined) return 1;
+    const bothNumbers = /^\d+$/.test(x) && /^\d+$/.test(y);
+    if (bothNumbers && Number(x) !== Number(y)) return Number(x) - Number(y);
+    if (!bothNumbers && x !== y) return x < y ? -1 : 1;
+  }
+  return 0;
+}
+
+function sortItems(items) {
+  const byName = (a, b) => a.name.localeCompare(b.name) || (a.path || "").localeCompare(b.path || "");
+  const starred = (item) => (item.entry && (state.tracks[item.entry] || {}).starred ? 0 : 1);
+  const rank = (item) => STATUS_ORDER.indexOf(item.status);
+  const sorters = {
+    attention: (a, b) => rank(a) - rank(b) || byName(a, b),
+    favorites: (a, b) => starred(a) - starred(b) || rank(a) - rank(b) || byName(a, b),
+    name: byName,
+    size: (a, b) => (b.size || 0) - (a.size || 0) || byName(a, b),
+    version: (a, b) => compareVersions(b.version, a.version) || byName(a, b),
+    modified: (a, b) => new Date(b.modified || 0) - new Date(a.modified || 0) || byName(a, b),
+  };
+  return [...items].sort(sorters[view.sort] || sorters.attention);
+}
+
+// logoTile is the project logo, or coloured initials when there is none.
+function logoTile(item) {
+  const tile = el("span", { class: "logo", "aria-hidden": "true" });
+  if (item.icon) {
+    tile.classList.add("has-logo");
+    tile.style.setProperty("--logo", `url("/logo/${encodeURIComponent(item.icon)}.svg")`);
+    tile.style.setProperty("--brand", readableBrand(item.icon_color));
+  } else {
+    tile.classList.add("initials");
+    tile.textContent = initials(item.name);
+    tile.style.setProperty("--brand", colorFor(item.name));
+  }
+  return tile;
+}
+
+function initials(name) {
+  const words = name.replace(/[^A-Za-z0-9 ]/g, " ").split(/\s+/).filter(Boolean);
+  return ((words[0] || "?")[0] + (words[1] ? words[1][0] : "")).toUpperCase();
+}
+
+function colorFor(name) {
+  let hash = 0;
+  for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) % 360;
+  return `hsl(${hash} 45% 42%)`;
+}
+
+// readableBrand keeps brand colours visible: a few are nearly black, which
+// disappears on a dark background.
+function readableBrand(color) {
+  if (!color) return "currentColor";
+  const value = parseInt(color.slice(1), 16);
+  const [r, g, b] = [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+  const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+  const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  if (dark && luminance < 0.25) return "#c9d2df";
+  if (!dark && luminance > 0.9) return "#5f6878";
+  return color;
+}
+
+// linksMenu holds the project pages, out of the way until asked for.
+function linksMenu(item) {
+  const links = [
+    ["Download page", item.page],
+    ["Website", item.site],
+    ["Forum", item.forum],
+    ["Release notes", item.release],
+  ].filter(([, url]) => url);
+  if (!links.length) return null;
+
+  const menu = el("details", { class: "menu" },
+    el("summary", { title: "Links", "aria-label": `Links for ${item.name}` }, "\u2026"),
+    el("div", { class: "menu-items" },
+      links.map(([label, url]) => el("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, label))));
+  menu.addEventListener("toggle", () => {
+    if (!menu.open) return;
+    for (const other of document.querySelectorAll("details.menu[open]")) {
+      if (other !== menu) other.open = false;
+    }
+  });
+  return menu;
 }
 
 function renderRow(item) {
@@ -262,9 +393,11 @@ function renderRow(item) {
   const name = item.page
     ? el("a", { href: item.page, target: "_blank", rel: "noopener noreferrer", title: "Open the download page" }, item.name)
     : item.name;
-  const imageCell = el("td", {},
-    el("div", {}, el("span", { class: "name" }, name), item.arch ? el("span", { class: "arch" }, item.arch) : null),
-    item.note ? el("div", { class: "note" }, item.note) : null);
+  const imageCell = el("td", {}, el("div", { class: "image-cell" },
+    logoTile(item),
+    el("div", { class: "image-text" },
+      el("div", {}, el("span", { class: "name" }, name), item.arch ? el("span", { class: "arch" }, item.arch) : null),
+      item.note ? el("div", { class: "note" }, item.note) : null)));
 
   const newer = item.latest && item.status === "update available";
   const latestCell = el("td", { class: "latest-cell" },
@@ -303,6 +436,9 @@ function renderRow(item) {
       onclick: () => removeItem(item),
     }, "Remove"));
   }
+
+  const menu = linksMenu(item);
+  if (menu) actions.push(menu);
 
   return el("tr", {},
     el("td", { class: "col-star" }, star),
@@ -610,6 +746,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   $("update-all").addEventListener("click", updateAll);
   $("search").addEventListener("input", renderRows);
+  loadView();
+  for (const [id, key] of [["category", "category"], ["arch", "arch"], ["sort", "sort"]]) {
+    $(id).addEventListener("change", (e) => { view[key] = e.target.value; saveView(); renderRows(); });
+  }
+  for (const [id, key] of [["only-updates", "updatesOnly"], ["only-favorites", "favoritesOnly"]]) {
+    $(id).addEventListener("change", (e) => { view[key] = e.target.checked; saveView(); renderRows(); });
+  }
   $("more-search").addEventListener("input", renderCatalog);
   $("picker-go").addEventListener("click", () => browse($("picker-input").value.trim()));
   $("picker-input").addEventListener("keydown", (e) => {

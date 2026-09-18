@@ -1,6 +1,10 @@
 package check
 
-import "github.com/ZachCurry13/isoshelf/internal/catalog"
+import (
+	"time"
+
+	"github.com/ZachCurry13/isoshelf/internal/catalog"
+)
 
 // ReportJSON is a report as the CLI's --json output and the web UI show it.
 // The field names are an interface for scripts, so change them with care.
@@ -30,6 +34,17 @@ type ItemJSON struct {
 	// LatestFile is the newest file's name, when it can be downloaded.
 	LatestFile string `json:"latest_file,omitempty"`
 	Note       string `json:"note,omitempty"`
+	// Modified is when the file last changed.
+	Modified time.Time `json:"modified,omitzero"`
+	// Category and Family group the image; the rest are for showing it.
+	Category  string `json:"category,omitempty"`
+	Family    string `json:"family,omitempty"`
+	Icon      string `json:"icon,omitempty"`
+	IconColor string `json:"icon_color,omitempty"`
+	Site      string `json:"site,omitempty"`
+	Forum     string `json:"forum,omitempty"`
+	// Release is a page about the newest release.
+	Release string `json:"release,omitempty"`
 }
 
 // TrashJSON is a trash folder and the space it uses.
@@ -59,9 +74,12 @@ func (r *Report) JSON() ReportJSON {
 			Path: it.Path, Size: it.Size, Kind: string(it.Kind), Name: it.Name(),
 			Version: it.Version, Status: string(it.Status), EOL: it.EOL,
 			Latest: it.Latest, LatestFile: it.LatestFile, Note: it.Note,
+			Modified: it.ModTime, Release: it.Release,
 		}
 		if e := it.Entry; e != nil {
 			j.Entry, j.Arch, j.Page, j.Updates = e.ID, e.Arch, e.Page, e.Updates()
+			j.Category, j.Family = e.Category, e.Family
+			j.Icon, j.IconColor, j.Site, j.Forum = e.Icon, e.IconColor, e.Site, e.Forum
 			if j.Updates != catalog.UpdatesDownload {
 				j.LatestFile = ""
 			}

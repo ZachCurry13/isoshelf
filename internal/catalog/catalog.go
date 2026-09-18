@@ -71,6 +71,17 @@ type Entry struct {
 	Samples []string `toml:"samples"`
 	// Page is the human download page.
 	Page string `toml:"page"`
+	// Site is the project's home page, and Forum its community.
+	Site  string `toml:"site"`
+	Forum string `toml:"forum"`
+	// Category groups entries in lists: see Categories.
+	Category string `toml:"category"`
+	// Family groups the tracks of one product, such as every MX Linux entry.
+	Family string `toml:"family"`
+	// Icon is the project's logo, as a Simple Icons slug, and IconColor its
+	// brand color as #rrggbb.
+	Icon      string `toml:"icon"`
+	IconColor string `toml:"icon_color"`
 	// Fixup makes a downloaded file bootable: "extract", "convert" or
 	// "rename:<extension>".
 	Fixup string `toml:"fixup"`

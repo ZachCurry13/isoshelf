@@ -169,6 +169,9 @@ To run the tests: `go test ./...`
 
 [MIT](LICENSE).
 
+Distro logos come from [Simple Icons](https://simpleicons.org) (CC0 1.0) and
+are used to identify the projects they belong to.
+
 isoshelf is an independent project. It isn't affiliated with or endorsed by
 Ventoy, Proxmox, TrueNAS or any of the distributions it tracks. All names and
 trademarks belong to their owners.
