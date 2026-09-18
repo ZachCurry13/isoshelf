@@ -6,6 +6,46 @@ Version numbers: the middle number rises for new abilities (v0.3.0 will be
 installing older versions and fixing files the boot menu can't read); the last
 number rises for improvements to what it already does.
 
+## [v0.2.8] - 2026-09-18
+
+### Added
+- **A download queue**, like a game launcher's. Add and Update no longer wait
+  for the download that's running: they join a queue, and images download one
+  at a time. A **Downloads** bar along the bottom of the page shows the one
+  running, with its speed and time left. Open it to change the order (drag,
+  or use the arrows), take one off the queue, or stop them all.
+- **Buttons say what's happening.** An Add or Update button turns into
+  *Queued #2*, *Downloading 45%* or *Added ✓*, and after a failure offers
+  *Try again*. A stopped download offers *Carry on*, and picks up where it
+  stopped.
+- **Update all** puts every update on the queue at once, and asks once what
+  to do with the old files, in the same words as a single update.
+- "Fits in this folder" counts the downloads already waiting.
+- Stars and the replace switch keep working while downloads run.
+
+### Changed
+- The folder is scanned once when the queue is empty, rather than after every
+  download.
+- While something runs, the page only redraws what moves, so an open menu
+  stays open and the keyboard keeps its place.
+
+### Fixed
+- **A download that couldn't be checked could replace your old file.** The
+  rule was always that it mustn't, and now the code enforces it: when a
+  project publishes no checksum, the old file stays where it is (or, if the
+  new one has the same name, it's archived, never deleted), and the
+  Downloads list says why. No image in the built-in catalog is affected; it
+  matters for catalogs of your own.
+- Updating an image whose filename never changes (like `netboot.xyz.iso`)
+  failed when its replace switch was off. The answer you give is followed
+  now.
+- A download that a server interrupted with an HTTP/2 stream reset gave up at
+  once. It now retries, and carries on where it stopped.
+
+The list of images changed too: Kali Linux live is now a link to Kali's page,
+because Kali offers it only as a torrent. See
+[CATALOG-CHANGES.md](CATALOG-CHANGES.md).
+
 ## [v0.2.7] - 2026-09-18
 
 ### Added
@@ -146,6 +186,7 @@ The first release.
 - Keeps that catalog current from this repository without a new release.
 - Runs as a page in your browser, or from the command line.
 
+[v0.2.8]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.8
 [v0.2.7]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.7
 [v0.2.6]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.5

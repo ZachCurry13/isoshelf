@@ -101,17 +101,21 @@ Every catalog entry runs through four stages:
    the image. Keys are armored files with fingerprints pinned in the catalog.
 4. **Fetcher** (`internal/fetch`) - `.part` files in `<target>/.isoshelf/partial/`
    plus a sidecar (URL, ETag, offset, SHA-256 state), resume via `Range` +
-   `If-Range`, backoff on timeouts/5xx, no retry on 404, GitHub rate-limit
+   `If-Range`, backoff on timeouts, 5xx and HTTP/2 stream resets (seen on
+   repo.almalinux.org), no retry on 404, GitHub rate-limit
    reset times, mirrors only when a checksum can prove the bytes. A checksum
    mismatch deletes the partial file and places nothing. `BeforePlace` runs
    after verification and just before the rename, which is how the old file is
-   moved aside for images whose filename never changes. Still to do: a queue
-   (2 concurrent, 1 per host) for several downloads at once.
+   moved aside for images whose filename never changes. Downloads are queued
+   by the web UI and run one at a time (see Web UI); still to do: 2 at once,
+   1 per host.
 
 5. **Update** (`internal/update`) - resolves the entry again, downloads,
    places, records it in state, then keeps, moves aside or deletes the old
-   files of that track. It also removes files the user no longer wants, and
-   empties `<target>/.isoshelf/removed/`.
+   files of that track. A download with no published checksum never removes
+   anything: old files are kept, and an old file with the same name is moved
+   aside, never deleted, whatever the page asked for. It also removes files
+   the user no longer wants, and empties `<target>/.isoshelf/removed/`.
 
 `internal/inventory` runs one scan or check from start to finish (load state,
 scan, hash, check online, save state and mirror) with progress callbacks; the
@@ -315,11 +319,12 @@ alone is not an update.
    plus filters, sorting, logos and links. *Done.*
 4. Assign: suggest what an unrecognized file is and confirm it (below).
    *Done.*
-5. Adding catalog images that aren't on the target (the "Add" button).
+5. Adding catalog images that aren't on the target (the "Add" button), and
+   a download queue for Add and Update. *Done.*
 6. Growing the catalog without a new release (below). *Done.*
 7. Installing older versions with a hold (below), and Make bootable fix-ups.
-8. Still open: a CLI `isoshelf update` command (the web UI has it), a queue
-   for several downloads at once, and OpenPGP signature checking.
+8. Still open: a CLI `isoshelf update` command (the web UI has it), two
+   downloads at once from different hosts, and OpenPGP signature checking.
 **v0.3** - rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
@@ -478,8 +483,12 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   page inserts text from the drive with textContent only, never as HTML.
 - API: `GET /api/state`, `/api/catalog`, `/api/browse?path=`; `POST /api/target`
   (folder + profile), `/api/scan`, `/api/check`, `/api/cancel`, `/api/track`
-  (keep_old, starred). One scan or check runs at a time, in the background;
-  the page polls `/api/state` while it runs. Changes are refused while one runs.
+  (keep_old, starred), `/api/update` (queues a download), `/api/queue/move`,
+  `/api/queue/drop`, `/api/queue/clear`. One scan, check or download runs at a
+  time, in the background; the page polls `/api/state` while it runs. Anything
+  else that writes the folder's state waits (`busyLocked`), except stars and
+  replace switches during downloads, which go into the state on disk
+  (`saveTrackLocked`) and are carried over when the download saves its own.
 - The folder picker lists subfolders through `/api/browse` (browsers can't see
   the computer's folders), with drives or mount points and recent folders
   (from the mirrors; none in portable mode). The last folder is remembered in
@@ -487,13 +496,14 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 - A filled star means the user starred the image: it is a favourite, sorts
   first, and is reported if it goes missing. The replace switch shows only for
   entries that can download.
-- The list filters by kind, architecture, updates-only and favourites, and
-  sorts by attention, favourites, name, size, version or when the file changed.
+- The list filters by kind, architecture, updates, favourites and older
+  copies, searches by name or file, and sorts by any column (empty cells
+  last) or by attention, favourites or when a file was added.
   The choices live in the browser's localStorage. When a filter hides
   everything, the empty message names the filters and offers to clear them.
-- "More in the catalog" has its own copy of those filters, plus "can be
-  downloaded" and "fits in this folder", and sorts by name, largest, smallest
-  or kind. The two sets are deliberately separate: one list answers what have
+- "More in the catalog" has its own copy of those filters, plus how an image
+  updates, "fits in this folder" and "popular", and sorts by name, largest,
+  smallest, popular or kind. The two sets are deliberately separate: one list answers what have
   I got, the other what could I add. Each entry shows about how big its
   download is, and one too big for the room left says so instead of failing
   part way through.
@@ -510,11 +520,28 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   the name.
 - "Images that were here" lists the archive, with Put back for files still in
   `.isoshelf/removed` and Download again for catalog images.
+- Downloads (`queue.go`): Add, Update, Update all and Download again join a
+  queue that runs one at a time, and the queue drains into one rescan. The
+  page shows it in a bar along the bottom (Steam-like): the running download
+  with speed and time left, the waiting ones with up/down/next/remove buttons
+  and drag and drop, and the finished ones with Try again. Each Add or Update
+  button says Queued #n, Downloading n% or Added. Finished jobs live in memory
+  only (last 20). Because the page polls twice a second for as long as
+  downloads run, it redraws in full only when something other than progress
+  and free space changed (`drawnKey`), so open menus and keyboard focus
+  survive.
 - Static files are embedded, so restart the server after changing them. To
   preview while developing: `go run ./cmd/isoshelf ui --port 8765 --no-browser <folder>`
   and open the printed link (with `localhost` or `127.0.0.1`).
 
-### Where we stopped (2026-09-18)
+### Where we stopped (2026-09-18, evening)
+
+Released v0.2.0 to v0.2.8 today, one small version per batch of changes
+(0.0.1 steps; the middle number rises for v0.3.0: `isoshelf update`, older
+versions with a hold, Make bootable). Every release needs its own section in
+`CHANGELOG.md` (the release workflow refuses to build without one), and every
+catalog change a dated section in `CATALOG-CHANGES.md` (a test ties it to the
+catalog's revision).
 
 The repository is public. Issues, Discussions (Q&A and Ideas), the three issue
 forms, the `catalog` and `maintainer` labels, Dependabot, secret scanning and
@@ -522,15 +549,23 @@ push protection are all on; the wiki is off on purpose, so documentation stays
 in the repository where it is reviewed. CI builds, vets, gofmt-checks and
 tests on Windows and Linux, and a `v*` tag builds the release.
 
-The catalog holds 72 entries, all 57 downloadable ones resolved live today,
-with measured sizes. The page shows those sizes, the room left in the folder,
-and filters for the catalog list. Next, in order:
+The catalog holds 86 entries: 60 downloadable, 9 check-only, 17 manual. All
+69 that check online resolved live on 2026-09-18, every downloadable image
+answered, and every size matched. Kali Linux live became check-only that
+day: Kali offers live images only as torrents.
 
+v0.2.8 added the download queue and made the "unverified never replaces" rule
+real in `update.Run` (it was only written down before). Next, in order:
+
+- The catalog list as a responsive list rather than cards, together with
+  making the page work on a phone (issue #10). Decided 2026-09-18: one list
+  component that folds into cards on narrow screens, not two layouts.
 - `isoshelf update` on the command line, to match the web UI.
 - Older versions with a hold; Make bootable fix-ups; signature checking.
-- A download queue (2 concurrent, 1 per host).
+- Two downloads at once, one per host (issue #4).
+- Where state is kept (folder, app, or a folder the user picks):
+  `internal/settings` has the setting but nothing uses it yet.
 - More catalog entries from the wish list in `docs/catalog-sources.md`.
-- The first release: tag `v0.1.0` and let the release workflow build it.
 
 ### Where we were before that (2026-09-17)
 
@@ -589,11 +624,15 @@ notes.txt                                  # not an image: ignore
 - Tests never touch real disks (temp dirs only) and never hit the live network.
   `internal/remote/remotetest` replays responses recorded from the real sites.
   `go run ./internal/remote/remotetest/record` (the only thing that goes
-  online) resolves every catalog entry live, reports failures and redirects,
-  and re-records everything; run it after changing the catalog.
-  `TestEveryEntryRecorded` fails when an entry has no recording. Add `-sizes`
-  to measure every image with a HEAD request (or a one-byte range where HEAD
-  is refused) and print the `size =` lines for the catalog.
+  online) resolves every catalog entry live, checks that each downloadable
+  image itself answers (a HEAD request, or a one-byte range where HEAD is
+  refused), reports failures and redirects, and re-records everything; run it
+  after changing the catalog. `TestEveryEntryRecorded` fails when an entry has
+  no recording. Add `-sizes` to print the measured `size =` lines for the
+  catalog.
+- Never claim more than was checked. "All entries resolve" once meant only
+  that their checksum files did, and Kali's torrent-only live image slipped
+  through that way.
 - Small commits with clear messages. Update this file when a decision changes.
 - Explain in plain language any step the maintainer has to do by hand
   (installing tools, committing, pushing, releasing).

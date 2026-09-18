@@ -34,11 +34,13 @@ isoshelf does that for you:
 - **Verified downloads.** Downloads the new image, checks it against the
   project's published checksum, and only then puts it in place. Interrupted
   downloads carry on where they stopped.
-- **One image at a time.** Every image has its own Update button, so you're
-  never forced to update everything at once.
-- **Tidying up.** Remove images you no longer want, and put them back later if
-  you change your mind. isoshelf remembers what left the folder and can
-  download it again.
+- **Your order, your pace.** Every image has its own Update button, so you're
+  never forced to update everything at once. Add and Update join a download
+  queue, like a game launcher's: one at a time, in an order you can change by
+  dragging, with each button saying *Queued*, *Downloading* or *Added*.
+- **Tidying up.** Remove images you no longer want: archive them (undo any
+  time) or delete them. Older copies of the same image are found and cleared in
+  one go. isoshelf remembers what left the folder and can download it again.
 - **Works out what mystery files are.** A file the catalog doesn't know by
   name — `Windows.iso` from the Media Creation Tool, or something you renamed —
   gets a "What is this?" button. isoshelf reads what the disc says about
@@ -47,14 +49,18 @@ isoshelf does that for you:
   or moved. If it's something no list will ever know — an image you built or
   customized — name it yourself and isoshelf remembers it from then on.
 - **Flags problems.** Reports end-of-life releases, checksum mismatches,
-  files your boot menu won't list, and files it doesn't recognize.
-- **Finds things fast.** Filter by kind, architecture, updates or favourites;
-  sort by name, size, version or age; and jump to each project's website,
-  forum or release notes. The catalog of images you *could* add filters the
-  same way, plus "can be downloaded" and "fits in this folder".
+  files your boot menu won't list, and files it doesn't recognize, and puts a
+  ⚠ on images worth knowing about, such as releases that no longer get
+  security fixes.
+- **Finds things fast.** Search; filter by kind, architecture, updates,
+  favourites or older copies; sort by any column; and jump to each project's
+  website, forum or release notes. The catalog of images you *could* add has
+  its own filters: kind, architecture, how it updates, what fits in this
+  folder, and popular picks.
 - **Knows what will fit.** Every image in the catalog shows about how big its
-  download is, and the folder shows how much room is left. An image too big
-  for the space says so instead of failing half way through.
+  download is, and the folder shows how much room is left, counting the
+  downloads already queued. An image too big for the space says so instead of
+  failing half way through.
 - **Learns about new images on its own.** The list of images isoshelf knows is
   data, not code, so it refreshes itself from this repository — you get new
   distributions without installing a new isoshelf. It's a checkbox you can
@@ -67,25 +73,31 @@ isoshelf manages files you care about, so it is deliberately cautious:
 
 - **It never touches partitions, bootloaders or Ventoy's own `ventoy/`
   folder.** It only works with image files in the folder you pick.
+- **Nothing is deleted unless you choose it.** Every removal asks first, and
+  offers archiving, which keeps the file in the folder until you empty the
+  archive, so it can be put back until then.
 - **You decide what happens to old versions.** Each image has a *replace old
-  file* checkbox, on by default; untick it to keep old versions side by side. A
-  replacement is downloaded, verified and renamed into place before the old
-  file is removed. A download that couldn't be verified never replaces anything
-  without asking you first.
+  file* switch, on by default; turn it off to keep old versions side by side.
+  A replacement is downloaded, verified and renamed into place before the old
+  file is removed. Images whose filename never changes (like
+  `netboot.xyz.iso`) can't sit beside their old copy, so for those you choose
+  between archiving and replacing.
 - **A checksum mismatch always blocks the file.** If a project publishes no
-  checksum, the file is still allowed but marked *unverified*.
+  checksum, the file is still allowed but marked *unverified*, and it never
+  replaces anything: your old file stays until you remove it yourself (or, if
+  the name is the same, is archived rather than deleted).
 - **An update never switches tracks.** A 32-bit image never "updates" to a
   64-bit one, and an LTS release never jumps to a non-LTS one.
-- **Checksums and signatures come only from the project's own HTTPS site.**
-  Image bytes may come from a mirror, because they're verified against those
-  checksums.
+- **Checksums come only from the project's own HTTPS site.** Image bytes may
+  come from a mirror, because they're verified against those checksums.
+  (Checking OpenPGP signatures as well is on the roadmap.)
 
 ## Where it runs
 
 | Target | How |
 |---|---|
-| **Ventoy USB drive** | Install isoshelf on your PC, or copy the portable folder onto the drive and run it from there. Portable mode keeps its settings, logs and temp files on the drive. |
-| **Any folder** | Point it at a folder instead of a drive, such as ISOs on a NAS share. |
+| **Ventoy USB drive** | Install isoshelf on your PC, or copy the portable folder onto the drive and run it from there. Portable mode keeps its settings and temporary files on the drive. |
+| **Any folder** | Point it at a folder instead of a drive, such as ISOs on a NAS share or your downloads. Compressed card images (`.img.xz`) count too. |
 | **Proxmox ISO storage** | Point it at `/var/lib/vz/template/iso` (or `/mnt/pve/<storage>/template/iso` for NAS storage). Proxmox only lists `.iso` and `.img` files at the top level of that folder, and isoshelf follows the same rule. |
 | **Server** *(planned)* | A Docker container, TrueNAS app or Proxmox LXC. Open it in your browser at `http://<server-ip>:<port>`, like your other homelab apps. It checks daily by default and keeps your images current. |
 
@@ -103,8 +115,8 @@ only your own computer can reach it.
 flowchart LR
     A["Catalog entry"] --> B["Source<br/>what's the latest version?"]
     B --> C["Resolver<br/>exact file, URLs, checksum"]
-    C --> D["Verifier<br/>checksums and signatures"]
-    D --> E["Fetcher<br/>resumable download"]
+    C --> D["Fetcher<br/>resumable download"]
+    D --> E["Verifier<br/>checks the published checksum"]
     E --> F[("Your folder")]
 ```
 
@@ -169,6 +181,8 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 - [x] Removing images, with put-back, and an archive of what has left
 - [x] Working out what unrecognized files are, and naming the rest yourself
 - [x] Adding images from the catalog, with sizes and the room left
+- [x] A download queue you can reorder
+- [x] Older copies found and cleared in one go
 - [x] Filters, sorting, logos and links
 - [x] A catalog that keeps itself current
 
@@ -176,13 +190,14 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
-[several downloads at once](https://github.com/ZachCurry13/isoshelf/issues/4),
+[two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
 and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
-**Ongoing:** more images in the catalog. 72 so far; the wish list is in
+**Ongoing:** more images in the catalog. 86 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and
 [requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
-**Later:** rebuild a drive from your usual set; server mode (Docker, TrueNAS,
-Proxmox LXC); a macOS build.
+**Later:** [a page that works on a phone](https://github.com/ZachCurry13/isoshelf/issues/10);
+rebuild a drive from your usual set; server mode (Docker, TrueNAS, Proxmox
+LXC); a macOS build.
 
 ## Running from a USB drive on Linux
 
@@ -255,7 +270,7 @@ plainly than to let anyone feel they'd caught me out.
 
 I've wanted this tool for years. I have a drive full of ISOs, a NAS full of
 more, and no realistic chance of hand-writing a checksum-verifying downloader
-for sixty-odd distributions in my spare time. The choice was never "carefully
+for dozens of distributions in my spare time. The choice was never "carefully
 hand-written or machine-assisted" — it was "this exists or it doesn't".
 
 What that did and did not change:
@@ -265,15 +280,15 @@ What that did and did not change:
   never a download, that it mirrors nothing — those decisions came first and
   are written down in [CLAUDE.md](CLAUDE.md), which the code follows.
 - **Nothing in the catalog is guessed.** Every entry was checked against the
-  project's own site by hand before it went in, and a live run resolves all 57
-  downloadable ones. Where a project's checksums can't be reached safely, the
+  project's own site before it went in, and every downloadable one is resolved
+  live, from the project's own servers, before a catalog change goes out. Where a project's checksums can't be reached safely, the
   entry says so and refuses to download rather than pretending.
 - **It's tested, and it's used.** The tests replay recorded responses so they
   never touch the network or a real disk, they run on Windows and Linux for
   every commit, and the thing itself runs against a real ISO folder on a NAS.
   The test fixtures are real filenames off a real Ventoy drive.
-- **It's my responsibility.** If it deletes something it shouldn't, that's on
-  me, not on a tool. [Tell me](https://github.com/ZachCurry13/isoshelf/issues)
+- **Bugs are mine to fix.** "The AI wrote it" is never an excuse here. If it
+  does something it shouldn't, [tell me](https://github.com/ZachCurry13/isoshelf/issues)
   and I'll fix it.
 
 If you'd rather not run software built this way, that's a fair call to make,
@@ -281,7 +296,11 @@ and the source is right here to judge for yourself.
 
 ## License
 
-[MIT](LICENSE).
+[MIT](LICENSE). isoshelf is free, and like all MIT software it comes as is,
+without any warranty: see the license for the exact words. It is built to be
+careful — nothing is deleted unless you choose it, and archiving (which can be
+undone) is always offered — but keep a backup of anything you couldn't
+download again.
 
 Distro logos come from [Simple Icons](https://simpleicons.org) (CC0 1.0) and
 are used to identify the projects they belong to.
@@ -302,5 +321,6 @@ Microsoft's page and nothing more.
 listed, or your entry points somewhere it shouldn't, please open an issue.
 Entries are removed or corrected on request.
 
-Update dates come from [endoflife.date](https://endoflife.date) (MIT), and
-version information from each project's own releases and checksum files.
+End-of-life dates, and many release versions, come from
+[endoflife.date](https://endoflife.date) (MIT); the rest of the version
+information comes from each project's own releases and checksum files.
