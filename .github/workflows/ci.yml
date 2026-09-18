@@ -1,0 +1,58 @@
+name: build and test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # Weekly, so a change in Go or in the runners shows up before a release does.
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # isoshelf builds without cgo, so the binary runs anywhere.
+      - name: build
+        run: go build ./...
+        env:
+          CGO_ENABLED: "0"
+
+      - name: vet
+        run: go vet ./...
+
+      - name: check formatting
+        shell: bash
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "These files need gofmt:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      # The tests never reach the network: they replay recorded responses.
+      - name: test
+        run: go test ./...
+        env:
+          CGO_ENABLED: "0"
+
+      - name: test with the race detector
+        if: matrix.os == 'ubuntu-latest'
+        run: go test -race ./...

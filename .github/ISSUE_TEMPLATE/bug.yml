@@ -1,0 +1,36 @@
+name: Something went wrong
+description: isoshelf did something unexpected, or wouldn't do something it should.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Which isoshelf?
+      description: The version in the top left of the page, or `isoshelf version`.
+      placeholder: v0.2.0
+  - type: dropdown
+    id: os
+    attributes:
+      label: Where is it running?
+      options:
+        - Windows
+        - Linux
+        - Somewhere else
+  - type: input
+    id: folder
+    attributes:
+      label: What kind of folder?
+      placeholder: Ventoy USB drive, a NAS share, Proxmox ISO storage
+  - type: textarea
+    id: messages
+    attributes:
+      label: Anything isoshelf printed
+      description: Messages from the page or the terminal. Leave out anything private.
+      render: text

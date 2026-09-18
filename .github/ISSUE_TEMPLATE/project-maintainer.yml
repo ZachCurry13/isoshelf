@@ -1,0 +1,38 @@
+name: I maintain one of these projects
+description: Ask for your project's entry to be corrected, changed or removed.
+title: "Project: "
+labels: [catalog, maintainer]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        isoshelf lists your project so people can tell which file on their
+        drive is yours, and so it can fetch new releases from your own servers
+        and check them against the checksums you publish. It never mirrors or
+        re-serves your images, and it isn't affiliated with or endorsed by you.
+
+        If any of that isn't what you want, say so here. Entries are corrected
+        or removed on request, no explanation needed.
+  - type: input
+    id: project
+    attributes:
+      label: Your project
+    validations:
+      required: true
+  - type: dropdown
+    id: request
+    attributes:
+      label: What would you like?
+      options:
+        - Remove my project from the catalog
+        - Fix where isoshelf downloads from
+        - Fix where isoshelf reads checksums or versions from
+        - Change how my project is named or described
+        - Something else
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: Details
+      description: What's wrong, or what it should be instead.

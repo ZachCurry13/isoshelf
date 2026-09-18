@@ -1,0 +1,50 @@
+name: An image isoshelf doesn't know
+description: Tell isoshelf about an image missing from its catalog, or one it gets wrong.
+title: "Catalog: "
+labels: [catalog]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for this. Every entry is checked by hand against the project's
+        own site before it goes in, so the more of this you can fill in, the
+        sooner it lands.
+
+        isoshelf's "What is this file?" dialog fills most of it in for you.
+  - type: input
+    id: project
+    attributes:
+      label: Which image is it?
+      description: The project and edition, as they call it.
+      placeholder: Fedora Workstation 42, 64-bit
+    validations:
+      required: true
+  - type: input
+    id: filename
+    attributes:
+      label: The filename
+      placeholder: Fedora-Workstation-Live-42-1.1.x86_64.iso
+    validations:
+      required: true
+  - type: input
+    id: site
+    attributes:
+      label: Where is it published?
+      description: The download page, or the folder the files live in.
+      placeholder: https://fedoraproject.org/workstation/download
+  - type: input
+    id: checksums
+    attributes:
+      label: Where are its checksums published?
+      description: >
+        This is the part that matters most. isoshelf will only download an
+        image it can check against a checksum from the project's own site, so
+        an entry without one can report versions but never fetch anything.
+      placeholder: https://.../CHECKSUM
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: >
+        What the disc calls itself, its size, how the project numbers its
+        releases, or anything odd about it.

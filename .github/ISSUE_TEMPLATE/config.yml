@@ -1,0 +1,3 @@
+# Reports from isoshelf itself arrive as blank issues with the details already
+# filled in, so blank issues stay on.
+blank_issues_enabled: true
