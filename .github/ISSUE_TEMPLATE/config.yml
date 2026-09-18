@@ -1,3 +1,12 @@
 # Reports from isoshelf itself arrive as blank issues with the details already
 # filled in, so blank issues stay on.
 blank_issues_enabled: true
+contact_links:
+  - name: Question about using isoshelf
+    url: https://github.com/ZachCurry13/isoshelf/discussions/categories/q-a
+    about: Ask in Discussions. Issues are for work that needs doing.
+  - name: An idea, or an image you'd like supported
+    url: https://github.com/ZachCurry13/isoshelf/discussions/categories/ideas
+    about: >
+      Ideas start here. If it's a specific image with a published checksum,
+      the catalog form is quicker.
