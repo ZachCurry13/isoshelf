@@ -171,3 +171,37 @@ one-byte range where a server refuses HEAD). It is a hint, not a promise: it
 changes with each release, and the page says "about". Re-measure whenever the
 catalog is re-recorded. 49 of the 72 entries had a size on 2026-09-18; the
 rest are manual or check-only entries with nothing to measure.
+
+## Added 2026-09-18, later the same day
+
+| Entry | Source | Checksums | Notes |
+|---|---|---|---|
+| Rocky Linux, AlmaLinux (minimal) | endoflife `rocky-linux`, `almalinux` | `CHECKSUM` in `…/{cycle}/isos/x86_64/` (BSD format) | The folders also hold `-latest-` copies with no version in the name, which are skipped. |
+| Proxmox Mail Gateway | listing of `enterprise.proxmox.com/iso/SHA256SUMS` | the same file | The same checksum file as Proxmox VE and Backup Server. |
+| Raspberry Pi OS (desktop, Lite), 64-bit | listing of the dated `images/` folder | `{file}.sha256` next to each image | Written to a card, not booted from a menu, so kept as `.img.xz`. The checksum file is `.sha256`; there are `.sha1` files too. |
+| Home Assistant OS (Pi 5, x86-64) | github `home-assistant/operating-system` | asset digest | |
+| Omarchy | listing of `omarchy.org` | `iso.omarchy.org/omarchy-{version}.iso.sha256` | |
+| Nobara (Official, GNOME, Steam Handheld) | listing of `nobaraproject.org/download.html` | `{file}.sha256sum` | Dated releases. The image server can't be listed, so the exact filename comes from what the listing matched on the download page. The checksum files name the image `./Nobara-…`, which the parser handles. The old address `/download-nobara/` redirects. |
+| NixOS (graphical) | endoflife `nixos` | — (check-only) | The `latest-` images redirect to a versioned folder named after a build (`26.05.9989.ecc58f32d106`), and catalog addresses must be final. |
+
+Link-only for now, because checksums aren't on the project's own site:
+
+- **EndeavourOS**: images and checksums are on mirrors; the project's GitHub
+  holds an archive of old releases only.
+- **Zorin OS Core**: `mirrors.edge.kernel.org/zorinos-isos/{release}/` has a
+  `SHA256SUMS.txt`, but Zorin's own download page is built by script, so it
+  couldn't be confirmed that Zorin points there.
+
+### Kinds
+
+Entries are grouped by what people use them for: desktop, gaming (handhelds
+included), server and homelab, boards (the Raspberry Pi and other
+single-board computers), security and privacy, rescue and tools, Windows, and
+other. An image written to a Pi's card belongs under boards even when what it
+runs is a server, because that's how people look for it.
+
+### Still to look at
+
+Garuda Linux (its build server's folders didn't list), Bazzite's desktop and
+NVIDIA variants, Aurora, Bluefin, elementary OS, openSUSE Leap, OPNsense,
+Talos Linux, LibreELEC, DietPi, Umbrel, Memtest86+, ShredOS.

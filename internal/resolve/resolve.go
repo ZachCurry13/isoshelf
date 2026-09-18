@@ -65,7 +65,12 @@ func Resolve(ctx context.Context, client *remote.Client, e *catalog.Entry, rel *
 
 	a := &Artifact{}
 	if spec.Manifest == "" || slices.Contains(catalog.Placeholders(spec.Manifest), "file") {
-		if a.Filename, err = findInIndex(ctx, client, base, fileRE); err != nil {
+		// A listing that matched the whole filename has already said which
+		// file it is, which matters where the download folder can't be
+		// listed. Otherwise the folder is read to find it.
+		if name := path.Base(rel.Matched); rel.Matched != "" && fileRE.MatchString(name) {
+			a.Filename = name
+		} else if a.Filename, err = findInIndex(ctx, client, base, fileRE); err != nil {
 			return nil, err
 		}
 		vars["file"] = a.Filename

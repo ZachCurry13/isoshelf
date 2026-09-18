@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026091801 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026091802 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -257,7 +257,7 @@ samples = ["bazzite-deck-gnome-stable-live-amd64.iso"]
 size = 8435314688
 popular = true
 page = "https://bazzite.gg/"
-category = "desktop"
+category = "gaming"
 family = "bazzite"
 site = "https://bazzite.gg/"
 forum = "https://universal-blue.discourse.group/"
@@ -560,7 +560,7 @@ match = 'ubuntu-core-(?P<version>\d+)-arm64\+raspi\.img(?:\.xz)?'
 samples = ["ubuntu-core-20-arm64+raspi.img"]
 size = 414236656
 page = "https://ubuntu.com/download/raspberry-pi-core"
-category = "server"
+category = "boards"
 family = "ubuntu-core"
 icon = "ubuntu"
 icon_color = "#E95420"
@@ -611,7 +611,7 @@ match = 'ubuntu-core-(?P<version>\d+)-armhf\+raspi\.img(?:\.xz)?'
 samples = ["ubuntu-core-20-armhf+raspi.img"]
 size = 238129880
 page = "https://ubuntu.com/download/raspberry-pi-core"
-category = "server"
+category = "boards"
 family = "ubuntu-core"
 icon = "ubuntu"
 icon_color = "#E95420"
@@ -1047,7 +1047,7 @@ arch = "arm64"
 match = 'Manjaro-ARM-xfce-generic-(?P<version>\d+\.\d+)\.img(?:\.xz)?'
 samples = ["Manjaro-ARM-xfce-generic-23.02.img"]
 page = "https://manjaro.org/products/download/arm"
-category = "desktop"
+category = "boards"
 family = "manjaro"
 icon = "manjaro"
 icon_color = "#35BFA4"
@@ -1236,7 +1236,7 @@ arch = "arm64"
 match = 'pop-os_22\.04_arm64_raspi_(?P<version>\d+)\.img(?:\.xz)?'
 samples = ["pop-os_22.04_arm64_raspi_4.img"]
 page = "https://system76.com/pop/download/"
-category = "desktop"
+category = "boards"
 family = "popos"
 icon = "popos"
 icon_color = "#48B9C7"
@@ -1335,7 +1335,7 @@ arch = "x86"
 match = 'batocera-(?P<version>\d+(?:\.\d+)*)-x86-\d{8}\.img(?:\.gz)?'
 samples = ["batocera-5.25-x86-20200310.img"]
 page = "https://batocera.org/download"
-category = "other"
+category = "gaming"
 family = "batocera"
 site = "https://batocera.org/"
 forum = "https://forum.batocera.org/"
@@ -1758,7 +1758,7 @@ samples = ["2026-09-15-raspios-trixie-arm64.img.xz"]
 size = 1372609344
 popular = true
 page = "https://www.raspberrypi.com/software/operating-systems/"
-category = "desktop"
+category = "boards"
 family = "raspios"
 icon = "raspberrypi"
 icon_color = "#A22846"
@@ -1786,7 +1786,7 @@ samples = ["2026-09-15-raspios-trixie-arm64-lite.img.xz"]
 size = 541414936
 popular = true
 page = "https://www.raspberrypi.com/software/operating-systems/"
-category = "server"
+category = "boards"
 family = "raspios"
 icon = "raspberrypi"
 icon_color = "#A22846"
@@ -1811,7 +1811,7 @@ match = 'haos_rpi5-64-(?P<version>[\d.]+)\.img\.xz'
 samples = ["haos_rpi5-64-18.3.img.xz"]
 size = 330382588
 page = "https://www.home-assistant.io/installation/raspberrypi/"
-category = "server"
+category = "boards"
 family = "home-assistant"
 icon = "homeassistant"
 icon_color = "#18BCF2"
@@ -1845,3 +1845,162 @@ type = "github"
 repo = "home-assistant/operating-system"
 tag = '(?P<version>\d+\.\d+)'
 asset = 'haos_generic-x86-64-[\d.]+\.img\.xz'
+
+# Added 2026-09-18, third batch: what people are talking about. Omarchy and
+# Nobara publish checksums on their own servers, so isoshelf can fetch them.
+# EndeavourOS and Zorin only publish on mirrors, and NixOS names its images
+# after a build that only a redirect reveals, so those are listed with a link.
+
+[[entry]]
+id = "omarchy"
+name = "Omarchy"
+arch = "x86_64"
+match = 'omarchy-(?P<version>\d+\.\d+\.\d+)\.iso'
+samples = ["omarchy-4.0.4.iso"]
+size = 6185304064
+page = "https://omarchy.org/"
+category = "desktop"
+family = "omarchy"
+site = "https://omarchy.org/"
+popular = true
+
+[entry.source]
+type = "listing"
+url = "https://omarchy.org/"
+regex = 'omarchy-(?P<version>\d+\.\d+\.\d+)\.iso'
+
+[entry.artifact]
+base = "https://iso.omarchy.org/"
+file = 'omarchy-{version}\.iso'
+manifest = "omarchy-{version}.iso.sha256"
+
+[[entry]]
+id = "nobara-official"
+name = "Nobara (Official, KDE)"
+arch = "x86_64"
+match = 'Nobara-\d+-Official-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+samples = ["Nobara-44-Official-2026-09-02.iso"]
+size = 7870967808
+page = "https://nobaraproject.org/download.html"
+category = "gaming"
+family = "nobara"
+site = "https://nobaraproject.org/"
+popular = true
+
+[entry.source]
+# Releases are dated. The image server can't be listed, so the exact filename
+# comes from the download page, which names each one.
+type = "listing"
+url = "https://nobaraproject.org/download.html"
+regex = 'Nobara-\d+-Official-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+
+[entry.artifact]
+base = "https://nobara-images.nobaraproject.org/"
+file = 'Nobara-\d+-Official-{version}\.iso'
+manifest = "{file}.sha256sum"
+
+[[entry]]
+id = "nobara-gnome"
+name = "Nobara (GNOME)"
+arch = "x86_64"
+match = 'Nobara-\d+-GNOME-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+samples = ["Nobara-44-GNOME-2026-09-02.iso"]
+size = 7235321856
+page = "https://nobaraproject.org/download.html"
+category = "gaming"
+family = "nobara"
+site = "https://nobaraproject.org/"
+
+[entry.source]
+type = "listing"
+url = "https://nobaraproject.org/download.html"
+regex = 'Nobara-\d+-GNOME-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+
+[entry.artifact]
+base = "https://nobara-images.nobaraproject.org/"
+file = 'Nobara-\d+-GNOME-{version}\.iso'
+manifest = "{file}.sha256sum"
+
+[[entry]]
+id = "nobara-steam-handheld"
+name = "Nobara (Steam Handheld)"
+arch = "x86_64"
+match = 'Nobara-\d+-Steam-Handheld-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+samples = ["Nobara-44-Steam-Handheld-2026-09-02.iso"]
+size = 9412202496
+page = "https://nobaraproject.org/download.html"
+category = "gaming"
+family = "nobara"
+site = "https://nobaraproject.org/"
+
+[entry.source]
+type = "listing"
+url = "https://nobaraproject.org/download.html"
+regex = 'Nobara-\d+-Steam-Handheld-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+
+[entry.artifact]
+base = "https://nobara-images.nobaraproject.org/"
+file = 'Nobara-\d+-Steam-Handheld-{version}\.iso'
+manifest = "{file}.sha256sum"
+
+[[entry]]
+id = "endeavouros"
+name = "EndeavourOS"
+arch = "x86_64"
+match = 'EndeavourOS_[A-Za-z]+(?:-[A-Za-z]+)*-(?P<version>\d{4}\.\d{2}\.\d{2})\.iso'
+samples = ["EndeavourOS_Titan-Nova-2026.08.15.iso"]
+page = "https://endeavouros.com/"
+category = "desktop"
+family = "endeavouros"
+icon = "endeavouros"
+icon_color = "#7F7FFF"
+site = "https://endeavouros.com/"
+forum = "https://forum.endeavouros.com/"
+popular = true
+
+[entry.source]
+# Images and checksums are only on mirrors; the project's GitHub holds an
+# archive of old ones. Listed with a link until there's an origin to check
+# against.
+type = "manual"
+
+[[entry]]
+id = "zorin-os-core"
+name = "Zorin OS Core"
+arch = "x86_64"
+match = 'Zorin-OS-(?P<version>\d+)-Core-64-bit(?:-r\d+)?\.iso'
+samples = ["Zorin-OS-18-Core-64-bit-r3.iso", "Zorin-OS-18-Core-64-bit.iso"]
+page = "https://zorin.com/os/download/"
+category = "desktop"
+family = "zorin"
+icon = "zorin"
+icon_color = "#15A6F0"
+site = "https://zorin.com/os/"
+forum = "https://forum.zorin.com/"
+
+[entry.source]
+# A checksum file exists, but on a kernel.org mirror rather than Zorin's own
+# site, and checksums only ever come from the origin.
+type = "manual"
+
+[[entry]]
+id = "nixos-graphical"
+name = "NixOS (graphical installer)"
+arch = "x86_64"
+match = 'nixos-graphical-(?P<version>\d+\.\d+\.\d+\.[0-9a-f]+)-x86_64-linux\.iso'
+samples = ["nixos-graphical-26.05.9989.ecc58f32d106-x86_64-linux.iso"]
+page = "https://nixos.org/download/"
+category = "desktop"
+family = "nixos"
+icon = "nixos"
+icon_color = "#5277C3"
+site = "https://nixos.org/"
+forum = "https://discourse.nixos.org/"
+
+[entry.source]
+# The version and end of life come from endoflife.date. The image itself is
+# named after a build that only the download redirect reveals, so for now the
+# download is a link.
+type = "endoflife"
+product = "nixos"
+channel = "latest"

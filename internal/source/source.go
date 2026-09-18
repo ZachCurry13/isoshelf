@@ -29,6 +29,10 @@ type Release struct {
 	Tag string
 	// URL is a page about the release, if the source has one.
 	URL string
+	// Matched is the whole text a listing's regex matched for this version.
+	// When the regex matches a filename, this is the exact file, which lets
+	// the resolver name it even where the download folder can't be listed.
+	Matched string
 	// Asset is the matched GitHub release asset, when the entry sets
 	// source.asset.
 	Asset *Asset
@@ -238,14 +242,14 @@ func listing(ctx context.Context, client *remote.Client, s catalog.Source) (*Rel
 	if i < 0 {
 		return nil, fmt.Errorf("source.regex %q has no version group", s.Regex)
 	}
-	var latest string
+	var latest, matched string
 	for _, m := range re.FindAllSubmatch(resp.Body, -1) {
 		if v := string(m[i]); v != "" && (latest == "" || version.Compare(v, latest) > 0) {
-			latest = v
+			latest, matched = v, string(m[0])
 		}
 	}
 	if latest == "" {
 		return nil, fmt.Errorf("no version matching %q found at %s", s.Regex, s.URL)
 	}
-	return &Release{Version: latest}, nil
+	return &Release{Version: latest, Matched: matched}, nil
 }

@@ -22,7 +22,7 @@ const (
 )
 
 // Categories group entries in lists. An entry without one counts as "other".
-var Categories = []string{"desktop", "server", "security", "rescue", "windows", "other"}
+var Categories = []string{"desktop", "gaming", "server", "boards", "security", "rescue", "windows", "other"}
 
 // ImageExtensions are the file types Ventoy lists in its boot menu.
 var ImageExtensions = []string{".iso", ".wim", ".img", ".vhd", ".vhdx", ".efi"}

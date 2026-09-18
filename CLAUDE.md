@@ -90,9 +90,10 @@ Every catalog entry runs through four stages:
    - `manual`: inventory only; optional known-good SHA-256 list; "open download
      page" action.
 2. **Resolver** (`internal/resolve`) - expands `{cycle}`/`{version}` templates,
-   fetches the checksum manifest, finds the exact filename by regex (or in the
-   directory index at `base`, when there's no manifest or its name uses
-   `{file}`). A manifest that redirects to another host is refused. Output:
+   fetches the checksum manifest, finds the exact filename by regex (or, when
+   there's no manifest or its name uses `{file}`, from the filename a listing
+   source already matched, else the directory index at `base`). A manifest
+   that redirects to another host is refused. Output:
    `Artifact{Filename, URLs, Size, Checksum}`.
 3. **Verifier** (`internal/verify`) - GNU (`hash  file`) and BSD
    (`SHA256 (file) = hash`) manifests; MD5/SHA-1 count as weak integrity only.
@@ -237,9 +238,12 @@ alone is not an update.
     `rename:<ext>`), `known_hashes` (SHA-256), `size` (roughly how big the
     download is, in bytes; measured by `record -sizes`, refused if too small
     or too large to be an image).
-  - For the UI: `category` (desktop, server, security, rescue, windows,
-    other), `family` (groups one product's tracks), `site`, `forum`, and
-    `icon` + `icon_color` (a Simple Icons name and brand colour).
+  - For the UI: `category` (desktop, gaming, server, boards, security,
+    rescue, windows, other — "boards" is the Raspberry Pi and other
+    single-board computers, "gaming" includes handhelds), `family` (groups one
+    product's tracks), `site`, `forum`, `popular` (a hand-picked hint from
+    public round-ups, not a rating), and `icon` + `icon_color` (a Simple Icons
+    name and brand colour).
 - `[entry.source]`: `type` plus only that type's fields. endoflife: `product`,
   `channel`, optional `cycles` (regex over cycle names; only matching cycles
   belong to the track, e.g. to keep LMDE out of Linux Mint). github: `repo`,
@@ -264,9 +268,12 @@ alone is not an update.
   sample filename matches exactly one entry. Every problem is reported at once.
 - Scope: the sample drive is only an example. The default catalog should cover
   common and trending images (desktop, server/homelab, rescue tools), so users
-  can add images that aren't on their target yet. It has 72 entries: the
-  sample drive, the maintainer's Proxmox folder, and the images people ask
-  for first. Add more in batches, checking each one live before it goes in.
+  can add images that aren't on their target yet. It has 86 entries: the
+  sample drive, the maintainer's Proxmox folder, the images people ask for
+  first, and what people are talking about. Anything worth knowing goes in,
+  even when isoshelf can't download it: an entry with only a page link still
+  names the file and sends people to the right place. Add more in batches,
+  checking each one live before it goes in.
   Why each entry is set up the way it is, and the wish list:
   `docs/catalog-sources.md`.
 - A few entries pin a release number in their URLs because nothing else gives

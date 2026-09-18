@@ -6,6 +6,25 @@ Version numbers: the middle number rises for new abilities (v0.3.0 will be
 installing older versions and fixing files the boot menu can't read); the last
 number rises for improvements to what it already does.
 
+## [v0.2.5] - 2026-09-18
+
+### Added
+- **Two new kinds:** *Gaming and handhelds*, and *Raspberry Pi and other
+  boards* — which is where the Pi filter lives. "Desktop Linux" is now just
+  *Desktop*.
+- **Seven more images**, 86 in all: Omarchy; Nobara in its Official (KDE),
+  GNOME and Steam Handheld editions; NixOS; EndeavourOS; and Zorin OS Core.
+  Omarchy and Nobara can be downloaded and checked. EndeavourOS and Zorin
+  publish their checksums only on mirrors, so for now they're a link to the
+  project's download page; NixOS gets update and end-of-life checks with a
+  link.
+
+### Changed
+- Images that can only be linked to are now welcome in the catalog: isoshelf
+  still recognizes the file and sends you to the right page.
+- isoshelf can download images from servers that don't list their files, by
+  using the filename the project's own download page gives.
+
 ## [v0.2.4] - 2026-09-18
 
 ### Added
@@ -91,6 +110,7 @@ The first release.
 - Keeps that catalog current from this repository without a new release.
 - Runs as a page in your browser, or from the command line.
 
+[v0.2.5]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.4
 [v0.2.3]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.3
 [v0.2.2]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.2

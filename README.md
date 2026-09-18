@@ -115,13 +115,24 @@ it keeps itself current from this repository, so new images don't wait for a
 new release. You can also keep your own catalog file, which isoshelf then
 leaves alone.
 
-It currently knows **72 images**: Ubuntu and its flavours, Linux Mint and
-LMDE, Debian and Debian Live, Fedora, Arch, openSUSE Tumbleweed, Kali, Parrot,
-Qubes, Alpine, Pop!_OS, CachyOS, Bazzite, MX, Manjaro, Q4OS, Tiny Core;
-Proxmox VE and Backup Server, TrueNAS, FreeBSD, pfSense, Ubuntu Core;
-Clonezilla, GParted Live, SystemRescue, Rescuezilla, netboot.xyz, Hiren's
-BootCD PE; and Windows, which it inventories but never downloads. Something
-missing? [Tell it about the image](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
+It currently knows **86 images**, grouped by what they're for:
+
+- **Desktop:** Ubuntu, Kubuntu and Xubuntu, Linux Mint and LMDE, Debian and
+  Debian Live, Fedora, Arch, Omarchy, EndeavourOS, openSUSE Tumbleweed,
+  NixOS, Zorin OS, Pop!_OS, CachyOS, MX, Manjaro, Q4OS, Tiny Core.
+- **Gaming and handhelds:** Bazzite, Nobara (including its Steam Handheld
+  edition), Batocera.
+- **Server and homelab:** Proxmox VE, Backup Server and Mail Gateway,
+  TrueNAS, Home Assistant OS, Rocky Linux, AlmaLinux, FreeBSD, pfSense,
+  Alpine, Ubuntu Core.
+- **Raspberry Pi and other boards:** Raspberry Pi OS (desktop and Lite), Home
+  Assistant OS for the Pi 5, Ubuntu Core and Manjaro ARM.
+- **Security and privacy:** Kali, Parrot, Qubes, Tails.
+- **Rescue and tools:** Clonezilla, GParted Live, SystemRescue, Rescuezilla,
+  netboot.xyz, Hiren's BootCD PE.
+- **Windows**, which it recognizes and links to but never downloads.
+
+Something missing? [Tell it about the image](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
 
 Here's `isoshelf check` on a test drive (trimmed, and the NOTE column shortened):
 
