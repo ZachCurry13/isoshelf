@@ -4,3 +4,4 @@
 
 # Local browser-preview config (holds machine-specific paths)
 /.claude/launch.json
+/isoshelf.exe~
