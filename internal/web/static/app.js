@@ -194,7 +194,10 @@ function renderRun() {
   } else if (run.stage === "placing") {
     text = "Putting the file in place…";
   } else if (run.stage === "hashing") {
-    text = `Hashing ${run.file}`;
+    // Only images whose filename never changes need this, and only once
+    // each, but on a USB drive it is minutes of reading.
+    const which = run.items > 1 ? ` (${run.item} of ${run.items})` : "";
+    text = `Checking what ${run.file} is${which} — this happens once per image`;
     if (run.total > 0) fraction = run.done / run.total;
   } else if (run.stage === "checking") {
     text = "Checking for updates…";
@@ -1148,18 +1151,47 @@ async function browse(path) {
   if (result.suggested_profile) $("picker-profile").value = result.suggested_profile;
   showPickerError(result.error);
 
+  // How many images a folder holds says more than its path does, and on
+  // Windows a drive's name is the only way to tell E: from F:.
+  const describe = (folder) => {
+    const bits = [folder.label, folder.images > 0 ? plural(folder.images, "image") : null].filter(Boolean);
+    return bits.length ? el("span", { class: "muted" }, ` — ${bits.join(", ")}`) : null;
+  };
+  $("picker-here").textContent = result.images > 0
+    ? `${plural(result.images, "image")} in this folder`
+    : result.path && result.images === 0 ? "No images directly in this folder" : "";
+
   const roots = $("picker-roots");
   roots.replaceChildren();
+  const bookmarks = (state && state.bookmarks) || [];
+  if (bookmarks.length) {
+    roots.append(el("h3", {}, "Bookmarks"));
+    for (const target of bookmarks) {
+      roots.append(el("button", { type: "button", title: target, onclick: () => browse(target) }, target));
+    }
+  }
   if (state && state.recent_targets.length) {
     roots.append(el("h3", {}, "Recent"));
     for (const target of state.recent_targets) {
+      if (bookmarks.includes(target)) continue;
       roots.append(el("button", { type: "button", title: target, onclick: () => browse(target) }, target));
     }
   }
   roots.append(el("h3", {}, "Places"));
   for (const root of result.roots) {
-    roots.append(el("button", { type: "button", title: root.path, onclick: () => browse(root.path) }, root.name));
+    roots.append(el("button", { type: "button", title: root.path, onclick: () => browse(root.path) },
+      root.name, describe(root)));
   }
+
+  // The pin follows whichever folder is open.
+  const pinned = bookmarks.some((b) => b.toLowerCase() === pickerPath.toLowerCase());
+  const pin = $("picker-pin");
+  pin.disabled = !pickerPath;
+  pin.textContent = pinned ? "★ Bookmarked" : "☆ Bookmark";
+  pin.title = pinned
+    ? "Forget this folder"
+    : "Keep this folder at the top of the list, so it doesn't have to be found again";
+  pin.onclick = () => toggleBookmark(pickerPath, pinned);
 
   const folders = $("picker-folders");
   folders.replaceChildren();
@@ -1264,3 +1296,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Keep "checked 5 min ago" fresh.
   setInterval(() => { if (state && !state.run) render(); }, 60000);
 });
+
+// toggleBookmark pins or unpins a folder in the chooser.
+async function toggleBookmark(path, pinned) {
+  try {
+    state = await api("POST", "/api/bookmark", { path, remove: pinned });
+  } catch (err) {
+    showPickerError(err.message);
+    return;
+  }
+  await browse(pickerPath);
+}

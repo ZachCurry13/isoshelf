@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"path"
+	"slices"
 	"strings"
 	"time"
 
@@ -269,4 +270,32 @@ func countMine(cat *catalog.Catalog) int {
 		}
 	}
 	return n
+}
+
+// setBookmark pins or unpins a folder, so a NAS share or an image library
+// doesn't have to be found again every time.
+func (s *Server) setBookmark(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Path   string `json:"path"`
+		Remove bool   `json:"remove"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, http.StatusBadRequest, "bad request")
+		return
+	}
+	path := strings.TrimSpace(req.Path)
+	if path == "" {
+		writeError(w, http.StatusBadRequest, "Which folder?")
+		return
+	}
+	current := s.loadSettings()
+	current.Bookmarks = slices.DeleteFunc(current.Bookmarks, func(b string) bool { return strings.EqualFold(b, path) })
+	if !req.Remove {
+		current.Bookmarks = append(current.Bookmarks, path)
+		slices.SortFunc(current.Bookmarks, func(a, b string) int {
+			return strings.Compare(strings.ToLower(a), strings.ToLower(b))
+		})
+	}
+	s.saveSettings(current)
+	s.getState(w, r)
 }

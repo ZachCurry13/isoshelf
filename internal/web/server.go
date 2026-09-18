@@ -147,6 +147,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/catalog/refresh", s.updateCatalog)
 	mux.HandleFunc("POST /api/settings", s.setSettings)
 	mux.HandleFunc("POST /api/catalog/mine", s.addMyImage)
+	mux.HandleFunc("POST /api/bookmark", s.setBookmark)
 	s.handler = s.guard(mux)
 
 	go s.checkAppUpdate()
@@ -228,6 +229,7 @@ type stateJSON struct {
 	Tracks    map[string]state.Track `json:"tracks"`
 	UsualSet  []string               `json:"usual_set"`
 	Recent    []string               `json:"recent_targets"`
+	Bookmarks []string               `json:"bookmarks"`
 	Removed   removedJSON            `json:"removed"`
 	Catalog   catalogStatusJSON      `json:"catalog"`
 	AppUpdate *appupdate.Notice      `json:"app_update,omitempty"`
@@ -255,6 +257,8 @@ type runJSON struct {
 	File    string    `json:"file,omitempty"`
 	Done    int64     `json:"done"`
 	Total   int64     `json:"total"`
+	Item    int       `json:"item,omitempty"`
+	Items   int       `json:"items,omitempty"`
 	Started time.Time `json:"started"`
 }
 
@@ -317,6 +321,7 @@ func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 		Tracks:    map[string]state.Track{},
 		UsualSet:  []string{},
 		Recent:    recent,
+		Bookmarks: nonNil(s.loadSettings().Bookmarks),
 		Removed:   s.removedInfo(s.target),
 		Catalog:   s.catalogStatusLocked(),
 		ReportURL: "https://github.com/" + appupdate.Repo + "/issues/new",
@@ -343,6 +348,8 @@ func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 			File:    s.run.progress.File,
 			Done:    s.run.progress.Done,
 			Total:   s.run.progress.Total,
+			Item:    s.run.progress.Item,
+			Items:   s.run.progress.Items,
 			Started: s.run.started,
 		}
 	}
@@ -484,6 +491,17 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 		Catalog: s.catalog(),
 		Dirs:    s.cfg.Dirs,
 		Now:     s.cfg.Now,
+		// Show the folder's contents as soon as they're known. Hashing the
+		// images whose filename never changes comes next, and on a USB drive
+		// that is minutes of reading; there's no reason to stare at a spinner
+		// for it.
+		Interim: func(res *inventory.Result) {
+			s.mu.Lock()
+			defer s.mu.Unlock()
+			if s.target == target {
+				s.report, s.st, s.scan, s.updatedAt = res.Report, res.State, res.Scan, s.cfg.Now()
+			}
+		},
 		Progress: func(p inventory.Progress) {
 			s.mu.Lock()
 			if s.run != nil {
@@ -590,6 +608,8 @@ type settings struct {
 	Target string `json:"target,omitempty"`
 	// CatalogAuto is nil until the user says either way; the default is on.
 	CatalogAuto *bool `json:"catalog_auto,omitempty"`
+	// Bookmarks are folders the user pinned in the chooser.
+	Bookmarks []string `json:"bookmarks,omitempty"`
 }
 
 func (s *Server) loadSettings() settings {

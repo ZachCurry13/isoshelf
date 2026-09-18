@@ -36,6 +36,8 @@ type Progress struct {
 	// Done and Total count bytes of File while hashing, and entries while
 	// checking.
 	Done, Total int64
+	// Item and Items count the files being hashed: "3 of 7".
+	Item, Items int
 }
 
 // Options control a run.
@@ -56,6 +58,10 @@ type Options struct {
 	Now func() time.Time
 	// Progress, if not nil, is called as the run moves along.
 	Progress func(Progress)
+	// Interim, if not nil, is handed the result as soon as the folder has
+	// been listed, before hashing, which is the slow part. The same Result
+	// is filled in further and returned at the end.
+	Interim func(*Result)
 }
 
 // Result is the outcome of a run.
@@ -109,19 +115,31 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	st.RecordScan(res, opts.Now())
 	out := &Result{State: st, Scan: res}
 
+	// What the folder holds is known now. Hashing comes next and can take
+	// minutes on a USB drive, so the caller is handed the list first and the
+	// numbers fill in behind it.
+	out.Report = check.Offline(res, st, opts.Catalog)
+	if opts.Interim != nil {
+		opts.Interim(out)
+	}
+
 	if !opts.NoHash {
 		files := st.NeedsHash(res, opts.Catalog)
 		for i := range files {
 			err := st.HashFiles(ctx, target, files[i:i+1], func(f scan.File, done int64) {
-				progress(Progress{Stage: Hashing, File: f.Path, Done: done, Total: f.Size})
+				progress(Progress{
+					Stage: Hashing, File: f.Path, Done: done, Total: f.Size,
+					Item: i + 1, Items: len(files),
+				})
 			})
 			if err != nil && ctx.Err() == nil {
 				out.Warnings = append(out.Warnings, fmt.Sprintf("couldn't hash %v", err))
 			}
 		}
+		// Hashes decide whether a fixed-name image is out of date, so the
+		// report is built again now that they are known.
+		out.Report = check.Offline(res, st, opts.Catalog)
 	}
-
-	out.Report = check.Offline(res, st, opts.Catalog)
 	if opts.Online && ctx.Err() == nil {
 		progress(Progress{Stage: Checking})
 		out.Report.Online(ctx, opts.Client, st, func(done, total int) {

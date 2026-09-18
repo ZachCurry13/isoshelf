@@ -250,6 +250,7 @@
       <input type="text" id="picker-input" spellcheck="false" autocomplete="off" aria-label="Folder path">
       <button type="button" class="btn small" id="picker-go">Go</button>
       <button type="button" class="btn small" id="picker-refresh" title="Look again, for a drive plugged in since isoshelf started">Refresh</button>
+      <button type="button" class="btn small" id="picker-pin">☆ Bookmark</button>
     </div>
     <div class="picker-body">
       <nav class="picker-roots" id="picker-roots" aria-label="Places"></nav>
@@ -259,6 +260,7 @@
       </div>
     </div>
     <footer class="picker-foot">
+      <span class="muted" id="picker-here"></span>
       <label class="inline-select">Type
         <select id="picker-profile">
           <option value="folder">Folder of images</option>
