@@ -37,6 +37,9 @@ Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/n
 - GParted Live downloaded from a SourceForge address that serves a "your
   download is starting" page instead of the image. It uses the real one now.
 - Nobara's download page moved; the catalog follows it to the new address.
+- Kali Linux live now checks for updates and links to Kali's page instead of
+  downloading. Kali offers its live images only as torrents, which isoshelf
+  doesn't use. The Kali installer images still download as before.
 
 ## 2026-09-17
 

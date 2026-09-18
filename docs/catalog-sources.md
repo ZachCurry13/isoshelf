@@ -9,8 +9,12 @@ To check that every entry still works, run this from the repository root:
 go run ./internal/remote/remotetest/record
 ```
 
-It resolves every entry against the live sites, lists the ones that fail,
-prints a note for every redirect, and saves the responses the tests replay.
+It resolves every entry against the live sites, checks that each image itself
+answers (a HEAD request, or a one-byte range where HEAD is refused), lists the
+ones that fail, prints a note for every redirect, and saves the responses the
+tests replay. A checksum file can list an image the server doesn't hand out,
+which is how Kali's torrent-only live images went unnoticed until the image
+check was added.
 Catalog URLs should always be the final address (tests can't replay
 redirects, and a checksum file that redirects to another host is refused).
 
@@ -31,7 +35,7 @@ redirects, and a checksum file that redirects to another host is refused).
 | FreeBSD bootonly, 64- and 32-bit | listing of `download.freebsd.org/releases/{arch}/{arch}/ISO-IMAGES/` | `CHECKSUM.SHA256-FreeBSD-{version}-RELEASE-{arch}` (BSD format) | endoflife `freebsd` orders the 14.x and 15.x branches by date, so it would pick 14.5 over 15.1. No i386 images for 15. |
 | pfSense CE installer | listing `atxfiles.netgate.com/mirror/downloads/` | `{file}.sha256` | Published as `.iso.gz`; 2.7.2 is the last CE ISO (newer releases use Netgate's online installer). |
 | Ubuntu Core amd64 / Raspberry Pi arm64 | listing `cdimage.ubuntu.com/ubuntu-core/` | `{version}/stable/current/SHA256SUMS` | `.img.xz`. The Intel IoT and armhf Raspberry Pi images only exist for Core 20 (static version). |
-| Kali installer / Purple / live | listing `kali.download/base-images/` | `kali-{version}/SHA256SUMS` | `cdimage.kali.org` redirects to `kali.download`. |
+| Kali installer / Purple | listing `kali.download/base-images/` | `kali-{version}/SHA256SUMS` | `cdimage.kali.org` redirects to `kali.download`. The live image is check-only (below). |
 | Parrot Home / Security | listing `deb.parrot.sh/parrot/iso/` | `{version}/signed-hashes.txt` (clearsigned, md5/sha256/sha512) | Image downloads redirect to a CDN, which is fine for image bytes. |
 | Qubes OS | listing `ftp.qubes-os.org/iso/` (rc/beta excluded) | `{file}.DIGESTS` (clearsigned, four algorithms) | |
 | SystemRescue | listing of the Download page | `fastly-cdn.system-rescue.org/releases/{version}/{file}.sha256` | The releases folder has no index (403). |
@@ -43,6 +47,10 @@ redirects, and a checksum file that redirects to another host is refused).
 
 Update and EOL checks work, but there's nothing to download yet.
 
+- **Kali Linux live**: the same listing as the installers, for update checks.
+  Since 2026.1 Kali offers live images only as torrents: `SHA256SUMS` lists
+  `kali-linux-{version}-live-amd64.iso`, but the folder has only the
+  `.torrent`, and the image answers 404. isoshelf doesn't use torrents.
 - **MX Linux** (x64, x32): endoflife `mxlinux`. Files are on SourceForge, which
   redirects to mirrors, so it's unclear where the official HTTPS checksums
   are. MX 25 renamed files to `MX-25.2_Xfce_x64.iso`; monthly respins add the
@@ -99,7 +107,8 @@ Not researched yet. Each one gets checked live before it goes in.
 ## Entry metadata
 
 Besides sources, every entry carries what the page needs to show it: a
-`category` (desktop, server, security, rescue, windows, other), a `family` so
+`category` (desktop, gaming, server, boards, security, rescue, windows,
+other; see Kinds below), a `family` so
 one product's tracks group together, `site` and `forum` links, and an `icon`
 (a [Simple Icons](https://simpleicons.org) name) with its `icon_color`. All the
 links were checked on 2026-09-17; a few sites answer scripted requests with 403
@@ -169,8 +178,9 @@ Every downloadable entry carries a `size`, measured with
 `go run ./internal/remote/remotetest/record -sizes` (a HEAD request, or a
 one-byte range where a server refuses HEAD). It is a hint, not a promise: it
 changes with each release, and the page says "about". Re-measure whenever the
-catalog is re-recorded. 49 of the 72 entries had a size on 2026-09-18; the
-rest are manual or check-only entries with nothing to measure.
+catalog is re-recorded. On 2026-09-18 all 60 downloadable entries had one
+and every measured size matched; the other 26 of the 86 are manual or
+check-only, with nothing to measure.
 
 ## Added 2026-09-18, later the same day
 

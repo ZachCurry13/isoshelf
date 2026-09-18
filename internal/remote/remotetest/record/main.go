@@ -86,12 +86,21 @@ func main() {
 			fmt.Printf("FAIL  %-28s %v\n", e.ID, err)
 			continue
 		}
-		fmt.Printf("ok    %-28s %-12s %s\n", e.ID, rel.Version, file)
-		if *sizes && art != nil {
-			if size := measure(ctx, art); size > 0 {
+		// A checksum file can list an image the server doesn't hand out: Kali
+		// lists its live images but only offers them as torrents. So the image
+		// itself has to answer too.
+		if art != nil {
+			size, err := measure(ctx, art)
+			if err != nil {
+				failed++
+				fmt.Printf("FAIL  %-28s %s: %v\n", e.ID, art.Filename, err)
+				continue
+			}
+			if *sizes && size > 0 {
 				measured[e.ID] = size
 			}
 		}
+		fmt.Printf("ok    %-28s %-12s %s\n", e.ID, rel.Version, file)
 	}
 	if len(measured) > 0 {
 		fmt.Printf("\nSizes, for the size = lines in the catalog:\n")
@@ -105,31 +114,38 @@ func main() {
 	}
 }
 
-// measure asks how big an image is without downloading it. The catalog keeps
-// the answer as a hint, so the page can say "about 4.7 GB" and warn when a
-// download wouldn't fit. GitHub already says, so nothing is asked of it.
-func measure(ctx context.Context, art *resolve.Artifact) int64 {
+// measure checks that an image is there and asks how big it is, without
+// downloading it. The catalog keeps the size as a hint, so the page can say
+// "about 4.7 GB" and warn when a download wouldn't fit. GitHub already says,
+// so nothing is asked of it. A size of 0 with no error means the server
+// didn't say.
+func measure(ctx context.Context, art *resolve.Artifact) (int64, error) {
 	if art.Size > 0 {
-		return art.Size
+		return art.Size, nil
 	}
 	if len(art.URLs) == 0 {
-		return 0
+		return 0, nil
 	}
 	client := &http.Client{Timeout: time.Minute}
 	url := art.URLs[0]
 
-	if size := contentLength(ctx, client, http.MethodHead, url, ""); size > 0 {
-		return size
+	size, headErr := contentLength(ctx, client, http.MethodHead, url, "")
+	if size > 0 {
+		return size, nil
 	}
 	// Some servers refuse HEAD. Asking for the first byte gets the length in
 	// a Content-Range header instead, and downloads nothing worth mentioning.
-	return contentLength(ctx, client, http.MethodGet, url, "bytes=0-0")
+	size, err := contentLength(ctx, client, http.MethodGet, url, "bytes=0-0")
+	if err != nil && headErr != nil {
+		return 0, fmt.Errorf("the image itself isn't there: %w", err)
+	}
+	return size, nil
 }
 
-func contentLength(ctx context.Context, client *http.Client, method, url, rang string) int64 {
+func contentLength(ctx context.Context, client *http.Client, method, url, rang string) (int64, error) {
 	req, err := http.NewRequestWithContext(ctx, method, url, nil)
 	if err != nil {
-		return 0
+		return 0, err
 	}
 	req.Header.Set("User-Agent", "isoshelf-recorder")
 	if rang != "" {
@@ -137,26 +153,26 @@ func contentLength(ctx context.Context, client *http.Client, method, url, rang s
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		return 0
+		return 0, err
 	}
 	defer func() {
 		io.Copy(io.Discard, io.LimitReader(resp.Body, 4<<10))
 		resp.Body.Close()
 	}()
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusPartialContent {
-		return 0
+		return 0, fmt.Errorf("%s answered %s", url, resp.Status)
 	}
 	if resp.StatusCode == http.StatusPartialContent {
 		// "bytes 0-0/4556128256"
 		if _, total, ok := strings.Cut(resp.Header.Get("Content-Range"), "/"); ok {
 			size, err := strconv.ParseInt(strings.TrimSpace(total), 10, 64)
 			if err == nil {
-				return size
+				return size, nil
 			}
 		}
-		return 0
+		return 0, nil
 	}
-	return resp.ContentLength
+	return max(resp.ContentLength, 0), nil
 }
 
 // recorder is a transport that saves every successful response it passes on.

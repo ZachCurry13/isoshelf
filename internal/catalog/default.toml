@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026091803 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026091804 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -687,7 +687,7 @@ name = "Kali Linux live"
 arch = "x86_64"
 match = 'kali-linux-(?P<version>\d{4}\.\d+)-live-amd64\.iso'
 samples = ["kali-linux-2026.2-live-amd64.iso"]
-page = "https://www.kali.org/get-kali/"
+page = "https://www.kali.org/get-kali/#kali-live"
 category = "security"
 family = "kali"
 icon = "kalilinux"
@@ -699,11 +699,9 @@ forum = "https://forums.kali.org/"
 type = "listing"
 url = "https://kali.download/base-images/"
 regex = 'href="kali-(?P<version>\d{4}\.\d+)/"'
-
-[entry.artifact]
-base = "https://kali.download/base-images/kali-{version}/"
-file = 'kali-linux-{version}-live-amd64\.iso'
-manifest = "SHA256SUMS"
+# Kali offers its live images only as torrents (since 2026.1 the folder holds
+# the checksums but not the image), and isoshelf doesn't do torrents. So this
+# entry checks for updates and links to Kali's page.
 
 [[entry]]
 id = "parrot-home-amd64"
