@@ -108,6 +108,12 @@ func (s *Server) refreshCatalog(ctx context.Context, force bool) {
 		s.catErr = "The new catalog couldn't be read, so the one you have is kept."
 		return
 	}
+	if !fetched.Newer(s.cat) {
+		// An older list than the one already in use, which happens when a
+		// build carries a newer catalog than the project has published.
+		s.catNote = ""
+		return
+	}
 	s.cat, s.catSource, s.catNote = fetched, catalogDownloaded, result.Summary()
 	// The report names catalog entries, so build it again from what the last
 	// scan found. New images only turn up in the folder on the next scan.

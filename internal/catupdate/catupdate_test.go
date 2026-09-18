@@ -194,3 +194,39 @@ func hasString(list []string, want string) bool {
 	}
 	return false
 }
+
+// A catalog downloaded before the binary was built must not shadow the newer
+// one inside it: upgrading isoshelf would otherwise lose images.
+func TestNewerDecidesWhichCatalogWins(t *testing.T) {
+	older := &catalog.Catalog{Revision: 20260101}
+	newer := &catalog.Catalog{Revision: 20260918}
+	none := &catalog.Catalog{}
+
+	for _, tt := range []struct {
+		name string
+		a, b *catalog.Catalog
+		want bool
+	}{
+		{"newer than older", newer, older, true},
+		{"older than newer", older, newer, false},
+		{"same revision", newer, newer, true},
+		{"a revision beats none", older, none, true},
+		{"none loses to a revision", none, older, false},
+		{"nothing at all loses", nil, none, false},
+	} {
+		if got := tt.a.Newer(tt.b); got != tt.want {
+			t.Errorf("%s: Newer = %v, want %v", tt.name, got, tt.want)
+		}
+	}
+}
+
+// The published catalog carries a revision, or nothing can be compared.
+func TestPublishedCatalogHasARevision(t *testing.T) {
+	cat, err := catalog.Default()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cat.Revision < 20260101 {
+		t.Errorf("revision = %d; it should be the date the catalog last changed", cat.Revision)
+	}
+}

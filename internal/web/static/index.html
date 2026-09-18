@@ -36,6 +36,7 @@
           </select>
         </label>
         <span id="updated-at" class="muted"></span>
+        <span id="space" class="muted"></span>
       </div>
     </div>
     <div class="target-actions">
@@ -130,7 +131,35 @@
         <span class="muted" id="more-count"></span>
       </summary>
       <p class="muted more-hint">Images isoshelf knows that aren't in this folder.</p>
-      <input type="search" id="more-search" placeholder="Filter the catalog…" aria-label="Filter the catalog">
+      <div class="toolbar">
+        <input type="search" id="more-search" placeholder="Filter the catalog…" aria-label="Filter the catalog">
+        <select id="more-category" aria-label="Category">
+          <option value="">All kinds</option>
+          <option value="desktop">Desktop Linux</option>
+          <option value="server">Server and homelab</option>
+          <option value="security">Security and privacy</option>
+          <option value="rescue">Rescue and tools</option>
+          <option value="windows">Windows</option>
+          <option value="other">Other</option>
+        </select>
+        <select id="more-arch" aria-label="Architecture">
+          <option value="">Any architecture</option>
+          <option value="x86_64">64-bit (x86_64)</option>
+          <option value="x86">32-bit (x86)</option>
+          <option value="arm64">ARM 64-bit</option>
+          <option value="arm">ARM 32-bit</option>
+          <option value="multi">Multi</option>
+        </select>
+        <select id="more-sort" aria-label="Sort by">
+          <option value="name">Name</option>
+          <option value="size">Largest first</option>
+          <option value="smallest">Smallest first</option>
+          <option value="kind">Kind</option>
+        </select>
+        <label class="check"><input type="checkbox" id="more-downloadable"> Can be downloaded</label>
+        <label class="check"><input type="checkbox" id="more-fits"> Fits in this folder</label>
+        <span class="muted" id="more-shown"></span>
+      </div>
       <ul class="catalog" id="catalog"></ul>
     </details>
   </section>

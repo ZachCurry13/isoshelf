@@ -530,3 +530,8 @@ td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-spac
   cursor: pointer; padding: 8px 12px; color: var(--muted); font-size: 13px;
 }
 #identify-report { margin: 0 20px 14px; }
+
+.catalog .logo { flex: none; }
+.wont-fit { color: var(--bad-fg); }
+.more .toolbar { padding: 0 20px 12px; border: 0; }
+#more-shown { margin-left: auto; }

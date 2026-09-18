@@ -31,9 +31,9 @@ func TestDefaultCatalog(t *testing.T) {
 		test{"Fedora-Workstation-Live-44-1.7.x86_64.iso", "fedora-workstation", "44-1.7"},
 		test{"archlinux-2026.09.01-x86_64.iso", "archlinux", "2026.09.01"},
 		test{"clonezilla-live-3.3.3-15-amd64.iso", "clonezilla-stable", "3.3.3-15"},
-		test{"archlinux-x86_64.iso", "", ""}, // the unversioned copy
+		test{"archlinux-x86_64.iso", "", ""},              // the unversioned copy
 		test{"xubuntu-26.04.1-minimal-amd64.iso", "", ""}, // minimal is another track
-		test{"linuxmint-22.3-mate-64bit.iso", "", ""}, // Mint MATE is not in the catalog
+		test{"linuxmint-22.3-mate-64bit.iso", "", ""},     // Mint MATE is not in the catalog
 		test{"MX-25.2_Xfce_ahs_x64.iso", "", ""},
 		test{"manjaro-xfce-26.1.0-minimal-260812-linux71.iso", "", ""},
 		test{"netboot.xyz-arm64.iso", "", ""},

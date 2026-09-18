@@ -8,6 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
+revision = 20260918 # raise this whenever the catalog changes
 
 # ---------------------------------------------------------------------------
 # 1. Download

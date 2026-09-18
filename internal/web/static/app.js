@@ -159,6 +159,9 @@ function render() {
   $("updated-at").textContent = state.updated_at
     ? `${state.report && state.report.checked ? "Checked" : "Scanned"} ${timeAgo(state.updated_at)}`
     : "";
+  $("space").textContent = state.space && state.space.total
+    ? `${formatBytes(state.space.free)} free of ${formatBytes(state.space.total)}`
+    : "";
 
   renderRun();
 
@@ -709,24 +712,90 @@ async function renderCatalog() {
   }
   const missing = catalog.filter((e) => !e.on_target);
   $("more-count").textContent = plural(missing.length, "image");
-  const query = $("more-search").value.trim().toLowerCase();
+
+  const shown = filterCatalog(missing);
   const list = $("catalog");
   list.replaceChildren();
-  for (const entry of missing) {
-    if (query && !`${entry.name} ${entry.id}`.toLowerCase().includes(query)) continue;
+  for (const entry of shown) {
+    const room = fitsHere(entry);
     list.append(el("li", {},
+      logoTile(entry),
       el("div", { class: "info" },
-        el("div", {}, el("span", { class: "name" }, entry.name), el("span", { class: "arch" }, entry.arch)),
-        el("div", { class: "kind" }, UPDATES_LABEL[entry.updates] || entry.updates)),
+        el("div", {},
+          el("span", { class: "name" }, entry.name),
+          el("span", { class: "arch" }, entry.arch),
+          entry.size ? el("span", { class: "arch" }, `about ${formatBytes(entry.size)}`) : null),
+        el("div", { class: "kind" },
+          UPDATES_LABEL[entry.updates] || entry.updates,
+          room === false ? el("span", { class: "wont-fit" }, " · bigger than the room left here") : null)),
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
-      addButton(entry)));
+      addButton(entry, room)));
   }
+  $("more-shown").textContent = shown.length === missing.length
+    ? ""
+    : `showing ${shown.length} of ${missing.length}`;
+  if (!shown.length) {
+    list.append(el("li", { class: "muted more-hint" }, missing.length
+      ? "None of these match the filters."
+      : "Everything isoshelf knows about is already in this folder."));
+  }
+}
+
+// fitsHere reports whether an image would fit in the folder: true, false, or
+// null when either the size or the free space is unknown.
+function fitsHere(entry) {
+  if (!entry.size || !state.space || !state.space.total) return null;
+  const spare = Math.min(state.space.total / 100, 1 << 30);
+  return state.space.free - entry.size >= spare;
+}
+
+// filterCatalog applies the catalog list's own filters and sort. They are
+// separate from the main list's, because the two lists are read for different
+// reasons: what have I got, and what could I add.
+function filterCatalog(entries) {
+  const query = $("more-search").value.trim().toLowerCase();
+  const category = $("more-category").value;
+  const arch = $("more-arch").value;
+  const downloadable = $("more-downloadable").checked;
+  const fitsOnly = $("more-fits").checked;
+
+  const shown = entries.filter((entry) => {
+    if (query && !`${entry.name} ${entry.id} ${entry.family || ""}`.toLowerCase().includes(query)) return false;
+    if (category && (entry.category || "other") !== category) return false;
+    if (arch && entry.arch !== arch) return false;
+    if (downloadable && entry.updates !== "download") return false;
+    if (fitsOnly && fitsHere(entry) === false) return false;
+    return true;
+  });
+
+  const byName = (a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+  switch ($("more-sort").value) {
+    case "size":
+      shown.sort((a, b) => (b.size || 0) - (a.size || 0) || byName(a, b));
+      break;
+    case "smallest":
+      // Images with no size go last either way: an unknown size is not small.
+      shown.sort((a, b) => (a.size || Infinity) - (b.size || Infinity) || byName(a, b));
+      break;
+    case "kind":
+      shown.sort((a, b) => (a.category || "other").localeCompare(b.category || "other") || byName(a, b));
+      break;
+    default:
+      shown.sort(byName);
+  }
+  return shown;
 }
 
 // addButton downloads a catalog image this folder doesn't have yet. isoshelf
 // can only do that for images whose checksums it can reach; for the rest the
 // download page is the way.
-function addButton(entry) {
+function addButton(entry, room) {
+  if (entry.updates === "download" && room === false) {
+    return el("button", {
+      type: "button", class: "btn small", disabled: true,
+      title: `${entry.name} is about ${formatBytes(entry.size)}, and this folder has ${formatBytes(state.space.free)} left.`,
+    }, "Add");
+  }
   if (entry.updates !== "download") {
     return el("button", {
       type: "button", class: "btn small", disabled: true,
@@ -1141,6 +1210,9 @@ document.addEventListener("DOMContentLoaded", () => {
     $(id).addEventListener("change", (e) => { view[key] = e.target.checked; saveView(); renderRows(); });
   }
   $("more-search").addEventListener("input", renderCatalog);
+  for (const id of ["more-category", "more-arch", "more-sort", "more-downloadable", "more-fits"]) {
+    $(id).addEventListener("change", renderCatalog);
+  }
   $("identify-search").addEventListener("input", renderIdentifyCatalog);
   $("identify-forget").addEventListener("click", () => confirmIdentity("", ""));
   $("mine-save").addEventListener("click", saveMyName);

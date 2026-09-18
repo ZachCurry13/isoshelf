@@ -41,9 +41,14 @@ const (
 
 // Catalog is a parsed and validated catalog.
 type Catalog struct {
-	Schema  int                   `toml:"schema"`
-	Keys    map[string]SigningKey `toml:"keys"`
-	Entries []Entry               `toml:"entry"`
+	Schema int `toml:"schema"`
+	// Revision rises every time the catalog changes, as a date: 20260918.
+	// isoshelf uses it to tell a downloaded catalog from the one built into
+	// the binary, so a copy downloaded months ago never shadows a newer
+	// built-in one after an upgrade.
+	Revision int                   `toml:"revision"`
+	Keys     map[string]SigningKey `toml:"keys"`
+	Entries  []Entry               `toml:"entry"`
 
 	byID map[string]*Entry
 }
@@ -307,6 +312,18 @@ func (e *Entry) Updates() string {
 		return UpdatesDownload
 	}
 	return UpdatesCheckOnly
+}
+
+// Newer reports whether c is at least as new as other. A catalog without a
+// revision counts as the oldest there is.
+func (c *Catalog) Newer(other *Catalog) bool {
+	if c == nil {
+		return false
+	}
+	if other == nil {
+		return true
+	}
+	return c.Revision >= other.Revision
 }
 
 // Merge returns a catalog holding base's entries plus extra's: an entry whose

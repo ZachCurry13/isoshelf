@@ -390,13 +390,15 @@ func loadCatalog(dirs appdir.Dirs, flagPath string) (*catalog.Catalog, string, e
 	if name == "" {
 		name = filepath.Join(dirs.Config, "catalog.toml")
 		if _, err := os.Stat(name); errors.Is(err, fs.ErrNotExist) {
+			built, err := catalog.Default()
 			// A downloaded catalog that no longer loads is skipped rather
-			// than fatal: the built-in one always works.
-			if cat, err := catupdate.Load(dirs.Config); err == nil && cat != nil {
-				return cat, catupdate.SourceDownloaded, nil
+			// than fatal: the built-in one always works. One downloaded
+			// before this binary was built is skipped too, so upgrading
+			// isoshelf never steps back to an older list of images.
+			if downloaded, dlErr := catupdate.Load(dirs.Config); dlErr == nil && downloaded.Newer(built) {
+				return downloaded, catupdate.SourceDownloaded, nil
 			}
-			cat, err := catalog.Default()
-			return cat, catupdate.SourceBuiltIn, err
+			return built, catupdate.SourceBuiltIn, err
 		}
 	}
 	abs, err := filepath.Abs(name)
