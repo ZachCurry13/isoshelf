@@ -660,8 +660,27 @@ async function renderCatalog() {
         el("div", {}, el("span", { class: "name" }, entry.name), el("span", { class: "arch" }, entry.arch)),
         el("div", { class: "kind" }, UPDATES_LABEL[entry.updates] || entry.updates)),
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
-      el("button", { type: "button", class: "btn small", disabled: true, title: "Adding images that aren't in this folder yet is coming next" }, "Add")));
+      addButton(entry)));
   }
+}
+
+// addButton downloads a catalog image this folder doesn't have yet. isoshelf
+// can only do that for images whose checksums it can reach; for the rest the
+// download page is the way.
+function addButton(entry) {
+  if (entry.updates !== "download") {
+    return el("button", {
+      type: "button", class: "btn small", disabled: true,
+      title: entry.page
+        ? `isoshelf can't download ${entry.name} itself, because there is nowhere to check it against. Use its download page.`
+        : `isoshelf can't download ${entry.name} itself: there is nowhere to check it against.`,
+    }, "Add");
+  }
+  return el("button", {
+    type: "button", class: "btn small primary", disabled: Boolean(state.run),
+    title: `Download the newest ${entry.name} into this folder`,
+    onclick: () => startUpdate(entry.id, "keep"),
+  }, "Add");
 }
 
 // ---- What is this file? ----------------------------------------------------
