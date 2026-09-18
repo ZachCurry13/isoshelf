@@ -107,7 +107,7 @@
         <option value="latest">Newest available</option>
         <option value="file">File name</option>
         <option value="replace">Replace setting</option>
-        <option value="modified">Recently changed</option>
+        <option value="added">Recently added</option>
       </select>
       <label class="check"><input type="checkbox" id="only-updates"> Updates only</label>
       <label class="check"><input type="checkbox" id="only-favorites"> Favorites</label>
@@ -125,6 +125,7 @@
             <th id="col-latest" class="sortable" aria-sort="none">Latest</th>
             <th id="col-file" class="sortable" aria-sort="none">File</th>
             <th id="col-size" class="sortable" aria-sort="none">Size</th>
+            <th id="col-added" class="sortable" aria-sort="none">Added</th>
             <th id="col-replace" class="col-replace sortable" aria-sort="none">Replace old</th>
             <th class="col-actions"><span class="sr-only">Actions</span></th>
           </tr>
@@ -133,6 +134,12 @@
       </table>
     </div>
     <div class="empty" id="empty" hidden></div>
+    <p class="legend" id="legend" hidden>
+      <span class="caution" aria-hidden="true">⚠</span>
+      Worth knowing before you use it: the release no longer gets security fixes,
+      or there's a note about it. Fine to keep for a VM, an old PC or tinkering —
+      hover over the mark to see why.
+    </p>
   </section>
 
   <section class="card more">

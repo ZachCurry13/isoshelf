@@ -80,6 +80,9 @@ type Item struct {
 	Release string
 	// ModTime is when the file last changed.
 	ModTime time.Time
+	// Added is when the file arrived in the folder, as well as that can be
+	// known; zero when it can't.
+	Added time.Time
 }
 
 // Report is the state of every image on a target.
@@ -101,6 +104,7 @@ func Offline(res *scan.Result, st *state.State, cat *catalog.Catalog) *Report {
 	for _, f := range res.Files {
 		it := Item{Path: f.Path, Size: f.Size, Kind: f.Kind, ModTime: f.ModTime}
 		rec := st.Files[f.Path]
+		it.Added = addedAt(f, rec)
 		if e := cat.Entry(rec.Entry); e != nil {
 			it.Entry, it.Version, it.Assigned = e, rec.Version, rec.Assigned
 			found[e.ID] = true
@@ -339,4 +343,17 @@ func (r *Report) Counts() map[Status]int {
 // Order returns statuses in the order reports list them.
 func Order() []Status {
 	return slices.Clone(order)
+}
+
+// addedAt works out when a file arrived in the folder: the system's own
+// record where it keeps one (Windows, and network shares), else when
+// isoshelf put it there, else when a scan first found it. A file copied in
+// keeps its old modification time, so that is never used.
+func addedAt(f scan.File, rec state.FileRecord) time.Time {
+	for _, t := range []time.Time{f.Created, rec.PlacedAt, rec.FirstSeen} {
+		if !t.IsZero() {
+			return t
+		}
+	}
+	return time.Time{}
 }

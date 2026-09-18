@@ -47,6 +47,9 @@ function loadView() {
   } catch {
     // A browser that will not remember settings is fine; the defaults apply.
   }
+  // "Recently changed" became "Recently added": a copied file keeps its old
+  // change date, so it never answered the question people were asking.
+  if (view.sort === "modified") view.sort = "added";
   $("category").value = view.category;
   $("arch").value = view.arch;
   $("sort").value = view.sort;
@@ -285,6 +288,8 @@ function renderRows() {
   }));
 
   for (const item of items) rows.append(renderRow(item));
+  // Like the key on a menu: only there when something in the list has the mark.
+  $("legend").hidden = !items.some((item) => cautionOf(item));
 
   const total = state.report.items.length;
   $("shown").textContent = items.length === total ? plural(total, "image") : `${items.length} of ${plural(total, "image")}`;
@@ -387,6 +392,7 @@ function sorters() {
     file: (a, b) => text(a.path).localeCompare(text(b.path)) || byName(a, b),
     replace: (a, b) => replace(a) - replace(b) || byName(a, b),
     modified: (a, b) => new Date(b.modified || 0) - new Date(a.modified || 0) || byName(a, b),
+    added: (a, b) => new Date(b.added || 0) - new Date(a.added || 0) || byName(a, b),
   };
 }
 
@@ -400,6 +406,7 @@ const BLANK = {
   latest: (item) => !item.latest,
   file: (item) => !item.path,
   modified: (item) => !item.modified,
+  added: (item) => !item.added,
 };
 
 function sortItems(items) {
@@ -424,6 +431,7 @@ const COLUMN_SORTS = [
   ["col-latest", "latest", "Newest available first"],
   ["col-file", "file", "By filename, A to Z"],
   ["col-size", "size", "Largest first"],
+  ["col-added", "added", "Most recently added first"],
   ["col-replace", "replace", "Images set to replace first"],
 ];
 
@@ -562,10 +570,14 @@ function renderRow(item) {
   const name = item.page
     ? el("a", { href: item.page, target: "_blank", rel: "noopener noreferrer", title: "Open the download page" }, item.name)
     : item.name;
+  const caution = cautionOf(item);
   const imageCell = el("td", {}, el("div", { class: "image-cell" },
     logoTile(item),
     el("div", { class: "image-text" },
-      el("div", {}, el("span", { class: "name" }, name), item.arch ? el("span", { class: "arch" }, item.arch) : null),
+      el("div", {},
+        el("span", { class: "name" }, name),
+        caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null,
+        item.arch ? el("span", { class: "arch" }, item.arch) : null),
       item.note ? el("div", { class: "note" }, item.note) : null)));
 
   const newer = item.latest && item.status === "update available";
@@ -641,8 +653,29 @@ function renderRow(item) {
     latestCell,
     fileCell,
     sizeCell,
+    el("td", { class: "added-cell", title: item.added ? new Date(item.added).toLocaleString() : "" },
+      item.added ? shortDate(item.added) : el("span", { class: "muted" }, "–")),
     el("td", { class: "replace" }, replace),
     el("td", { class: "row-actions" }, actions));
+}
+
+// cautionOf says what's worth knowing before using an image, if anything:
+// that it no longer gets security fixes, or a note from the catalog. It's a
+// mark to hover over, never a block — people keep old images on purpose.
+function cautionOf(item) {
+  if (item.caution) return item.caution;
+  if (item.eol) return "End of life: this release no longer gets security fixes.";
+  return "";
+}
+
+// shortDate reads like a person: "today", "3 days ago", then "12 Mar 2025".
+function shortDate(iso) {
+  const then = new Date(iso);
+  const days = Math.floor((Date.now() - then.getTime()) / 86400000);
+  if (days < 1) return "today";
+  if (days === 1) return "yesterday";
+  if (days < 7) return `${days} days ago`;
+  return then.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 }
 
 // ---- Updating and removing -------------------------------------------------

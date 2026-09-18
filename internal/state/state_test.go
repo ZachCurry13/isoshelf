@@ -146,10 +146,13 @@ func TestRecordScan(t *testing.T) {
 		Problems: []scan.Problem{{Path: "nas", Err: os.ErrPermission}},
 	}, t1)
 
+	// Nothing from the first scan says when it arrived: every file is new to
+	// isoshelf then. Windows.iso changed since, so the second scan knows it
+	// turned up in between.
 	want := map[string]FileRecord{
 		"netboot.xyz.iso":     {Size: 100, ModTime: t0, Entry: "netbootxyz", SHA256: "aaaa", HashedAt: t0},
 		"renamed.iso":         {Size: 300, ModTime: t0, Entry: "cachyos-desktop", Version: "260308", Assigned: true},
-		"Windows.iso":         {Size: 999, ModTime: t1},
+		"Windows.iso":         {Size: 999, ModTime: t1, FirstSeen: t1},
 		"nas/HBCD_PE_x64.iso": {Size: 500, ModTime: t0, Entry: "hirens-bootcd-pe", SHA256: "cccc", HashedAt: t0},
 	}
 	if len(s.Files) != len(want) {

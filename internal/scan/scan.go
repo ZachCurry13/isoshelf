@@ -124,6 +124,9 @@ type File struct {
 	Size    int64
 	ModTime time.Time
 	Kind    sniff.Kind
+	// Created is when the file arrived in this folder, where the system
+	// says; zero where it doesn't.
+	Created time.Time
 	// Volume is what an optical image says about itself, when it says
 	// anything: its label, who made it, and when it was built.
 	Volume sniff.Volume
@@ -267,6 +270,7 @@ func (s *scanner) visitFile(p, rel string, d fs.DirEntry) error {
 		Path:     rel,
 		Size:     info.Size(),
 		ModTime:  info.ModTime(),
+		Created:  created(info),
 		Kind:     sniffed.Kind,
 		Volume:   sniffed.Volume,
 		Bootable: bootable,

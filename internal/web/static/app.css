@@ -558,3 +558,9 @@ th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
 .catalog li .btn, .catalog li a.btn { flex: none; }
 .catalog .info-line { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
 .catalog .info-line .name { overflow-wrap: anywhere; }
+
+/* The mark for images worth knowing about, and its key under the list. */
+.caution { color: var(--warn-fg, #b45309); margin: 0 4px; cursor: help; }
+.legend { margin: 10px 16px 4px; font-size: 13px; color: var(--muted); }
+.legend .caution { margin-left: 0; }
+.added-cell { white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }

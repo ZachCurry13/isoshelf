@@ -75,6 +75,10 @@ type FileRecord struct {
 	// SourceURL and PlacedAt are set when isoshelf downloaded the file.
 	SourceURL string    `json:"source_url,omitempty"`
 	PlacedAt  time.Time `json:"placed_at,omitzero"`
+	// FirstSeen is when a scan first found this file, for files that turned
+	// up after the folder's first scan. Where the system records when a file
+	// was created, that is used instead; this covers the rest.
+	FirstSeen time.Time `json:"first_seen,omitzero"`
 }
 
 func (r FileRecord) current(f scan.File) bool {
@@ -177,11 +181,17 @@ func (s *State) RecordScan(res *scan.Result, now time.Time) {
 
 	found := map[string]bool{}
 	unrecognized := 0
+	// On the very first scan every file is new to isoshelf, which says
+	// nothing about when it arrived; only later scans can tell.
+	seenBefore := len(s.History) > 0
 	for _, f := range res.Files {
 		s.forgetArchived(f.Path)
 		rec, ok := s.Files[f.Path]
 		if !ok || !rec.current(f) {
 			rec = FileRecord{Size: f.Size, ModTime: f.ModTime}
+			if seenBefore {
+				rec.FirstSeen = now.UTC()
+			}
 		}
 		if !rec.Assigned {
 			rec.Entry, rec.Version = "", ""

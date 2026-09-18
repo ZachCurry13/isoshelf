@@ -6,6 +6,26 @@ Version numbers: the middle number rises for new abilities (v0.3.0 will be
 installing older versions and fixing files the boot menu can't read); the last
 number rises for improvements to what it already does.
 
+## [v0.2.6] - 2026-09-18
+
+### Added
+- **A ⚠ mark for images worth knowing about**, with a one-line key under the
+  list — like the symbols on a menu. It marks releases that no longer get
+  security fixes, and a few images with a note: CentOS 7 (end of life since
+  June 2024), Windows 10 (out of support since October 2025), AtlasOS (an
+  unofficial modification of Windows) and Windows Insider Preview builds
+  (which expire). Hover the mark for the reason. It never blocks anything:
+  keeping an old image for a VM or an old PC is a perfectly good reason to
+  keep it.
+- **An Added column**: when each file arrived in the folder, sortable, so
+  three copies of Windows can be told apart by age. On Windows and network
+  shares this is the file's own creation date; elsewhere, isoshelf notes
+  when it first saw a new file.
+
+### Changed
+- "Recently changed" in the sort menu is now **Recently added**. A copied
+  file keeps its old change date, so it never answered that question.
+
 ## [v0.2.5] - 2026-09-18
 
 ### Added
@@ -110,6 +130,7 @@ The first release.
 - Keeps that catalog current from this repository without a new release.
 - Runs as a page in your browser, or from the command line.
 
+[v0.2.6]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.4
 [v0.2.3]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.3

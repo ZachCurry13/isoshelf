@@ -40,6 +40,10 @@ type ItemJSON struct {
 	Note       string `json:"note,omitempty"`
 	// Modified is when the file last changed.
 	Modified time.Time `json:"modified,omitzero"`
+	// Added is when the file arrived in the folder, when that can be known.
+	Added time.Time `json:"added,omitzero"`
+	// Caution is something worth knowing before using the image.
+	Caution string `json:"caution,omitempty"`
 	// Category and Family group the image; the rest are for showing it.
 	Category  string `json:"category,omitempty"`
 	Family    string `json:"family,omitempty"`
@@ -79,11 +83,11 @@ func (r *Report) JSON() ReportJSON {
 			Version: it.Version, Status: string(it.Status), EOL: it.EOL,
 			Assigned: it.Assigned, Older: it.Older,
 			Latest: it.Latest, LatestFile: it.LatestFile, Note: it.Note,
-			Modified: it.ModTime, Release: it.Release,
+			Modified: it.ModTime, Added: it.Added, Release: it.Release,
 		}
 		if e := it.Entry; e != nil {
 			j.Entry, j.Arch, j.Page, j.Updates = e.ID, e.Arch, e.Page, e.Updates()
-			j.Category, j.Family = e.Category, e.Family
+			j.Category, j.Family, j.Caution = e.Category, e.Family, e.Caution
 			j.Icon, j.IconColor, j.Site, j.Forum = e.Icon, e.IconColor, e.Site, e.Forum
 			if j.Updates != catalog.UpdatesDownload {
 				j.LatestFile = ""

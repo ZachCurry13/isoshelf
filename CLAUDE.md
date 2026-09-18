@@ -244,6 +244,13 @@ alone is not an update.
     product's tracks), `site`, `forum`, `popular` (a hand-picked hint from
     public round-ups, not a rating), and `icon` + `icon_color` (a Simple Icons
     name and brand colour).
+  - `caution`: one line of fact worth knowing before using the image
+    (support ended on a date, an unofficial modification, a preview that
+    expires), at most 200 characters. The page shows a ⚠ beside the name,
+    with the same mark for anything the online check finds is end of life,
+    and a key under the list when any row has one. It is never a block:
+    people keep old images on purpose. Keep cautions to verifiable facts about
+    support and provenance, never opinions about a project.
 - `[entry.source]`: `type` plus only that type's fields. endoflife: `product`,
   `channel`, optional `cycles` (regex over cycle names; only matching cycles
   belong to the track, e.g. to keep LMDE out of Linux Mint). github: `repo`,

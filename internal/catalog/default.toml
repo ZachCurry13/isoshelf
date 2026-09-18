@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026091802 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026091803 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -869,6 +869,7 @@ name = "CentOS 7 Minimal (32-bit, archival)"
 arch = "x86"
 match = 'CentOS-7-i386-Minimal-(?P<version>\d{4})\.iso'
 samples = ["CentOS-7-i386-Minimal-2009.iso"]
+caution = "Reached end of life on 30 June 2024: no more security updates."
 size = 980938752
 page = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
 category = "server"
@@ -894,6 +895,7 @@ name = "CentOS 7 Everything (32-bit, archival)"
 arch = "x86"
 match = 'CentOS-7-i386-Everything-(?P<version>\d{4})\.iso'
 samples = ["CentOS-7-i386-Everything-2009.iso"]
+caution = "Reached end of life on 30 June 2024: no more security updates."
 size = 8291639296
 page = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
 category = "server"
@@ -919,6 +921,7 @@ name = "CentOS 7 Minimal (64-bit, archival)"
 arch = "x86_64"
 match = 'CentOS-7-x86_64-Minimal-(?P<version>\d{4}(?:-\d+)?)\.iso'
 samples = ["CentOS-7-x86_64-Minimal-2009.iso", "CentOS-7-x86_64-Minimal-2207-02.iso"]
+caution = "Reached end of life on 30 June 2024: no more security updates."
 size = 1035993088
 page = "https://vault.centos.org/7.9.2009/isos/x86_64/"
 category = "server"
@@ -944,6 +947,7 @@ name = "CentOS 7 Everything (64-bit, archival)"
 arch = "x86_64"
 match = 'CentOS-7-x86_64-Everything-(?P<version>\d{4}(?:-\d+)?)\.iso'
 samples = ["CentOS-7-x86_64-Everything-2207-02.iso"]
+caution = "Reached end of life on 30 June 2024: no more security updates."
 size = 10287327232
 page = "https://vault.centos.org/7.9.2009/isos/x86_64/"
 category = "server"
@@ -1126,6 +1130,7 @@ name = "Windows 11 Insider Preview"
 arch = "x86_64"
 match = 'Windows11_InsiderPreview_Client_x64_[a-z]{2}-[a-z]{2}_(?P<version>\d+)\.iso'
 samples = ["Windows11_InsiderPreview_Client_x64_en-us_26016.iso"]
+caution = "A preview build: it stops working when the build expires, and isn't meant for everyday use."
 page = "https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso"
 category = "windows"
 family = "windows"
@@ -1142,6 +1147,7 @@ name = "Windows 10"
 arch = "x86_64"
 match = 'Windows10\.iso|Win10_(?:(?P<version>\d{2}H\d)_)?[A-Za-z]+(?:_[A-Za-z]+)*_x64(?:v\d+)?\.iso'
 samples = ["Windows10.iso"]
+caution = "Microsoft ended support for Windows 10 on 14 October 2025: no more security updates, except through Microsoft's paid Extended Security Updates."
 page = "https://www.microsoft.com/software-download/windows10"
 category = "windows"
 family = "windows"
@@ -1252,6 +1258,7 @@ name = "AtlasOS (archival ISO)"
 arch = "x86_64"
 match = 'Atlas_v(?P<version>\d+(?:\.\d+)*)\.iso'
 samples = ["Atlas_v0.5.2.iso"]
+caution = "An unofficial modification of Windows, not made or supported by Microsoft. Read the project's notes on what it changes before using it."
 page = "https://atlasos.net/"
 category = "windows"
 family = "atlas"

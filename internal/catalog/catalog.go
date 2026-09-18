@@ -93,6 +93,11 @@ type Entry struct {
 	// Fixup makes a downloaded file bootable: "extract", "convert" or
 	// "rename:<extension>".
 	Fixup string `toml:"fixup"`
+	// Caution is something worth knowing before using an image, in one plain
+	// sentence of fact: support has ended, it is an unofficial modification,
+	// a preview that expires. It is shown as a mark, never as a block; people
+	// keep old images on purpose, for a VM or an old PC.
+	Caution string `toml:"caution"`
 	// Popular marks images that turn up in public "best of" round-ups. It is
 	// a hand-picked hint for sorting, dated in docs/catalog-sources.md, not a
 	// rating and not a count of anything users did.

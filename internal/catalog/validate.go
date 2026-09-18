@@ -19,6 +19,9 @@ var Arches = []string{"x86_64", "x86", "arm64", "arm", "multi"}
 const (
 	minImageSize = 1 << 20  // 1 MB
 	maxImageSize = 64 << 30 // 64 GB
+
+	// maxCaution keeps a caution to a sentence.
+	maxCaution = 200
 )
 
 // Categories group entries in lists. An entry without one counts as "other".
@@ -333,6 +336,15 @@ func (ec entryCheck) checkExtras(hashes map[string]string) {
 	if e.IconColor != "" && !colorPattern.MatchString(e.IconColor) {
 		ec.problem("icon_color", "%q is not a colour like #0078d4", e.IconColor)
 	}
+	// A caution is one sentence someone reads while hovering a mark, so it
+	// stays short and on one line.
+	switch c := e.Caution; {
+	case strings.ContainsAny(c, "\r\n"):
+		ec.problem("caution", "must be one line")
+	case len(c) > maxCaution:
+		ec.problem("caution", "is %d characters; keep it under %d, one plain sentence", len(c), maxCaution)
+	}
+
 	// A size is a hint, so it only has to be believable for an image: a
 	// mistyped one (bytes read as megabytes, or an extra zero) would be worse
 	// than none, because the page would promise it.
