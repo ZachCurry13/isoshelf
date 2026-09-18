@@ -72,6 +72,8 @@ type Item struct {
 	// Assigned marks a file the user identified by hand, rather than one the
 	// catalog matched by name.
 	Assigned bool
+	// Older marks a file of an image the folder holds a newer copy of.
+	Older bool
 	// Note explains the status: an error, or "older copy" and so on.
 	Note string
 	// Release is a page about the newest release, when the source has one.
@@ -296,8 +298,12 @@ func markOlderCopies(items []Item) {
 		}
 		newest := slices.MaxFunc(group, func(a, b *Item) int { return version.Compare(a.Version, b.Version) })
 		for _, it := range group {
-			if it != newest && version.Compare(it.Version, newest.Version) < 0 && it.Note == "" {
-				it.Note = "older copy; the newest is " + path.Base(newest.Path)
+			if it == newest || version.Compare(it.Version, newest.Version) >= 0 {
+				continue
+			}
+			it.Older = true
+			if it.Note == "" {
+				it.Note = "older copy; the newest here is " + path.Base(newest.Path)
 			}
 		}
 	}

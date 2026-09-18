@@ -38,6 +38,7 @@ const view = {
   desc: false,
   updatesOnly: false,
   favoritesOnly: false,
+  olderOnly: false,
 };
 
 function loadView() {
@@ -51,6 +52,7 @@ function loadView() {
   $("sort").value = view.sort;
   $("only-updates").checked = view.updatesOnly;
   $("only-favorites").checked = view.favoritesOnly;
+  $("only-older").checked = view.olderOnly;
 }
 
 function saveView() {
@@ -170,6 +172,9 @@ function render() {
   else if (state.warnings.length) showNotice(state.warnings.join(" "), false);
   else $("notice").hidden = true;
 
+  $("changed-banner").hidden = !state.folder_changed;
+  $("changed-scan").disabled = busy;
+
   renderSummary();
   renderHeadings();
   renderRows();
@@ -244,10 +249,10 @@ function renderSummary() {
 function clearFilters() {
   statusFilter = null;
   view.category = view.arch = "";
-  view.updatesOnly = view.favoritesOnly = false;
+  view.updatesOnly = view.favoritesOnly = view.olderOnly = false;
   $("search").value = "";
   $("category").value = $("arch").value = "";
-  $("only-updates").checked = $("only-favorites").checked = false;
+  $("only-updates").checked = $("only-favorites").checked = $("only-older").checked = false;
   saveView();
   renderSummary();
   renderRows();
@@ -275,13 +280,35 @@ function renderRows() {
       (!view.category || item.category === view.category) &&
       (!view.arch || item.arch === view.arch) &&
       (!view.updatesOnly || item.status === "update available") &&
-      (!view.favoritesOnly || starred);
+      (!view.favoritesOnly || starred) &&
+      (!view.olderOnly || item.older);
   }));
 
   for (const item of items) rows.append(renderRow(item));
 
   const total = state.report.items.length;
   $("shown").textContent = items.length === total ? plural(total, "image") : `${items.length} of ${plural(total, "image")}`;
+
+  // A folder collects older copies: one downloaded by hand, one isoshelf
+  // fetched, one from last year. Offer to clear them in one go.
+  const older = state.report.items.filter((it) => it.older && it.path);
+  const tidy = $("older-banner");
+  tidy.hidden = older.length === 0;
+  if (older.length) {
+    const bytes = older.reduce((sum, it) => sum + (it.size || 0), 0);
+    $("older-text").textContent =
+      `${plural(older.length, "older copy", "older copies")} of images you already have${bytes ? `, using ${formatBytes(bytes)}` : ""}.`;
+    $("older-clear").disabled = Boolean(state.run);
+    $("older-clear").onclick = () => clearOlder(older);
+    $("older-show").onclick = () => {
+      statusFilter = null;
+      view.olderOnly = true;
+      $("only-older").checked = true;
+      saveView();
+      renderSummary();
+      renderRows();
+    };
+  }
 
   // Updates get their own line above the list rather than a button at the
   // end of the filters, where it was easy to miss.
@@ -309,6 +336,7 @@ function renderRows() {
         view.arch && $("arch").selectedOptions[0].textContent,
         view.updatesOnly && "updates only",
         view.favoritesOnly && "favourites only",
+        view.olderOnly && "older copies only",
         $("search").value.trim() && `search "${$("search").value.trim()}"`,
       ].filter(Boolean);
       empty.append(
@@ -1346,8 +1374,9 @@ async function useFolder() {
 // ---- Helpers ---------------------------------------------------------------
 
 // plural writes "1 image" but "2 images".
-function plural(count, word) {
-  return `${count} ${word}${count === 1 ? "" : "s"}`;
+function plural(count, word, plural) {
+  if (count === 1) return `${count} ${word}`;
+  return `${count} ${plural || word + "s"}`;
 }
 
 function formatBytes(bytes) {
@@ -1387,6 +1416,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   $("update-all").addEventListener("click", updateAll);
+  $("changed-scan").addEventListener("click", () => start("scan"));
   $("search").addEventListener("input", renderRows);
   loadView();
   for (const [id, key] of [["category", "category"], ["arch", "arch"]]) {
@@ -1401,7 +1431,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderHeadings();
     renderRows();
   });
-  for (const [id, key] of [["only-updates", "updatesOnly"], ["only-favorites", "favoritesOnly"]]) {
+  for (const [id, key] of [["only-updates", "updatesOnly"], ["only-favorites", "favoritesOnly"], ["only-older", "olderOnly"]]) {
     $(id).addEventListener("change", (e) => { view[key] = e.target.checked; saveView(); renderRows(); });
   }
   $("more-search").addEventListener("input", renderCatalog);
@@ -1443,4 +1473,36 @@ async function rememberReplaceAction(action) {
   } catch {
     // Not remembering is a small thing; the update itself carries on.
   }
+}
+
+// clearOlder gets rid of every older copy at once, after showing exactly
+// which files it means. The same two ways out as any other removal: archive
+// them, or delete them now.
+async function clearOlder(older) {
+  const bytes = older.reduce((sum, it) => sum + (it.size || 0), 0);
+  const names = older.map((it) => it.path);
+  const listed = names.length > 6
+    ? `${names.slice(0, 6).join("\n")}\nand ${names.length - 6} more`
+    : names.join("\n");
+
+  const how = await ask(
+    `Clear ${plural(older.length, "older copy", "older copies")}?`,
+    `These are images you have a newer copy of, using ${formatBytes(bytes)}:\n\n${listed}\n\n` +
+    "Archiving keeps them in this folder until you empty it; deleting frees the space now.",
+    [
+      { label: `Delete them (frees ${formatBytes(bytes)})`, value: "delete" },
+      { label: "Archive them", value: "move-aside", primary: true },
+      { label: "Cancel", value: null },
+    ]);
+  if (!how) return;
+
+  try {
+    state = await api("POST", "/api/remove", { paths: names, how });
+    catalog = null;
+  } catch (err) {
+    showNotice(err.message, true);
+    return;
+  }
+  showNotice(`${plural(names.length, "older copy", "older copies")} ${how === "delete" ? "deleted" : "archived"}.`);
+  await start("scan");
 }

@@ -240,6 +240,9 @@ type stateJSON struct {
 	ReportURL string `json:"report_url,omitempty"`
 	// Space is the room left in the folder, when the disk says.
 	Space *spaceJSON `json:"space,omitempty"`
+	// FolderChanged is set when the folder has been written to since the last
+	// scan, so the page can offer to look again.
+	FolderChanged bool `json:"folder_changed,omitempty"`
 }
 
 // spaceJSON is the room left where images are kept.
@@ -270,15 +273,40 @@ func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
 	// NAS that has gone to sleep must not hold up the whole page.
 	recent := s.recentTargets()
 	room := s.targetSpace()
+	changed := s.folderChanged()
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	writeJSON(w, http.StatusOK, s.stateLocked(recent, room))
+	out := s.stateLocked(recent, room)
+	out.FolderChanged = changed && s.run == nil
+	writeJSON(w, http.StatusOK, out)
 }
 
 // spaceInterval is how long the free space is trusted before asking again.
 // The page asks for the state every half second while a scan runs, and on a
 // network share every answer costs a round trip.
 const spaceInterval = 5 * time.Second
+
+// folderChanged reports whether the folder has been written to since the last
+// scan: a file dropped in with a file manager, or one deleted there. It is
+// one stat of the folder itself, and a folder isoshelf can't read simply
+// isn't reported as changed.
+//
+// Only the top level is watched. A change deep inside a Ventoy drive's
+// subfolders doesn't move the folder's own timestamp, so Scan remains the
+// honest answer for those.
+func (s *Server) folderChanged() bool {
+	s.mu.Lock()
+	target, scanned := s.target, s.updatedAt
+	s.mu.Unlock()
+	if target == "" || scanned.IsZero() {
+		return false
+	}
+	info, err := os.Stat(target)
+	if err != nil {
+		return false
+	}
+	return info.ModTime().After(scanned)
+}
 
 // targetSpace returns the room left in the folder the images are kept in.
 // A folder that can't say is not an error worth showing: the page leaves the

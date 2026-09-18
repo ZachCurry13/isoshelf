@@ -60,6 +60,17 @@
 
   <section class="summary" id="summary" aria-label="Filter by status"></section>
 
+  <section class="card updates" id="changed-banner" hidden>
+    <span>Something in this folder changed since the last look.</span>
+    <button type="button" class="btn" id="changed-scan">Scan again</button>
+  </section>
+
+  <section class="card updates" id="older-banner" hidden>
+    <span id="older-text"></span>
+    <button type="button" class="btn small" id="older-show">Show them</button>
+    <button type="button" class="btn" id="older-clear">Clear them</button>
+  </section>
+
   <section class="card updates" id="updates-banner" hidden>
     <span id="updates-text"></span>
     <button type="button" class="btn primary" id="update-all"></button>
@@ -98,6 +109,7 @@
       </select>
       <label class="check"><input type="checkbox" id="only-updates"> Updates only</label>
       <label class="check"><input type="checkbox" id="only-favorites"> Favorites</label>
+      <label class="check" title="Files you have a newer copy of"><input type="checkbox" id="only-older"> Older copies</label>
       <span class="muted" id="shown"></span>
     </div>
     <div class="table-wrap">

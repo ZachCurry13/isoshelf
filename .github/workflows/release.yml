@@ -60,13 +60,34 @@ jobs:
       - name: checksums
         run: cd dist && sha256sum * > SHA256SUMS
 
+      # The release notes are that version's section of CHANGELOG.md, written
+      # for people rather than generated from commit titles.
+      - name: release notes
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -eu
+          awk -v tag="$TAG" '
+            index($0, "## [" tag "]") == 1 { on = 1; next }
+            on && /^## \[/ { exit }
+            on && /^\[v[0-9]/ { exit }
+            on { print }
+          ' CHANGELOG.md > notes.md
+          if [ ! -s notes.md ]; then
+            echo "CHANGELOG.md has no section for $TAG; add one before tagging." >&2
+            exit 1
+          fi
+          cat notes.md
+
       - name: publish
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.version.outputs.tag }}
         run: |
           set -eu
-          if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" --title "isoshelf $TAG" --generate-notes
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --notes-file notes.md
+          else
+            gh release create "$TAG" --title "isoshelf $TAG" --notes-file notes.md
           fi
           gh release upload "$TAG" dist/* --clobber
