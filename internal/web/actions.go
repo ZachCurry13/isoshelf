@@ -191,7 +191,7 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	writeJSON(w, http.StatusOK, s.stateLocked(s.recentTargetsLocked()))
+	writeJSON(w, http.StatusOK, s.stateLocked(s.recentTargetsLocked(), s.room))
 }
 
 // emptyRemoved deletes everything waiting in .isoshelf/removed.
@@ -206,7 +206,7 @@ func (s *Server) emptyRemoved(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	writeJSON(w, http.StatusOK, s.stateLocked(s.recentTargetsLocked()))
+	writeJSON(w, http.StatusOK, s.stateLocked(s.recentTargetsLocked(), s.room))
 }
 
 // recentTargetsLocked is recentTargets for callers that already hold the lock;

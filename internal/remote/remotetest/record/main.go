@@ -16,13 +16,17 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"flag"
 	"fmt"
 	"io"
+	"maps"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -34,7 +38,11 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/source"
 )
 
+var sizes = flag.Bool("sizes", false, "also measure how big each image is, for the catalog's size hints")
+
 func main() {
+	flag.Parse()
+	measured := map[string]int64{}
 	out := filepath.Join("internal", "remote", "remotetest", "recorded")
 	if _, err := os.Stat(out); err != nil {
 		fmt.Fprintln(os.Stderr, "run this from the repository root:", err)
@@ -63,8 +71,8 @@ func main() {
 		}
 		rel, err := source.Latest(ctx, client, e)
 		file := ""
+		var art *resolve.Artifact
 		if err == nil {
-			var art *resolve.Artifact
 			art, err = resolve.Resolve(ctx, client, e, rel)
 			switch {
 			case errors.Is(err, resolve.ErrNoArtifact):
@@ -79,11 +87,76 @@ func main() {
 			continue
 		}
 		fmt.Printf("ok    %-28s %-12s %s\n", e.ID, rel.Version, file)
+		if *sizes && art != nil {
+			if size := measure(ctx, art); size > 0 {
+				measured[e.ID] = size
+			}
+		}
+	}
+	if len(measured) > 0 {
+		fmt.Printf("\nSizes, for the size = lines in the catalog:\n")
+		for _, id := range slices.Sorted(maps.Keys(measured)) {
+			fmt.Printf("size  %-28s %d\n", id, measured[id])
+		}
 	}
 	if failed > 0 {
 		fmt.Printf("\n%d entries failed.\n", failed)
 		os.Exit(1)
 	}
+}
+
+// measure asks how big an image is without downloading it. The catalog keeps
+// the answer as a hint, so the page can say "about 4.7 GB" and warn when a
+// download wouldn't fit. GitHub already says, so nothing is asked of it.
+func measure(ctx context.Context, art *resolve.Artifact) int64 {
+	if art.Size > 0 {
+		return art.Size
+	}
+	if len(art.URLs) == 0 {
+		return 0
+	}
+	client := &http.Client{Timeout: time.Minute}
+	url := art.URLs[0]
+
+	if size := contentLength(ctx, client, http.MethodHead, url, ""); size > 0 {
+		return size
+	}
+	// Some servers refuse HEAD. Asking for the first byte gets the length in
+	// a Content-Range header instead, and downloads nothing worth mentioning.
+	return contentLength(ctx, client, http.MethodGet, url, "bytes=0-0")
+}
+
+func contentLength(ctx context.Context, client *http.Client, method, url, rang string) int64 {
+	req, err := http.NewRequestWithContext(ctx, method, url, nil)
+	if err != nil {
+		return 0
+	}
+	req.Header.Set("User-Agent", "isoshelf-recorder")
+	if rang != "" {
+		req.Header.Set("Range", rang)
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return 0
+	}
+	defer func() {
+		io.Copy(io.Discard, io.LimitReader(resp.Body, 4<<10))
+		resp.Body.Close()
+	}()
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusPartialContent {
+		return 0
+	}
+	if resp.StatusCode == http.StatusPartialContent {
+		// "bytes 0-0/4556128256"
+		if _, total, ok := strings.Cut(resp.Header.Get("Content-Range"), "/"); ok {
+			size, err := strconv.ParseInt(strings.TrimSpace(total), 10, 64)
+			if err == nil {
+				return size
+			}
+		}
+		return 0
+	}
+	return resp.ContentLength
 }
 
 // recorder is a transport that saves every successful response it passes on.

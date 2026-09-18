@@ -24,9 +24,16 @@ func TestDefaultCatalog(t *testing.T) {
 	for _, f := range append(sampledrive.Files, sampledrive.ProxmoxFolder...) {
 		tests = append(tests, test{f.Name, f.Entry, f.Version})
 	}
-	// Other tracks must not be mistaken for the sample drive's.
+	// Other tracks must not be mistaken for the ones in the catalog.
 	tests = append(tests,
-		test{"linuxmint-22.3-xfce-64bit.iso", "", ""},
+		test{"linuxmint-22.3-xfce-64bit.iso", "linuxmint-xfce", "22.3"},
+		test{"lmde-7-cinnamon-64bit.iso", "lmde-cinnamon", "7"},
+		test{"Fedora-Workstation-Live-44-1.7.x86_64.iso", "fedora-workstation", "44-1.7"},
+		test{"archlinux-2026.09.01-x86_64.iso", "archlinux", "2026.09.01"},
+		test{"clonezilla-live-3.3.3-15-amd64.iso", "clonezilla-stable", "3.3.3-15"},
+		test{"archlinux-x86_64.iso", "", ""}, // the unversioned copy
+		test{"xubuntu-26.04.1-minimal-amd64.iso", "", ""}, // minimal is another track
+		test{"linuxmint-22.3-mate-64bit.iso", "", ""}, // Mint MATE is not in the catalog
 		test{"MX-25.2_Xfce_ahs_x64.iso", "", ""},
 		test{"manjaro-xfce-26.1.0-minimal-260812-linux71.iso", "", ""},
 		test{"netboot.xyz-arm64.iso", "", ""},

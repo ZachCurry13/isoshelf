@@ -14,6 +14,13 @@ import (
 // Arches are the valid values of Entry.Arch.
 var Arches = []string{"x86_64", "x86", "arm64", "arm", "multi"}
 
+// An entry size has to be believable for a bootable image: netboot.xyz is a
+// couple of megabytes, a Windows or "everything" DVD is a few tens of gigabytes.
+const (
+	minImageSize = 1 << 20  // 1 MB
+	maxImageSize = 64 << 30 // 64 GB
+)
+
 // Categories group entries in lists. An entry without one counts as "other".
 var Categories = []string{"desktop", "server", "security", "rescue", "windows", "other"}
 
@@ -325,6 +332,17 @@ func (ec entryCheck) checkExtras(hashes map[string]string) {
 	}
 	if e.IconColor != "" && !colorPattern.MatchString(e.IconColor) {
 		ec.problem("icon_color", "%q is not a colour like #0078d4", e.IconColor)
+	}
+	// A size is a hint, so it only has to be believable for an image: a
+	// mistyped one (bytes read as megabytes, or an extra zero) would be worse
+	// than none, because the page would promise it.
+	switch {
+	case e.Size < 0:
+		ec.problem("size", "can't be negative")
+	case e.Size > 0 && e.Size < minImageSize:
+		ec.problem("size", "%d bytes is too small for an image; sizes are in bytes", e.Size)
+	case e.Size > maxImageSize:
+		ec.problem("size", "%d bytes is bigger than any image isoshelf expects", e.Size)
 	}
 
 	// An entry isoshelf can't download from needs somewhere to send the user

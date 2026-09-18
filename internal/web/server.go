@@ -31,6 +31,7 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/check"
 	"github.com/ZachCurry13/isoshelf/internal/inventory"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
+	"github.com/ZachCurry13/isoshelf/internal/space"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 	"github.com/ZachCurry13/isoshelf/internal/update"
 )
@@ -83,10 +84,15 @@ type Server struct {
 	scan      *scan.Result
 	report    *check.Report
 	updatedAt time.Time
-	run       *run
-	lastErr   string
-	warnings  []string
-	notice    *appupdate.Notice
+	// room is the free space where images are kept, and roomAt when it was
+	// last asked for, of the folder roomOf.
+	room     space.Usage
+	roomAt   time.Time
+	roomOf   string
+	run      *run
+	lastErr  string
+	warnings []string
+	notice   *appupdate.Notice
 }
 
 // run is a scan or check in progress.
@@ -227,6 +233,14 @@ type stateJSON struct {
 	AppUpdate *appupdate.Notice      `json:"app_update,omitempty"`
 	// ReportURL is where a missing image can be reported.
 	ReportURL string `json:"report_url,omitempty"`
+	// Space is the room left in the folder, when the disk says.
+	Space *spaceJSON `json:"space,omitempty"`
+}
+
+// spaceJSON is the room left where images are kept.
+type spaceJSON struct {
+	Free  int64 `json:"free"`
+	Total int64 `json:"total"`
 }
 
 // removedJSON describes what waits in .isoshelf/removed.
@@ -245,10 +259,39 @@ type runJSON struct {
 }
 
 func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
+	// Both of these read a disk, so they happen before the lock is taken: a
+	// NAS that has gone to sleep must not hold up the whole page.
 	recent := s.recentTargets()
+	room := s.targetSpace()
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	writeJSON(w, http.StatusOK, s.stateLocked(recent))
+	writeJSON(w, http.StatusOK, s.stateLocked(recent, room))
+}
+
+// spaceInterval is how long the free space is trusted before asking again.
+// The page asks for the state every half second while a scan runs, and on a
+// network share every answer costs a round trip.
+const spaceInterval = 5 * time.Second
+
+// targetSpace returns the room left in the folder the images are kept in.
+// A folder that can't say is not an error worth showing: the page leaves the
+// number out instead.
+func (s *Server) targetSpace() space.Usage {
+	s.mu.Lock()
+	target, cached, at, of := s.target, s.room, s.roomAt, s.roomOf
+	s.mu.Unlock()
+	if target == "" {
+		return space.Usage{}
+	}
+	if of == target && !at.IsZero() && s.cfg.Now().Sub(at) < spaceInterval {
+		return cached
+	}
+	usage, _ := space.Of(target)
+
+	s.mu.Lock()
+	s.room, s.roomAt, s.roomOf = usage, s.cfg.Now(), target
+	s.mu.Unlock()
+	return usage
 }
 
 // removedInfo counts what waits in the target's removed folder.
@@ -264,7 +307,7 @@ func (s *Server) removedInfo(target string) removedJSON {
 }
 
 // stateLocked builds the page state; s.mu must be held.
-func (s *Server) stateLocked(recent []string) stateJSON {
+func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 	out := stateJSON{
 		Version:   s.cfg.Version,
 		Portable:  s.cfg.Dirs.Portable,
@@ -278,6 +321,9 @@ func (s *Server) stateLocked(recent []string) stateJSON {
 		Catalog:   s.catalogStatusLocked(),
 		ReportURL: "https://github.com/" + appupdate.Repo + "/issues/new",
 		AppUpdate: s.notice,
+	}
+	if room.Known() {
+		out.Space = &spaceJSON{Free: room.Free, Total: room.Total}
 	}
 	if s.st != nil {
 		out.Profile = string(s.st.Profile)
@@ -304,9 +350,11 @@ func (s *Server) stateLocked(recent []string) stateJSON {
 }
 
 type catalogEntryJSON struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	Arch      string `json:"arch"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Arch string `json:"arch"`
+	// Size is roughly how big the download is, from the catalog.
+	Size      int64  `json:"size,omitempty"`
 	Updates   string `json:"updates"`
 	Page      string `json:"page,omitempty"`
 	Site      string `json:"site,omitempty"`
@@ -331,10 +379,11 @@ func (s *Server) getCatalog(w http.ResponseWriter, r *http.Request) {
 	s.mu.Unlock()
 
 	entries := []catalogEntryJSON{}
-	for i := range s.cfg.Catalog.Entries {
-		e := &s.cfg.Catalog.Entries[i]
+	cat := s.catalog()
+	for i := range cat.Entries {
+		e := &cat.Entries[i]
 		entries = append(entries, catalogEntryJSON{
-			ID: e.ID, Name: e.Name, Arch: e.Arch, Updates: e.Updates(), Page: e.Page,
+			ID: e.ID, Name: e.Name, Arch: e.Arch, Size: e.Size, Updates: e.Updates(), Page: e.Page,
 			Site: e.Site, Forum: e.Forum, Category: e.Category, Family: e.Family,
 			Icon: e.Icon, IconColor: e.IconColor, OnTarget: onTarget[e.ID],
 		})

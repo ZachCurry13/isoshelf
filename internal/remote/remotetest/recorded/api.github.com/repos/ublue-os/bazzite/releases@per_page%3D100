@@ -2,6 +2,33 @@
   {
     "assets": [],
     "draft": false,
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-44.20260917",
+    "name": "unstable-44.20260917: Unstable (F44.20260917, #464bb27)",
+    "prerelease": true,
+    "published_at": "2026-09-17T17:23:51Z",
+    "tag_name": "unstable-44.20260917"
+  },
+  {
+    "assets": [],
+    "draft": false,
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-44.20260918",
+    "name": "testing-44.20260918: Testing (F44.20260918, #d48afc8)",
+    "prerelease": true,
+    "published_at": "2026-09-18T03:57:50Z",
+    "tag_name": "testing-44.20260918"
+  },
+  {
+    "assets": [],
+    "draft": false,
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-44.20260917",
+    "name": "testing-44.20260917: Testing (F44.20260917, #c409f82)",
+    "prerelease": true,
+    "published_at": "2026-09-17T17:04:47Z",
+    "tag_name": "testing-44.20260917"
+  },
+  {
+    "assets": [],
+    "draft": false,
     "html_url": "https://github.com/ublue-os/bazzite/releases/tag/44.20260916",
     "name": "44.20260916: Stable (F44.20260916)",
     "prerelease": false,
@@ -61,32 +88,5 @@
     "prerelease": true,
     "published_at": "2026-09-15T19:21:46Z",
     "tag_name": "testing-44.20260915.3"
-  },
-  {
-    "assets": [],
-    "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-44.20260915.2",
-    "name": "testing-44.20260915.2: Testing (F44.20260915, #2ae8691)",
-    "prerelease": true,
-    "published_at": "2026-09-15T16:19:38Z",
-    "tag_name": "testing-44.20260915.2"
-  },
-  {
-    "assets": [],
-    "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-44.20260915",
-    "name": "testing-44.20260915: Testing (F44.20260915, #2ae8691)",
-    "prerelease": true,
-    "published_at": "2026-09-15T07:49:17Z",
-    "tag_name": "testing-44.20260915"
-  },
-  {
-    "assets": [],
-    "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/44.20260914",
-    "name": "44.20260914: Stable (F44.20260914)",
-    "prerelease": false,
-    "published_at": "2026-09-14T05:44:28Z",
-    "tag_name": "44.20260914"
   }
 ]

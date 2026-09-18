@@ -86,6 +86,10 @@ type Entry struct {
 	// Fixup makes a downloaded file bootable: "extract", "convert" or
 	// "rename:<extension>".
 	Fixup string `toml:"fixup"`
+	// Size is roughly how big the download is, in bytes. It is a hint for the
+	// page and the free-space check, not a promise: it changes with every
+	// release. Filled in from a live run of the recorder.
+	Size int64 `toml:"size"`
 	// KnownHashes are known-good SHA-256 digests, normalized to lowercase.
 	KnownHashes []string  `toml:"known_hashes"`
 	Source      Source    `toml:"source"`
@@ -335,4 +339,14 @@ func Merge(base, extra *Catalog) (*Catalog, error) {
 		return nil, err
 	}
 	return merged, nil
+}
+
+// DefaultBytes returns the catalog file built into the binary, so a
+// downloaded one can be compared against it.
+func DefaultBytes() []byte {
+	data, err := defaultFS.ReadFile("default.toml")
+	if err != nil {
+		panic("catalog: the built-in catalog is missing: " + err.Error())
+	}
+	return data
 }
