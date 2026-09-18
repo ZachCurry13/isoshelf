@@ -230,9 +230,12 @@ type stateJSON struct {
 	UsualSet  []string               `json:"usual_set"`
 	Recent    []string               `json:"recent_targets"`
 	Bookmarks []string               `json:"bookmarks"`
-	Removed   removedJSON            `json:"removed"`
-	Catalog   catalogStatusJSON      `json:"catalog"`
-	AppUpdate *appupdate.Notice      `json:"app_update,omitempty"`
+	// ReplaceAction is the answer the user usually gives when an update
+	// replaces a file.
+	ReplaceAction string            `json:"replace_action,omitempty"`
+	Removed       removedJSON       `json:"removed"`
+	Catalog       catalogStatusJSON `json:"catalog"`
+	AppUpdate     *appupdate.Notice `json:"app_update,omitempty"`
 	// ReportURL is where a missing image can be reported.
 	ReportURL string `json:"report_url,omitempty"`
 	// Space is the room left in the folder, when the disk says.
@@ -313,19 +316,20 @@ func (s *Server) removedInfo(target string) removedJSON {
 // stateLocked builds the page state; s.mu must be held.
 func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 	out := stateJSON{
-		Version:   s.cfg.Version,
-		Portable:  s.cfg.Dirs.Portable,
-		Target:    s.target,
-		Error:     s.lastErr,
-		Warnings:  nonNil(s.warnings),
-		Tracks:    map[string]state.Track{},
-		UsualSet:  []string{},
-		Recent:    recent,
-		Bookmarks: nonNil(s.loadSettings().Bookmarks),
-		Removed:   s.removedInfo(s.target),
-		Catalog:   s.catalogStatusLocked(),
-		ReportURL: "https://github.com/" + appupdate.Repo + "/issues/new",
-		AppUpdate: s.notice,
+		Version:       s.cfg.Version,
+		Portable:      s.cfg.Dirs.Portable,
+		Target:        s.target,
+		Error:         s.lastErr,
+		Warnings:      nonNil(s.warnings),
+		Tracks:        map[string]state.Track{},
+		UsualSet:      []string{},
+		Recent:        recent,
+		Bookmarks:     nonNil(s.loadSettings().Bookmarks),
+		ReplaceAction: s.loadSettings().ReplaceAction,
+		Removed:       s.removedInfo(s.target),
+		Catalog:       s.catalogStatusLocked(),
+		ReportURL:     "https://github.com/" + appupdate.Repo + "/issues/new",
+		AppUpdate:     s.notice,
 	}
 	if room.Known() {
 		out.Space = &spaceJSON{Free: room.Free, Total: room.Total}
@@ -610,6 +614,9 @@ type settings struct {
 	CatalogAuto *bool `json:"catalog_auto,omitempty"`
 	// Bookmarks are folders the user pinned in the chooser.
 	Bookmarks []string `json:"bookmarks,omitempty"`
+	// ReplaceAction is what the user last chose for the file an update
+	// replaces: "move-aside" or "delete".
+	ReplaceAction string `json:"replace_action,omitempty"`
 }
 
 func (s *Server) loadSettings() settings {

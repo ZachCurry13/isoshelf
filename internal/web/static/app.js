@@ -649,17 +649,41 @@ async function removalChoice(item) {
   const sameName = item.latest_file && item.path.split("/").pop() === item.latest_file;
   if (track.keep_old && !sameName) return "keep";
 
-  const choices = [
-    { label: "Move it aside", value: "move-aside", primary: true },
-    { label: "Delete it", value: "delete" },
-  ];
-  if (!sameName) choices.push({ label: "Keep it", value: "keep" });
+  // Moving aside keeps the old file on the drive, which is the safe answer
+  // until the drive is nearly full: then keeping both is what makes the next
+  // download fail.
+  const room = item.size ? formatBytes(item.size) : null;
+  const tight = Boolean(item.size && state.space && state.space.total &&
+    state.space.free - item.size < Math.min(state.space.total / 100, 1 << 30));
+  const preferReplace = tight || state.replace_action === "delete";
+
+  const replace = {
+    label: room ? `Replace it (frees ${room})` : "Replace it",
+    value: "delete",
+    primary: preferReplace,
+  };
+  const aside = {
+    label: room ? `Archive it (still uses ${room}, undo any time)` : "Archive it",
+    value: "move-aside",
+    primary: !preferReplace,
+  };
+  const choices = preferReplace ? [replace, aside] : [aside, replace];
+  if (!sameName) choices.push({ label: "Keep both where they are", value: "keep" });
   choices.push({ label: "Cancel", value: null });
 
-  const text = sameName
-    ? `The new file has the same name, so it takes the place of ${item.path}. It is downloaded and checked first. What should happen to the old one?`
-    : `The new file is downloaded and checked first. What should happen to ${item.path} afterwards?`;
-  return ask(`Update ${item.name}`, text, choices);
+  const what = sameName
+    ? `The new file has the same name, so it takes the place of ${item.path}. It is downloaded and checked first.`
+    : `The new file is downloaded and checked first, then ${item.path} is dealt with.`;
+  const space = tight
+    ? " There isn't room for both, so archiving the old one would leave the next download short."
+    : " Archiving keeps it in this folder, under “Images that were here”, until you empty it.";
+
+  const answer = await ask(`Update ${item.name}`, what + space, choices);
+  // Remember which way they went, so the same question comes pre-answered.
+  if (answer === "delete" || answer === "move-aside") {
+    rememberReplaceAction(answer);
+  }
+  return answer;
 }
 
 async function updateItem(item) {
@@ -707,9 +731,9 @@ async function updateAll() {
 async function removeItem(item) {
   const how = await ask(
     `Remove ${item.path}?`,
-    `This file uses ${formatBytes(item.size)}. Moving it aside puts it in .isoshelf/removed inside this folder, where you can get it back or empty it later.`,
+    `This file uses ${formatBytes(item.size)}. Archiving keeps it in this folder, under “Images that were here”, where you can put it back or empty it later — the space isn't freed until you do.`,
     [
-      { label: "Move it aside", value: "move-aside", primary: true },
+      { label: "Archive it", value: "move-aside", primary: true },
       { label: "Delete it now", value: "delete" },
       { label: "Cancel", value: null },
     ]);
@@ -837,12 +861,12 @@ async function renderCatalog() {
     list.append(el("li", {},
       logoTile(entry),
       el("div", { class: "info" },
-        el("div", {},
+        el("div", { class: "info-line" },
           el("span", { class: "name" }, entry.name),
           el("span", { class: "arch" }, entry.arch),
-          entry.size ? el("span", { class: "arch" }, `about ${formatBytes(entry.size)}`) : null,
           entry.popular ? el("span", { class: "pill s-ok", title: "Turns up in public round-ups of what people are running. A hand-picked hint, not a rating." }, "popular") : null),
         el("div", { class: "kind" },
+          entry.size ? `about ${formatBytes(entry.size)} · ` : "",
           UPDATES_LABEL[entry.updates] || entry.updates,
           room === false ? el("span", { class: "wont-fit" }, " · bigger than the room left here") : null)),
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
@@ -886,14 +910,14 @@ function filterCatalog(entries) {
   const query = $("more-search").value.trim().toLowerCase();
   const category = $("more-category").value;
   const arch = $("more-arch").value;
-  const downloadable = $("more-downloadable").checked;
+  const updates = $("more-updates").value;
   const fitsOnly = $("more-fits").checked;
 
   const shown = entries.filter((entry) => {
     if (query && !`${entry.name} ${entry.id} ${entry.family || ""}`.toLowerCase().includes(query)) return false;
     if (category && (entry.category || "other") !== category) return false;
     if (arch && entry.arch !== arch) return false;
-    if (downloadable && entry.updates !== "download") return false;
+    if (updates && entry.updates !== updates) return false;
     if (fitsOnly && fitsHere(entry) === false) return false;
     return true;
   });
@@ -1381,7 +1405,7 @@ document.addEventListener("DOMContentLoaded", () => {
     $(id).addEventListener("change", (e) => { view[key] = e.target.checked; saveView(); renderRows(); });
   }
   $("more-search").addEventListener("input", renderCatalog);
-  for (const id of ["more-category", "more-arch", "more-sort", "more-downloadable", "more-fits"]) {
+  for (const id of ["more-category", "more-arch", "more-sort", "more-updates", "more-fits"]) {
     $(id).addEventListener("change", renderCatalog);
   }
   $("identify-search").addEventListener("input", renderIdentifyCatalog);
@@ -1407,4 +1431,16 @@ async function toggleBookmark(path, pinned) {
     return;
   }
   await browse(pickerPath);
+}
+
+// rememberReplaceAction stores which answer the user gives when an update
+// replaces a file, so they aren't asked the same thing from scratch forever.
+// They are still asked: it only decides which button is the ready one.
+async function rememberReplaceAction(action) {
+  if (state.replace_action === action) return;
+  try {
+    state = await api("POST", "/api/settings", { replace_action: action });
+  } catch {
+    // Not remembering is a small thing; the update itself carries on.
+  }
 }

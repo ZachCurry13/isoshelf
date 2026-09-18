@@ -165,7 +165,12 @@
           <option value="popular">Popular first</option>
           <option value="kind">Kind</option>
         </select>
-        <label class="check"><input type="checkbox" id="more-downloadable"> Can be downloaded</label>
+        <select id="more-updates" aria-label="How it updates">
+          <option value="">Any kind of update</option>
+          <option value="download">Downloads and checks</option>
+          <option value="check-only">Update checks only</option>
+          <option value="manual">Download page link only</option>
+        </select>
         <label class="check"><input type="checkbox" id="more-fits"> Fits in this folder</label>
         <span class="muted" id="more-shown"></span>
       </div>

@@ -159,7 +159,8 @@ func (s *Server) updateCatalog(w http.ResponseWriter, r *http.Request) {
 // folder's state.
 func (s *Server) setSettings(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		CatalogAuto *bool `json:"catalog_auto"`
+		CatalogAuto   *bool  `json:"catalog_auto"`
+		ReplaceAction string `json:"replace_action"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "bad request")
@@ -172,6 +173,11 @@ func (s *Server) setSettings(w http.ResponseWriter, r *http.Request) {
 		if *req.CatalogAuto {
 			s.startCatalogRefresh(false)
 		}
+	}
+	if req.ReplaceAction == "move-aside" || req.ReplaceAction == "delete" {
+		current := s.loadSettings()
+		current.ReplaceAction = req.ReplaceAction
+		s.saveSettings(current)
 	}
 	s.getState(w, r)
 }

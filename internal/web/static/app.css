@@ -549,3 +549,12 @@ th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
 }
 .updates #updates-text { font-weight: 600; }
 .updates .btn { margin-left: auto; }
+
+/* Catalog cards: room for the name, with the buttons wrapping under it when
+   the column is narrow. */
+.catalog { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.catalog li { flex-wrap: wrap; }
+.catalog .info { flex: 1 1 150px; }
+.catalog li .btn, .catalog li a.btn { flex: none; }
+.catalog .info-line { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.catalog .info-line .name { overflow-wrap: anywhere; }
