@@ -226,6 +226,18 @@ func (s *State) Assign(path, entry, version string) error {
 	return nil
 }
 
+// Unassign undoes an assignment, so the file goes back to being whatever the
+// catalog makes of its name.
+func (s *State) Unassign(path string) error {
+	rec, ok := s.Files[path]
+	if !ok {
+		return fmt.Errorf("%s is not in the last scan", path)
+	}
+	rec.Entry, rec.Version, rec.Assigned = "", "", false
+	s.Files[path] = rec
+	return nil
+}
+
 // Track returns the settings for an entry.
 func (s *State) Track(entry string) Track {
 	return s.Tracks[entry]

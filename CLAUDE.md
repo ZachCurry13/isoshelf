@@ -278,9 +278,11 @@ alone is not an update.
 3. The archive of images that have left, with put back and download again,
    plus filters, sorting, logos and links. *Done.*
 4. Assign: suggest what an unrecognized file is and confirm it (below).
+   *Done.*
 5. Adding catalog images that aren't on the target (the "Add" button).
-6. Installing older versions with a hold (below), and Make bootable fix-ups.
-7. Still open: a CLI `isoshelf update` command (the web UI has it), a queue
+6. Growing the catalog without a new release (below).
+7. Installing older versions with a hold (below), and Make bootable fix-ups.
+8. Still open: a CLI `isoshelf update` command (the web UI has it), a queue
    for several downloads at once, and OpenPGP signature checking.
 **v0.3** - rebuild and repair modes.
 **Later** - server mode (below); macOS build.
@@ -299,17 +301,60 @@ binaries, the portable zip, and `SHA256SUMS` to the release.
 ### Assign: suggesting what an unrecognized file is
 
 For files the catalog doesn't match by name, such as `Windows.iso` from the
-Media Creation Tool:
+Media Creation Tool. `internal/identify` suggests, the user confirms; nothing
+is ever assigned silently, and no file is renamed or moved.
 
-- Read the ISO 9660 volume label (32 bytes at 0x8028) and creation date from
-  the primary volume descriptor: Windows images carry labels like
-  `CCCOMA_X64FRE_EN-US_DV9`, Ubuntu ones `Ubuntu 24.04.3 LTS amd64`.
-- Rank candidates by label, by known_hashes and published checksums that match
-  the file's hash, by content kind, and by name similarity.
-- Show the best guesses with the reason ("its label says Windows 11"), and let
-  the user confirm or pick any catalog entry. Never assign silently.
-- A confirmed assignment is stored in the target's state against the file's
-  size and hash, so later scans recognize it and check it for updates.
+- `internal/sniff` reads the ISO 9660 primary volume descriptor while it works
+  out the file's kind, from the same 64 KB it already reads: label, system,
+  publisher, preparer, application and build time. Real labels are worth a
+  lot (`Ubuntu 22.04.3 LTS amd64`, `CentOS 7 x86_64`, `Parrot home 6.2`) and
+  some say nothing at all (`ISOIMAGE`, `ESD_ISO`, `PVE`).
+- Evidence, strongest first: a checksum in `known_hashes`; the same file in the
+  folder under another name (equal hashes, or the same size *and* the same
+  label and build time); a file of the same checksum in the archive; then
+  resemblance between the entry's name and the filename and label.
+- Resemblance weighs rare words higher than common ones (a catalog-wide
+  inverse frequency), so "qubes" counts for far more than "linux". A
+  disagreeing architecture costs 40 points, and an entry whose sample
+  filenames use another extension costs 25, which is what keeps an `.iso`
+  from being offered as Ubuntu Core (`.img.xz`).
+- Scores are shown in words: above 80 ("Very likely", "Almost certain") rests
+  on evidence, below that on resemblance. Every guess carries its reason in
+  plain language, and the whole catalog is one search box away.
+- A confirmed answer is `state.Assign`: entry, version and `assigned: true`
+  against that path, which `RecordScan` keeps until the file itself changes.
+  "Forget this" is `state.Unassign`.
+- The web API is `GET /api/guesses?path=` and `POST /api/identify`. Both work
+  off the scan the server already has, so they touch no disk. Identifying
+  rebuilds the offline report at once; the page starts the online check again
+  if one had already run.
+
+### Growing the catalog without a new release
+
+The catalog is data, so it must be able to grow without shipping a binary. It
+must also stay safe: a download address that nobody checked is exactly how the
+wrong image gets trusted. So the split is deliberate.
+
+- **The catalog updates itself.** Off or on from a checkbox in settings
+  (proposed default: on). It fetches the catalog file from isoshelf's own
+  repository over HTTPS, parses and validates it strictly before accepting it,
+  keeps the last good copy on any failure, and reports what changed ("4 images
+  added"). Never from any other address, and a user's own catalog wins.
+- **Add my own image.** Anything unrecognized can be given a name, category and
+  page by hand; isoshelf writes a `manual` entry into the user's catalog file.
+  That is inventory only: it never invents a download address.
+- **Tell isoshelf about this image.** One click opens a prefilled report (the
+  filename, the disc label, size, and the site if the user gives one) as a new
+  issue on the repository. The user sees it before sending; nothing is sent
+  automatically, and nothing personal goes in it. That is how new download
+  sources arrive: a person checks each one once.
+
+### Ventoy and other tools
+
+Naming Ventoy to say isoshelf works with it is fine, and worth doing: many
+people arrive through Ventoy. Keep it to plain text and a link to ventoy.net,
+never their logo, and keep "independent project, not affiliated with Ventoy"
+next to it.
 
 ### Older versions
 
@@ -411,12 +456,14 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 ### Where we stopped (2026-09-17)
 
 v0.1 is done. v0.2 has downloads, per-image updates, removal with put-back, the
-archive, filters and sorting, logos and links, all tried against the
-maintainer's Proxmox folder. Next, in order:
+archive, filters and sorting, logos and links, and now Assign, all tried
+against the maintainer's Proxmox folder. `Windows.iso` there is recognized as
+Windows 11 because it is the same size as `Windows11.iso` and both discs carry
+the same build time. Next, in order:
 
-- Assign: suggest what unrecognized files are (volume label, hashes, name) and
-  confirm, so files like `Windows.iso` can be recognized and checked.
 - The "Add" button: download a catalog image the folder doesn't have yet.
+- Growing the catalog: the auto-update toggle, "Add my own image", and the
+  one-click report for an image the catalog is missing.
 - `isoshelf update` on the command line, to match the web UI.
 - Older versions with a hold; Make bootable fix-ups; signature checking.
 - Before a release: GitHub Actions (build, vet, test on Windows and Linux;
@@ -438,7 +485,7 @@ cachyos-desktop-linux-260308.iso           # CachyOS Desktop, version 260308
 Win11_English_x64.iso                      # Windows 11, manual, no version in name
 Win11_23H2_English_x64v2.iso               # Windows 11 23H2, manual
 Windows10.iso                              # Windows 10, manual
-Windows.iso                                # unrecognized -> needs Assign
+Windows.iso                                # unrecognized by name; Assign finds it
 MX-21.3_x64.iso                            # MX Linux, 64-bit track
 MX-23.3_x32.iso                            # MX Linux, 32-bit track
 manjaro-xfce-23.0.4-231015-linux65.iso     # Manjaro Xfce 23.0.4

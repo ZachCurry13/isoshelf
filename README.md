@@ -39,6 +39,12 @@ isoshelf does that for you:
 - **Tidying up.** Remove images you no longer want, and put them back later if
   you change your mind. isoshelf remembers what left the folder and can
   download it again.
+- **Works out what mystery files are.** A file the catalog doesn't know by
+  name — `Windows.iso` from the Media Creation Tool, or something you renamed —
+  gets a "What is this?" button. isoshelf reads what the disc says about
+  itself, looks for the same image elsewhere in the folder, and suggests what
+  it is, with the reason and how sure it is. You confirm; nothing is renamed
+  or moved.
 - **Flags problems.** Reports end-of-life releases, checksum mismatches,
   files your boot menu won't list, and files it doesn't recognize.
 - **Finds things fast.** Filter by kind, architecture, updates or favourites;
@@ -75,6 +81,11 @@ isoshelf manages files you care about, so it is deliberately cautious:
 
 On your PC, isoshelf uses the same interface: it opens in your web browser, and
 only your own computer can reach it.
+
+> **New to all this?** [Ventoy](https://www.ventoy.net) turns one USB stick
+> into a boot menu of every ISO you drop on it, and isoshelf keeps those ISOs
+> current. They work well together, but neither needs the other, and isoshelf
+> isn't affiliated with Ventoy.
 
 ## How it works
 
@@ -120,10 +131,11 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 - [x] Web interface showing the same table, opened in your browser
 
 **v0.2 (in progress):** downloads with verification, per-image updates,
-removal with put-back, the archive of images that have left, filters, sorting
-and logos are done. Still to come: recognizing unknown files, adding images
-from the catalog, installing an older version when a new one breaks something,
-and fixes for files the boot menu won't list.<br>
+removal with put-back, the archive of images that have left, filters, sorting,
+logos, and working out what unrecognized files are. Still to come: adding
+images from the catalog, a catalog that updates itself, installing an older
+version when a new one breaks something, and fixes for files the boot menu
+won't list.<br>
 **Ongoing:** more images in the catalog: popular desktops, homelab and server
 systems, and rescue tools.<br>
 **v0.3:** rebuild a drive from your usual set, and repair mode.<br>

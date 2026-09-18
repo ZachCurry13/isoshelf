@@ -483,3 +483,37 @@ td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-spac
 .past-list li { flex-wrap: wrap; row-gap: 8px; }
 .past-list .info { flex: 1 1 220px; }
 .past-list .kind { overflow-wrap: anywhere; }
+
+/* "What is this file?" */
+
+.identify .picker-head p { margin-bottom: 6px; }
+.identify-file {
+  font-family: var(--mono); font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.identify-body {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 14px 0 4px;
+}
+.identify-body > div > p { margin: 0 20px 10px; }
+.guesses {
+  list-style: none; margin: 0; padding: 0 20px 14px;
+  display: grid; gap: 8px;
+}
+.guesses li {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+.guesses .info { flex: 1; min-width: 0; }
+.guesses .kind { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.identify #identify-all { padding: 0 8px; }
+.identify #identify-all summary {
+  cursor: pointer; padding: 8px 12px; color: var(--muted); font-size: 13px;
+}
+#identify-search { margin: 0 12px 10px; width: calc(100% - 24px); max-width: 320px; }
+.identify .catalog { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }

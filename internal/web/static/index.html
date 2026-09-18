@@ -146,6 +146,29 @@
   </form>
 </dialog>
 
+<dialog id="identify" class="picker identify" aria-labelledby="identify-title">
+  <form method="dialog" class="picker-form">
+    <header class="picker-head">
+      <h2 id="identify-title">What is this file?</h2>
+      <p class="muted">isoshelf reads what the disc says about itself and compares it with the catalog. Nothing is renamed or moved: your answer is only remembered, so the file can be checked for updates like the rest.</p>
+      <p class="identify-file" id="identify-file"></p>
+    </header>
+    <div class="identify-body">
+      <div id="identify-guesses"></div>
+      <details id="identify-all">
+        <summary>Pick it from the catalog myself</summary>
+        <input type="search" id="identify-search" placeholder="Search the catalog…" aria-label="Search the catalog">
+        <ul class="catalog" id="identify-list"></ul>
+      </details>
+    </div>
+    <footer class="picker-foot">
+      <button type="button" class="btn" id="identify-forget" hidden title="Go back to treating this file as unrecognized">Forget this</button>
+      <span class="spacer"></span>
+      <button type="submit" class="btn" value="cancel">Close</button>
+    </footer>
+  </form>
+</dialog>
+
 <dialog id="picker" class="picker" aria-labelledby="picker-title">
   <form method="dialog" class="picker-form">
     <header class="picker-head">

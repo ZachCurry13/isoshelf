@@ -69,6 +69,9 @@ type Item struct {
 	// Latest is the newest version, and LatestFile its filename, when known.
 	Latest     string
 	LatestFile string
+	// Assigned marks a file the user identified by hand, rather than one the
+	// catalog matched by name.
+	Assigned bool
 	// Note explains the status: an error, or "older copy" and so on.
 	Note string
 	// Release is a page about the newest release, when the source has one.
@@ -97,7 +100,7 @@ func Offline(res *scan.Result, st *state.State, cat *catalog.Catalog) *Report {
 		it := Item{Path: f.Path, Size: f.Size, Kind: f.Kind, ModTime: f.ModTime}
 		rec := st.Files[f.Path]
 		if e := cat.Entry(rec.Entry); e != nil {
-			it.Entry, it.Version = e, rec.Version
+			it.Entry, it.Version, it.Assigned = e, rec.Version, rec.Assigned
 			found[e.ID] = true
 		}
 		switch {

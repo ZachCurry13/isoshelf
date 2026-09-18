@@ -62,6 +62,9 @@ type Options struct {
 type Result struct {
 	Report *check.Report
 	State  *state.State
+	// Scan is what the folder held, kept so the caller can look at a file
+	// again without reading the disk.
+	Scan *scan.Result
 	// Warnings are problems that didn't stop the run, such as a state that
 	// couldn't be saved to a read-only share.
 	Warnings []string
@@ -104,7 +107,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		return nil, err
 	}
 	st.RecordScan(res, opts.Now())
-	out := &Result{State: st}
+	out := &Result{State: st, Scan: res}
 
 	if !opts.NoHash {
 		files := st.NeedsHash(res, opts.Catalog)

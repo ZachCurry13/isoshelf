@@ -67,9 +67,12 @@ type Server struct {
 	cfg     Config
 	handler http.Handler
 
-	mu        sync.Mutex
-	target    string
-	st        *state.State
+	mu     sync.Mutex
+	target string
+	st     *state.State
+	// scan is the last look at the folder, kept so a file can be identified
+	// without reading the disk again.
+	scan      *scan.Result
 	report    *check.Report
 	updatedAt time.Time
 	run       *run
@@ -122,6 +125,8 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/removed/empty", s.emptyRemoved)
 	mux.HandleFunc("POST /api/cancel", s.cancel)
 	mux.HandleFunc("POST /api/track", s.setTrack)
+	mux.HandleFunc("GET /api/guesses", s.getGuesses)
+	mux.HandleFunc("POST /api/identify", s.identifyFile)
 	s.handler = s.guard(mux)
 
 	go s.checkAppUpdate()
@@ -368,7 +373,7 @@ func (s *Server) openTarget(path, profile string) error {
 	}
 
 	s.mu.Lock()
-	s.target, s.st, s.report, s.lastErr, s.warnings = abs, st, nil, "", nil
+	s.target, s.st, s.report, s.scan, s.lastErr, s.warnings = abs, st, nil, nil, "", nil
 	s.mu.Unlock()
 	s.saveSettings(settings{Target: abs})
 	return nil
@@ -421,7 +426,7 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 	defer s.mu.Unlock()
 	s.run = nil
 	if res != nil && s.target == target {
-		s.report, s.st, s.warnings, s.updatedAt = res.Report, res.State, res.Warnings, s.cfg.Now()
+		s.report, s.st, s.scan, s.warnings, s.updatedAt = res.Report, res.State, res.Scan, res.Warnings, s.cfg.Now()
 	}
 	switch {
 	case errors.Is(err, context.Canceled):

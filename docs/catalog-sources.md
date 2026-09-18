@@ -109,3 +109,32 @@ Twenty-one projects have a logo in Simple Icons and ship inside isoshelf;
 refresh them with `go run ./internal/web/logos/fetch`. The rest show coloured
 initials. Entries added later, or from a user's own catalog, have their logo
 fetched once at runtime and kept in the settings folder.
+
+## What discs say about themselves
+
+isoshelf reads the ISO 9660 primary volume descriptor of every image it scans
+(`internal/sniff`), and `internal/identify` uses it to suggest what an
+unrecognized file is. These labels were read off real images in a Proxmox ISO
+folder on 2026-09-17, and they are why the guesser weighs labels heavily but
+never trusts them alone:
+
+| Label | Image | Worth |
+|---|---|---|
+| `Ubuntu 22.04.3 LTS amd64`, `Ubuntu-Server 22.04.3 LTS amd64` | Ubuntu | product, edition and version |
+| `CentOS 7 i386`, `CentOS 7 x86_64` | CentOS 7 | product and architecture, but Minimal and Everything are identical |
+| `Pop_OS 22.04 amd64 Nvidia`, `Parrot home 6.2`, `Q4OS_5.5_Aquarius` | as named | product and version |
+| `Kali Linux amd64 1`, `Debian 12.6.0 i386 1` | Kali, Debian | the trailing 1 is the disc number, not a version |
+| `alpine-ext 3.19.0 x86_64`, `QUBES-R4-2-0-X86-64` | Alpine, Qubes | product and version, in the project's own spelling |
+| `Rescuezilla`, `TRUENAS`, `MX-Live`, `MXLIVE`, `Core`, `TinyCore` | as named | product only |
+| `PVE` | Proxmox VE | too short to match a name; the filename carries it |
+| `ISOIMAGE` | TrueNAS SCALE | nothing at all: the xorriso default |
+| `CCCOMA_X64FRE_EN-US_DV9` | Windows 10 and 11 retail | Microsoft media, but not which Windows |
+| `ESD_ISO` | Media Creation Tool output | nothing at all |
+
+Two other fields do more work than the label in places: `publisher`
+("THE FREEBSD PROJECT", "IXSYSTEMS INC.", "MICROSOFT CORPORATION") and the
+build time. Two copies of one download carry the same build time to the
+second, which is how `Windows.iso` in that folder was recognized: same size as
+`Windows11.iso`, same build time, so it is the same image under another name.
+The `preparer` field is ignored on purpose, because it names the build tool
+(xorriso, mkisofs, IMAPI2) rather than the product.

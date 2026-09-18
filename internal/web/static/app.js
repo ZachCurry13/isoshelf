@@ -459,6 +459,22 @@ function renderRow(item) {
       onclick: () => updateItem(item),
     }, "Update"));
   }
+  if (item.path && !item.entry) {
+    actions.push(el("button", {
+      type: "button", class: "btn small primary", disabled: busy,
+      title: "Let isoshelf work out what this file is",
+      "aria-label": `Identify ${item.path}`,
+      onclick: () => openIdentify(item),
+    }, "What is this?"));
+  }
+  if (item.path && item.assigned) {
+    actions.push(el("button", {
+      type: "button", class: "btn small", disabled: busy,
+      title: "You told isoshelf what this file is. Change that.",
+      "aria-label": `Change what ${item.path} is`,
+      onclick: () => openIdentify(item),
+    }, "Not right?"));
+  }
   if (item.path) {
     actions.push(el("button", {
       type: "button", class: "btn small", disabled: busy,
@@ -645,6 +661,130 @@ async function renderCatalog() {
         el("div", { class: "kind" }, UPDATES_LABEL[entry.updates] || entry.updates)),
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
       el("button", { type: "button", class: "btn small", disabled: true, title: "Adding images that aren't in this folder yet is coming next" }, "Add")));
+  }
+}
+
+// ---- What is this file? ----------------------------------------------------
+
+// How sure isoshelf is, in words. A score above 80 rests on evidence: the
+// same checksum, or the same file under another name.
+const SURENESS = [[95, "Almost certain"], [80, "Very likely"], [60, "Likely"], [45, "Possible"], [0, "A guess"]];
+
+function sureness(score) {
+  for (const [least, label] of SURENESS) {
+    if (score >= least) return label;
+  }
+  return "A guess";
+}
+
+// identifyPath is the file the dialog is about, so a slow answer for one file
+// never lands in the dialog for another.
+let identifyPath = null;
+
+async function openIdentify(item) {
+  identifyPath = item.path;
+  $("identify-file").textContent = item.path;
+  $("identify-forget").hidden = !item.assigned;
+  $("identify-search").value = "";
+  $("identify-list").replaceChildren();
+  $("identify-all").open = false;
+  $("identify-guesses").replaceChildren(el("p", { class: "muted" }, "Looking at what the file says about itself…"));
+  $("identify").showModal();
+
+  let data;
+  try {
+    data = await api("GET", `/api/guesses?path=${encodeURIComponent(item.path)}`);
+  } catch (err) {
+    $("identify-guesses").replaceChildren(el("p", { class: "muted" }, err.message));
+    return;
+  }
+  if (data.path !== identifyPath) return;
+  renderGuesses(data.guesses);
+  renderIdentifyCatalog();
+}
+
+function renderGuesses(guesses) {
+  const box = $("identify-guesses");
+  box.replaceChildren();
+  if (!guesses.length) {
+    box.append(el("p", { class: "muted" },
+      "isoshelf can't work this one out: nothing in the catalog looks like it, and no copy of it is in this folder. You can pick what it is yourself."));
+    $("identify-all").open = true;
+    return;
+  }
+  box.append(el("p", { class: "muted" },
+    guesses.length === 1 ? "isoshelf thinks this might be:" : "isoshelf thinks this might be one of these:"));
+
+  const list = el("ul", { class: "guesses" });
+  for (const guess of guesses) {
+    list.append(el("li", {},
+      logoTile(guess),
+      el("div", { class: "info" },
+        el("div", {},
+          el("span", { class: "name" }, guess.name),
+          guess.arch ? el("span", { class: "arch" }, guess.arch) : null,
+          guess.version ? el("span", { class: "arch" }, guess.version) : null,
+          el("span", { class: `pill ${guess.sure ? "s-ok" : "s-muted"}` }, sureness(guess.score))),
+        el("div", { class: "kind" }, `Because ${guess.reason}.`)),
+      el("button", {
+        type: "button", class: "btn small primary",
+        onclick: () => confirmIdentity(guess.entry, guess.version),
+      }, "That's it")));
+  }
+  box.append(list);
+}
+
+// renderIdentifyCatalog lists the catalog, so a file isoshelf can't place can
+// still be identified by hand.
+async function renderIdentifyCatalog() {
+  if (!catalog) {
+    try {
+      catalog = (await api("GET", "/api/catalog")).entries;
+    } catch {
+      return;
+    }
+  }
+  const query = $("identify-search").value.trim().toLowerCase();
+  const list = $("identify-list");
+  list.replaceChildren();
+  let shown = 0;
+  for (const entry of catalog) {
+    if (query && !`${entry.name} ${entry.id} ${entry.family || ""}`.toLowerCase().includes(query)) continue;
+    if (++shown > 40) {
+      list.append(el("li", { class: "muted more-hint" }, "More images match. Keep typing to narrow it down."));
+      break;
+    }
+    list.append(el("li", {},
+      logoTile(entry),
+      el("div", { class: "info" },
+        el("div", {}, el("span", { class: "name" }, entry.name), el("span", { class: "arch" }, entry.arch)),
+        el("div", { class: "kind" }, UPDATES_LABEL[entry.updates] || entry.updates)),
+      el("button", {
+        type: "button", class: "btn small",
+        onclick: () => confirmIdentity(entry.id, ""),
+      }, "This one")));
+  }
+  if (!shown) list.append(el("li", { class: "muted more-hint" }, "Nothing in the catalog matches that."));
+}
+
+// confirmIdentity records the user's answer. An empty entry forgets an
+// earlier one. Nothing on disk is renamed or moved.
+async function confirmIdentity(entry, version) {
+  let result;
+  try {
+    result = await api("POST", "/api/identify", { path: identifyPath, entry, version: version || "" });
+  } catch (err) {
+    showNotice(err.message, true);
+    return;
+  }
+  $("identify").close();
+  showNotice(result.message);
+  // The file's version is known now but not what the newest one is, so pick
+  // the online check up again if it had already run.
+  if (result.recheck) {
+    await start("check");
+  } else {
+    await refresh();
   }
 }
 
@@ -852,6 +992,8 @@ document.addEventListener("DOMContentLoaded", () => {
     $(id).addEventListener("change", (e) => { view[key] = e.target.checked; saveView(); renderRows(); });
   }
   $("more-search").addEventListener("input", renderCatalog);
+  $("identify-search").addEventListener("input", renderIdentifyCatalog);
+  $("identify-forget").addEventListener("click", () => confirmIdentity("", ""));
   $("picker-go").addEventListener("click", () => browse($("picker-input").value.trim()));
   $("picker-input").addEventListener("keydown", (e) => {
     if (e.key === "Enter") { e.preventDefault(); browse($("picker-input").value.trim()); }

@@ -29,8 +29,10 @@ type ItemJSON struct {
 	Updates string `json:"updates,omitempty"` // "download", "check-only" or "manual"
 	Version string `json:"version,omitempty"`
 	Status  string `json:"status"`
-	EOL     bool   `json:"eol,omitempty"`
-	Latest  string `json:"latest,omitempty"`
+	// Assigned marks a file the user identified by hand.
+	Assigned bool   `json:"assigned,omitempty"`
+	EOL      bool   `json:"eol,omitempty"`
+	Latest   string `json:"latest,omitempty"`
 	// LatestFile is the newest file's name, when it can be downloaded.
 	LatestFile string `json:"latest_file,omitempty"`
 	Note       string `json:"note,omitempty"`
@@ -72,7 +74,7 @@ func (r *Report) JSON() ReportJSON {
 	for _, it := range r.Items {
 		j := ItemJSON{
 			Path: it.Path, Size: it.Size, Kind: string(it.Kind), Name: it.Name(),
-			Version: it.Version, Status: string(it.Status), EOL: it.EOL,
+			Version: it.Version, Status: string(it.Status), EOL: it.EOL, Assigned: it.Assigned,
 			Latest: it.Latest, LatestFile: it.LatestFile, Note: it.Note,
 			Modified: it.ModTime, Release: it.Release,
 		}

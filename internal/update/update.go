@@ -215,7 +215,7 @@ func Removable(target, rel string, st *state.State, cat *catalog.Catalog) error 
 	if slices.Contains(catalog.ImageExtensions, strings.ToLower(filepath.Ext(name))) {
 		return nil
 	}
-	switch kind, _ := sniff.File(full); kind {
+	switch info, _ := sniff.File(full); info.Kind {
 	case sniff.ISO, sniff.Disk, sniff.RawCD, sniff.WIM, sniff.VHD, sniff.VHDX:
 		return nil
 	}

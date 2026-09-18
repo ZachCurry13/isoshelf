@@ -96,6 +96,9 @@ type File struct {
 	Size    int64
 	ModTime time.Time
 	Kind    sniff.Kind
+	// Volume is what an optical image says about itself, when it says
+	// anything: its label, who made it, and when it was built.
+	Volume sniff.Volume
 	// Bootable reports whether the profile lists the file's extension.
 	Bootable bool
 	// Matches are the catalog entries whose pattern matches the filename.
@@ -228,7 +231,7 @@ func (s *scanner) visitFile(p, rel string, d fs.DirEntry) error {
 	if !info.Mode().IsRegular() {
 		return nil
 	}
-	kind, err := sniff.File(p)
+	sniffed, err := sniff.File(p)
 	if err != nil {
 		s.problem(rel, err) // still list the file, with an unknown kind
 	}
@@ -236,7 +239,8 @@ func (s *scanner) visitFile(p, rel string, d fs.DirEntry) error {
 		Path:     rel,
 		Size:     info.Size(),
 		ModTime:  info.ModTime(),
-		Kind:     kind,
+		Kind:     sniffed.Kind,
+		Volume:   sniffed.Volume,
 		Bootable: bootable,
 		Matches:  matches,
 	})
