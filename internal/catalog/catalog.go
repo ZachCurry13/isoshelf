@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"io/fs"
 	"regexp"
-	"slices"
 	"strings"
 
 	"github.com/pelletier/go-toml/v2"
@@ -168,13 +167,6 @@ type Artifact struct {
 	Mirrors []string `toml:"mirrors"`
 }
 
-// Match is an entry whose pattern matched a filename.
-type Match struct {
-	Entry *Entry
-	// Version is the captured version, or empty when the filename has none.
-	Version string
-}
-
 //go:embed default.toml
 var defaultFS embed.FS
 
@@ -201,39 +193,6 @@ func Load(fsys fs.FS, name string) (*Catalog, error) {
 		return nil, err
 	}
 	return &c, nil
-}
-
-// Entry returns the entry with the given id, or nil.
-func (c *Catalog) Entry(id string) *Entry {
-	return c.byID[id]
-}
-
-// Match returns every entry whose pattern matches filename. In a valid
-// catalog this is usually zero or one entry.
-func (c *Catalog) Match(filename string) []Match {
-	var out []Match
-	for i := range c.Entries {
-		if version, ok := c.Entries[i].MatchName(filename); ok {
-			out = append(out, Match{Entry: &c.Entries[i], Version: version})
-		}
-	}
-	return out
-}
-
-// MatchName reports whether filename belongs to this entry, and returns the
-// version captured from it.
-func (e *Entry) MatchName(filename string) (version string, ok bool) {
-	if e.match == nil {
-		return "", false
-	}
-	m := e.match.FindStringSubmatch(filename)
-	if m == nil {
-		return "", false
-	}
-	if i := e.match.SubexpIndex("version"); i >= 0 {
-		version = m[i]
-	}
-	return version, true
 }
 
 // Problem is one mistake in a catalog file.
@@ -323,50 +282,6 @@ func (e *Entry) Updates() string {
 		return UpdatesDownload
 	}
 	return UpdatesCheckOnly
-}
-
-// Newer reports whether c is at least as new as other. A catalog without a
-// revision counts as the oldest there is.
-func (c *Catalog) Newer(other *Catalog) bool {
-	if c == nil {
-		return false
-	}
-	if other == nil {
-		return true
-	}
-	return c.Revision >= other.Revision
-}
-
-// Merge returns a catalog holding base's entries plus extra's: an entry whose
-// id is already in base replaces it, and the rest are added. The result is
-// validated as a whole, so an added entry that clashes with a built-in one is
-// an error rather than a surprise later. Neither input is changed.
-//
-// Merging catalogs that declare signing keys isn't supported: the key files
-// are named relative to their own catalog, and there is nowhere to resolve
-// both from.
-func Merge(base, extra *Catalog) (*Catalog, error) {
-	if base == nil {
-		return extra, nil
-	}
-	if extra == nil || len(extra.Entries) == 0 {
-		return base, nil
-	}
-	if len(base.Keys) > 0 || len(extra.Keys) > 0 {
-		return nil, errors.New("catalog: entries of your own can't be merged into a catalog with signing keys")
-	}
-	merged := &Catalog{Schema: SchemaVersion, Entries: slices.Clone(base.Entries)}
-	for _, add := range extra.Entries {
-		if i := slices.IndexFunc(merged.Entries, func(e Entry) bool { return e.ID == add.ID }); i >= 0 {
-			merged.Entries[i] = add
-			continue
-		}
-		merged.Entries = append(merged.Entries, add)
-	}
-	if err := merged.validate(nil, "catalog"); err != nil {
-		return nil, err
-	}
-	return merged, nil
 }
 
 // DefaultBytes returns the catalog file built into the binary, so a

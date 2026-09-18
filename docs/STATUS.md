@@ -52,6 +52,11 @@
 5. v0.4.0: `isoshelf update` (#1), older versions with a hold (#2), Make
    bootable (#3), signatures (#5), two downloads at once (#4), portable test (#7).
 
-## Waiting on the maintainer
+## Latest change (2026-09-18)
 
-- Whether and how to split the files over ~300 lines (listed 2026-09-18).
+- Split the large Go files by responsibility (no release: nothing a user sees
+  changed). Nine packages and two test files; a declaration-by-declaration
+  comparison showed every function and comment identical, only moved.
+- Largest Go source file is now `internal/catalog/catalog.go` (295 lines).
+  `static/app.js`, `app.css` and `index.html` split during the v0.3.0 redesign.
+- Next: v0.2.9 (downloads stop blocking Remove, Archive, "What is this?").

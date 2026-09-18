@@ -8,26 +8,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
-	"path"
-	"path/filepath"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/fetch"
 	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/resolve"
-	"github.com/ZachCurry13/isoshelf/internal/scan"
-	"github.com/ZachCurry13/isoshelf/internal/sniff"
 	"github.com/ZachCurry13/isoshelf/internal/source"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 )
-
-// RemovedDir is where files moved aside wait inside the target's .isoshelf
-// folder, until the user empties it.
-const RemovedDir = "removed"
 
 // Removal says what happens to a file the user no longer wants, or to the old
 // file after an update.
@@ -196,189 +186,4 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		result.Removed = append(result.Removed, old)
 	}
 	return result, nil
-}
-
-// Removable reports whether isoshelf may remove a file: it must be an image
-// file inside the target, either one the catalog recognizes or one with an
-// image extension or image content. Notes, archives and anything outside the
-// target are refused.
-func Removable(target, rel string, st *state.State, cat *catalog.Catalog) error {
-	full, err := insideTarget(target, rel)
-	if err != nil {
-		return err
-	}
-	info, err := os.Lstat(full)
-	if err != nil {
-		return err
-	}
-	if !info.Mode().IsRegular() {
-		return fmt.Errorf("%s is not a file", rel)
-	}
-	name := path.Base(rel)
-	if st != nil {
-		if rec, ok := st.Files[rel]; ok && rec.Entry != "" {
-			return nil // the catalog recognizes it
-		}
-	}
-	if cat != nil && len(cat.Match(name)) > 0 {
-		return nil
-	}
-	if slices.Contains(catalog.ImageExtensions, strings.ToLower(filepath.Ext(name))) {
-		return nil
-	}
-	switch info, _ := sniff.File(full); info.Kind {
-	case sniff.ISO, sniff.Disk, sniff.RawCD, sniff.WIM, sniff.VHD, sniff.VHDX:
-		return nil
-	}
-	return fmt.Errorf("%s isn't an image file, so isoshelf won't remove it", rel)
-}
-
-// Remove moves aside or deletes files the user no longer wants. Every file is
-// checked with Removable first, and its record is dropped from the state.
-func Remove(target string, files []string, how Removal, st *state.State, cat *catalog.Catalog, now time.Time) ([]string, error) {
-	if how != MoveAside && how != DeleteNow {
-		return nil, fmt.Errorf("update: %q is not a way to remove files", how)
-	}
-	var removed []string
-	var errs []error
-	for _, rel := range files {
-		if err := Removable(target, rel, st, cat); err != nil {
-			errs = append(errs, err)
-			continue
-		}
-		if err := removeFile(target, rel, how, st, now); err != nil {
-			errs = append(errs, err)
-			continue
-		}
-		removed = append(removed, rel)
-	}
-	return removed, errors.Join(errs...)
-}
-
-// removeFile moves one file into .isoshelf/removed or deletes it.
-func removeFile(target, rel string, how Removal, st *state.State, now time.Time) error {
-	full, err := insideTarget(target, rel)
-	if err != nil {
-		return err
-	}
-	gone := state.GoneRemoved
-	if how == MoveAside {
-		gone = state.GoneMovedAside
-		dir := filepath.Join(target, state.DirName, RemovedDir)
-		if err := os.MkdirAll(dir, 0o755); err != nil {
-			return err
-		}
-		name := path.Base(rel)
-		aside := filepath.Join(dir, name)
-		if _, err := os.Stat(aside); err == nil {
-			aside = filepath.Join(dir, now.UTC().Format("20060102-150405")+"-"+name)
-		}
-		if err := os.Rename(full, aside); err != nil {
-			return err
-		}
-	} else if err := os.Remove(full); err != nil {
-		return err
-	}
-	if st != nil {
-		st.Archived(rel, gone, now)
-	}
-	return nil
-}
-
-// Restore moves a file back from .isoshelf/removed into the folder.
-func Restore(target, name string) error {
-	if name == "" || strings.ContainsAny(name, `/\`) {
-		return fmt.Errorf("%q is not a plain filename", name)
-	}
-	aside := filepath.Join(target, state.DirName, RemovedDir, name)
-	if _, err := os.Stat(aside); err != nil {
-		return fmt.Errorf("%s is no longer waiting in the removed folder", name)
-	}
-	back := filepath.Join(target, name)
-	if _, err := os.Stat(back); err == nil {
-		return fmt.Errorf("%s is already in the folder", name)
-	}
-	return os.Rename(aside, back)
-}
-
-// Removed lists the files waiting in .isoshelf/removed and the space they use.
-func Removed(target string) (files []string, bytes int64, err error) {
-	dir := filepath.Join(target, state.DirName, RemovedDir)
-	entries, err := os.ReadDir(dir)
-	if errors.Is(err, os.ErrNotExist) {
-		return nil, 0, nil
-	}
-	if err != nil {
-		return nil, 0, err
-	}
-	for _, e := range entries {
-		info, err := e.Info()
-		if err != nil || !info.Mode().IsRegular() {
-			continue
-		}
-		files = append(files, e.Name())
-		bytes += info.Size()
-	}
-	return files, bytes, nil
-}
-
-// EmptyRemoved deletes everything waiting in .isoshelf/removed, freeing the
-// space. This is the one place where files are deleted without naming them
-// one by one, and the user asks for it explicitly.
-func EmptyRemoved(target string) (int, error) {
-	dir := filepath.Join(target, state.DirName, RemovedDir)
-	files, _, err := Removed(target)
-	if err != nil {
-		return 0, err
-	}
-	deleted := 0
-	var errs []error
-	for _, name := range files {
-		if err := os.Remove(filepath.Join(dir, name)); err != nil {
-			errs = append(errs, err)
-			continue
-		}
-		deleted++
-	}
-	return deleted, errors.Join(errs...)
-}
-
-// insideTarget turns a path relative to the target into a full path, and
-// refuses anything that would leave the target or isoshelf's own folder.
-func insideTarget(target, rel string) (string, error) {
-	if rel == "" || path.IsAbs(rel) || filepath.IsAbs(rel) {
-		return "", fmt.Errorf("%q is not a path inside the folder", rel)
-	}
-	clean := path.Clean(filepath.ToSlash(rel))
-	if clean == "." || strings.HasPrefix(clean, "../") {
-		return "", fmt.Errorf("%q is not a path inside the folder", rel)
-	}
-	if first, _, _ := strings.Cut(clean, "/"); strings.EqualFold(first, state.DirName) {
-		return "", fmt.Errorf("%q is one of isoshelf's own files", rel)
-	}
-	full := filepath.Join(target, filepath.FromSlash(clean))
-	// Resolve links so a link can't point outside the folder.
-	realTarget, err := filepath.EvalSymlinks(target)
-	if err != nil {
-		return "", err
-	}
-	realFull, err := filepath.EvalSymlinks(full)
-	if err != nil {
-		return "", err
-	}
-	if inside, err := filepath.Rel(realTarget, realFull); err != nil || strings.HasPrefix(inside, "..") {
-		return "", fmt.Errorf("%q is outside the folder", rel)
-	}
-	return full, nil
-}
-
-// Files returns the paths of an entry's files in a scan, newest first.
-func Files(res *scan.Result, st *state.State, entry string) []string {
-	var out []string
-	for _, f := range res.Files {
-		if rec, ok := st.Files[f.Path]; ok && rec.Entry == entry {
-			out = append(out, f.Path)
-		}
-	}
-	return out
 }
