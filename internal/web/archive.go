@@ -71,13 +71,18 @@ func (s *Server) restore(w http.ResponseWriter, r *http.Request) {
 	case s.target == "" || s.st == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
-	case s.busyLocked() != "":
-		writeError(w, http.StatusConflict, s.busyLocked())
+	case s.scanningLocked() != "":
+		writeError(w, http.StatusConflict, s.scanningLocked())
 		return
 	}
 	if err := update.Restore(s.target, req.Name); err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
+	}
+	// The page scans after putting a file back, but not while downloads run;
+	// the scan that follows them picks it up instead.
+	if s.run != nil && s.run.job != nil {
+		s.placed = true
 	}
 	writeJSON(w, http.StatusOK, map[string]string{"status": "restored"})
 }

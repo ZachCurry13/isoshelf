@@ -140,19 +140,24 @@ func TestDownloadQueue(t *testing.T) {
 		t.Errorf("moving a dropped download: %d, want 400", rec.Code)
 	}
 
-	// Scanning and removing files wait for the downloads; stars don't.
+	// A scan waits for the downloads; removing files and stars don't, and
+	// both reach the folder's state on disk.
 	rec := request(t, s, http.MethodPost, "/api/scan", nil)
 	if rec.Code != http.StatusConflict || !strings.Contains(rec.Body.String(), "downloads") {
 		t.Errorf("scan during downloads: %d %s", rec.Code, rec.Body)
 	}
-	if rec := request(t, s, http.MethodPost, "/api/remove", map[string]any{"paths": []string{"Windows.iso"}, "how": "delete"}); rec.Code != http.StatusConflict {
-		t.Errorf("remove during downloads: %d, want 409", rec.Code)
+	if rec := request(t, s, http.MethodPost, "/api/remove", map[string]any{"paths": []string{"Windows.iso"}, "how": "move-aside"}); rec.Code != http.StatusOK {
+		t.Errorf("remove during downloads: %d %s", rec.Code, rec.Body)
 	}
 	if rec := request(t, s, http.MethodPost, "/api/track", map[string]any{"entry": "netbootxyz", "starred": true}); rec.Code != http.StatusOK {
 		t.Errorf("star during downloads: %d %s", rec.Code, rec.Body)
 	}
-	if disk, err := state.Load(dir); err != nil || !disk.Track("netbootxyz").Starred {
+	disk, err := state.Load(dir)
+	if err != nil || !disk.Track("netbootxyz").Starred {
 		t.Errorf("the star didn't reach the folder's state: %v", err)
+	}
+	if _, ok := disk.Files["Windows.iso"]; ok || len(disk.Past) == 0 || disk.Past[0].Path != "Windows.iso" {
+		t.Errorf("the removal didn't reach the folder's state: past %+v", disk.Past)
 	}
 
 	// Each one that ends makes way for the next; a failure is recorded and
@@ -215,4 +220,32 @@ func TestStoppingDownloads(t *testing.T) {
 	if got := f.order(); got != "ubuntu-desktop-lts archlinux" {
 		t.Errorf("started %q", got)
 	}
+}
+
+// The one file that can't be removed during downloads is the one the running
+// download is about to replace.
+func TestRemovingWhatIsBeingReplaced(t *testing.T) {
+	dir := sampleDrive(t)
+	s := newServer(t, testDirs(t), dir)
+	if rec := request(t, s, http.MethodPost, "/api/scan", nil); rec.Code != http.StatusAccepted {
+		t.Fatalf("scan: %d", rec.Code)
+	}
+	waitIdle(t, s)
+	f := useFakeDownloads(s)
+
+	rec := request(t, s, http.MethodPost, "/api/update", map[string]any{"entry": "netbootxyz", "removal": "move-aside"})
+	if rec.Code != http.StatusAccepted {
+		t.Fatalf("update: %d %s", rec.Code, rec.Body)
+	}
+	waitDownloads(t, s, func(st stateJSON) bool { return current(st.Downloads) == "netbootxyz" })
+
+	rec = request(t, s, http.MethodPost, "/api/remove", map[string]any{"paths": []string{"netboot.xyz.iso"}, "how": "delete"})
+	if rec.Code != http.StatusConflict || !strings.Contains(rec.Body.String(), "being replaced") {
+		t.Errorf("removing the file being replaced: %d %s", rec.Code, rec.Body)
+	}
+	if rec := request(t, s, http.MethodPost, "/api/removed/empty", nil); rec.Code != http.StatusConflict {
+		t.Errorf("emptying the archive during a download: %d, want 409", rec.Code)
+	}
+	f.end("netbootxyz", errors.New("stopped for the test"))
+	waitIdle(t, s)
 }

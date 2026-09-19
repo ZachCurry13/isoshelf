@@ -211,6 +211,7 @@ function render() {
   renderDock();
 
   if (state.error) showNotice(state.error, true);
+  else if (flash && Date.now() < flash.until) showNotice(flash.message, false);
   else if (state.warnings.length) showNotice(state.warnings.join(" "), false);
   else $("notice").hidden = true;
 
@@ -699,6 +700,16 @@ function jobButton(entry, idle, fresh) {
   }
 }
 
+// flash is a short confirmation that outlives the redraws after it, which
+// would otherwise hide it at once.
+let flash = null;
+
+function flashNotice(message) {
+  flash = { message, until: Date.now() + 10000 };
+  showNotice(message, false);
+  setTimeout(() => { if (flash && Date.now() >= flash.until) { flash = null; render(); } }, 10100);
+}
+
 function showNotice(message, isError) {
   const notice = $("notice");
   notice.textContent = message;
@@ -779,12 +790,15 @@ function renderRows() {
     const bytes = older.reduce((sum, it) => sum + (it.size || 0), 0);
     $("older-text").textContent =
       `${plural(older.length, "older copy", "older copies")} of images you already have${bytes ? `, using ${formatBytes(bytes)}` : ""}.`;
-    $("older-clear").disabled = Boolean(state.run);
+    $("older-clear").disabled = scanning();
     $("older-clear").onclick = () => clearOlder(older);
+    // Showing only the older copies is a filter; the same button turns it off
+    // again, so the list never gets stuck showing just those.
+    $("older-show").textContent = view.olderOnly ? "Show all images" : "Show them";
     $("older-show").onclick = () => {
       statusFilter = null;
-      view.olderOnly = true;
-      $("only-older").checked = true;
+      view.olderOnly = !view.olderOnly;
+      $("only-older").checked = view.olderOnly;
       saveView();
       renderSummary();
       renderRows();
@@ -1019,13 +1033,31 @@ function linksMenu(item) {
     for (const other of document.querySelectorAll("details.menu[open]")) {
       if (other !== menu) other.open = false;
     }
+    placeMenu(menu);
   });
   return menu;
 }
 
+// placeMenu pins an open menu to the window, so the table's scroll box can't
+// cut it off, and opens it upwards when there's no room below.
+function placeMenu(menu) {
+  const items = menu.querySelector(".menu-items");
+  const anchor = menu.querySelector("summary").getBoundingClientRect();
+  const floor = innerHeight - ($("dock").hidden ? 8 : $("dock").offsetHeight + 8);
+  items.classList.add("pinned");
+  items.style.right = `${Math.max(8, innerWidth - anchor.right)}px`;
+  const below = anchor.bottom + 4;
+  items.style.top = below + items.offsetHeight > floor
+    ? `${Math.max(8, anchor.top - items.offsetHeight - 4)}px`
+    : `${below}px`;
+}
+
+function closeMenus() {
+  for (const open of document.querySelectorAll("details.menu[open]")) open.open = false;
+}
+
 function renderRow(item) {
   const track = (item.entry && state.tracks[item.entry]) || {};
-  const busy = Boolean(state.run);
   const usual = item.entry && state.usual_set.includes(item.entry);
 
   // A filled star means the user starred the image. Images that are only in
@@ -1102,7 +1134,7 @@ function renderRow(item) {
   }
   if (item.path && !item.entry) {
     actions.push(el("button", {
-      type: "button", class: "btn small primary", disabled: busy,
+      type: "button", class: "btn small primary", disabled: scanning(),
       title: "Let isoshelf work out what this file is",
       "aria-label": `Identify ${item.path}`,
       onclick: () => openIdentify(item),
@@ -1110,7 +1142,7 @@ function renderRow(item) {
   }
   if (item.path && item.assigned) {
     actions.push(el("button", {
-      type: "button", class: "btn small", disabled: busy,
+      type: "button", class: "btn small", disabled: scanning(),
       title: "You told isoshelf what this file is. Change that.",
       "aria-label": `Change what ${item.path} is`,
       onclick: () => openIdentify(item),
@@ -1118,7 +1150,7 @@ function renderRow(item) {
   }
   if (item.path) {
     actions.push(el("button", {
-      type: "button", class: "btn small", disabled: busy,
+      type: "button", class: "btn small", disabled: scanning(),
       title: "Remove this file from the folder",
       "aria-label": `Remove ${item.path}`,
       onclick: () => removeItem(item),
@@ -1304,10 +1336,17 @@ async function removeItem(item) {
   try {
     state = await api("POST", "/api/remove", { paths: [item.path], how });
     catalog = null;
-    render();
   } catch (err) {
     showNotice(err.message, true);
+    return;
   }
+  if (how === "move-aside") {
+    $("past").open = true;
+    flashNotice(`Archived ${item.path}. It's under “Images that were here” at the bottom of the page, where you can put it back. The space is freed when you empty the archive.`);
+  } else {
+    flashNotice(`Deleted ${item.path}.`);
+  }
+  render();
 }
 
 async function emptyRemoved() {
@@ -1774,7 +1813,7 @@ async function renderPast() {
     const buttons = [];
     if (item.restorable) {
       buttons.push(el("button", {
-        type: "button", class: "btn small", disabled: Boolean(state.run),
+        type: "button", class: "btn small", disabled: scanning(),
         title: "Move it back into the folder",
         onclick: () => restore(item),
       }, "Put back"));
@@ -1804,6 +1843,12 @@ async function restore(item) {
     await api("POST", "/api/restore", { name: item.path.split("/").pop() });
   } catch (err) {
     showNotice(err.message, true);
+    return;
+  }
+  // A scan waits for downloads; the one that follows them picks the file up.
+  if (state.run && state.run.kind === "update") {
+    flashNotice(`Put ${item.path} back. It shows in the list once the downloads finish.`);
+    await refresh();
     return;
   }
   await start("scan");
@@ -1951,6 +1996,9 @@ function timeAgo(iso) {
 // ---- Wiring ----------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
+  // An open menu is pinned to the window; scrolling would leave it behind.
+  document.addEventListener("scroll", closeMenus, true);
+  window.addEventListener("resize", closeMenus);
   $("choose").addEventListener("click", openPicker);
   $("scan").addEventListener("click", () => start("scan"));
   $("check").addEventListener("click", () => start("check"));
@@ -2066,6 +2114,16 @@ async function clearOlder(older) {
     showNotice(err.message, true);
     return;
   }
-  showNotice(`${plural(names.length, "older copy", "older copies")} ${how === "delete" ? "deleted" : "archived"}.`);
+  view.olderOnly = false;
+  $("only-older").checked = false;
+  saveView();
+  if (how === "move-aside") $("past").open = true;
+  flashNotice(how === "delete"
+    ? `${plural(names.length, "older copy", "older copies")} deleted.`
+    : `${plural(names.length, "older copy", "older copies")} archived, under “Images that were here” at the bottom of the page.`);
+  if (state.run && state.run.kind === "update") {
+    render();
+    return;
+  }
   await start("scan");
 }

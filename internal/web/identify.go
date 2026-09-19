@@ -84,11 +84,12 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 	case s.target == "" || s.st == nil || s.scan == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder and scan it first.")
 		return
-	case s.busyLocked() != "":
-		writeError(w, http.StatusConflict, s.busyLocked())
+	case s.scanningLocked() != "":
+		writeError(w, http.StatusConflict, s.scanningLocked())
 		return
 	}
 
+	base := s.st.Clone()
 	var message string
 	if req.Entry == "" {
 		if err := s.st.Unassign(req.Path); err != nil {
@@ -109,7 +110,7 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 		message = fmt.Sprintf("%s is now treated as %s.", path.Base(req.Path), entry.Name)
 	}
 
-	if err := s.st.Save(s.target); err != nil {
+	if err := s.saveStateLocked(base); err != nil {
 		writeError(w, http.StatusInternalServerError, "Couldn't save that: "+err.Error())
 		return
 	}

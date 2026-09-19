@@ -475,6 +475,7 @@ td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-spac
   box-shadow: 0 10px 30px rgba(10, 14, 22, 0.18);
   text-align: left;
 }
+.menu-items.pinned { position: fixed; top: auto; z-index: 30; }
 .menu-items a { padding: 6px 10px; border-radius: 6px; color: var(--text); }
 .menu-items a:hover { background: color-mix(in srgb, var(--accent), transparent 88%); text-decoration: none; }
 
@@ -578,6 +579,8 @@ th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
 /* Downloads: a bar along the bottom of the window while anything is queued,
    running or just finished, which opens into the queue. */
 body.has-dock { padding-bottom: 76px; }
+/* Scrolling to something, or tabbing to it, stops short of the bar. */
+html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
 .dock {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   background: var(--surface);

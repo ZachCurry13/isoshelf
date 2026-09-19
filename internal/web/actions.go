@@ -3,7 +3,6 @@ package web
 import (
 	"context"
 	"encoding/json"
-	"maps"
 	"net/http"
 
 	"github.com/ZachCurry13/isoshelf/internal/fetch"
@@ -80,6 +79,7 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	base := st.Clone()
 	client := s.client()
 	fetcher := fetch.New(s.cfg.Version)
 	fetcher.HTTP = s.cfg.HTTP
@@ -99,14 +99,14 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 		},
 	})
 
-	// Stars and replace switches can be changed while a download runs, and
-	// those changes are already on disk: keep them rather than the copy
-	// loaded before the download started.
+	// While this downloaded, other changes may have reached the state file:
+	// files removed or identified, stars. Only this download's own changes
+	// go on top of them (see statefile.go).
 	s.mu.Lock()
+	saveErr := saveMerged(j.target, base, st)
 	if s.st != nil && s.target == j.target {
-		st.Tracks = maps.Clone(s.st.Tracks)
+		state.Merge(base, st, s.st)
 	}
-	saveErr := st.Save(j.target)
 	s.mu.Unlock()
 	if err == nil {
 		err = saveErr
@@ -143,16 +143,23 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 	case s.target == "" || s.st == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
-	case s.busyLocked() != "":
-		writeError(w, http.StatusConflict, s.busyLocked())
+	case s.scanningLocked() != "":
+		writeError(w, http.StatusConflict, s.scanningLocked())
 		return
 	case len(req.Paths) == 0:
 		writeError(w, http.StatusBadRequest, "Nothing to remove.")
 		return
 	}
+	for _, p := range req.Paths {
+		if s.updatingLocked(p) {
+			writeError(w, http.StatusConflict, p+" is being replaced by the download running now. Wait for it to finish.")
+			return
+		}
+	}
 
+	base := s.st.Clone()
 	removed, err := update.Remove(s.target, req.Paths, update.Removal(req.How), s.st, s.cat, s.cfg.Now())
-	if saveErr := s.st.Save(s.target); err == nil {
+	if saveErr := s.saveStateLocked(base); err == nil {
 		err = saveErr
 	}
 	if len(removed) > 0 && s.report != nil {
@@ -179,8 +186,13 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 func (s *Server) emptyRemoved(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if s.target == "" {
+	switch {
+	case s.target == "":
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
+		return
+	case s.busyLocked() != "":
+		// A download can be archiving an old file into that folder right now.
+		writeError(w, http.StatusConflict, s.busyLocked())
 		return
 	}
 	if _, err := update.EmptyRemoved(s.target); err != nil {

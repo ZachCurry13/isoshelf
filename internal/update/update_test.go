@@ -352,3 +352,24 @@ func TestRunUnverifiedSameFilenameArchives(t *testing.T) {
 		t.Errorf("the old file was deleted instead of archived: %q, %v", got, err)
 	}
 }
+
+// The old file can be removed by hand while its replacement downloads. The
+// update still finishes, with nothing left to replace.
+func TestRunOldFileAlreadyGone(t *testing.T) {
+	dir, st := target(t)
+	rc, fc := clients(t, site(t, newImageSHA256()))
+	if err := os.Remove(filepath.Join(dir, "example-1.iso")); err != nil {
+		t.Fatal(err)
+	}
+
+	res, err := Run(context.Background(), Options{
+		Target: dir, Entry: testEntry(t), Client: rc, Fetcher: fc, State: st,
+		Old: []string{"example-1.iso"}, Removal: DeleteNow, Now: func() time.Time { return now },
+	})
+	if err != nil {
+		t.Fatalf("the update failed over a file that was already gone: %v", err)
+	}
+	if len(res.Removed) != 0 || len(res.Kept) != 0 {
+		t.Errorf("removed %v, kept %v", res.Removed, res.Kept)
+	}
+}

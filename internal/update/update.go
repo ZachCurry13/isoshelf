@@ -8,6 +8,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
+	"os"
+	"path/filepath"
 	"slices"
 	"time"
 
@@ -137,6 +140,9 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}
 	if sameName {
 		request.BeforePlace = func() error {
+			if missing(opts.Target, artifact.Filename) {
+				return nil // removed by hand while the new one downloaded
+			}
 			if err := removeFile(opts.Target, artifact.Filename, beforeRemoval, opts.State, opts.Now()); err != nil {
 				return err
 			}
@@ -176,6 +182,9 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		if old == artifact.Filename {
 			continue // the new file took its place
 		}
+		if missing(opts.Target, old) {
+			continue // removed by hand while the new one downloaded
+		}
 		if opts.Removal == Keep || opts.Removal == "" || unverified {
 			result.Kept = append(result.Kept, old)
 			continue
@@ -186,4 +195,15 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		result.Removed = append(result.Removed, old)
 	}
 	return result, nil
+}
+
+// missing reports whether a file has already left the folder: the user can
+// remove or archive it while its replacement is still downloading.
+func missing(target, rel string) bool {
+	local := filepath.FromSlash(rel)
+	if !filepath.IsLocal(local) {
+		return false
+	}
+	_, err := os.Lstat(filepath.Join(target, local))
+	return errors.Is(err, fs.ErrNotExist)
 }

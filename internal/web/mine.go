@@ -34,8 +34,8 @@ func (s *Server) addMyImage(w http.ResponseWriter, r *http.Request) {
 	case s.target == "" || s.st == nil || s.scan == nil:
 		writeError(w, http.StatusBadRequest, "Choose a folder and scan it first.")
 		return
-	case s.busyLocked() != "":
-		writeError(w, http.StatusConflict, s.busyLocked())
+	case s.scanningLocked() != "":
+		writeError(w, http.StatusConflict, s.scanningLocked())
 		return
 	case s.cfg.Dirs.Config == "":
 		writeError(w, http.StatusBadRequest, "There is nowhere to keep your own images.")
@@ -66,11 +66,12 @@ func (s *Server) addMyImage(w http.ResponseWriter, r *http.Request) {
 
 	// The entry matches this exact filename, so the next scan finds it by
 	// itself; tie the file to it now so the page shows it straight away.
+	base := s.st.Clone()
 	if err := s.st.Assign(req.Path, usercat.ID(req.Name), ""); err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	if err := s.st.Save(s.target); err != nil {
+	if err := s.saveStateLocked(base); err != nil {
 		writeError(w, http.StatusInternalServerError, "Couldn't save that: "+err.Error())
 		return
 	}

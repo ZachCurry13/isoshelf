@@ -101,9 +101,9 @@ func (s *Server) queuedLocked(entry string) bool {
 	return false
 }
 
-// busyLocked says why the folder can't be changed right now, or "" when it
-// can. Scans and downloads both write the folder's state, so anything else
-// that does has to wait for them.
+// busyLocked says why a scan can't start or the folder can't be switched
+// right now, or "" when it can: both wait for any scan or download. Changes
+// to single files only wait for a scan (scanningLocked).
 func (s *Server) busyLocked() string {
 	switch {
 	case s.run == nil && len(s.queue) == 0:
