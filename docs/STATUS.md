@@ -11,8 +11,10 @@
 - **Catalog:** 86 entries (60 downloadable, 9 update-check only, 17 link only),
   revision `2026091804`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
-  weekly Claude routine works through `catalog` issues and the wish list in
-  `docs/catalog-sources.md` and opens one pull request.
+  weekly Claude routine ("isoshelf weekly catalog", Mondays 13:00 UTC,
+  https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
+  `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
+  one pull request.
 - **GitHub:** public; issues #1-#7 roadmap, #10 phone layout; Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
