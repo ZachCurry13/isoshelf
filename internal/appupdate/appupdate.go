@@ -18,7 +18,7 @@ const (
 	// Repo is where isoshelf releases are published.
 	Repo = "ZachCurry13/isoshelf"
 
-	checkInterval = 24 * time.Hour
+	checkInterval = time.Hour
 	cacheFile     = "update-check.json"
 )
 

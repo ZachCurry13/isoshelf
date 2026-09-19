@@ -6,6 +6,13 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 will be a redesign of the page, with Settings); the last number rises
 for improvements to what it already does.
 
+## [Unreleased]
+
+### Fixed
+- A new isoshelf release could take up to a day to be noticed, because the
+  answer from GitHub was remembered for 24 hours. It is now remembered for an
+  hour, so opening isoshelf shortly after a release shows it.
+
 ## [v0.2.9] - 2026-09-18
 
 ### Changed

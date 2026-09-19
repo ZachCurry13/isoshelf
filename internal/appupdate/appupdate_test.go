@@ -43,17 +43,17 @@ func TestCheck(t *testing.T) {
 		t.Fatalf("notice = %+v, want v0.2.0 over v0.1.0", n)
 	}
 
-	// Within a day the answer comes from the cache, even for a new client.
+	// Within the hour the answer comes from the cache, even for a new client.
 	latest = "v0.3.0"
-	if n, _ := Check(ctx, newClient(), config, "v0.1.0", t0.Add(23*time.Hour)); n == nil || n.Latest != "v0.2.0" || calls.Load() != 1 {
+	if n, _ := Check(ctx, newClient(), config, "v0.1.0", t0.Add(50*time.Minute)); n == nil || n.Latest != "v0.2.0" || calls.Load() != 1 {
 		t.Errorf("cached: got %+v after %d requests, want v0.2.0 after 1", n, calls.Load())
 	}
-	if n, _ := Check(ctx, newClient(), config, "v0.2.0", t0.Add(time.Hour)); n != nil {
+	if n, _ := Check(ctx, newClient(), config, "v0.2.0", t0.Add(55*time.Minute)); n != nil {
 		t.Errorf("same version: got notice %+v", n)
 	}
 
-	// After a day it asks again.
-	if n, _ := Check(ctx, newClient(), config, "v0.2.0", t0.Add(25*time.Hour)); n == nil || n.Latest != "v0.3.0" || calls.Load() != 2 {
+	// After an hour it asks again.
+	if n, _ := Check(ctx, newClient(), config, "v0.2.0", t0.Add(61*time.Minute)); n == nil || n.Latest != "v0.3.0" || calls.Load() != 2 {
 		t.Errorf("stale cache: got %+v after %d requests, want v0.3.0 after 2", n, calls.Load())
 	}
 }

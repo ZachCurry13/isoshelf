@@ -5,8 +5,7 @@
       "Read(**/dist/**)",
       "Read(**/build/**)",
       "Read(**/portable/**)",
-      "Read(./isoshelf)",
-      "Read(./isoshelf.exe)",
+      "Read(**/*.exe)",
       "Read(**/*.iso)",
       "Read(**/*.ISO)"
     ]

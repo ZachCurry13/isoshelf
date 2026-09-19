@@ -447,7 +447,7 @@ For when a new release breaks something and the user needs the previous one.
 
 - Release builds embed their version (`-ldflags "-X main.version=v0.1.0"`).
   Development builds report `dev` and never check.
-- On start (and daily in server mode), ask the GitHub API for the latest
+- On start (at most once an hour; daily in server mode), ask the GitHub API for the latest
   release of `ZachCurry13/isoshelf`. If it's newer, show a notice with a link
   to the release notes: one line on stderr in the CLI, a banner in the web UI.
   The check can be turned off; the last check time lives in the config folder.
