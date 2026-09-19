@@ -25,7 +25,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 
 ## Working rules
 - Read only the files needed for the task; never read whole directories.
-- Keep source files under ~200 lines; split by responsibility when they grow.
+- Keep source files under ~200 lines; split by responsibility when they grow (a few older ones are still over: split them when you next change them).
 - After finishing a task, update docs/STATUS.md with 3-5 lines: what changed, what's next.
 - Delegate where it makes sense: `explorer` (search and summarize) and `worker` (well-defined, low-risk edits). Do architecture, tricky bugs, and anything that writes to or deletes from a drive yourself.
 - Each batch of changes gets a version (0.0.1 steps) and a CHANGELOG.md section (the release build needs it). Catalog changes also raise its `revision` and get a dated CATALOG-CHANGES.md section.

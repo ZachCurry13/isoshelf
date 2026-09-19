@@ -2,9 +2,31 @@
 
 What changed in each release of isoshelf, newest first.
 
-Version numbers: the middle number rises for new abilities (v0.3.0 will be
-installing older versions and fixing files the boot menu can't read); the last
-number rises for improvements to what it already does.
+Version numbers: the middle number rises for new abilities or a new look
+(v0.3.0 will be a redesign of the page, with Settings); the last number rises
+for improvements to what it already does.
+
+## [v0.2.9] - 2026-09-18
+
+### Changed
+- **Downloads no longer hold everything else up.** While images download you
+  can remove, archive, identify ("What is this?" and "Not right?"), put back
+  and clear older copies, as well as star images and flip replace switches.
+  Only scanning, switching folders and emptying the archive wait for the
+  downloads. Whatever you change is saved beside the downloads' own changes,
+  never over them.
+
+### Fixed
+- The "…" links menu no longer gets cut off near the bottom of the list: it
+  opens upwards when there's no room below, and closes when you scroll.
+- "Show them" on older copies becomes **Show all images** while those are
+  showing, so the list never gets stuck with just them.
+- Archiving a file says where it went ("Images that were here", at the bottom
+  of the page) and opens that section.
+- An update no longer fails when you removed its old file by hand while the
+  new one was downloading.
+- Something you scroll or tab to no longer ends up hidden behind the
+  Downloads bar.
 
 ## [v0.2.8] - 2026-09-18
 
@@ -186,6 +208,7 @@ The first release.
 - Keeps that catalog current from this repository without a new release.
 - Runs as a page in your browser, or from the command line.
 
+[v0.2.9]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.9
 [v0.2.8]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.8
 [v0.2.7]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.7
 [v0.2.6]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.6

@@ -58,6 +58,5 @@ broken is a security report, not a feature request.
 
 ## Versions
 
-isoshelf is before its first release. Fixes go on `main`, and there's no
-supported older version yet. Once there are releases, the newest one is the
-supported one.
+Only the newest release is supported: security fixes go into a new release,
+not into older ones. isoshelf tells you when a newer version is out.

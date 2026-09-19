@@ -1,0 +1,106 @@
+name: catalog check
+
+# Asks each project's own servers whether every image in the catalog is still
+# where the catalog says: the latest version, the checksum file, and the image
+# itself. New versions need no catalog change (isoshelf finds them), so what
+# this catches is a project moving its files.
+#
+# - Every Monday: problems go into one issue labelled "catalog", which is
+#   opened, added to, or closed once everything answers again. The weekly
+#   catalog job reads it a couple of hours later.
+# - On every pull request that changes the catalog: a problem fails the check,
+#   so nothing is merged with a download that doesn't answer.
+
+on:
+  schedule:
+    - cron: "0 11 * * 1" # Mondays 11:00 UTC: 6am in Chicago in summer, 5am in winter
+  pull_request:
+    paths:
+      - internal/catalog/default.toml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: catalog-check-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ISSUE_TITLE: "Catalog check: images that need fixing"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # The only place isoshelf's tooling goes online. It re-records the test
+      # responses as it goes; here those are thrown away with the runner.
+      - name: check every image live
+        id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          go run ./internal/remote/remotetest/record -sizes > check.txt 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          set -e
+          grep -E '^FAIL' check.txt > failures.txt || true
+          grep -E '^note' check.txt > notes.txt || true
+          {
+            echo "## Catalog check"
+            echo
+            echo "$(grep -c '^ok' check.txt) entries answered, $(wc -l < failures.txt) failed."
+            if [ -s failures.txt ]; then
+              echo; echo '```'; cat failures.txt; echo '```'
+            fi
+            if [ -s notes.txt ]; then
+              echo; echo "Redirects (the catalog should use the final address):"
+              echo; echo '```'; cat notes.txt; echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          cat check.txt
+
+      - name: report on the weekly issue
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS: ${{ steps.check.outputs.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --label catalog \
+            --json number,title --jq ".[] | select(.title == \"$ISSUE_TITLE\") | .number" | head -n1)
+          if [ "$STATUS" != "0" ]; then
+            {
+              echo "The weekly check on $(date -u +%F) found catalog entries that don't answer."
+              echo "Each line says which entry and what went wrong ([the full run]($RUN_URL))."
+              echo
+              echo '```'
+              cat failures.txt
+              echo '```'
+              echo
+              echo "The weekly catalog job looks for the new address on the project's own site."
+            } > body.md
+            if [ -n "$existing" ]; then
+              gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body-file body.md
+            else
+              gh issue create --repo "$GITHUB_REPOSITORY" --title "$ISSUE_TITLE" --label catalog --body-file body.md
+            fi
+          elif [ -n "$existing" ]; then
+            gh issue close "$existing" --repo "$GITHUB_REPOSITORY" \
+              --comment "Every entry answered again on $(date -u +%F) ([run]($RUN_URL)). Closing."
+          fi
+
+      - name: fail the pull request
+        if: github.event_name == 'pull_request' && steps.check.outputs.status != '0'
+        run: |
+          echo "Some catalog entries don't answer; the summary of this run lists them."
+          cat failures.txt
+          exit 1

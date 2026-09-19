@@ -148,7 +148,11 @@ alone is not an update.
   share, or Proxmox ISO storage. Each target has a profile, saved in its state.
   The profile only changes which files count as bootable and how deep the scan
   goes:
-  - `ventoy` (default): recursive; bootable = `.iso .wim .img .vhd .vhdx .efi`.
+  - `folder` (default since v0.2.1): recursive; every image counts, including
+    compressed card images (`.img.xz`, `.img.gz`, `.zip`), and nothing is
+    called "not bootable", because nothing boots from a NAS share directly.
+  - `ventoy`: recursive; bootable = `.iso .wim .img .vhd .vhdx .efi`.
+    Suggested automatically when the folder has a `ventoy` folder.
   - `proxmox`: top level only; bootable = `.iso .img`, case-insensitive
     (Proxmox's `$ISO_EXT_RE_0`; it lists nothing else and ignores subfolders).
     Suggested automatically when the path ends in `template/iso`.
@@ -199,8 +203,8 @@ alone is not an update.
   `tmp/`, default target = the folder holding the app folder. Installed:
   `os.UserConfigDir()/isoshelf`.
 - Releases include a portable folder (`isoshelf/` with
-  `isoshelf-windows-amd64.exe`, `isoshelf-linux-amd64`, and a `portable` marker
-  file) that the user copies onto the drive.
+  `isoshelf-windows-amd64.exe`, `isoshelf-linux-amd64`, `isoshelf-linux-arm64`
+  and a `portable` marker file) that the user copies onto the drive.
 - Marker next to the executable -> portable mode: store everything in that
   folder, keep temp files on the drive (downloads are staged in the target, see
   above), and default the target to the drive the app is running from.
@@ -296,8 +300,12 @@ alone is not an update.
   by hand each release; `docs/catalog-sources.md` lists them.
 - Every catalog URL is the final address: tests can't replay redirects, and a
   checksum file that redirects to another host is refused.
-- Later: one file per distro under `catalog/`, validated in CI, plus a weekly
-  workflow that resolves every entry and opens an issue when one breaks.
+- Maintenance (since 2026-09-18): `.github/workflows/catalog-check.yml` checks
+  every entry live each Monday and on every pull request that changes the
+  catalog; the weekly problems go into one `catalog` issue. A scheduled
+  Claude job (a cloud routine) then works through the `catalog` issues and
+  the wish list and opens one pull request for the maintainer to review.
+- Later: one file per distro under `catalog/`, validated in CI.
 
 ## Milestones
 
@@ -326,10 +334,13 @@ alone is not an update.
 5. Adding catalog images that aren't on the target (the "Add" button), and
    a download queue for Add and Update. *Done.*
 6. Growing the catalog without a new release (below). *Done.*
-7. Installing older versions with a hold (below), and Make bootable fix-ups.
-8. Still open: a CLI `isoshelf update` command (the web UI has it), two
-   downloads at once from different hosts, and OpenPGP signature checking.
-**v0.3** - rebuild and repair modes.
+Moved to v0.4: installing older versions with a hold (below), Make bootable
+fix-ups, a CLI `isoshelf update` command (the web UI has it), two downloads at
+once from different hosts, and OpenPGP signature checking.
+
+**v0.3** - a redesign of the page and Settings (decided 2026-09-18; the list
+of decisions is in [STATUS.md](STATUS.md)).
+**v0.4** - the items moved from v0.2 above; then rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release.
@@ -462,7 +473,7 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 ### CLI (`cmd/isoshelf`)
 
 - `scan [flags] [folder]` (offline) and `check [flags] [folder]` (online);
-  flags may come before or after the folder: `--profile ventoy|proxmox`
+  flags may come before or after the folder: `--profile folder|ventoy|proxmox`
   (saved in state), `--json`, `--catalog FILE`, `--no-hash`, `--no-update-check`.
 - The folder defaults to the drive in portable mode and is required otherwise.
 - Catalog: `--catalog`, else `<config>/catalog.toml` if present, else built in.
@@ -489,10 +500,12 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   (folder + profile), `/api/scan`, `/api/check`, `/api/cancel`, `/api/track`
   (keep_old, starred), `/api/update` (queues a download), `/api/queue/move`,
   `/api/queue/drop`, `/api/queue/clear`. One scan, check or download runs at a
-  time, in the background; the page polls `/api/state` while it runs. Anything
-  else that writes the folder's state waits (`busyLocked`), except stars and
-  replace switches during downloads, which go into the state on disk
-  (`saveTrackLocked`) and are carried over when the download saves its own.
+  time, in the background; the page polls `/api/state` while it runs. Scans and
+  switching folders wait for downloads (`busyLocked`); removing, archiving,
+  identifying, putting back and stars only wait for a scan (`scanningLocked`).
+  Nobody saves their whole copy of the folder.s state over the file: each
+  writer keeps the copy from before its change and `state.Merge` carries only
+  that change onto the file as it is on disk (`saveStateLocked`, statefile.go).
 - The folder picker lists subfolders through `/api/browse` (browsers can't see
   the computer's folders), with drives or mount points and recent folders
   (from the mirrors; none in portable mode). The last folder is remembered in

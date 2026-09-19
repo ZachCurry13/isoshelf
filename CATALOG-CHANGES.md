@@ -6,7 +6,8 @@ changed in that list, and when. For changes to isoshelf itself, see
 [CHANGELOG.md](CHANGELOG.md).
 
 Every image here was checked against the project's own site before it went in.
-Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
+Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml);
+requests are looked at every Monday.
 
 ## 2026-09-18
 

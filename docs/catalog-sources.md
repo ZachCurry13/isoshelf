@@ -93,16 +93,57 @@ No usable update source. Download pages:
 
 ## Wish list
 
-Not researched yet. Each one gets checked live before it goes in.
+Still to look at, in order. First the gaps in DistroWatch's 12-month top 50
+(its page-hit ranking, used only as a checklist of what people look for, never
+as a source of addresses or checksums), then earlier requests. Each image is
+checked on the project's own site before it goes in. The weekly catalog job
+works from the top, up to three a week, takes each name off when it's added,
+and moves ruled-out ones to "Ruled out" with the reason.
 
-- **Desktop:** Kubuntu, Xubuntu, Linux Mint MATE and Xfce, LMDE, Fedora
-  Workstation and KDE, Debian live, Zorin OS, elementary OS, openSUSE Tumbleweed
-  and Leap, Manjaro KDE and GNOME, EndeavourOS, Arch Linux.
-- **Trending:** more Bazzite variants (KDE, desktop, NVIDIA), Nobara, Aurora,
-  Bluefin, NixOS.
-- **Server and homelab:** Rocky Linux, AlmaLinux, OPNsense, Talos Linux,
-  Proxmox Mail Gateway and Datacenter Manager.
-- **Rescue and tools:** GParted Live, Clonezilla stable, Memtest86+, ShredOS.
+1. AnduinOS
+2. PikaOS
+3. BigLinux
+4. antiX
+5. elementary OS
+6. Void Linux
+7. KDE neon
+8. Garuda Linux (its build server's folders didn't list on 2026-09-18)
+9. MiniOS
+10. TUXEDO OS
+11. Puppy Linux
+12. AerynOS
+13. PCLinuxOS
+14. SparkyLinux
+15. ZimaOS
+16. Devuan
+17. Mageia
+18. Linux Lite
+19. Solus
+20. pearOS
+21. ChromeOS Flex (Google's own installer; probably link only)
+22. Exton
+23. CentOS Stream
+24. HackerOS
+25. Linuxfx
+26. KDE Linux
+27. Linux Mint MATE
+28. openSUSE Leap
+29. Manjaro KDE and GNOME
+30. Bazzite's KDE, desktop and NVIDIA variants
+31. Aurora
+32. Bluefin
+33. OPNsense
+34. Talos Linux
+35. Proxmox Datacenter Manager
+36. LibreELEC
+37. DietPi
+38. Umbrel
+39. Memtest86+
+40. ShredOS
+
+### Ruled out
+
+Nothing yet.
 
 ## Entry metadata
 
@@ -110,8 +151,9 @@ Besides sources, every entry carries what the page needs to show it: a
 `category` (desktop, gaming, server, boards, security, rescue, windows,
 other; see Kinds below), a `family` so
 one product's tracks group together, `site` and `forum` links, and an `icon`
-(a [Simple Icons](https://simpleicons.org) name) with its `icon_color`. All the
-links were checked on 2026-09-17; a few sites answer scripted requests with 403
+(a [Simple Icons](https://simpleicons.org) name) with its `icon_color`. The links of
+the first 72 entries were checked on 2026-09-17, and those added since on the
+day they went in; a few sites answer scripted requests with 403
 or 406 but are fine in a browser (MX Linux, Kali's forums, Q4OS, Microsoft).
 
 Twenty-one projects have a logo in Simple Icons and ship inside isoshelf;
@@ -209,9 +251,3 @@ included), server and homelab, boards (the Raspberry Pi and other
 single-board computers), security and privacy, rescue and tools, Windows, and
 other. An image written to a Pi's card belongs under boards even when what it
 runs is a server, because that's how people look for it.
-
-### Still to look at
-
-Garuda Linux (its build server's folders didn't list), Bazzite's desktop and
-NVIDIA variants, Aurora, Bluefin, elementary OS, openSUSE Leap, OPNsense,
-Talos Linux, LibreELEC, DietPi, Umbrel, Memtest86+, ShredOS.

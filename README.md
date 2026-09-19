@@ -145,7 +145,9 @@ It currently knows **86 images**, grouped by what they're for:
 - **Windows**, which it recognizes and links to but never downloads.
 
 The list updates itself without a new isoshelf; [CATALOG-CHANGES.md](CATALOG-CHANGES.md)
-says what changed and when. Something missing? [Tell it about the image](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
+says what changed and when. Something missing? [Tell it about the image](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml):
+requests are looked at every Monday, and every image in the list is checked
+live against its project's own servers each week.
 
 Here's `isoshelf check` on a test drive (trimmed, and the NOTE column shortened):
 
@@ -186,7 +188,12 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 - [x] Filters, sorting, logos and links
 - [x] A catalog that keeps itself current
 
-**v0.3 (next):** [`isoshelf update` on the command
+**v0.3 (next): a redesign.** One page with a jump bar, a row of things to do,
+plain-language statuses, a filter menu, a details panel for each image,
+[a page that works on a phone](https://github.com/ZachCurry13/isoshelf/issues/10),
+and Settings: light and dark themes, high contrast, larger text, where each
+folder's records live, and isoshelf updating itself with one click.<br>
+**v0.4:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
@@ -195,8 +202,7 @@ and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and
 [requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
-**Later:** [a page that works on a phone](https://github.com/ZachCurry13/isoshelf/issues/10);
-rebuild a drive from your usual set; server mode (Docker, TrueNAS, Proxmox
+**Later:** rebuild a drive from your usual set; server mode (Docker, TrueNAS, Proxmox
 LXC); a macOS build.
 
 ## Running from a USB drive on Linux
