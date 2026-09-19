@@ -11,7 +11,8 @@
 - **Catalog:** 86 entries (60 downloadable, 9 update-check only, 17 link only),
   revision `2026091804`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
-  weekly Claude routine ("isoshelf weekly catalog", Mondays 13:00 UTC,
+  weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm
+  Chicago, just after the maintainer.s weekly usage resets;
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
@@ -55,12 +56,15 @@ and plain words on the surface; everything adjustable in Settings.
 15. More settings: empty the archive after 7/30/90 days, a download speed
     limit, hide architectures and kinds you don't use, a notification when
     downloads finish.
-16. Server/Docker mode, when it comes: mostly hands off, updating images and
-    the catalog on its own on a schedule.
+. "Images that were here" is split in two. **Archive**: only files still on
+    the drive (size, Put back, Delete for good, Empty archive), with a to-do
+    card and a jump-bar link. **History**: a folded log of images that left
+    (deleted, replaced, vanished) with Download again. "Archive" stays the
+    word everywhere.
 
 ## Next, in order
 
-1. v0.3.0: the redesign (1, 2, 4-9, 11, 15), including the phone layout (#10).
+1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout (#10).
 2. v0.3.x: automatic remembered checks (3); records location and remembered
    folders (10; `internal/settings` has a start); one-click self-update with
    signed releases (13, 14).
