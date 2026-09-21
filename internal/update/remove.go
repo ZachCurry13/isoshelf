@@ -73,6 +73,18 @@ func Remove(target string, files []string, how Removal, st *state.State, cat *ca
 }
 
 // removeFile moves one file into .isoshelf/removed or deletes it.
+// Displace moves the file a new one is about to take the place of out of the
+// way, and records where it went. Keep is not an answer here: the new file
+// needs the name, so the old one has to go somewhere, and the caller must
+// have asked which. Unlike Remove it asks no questions about what the file
+// is - the user is replacing it deliberately, by name.
+func Displace(target, rel string, how Removal, st *state.State, now time.Time) error {
+	if how != MoveAside && how != DeleteNow {
+		return fmt.Errorf("say what should happen to %s first", rel)
+	}
+	return removeFile(target, rel, how, st, now)
+}
+
 func removeFile(target, rel string, how Removal, st *state.State, now time.Time) error {
 	full, err := insideTarget(target, rel)
 	if err != nil {

@@ -243,9 +243,10 @@ function downloading() {
 
 function render() {
   drawn = drawnKey(state);
-  // A scan holds up another scan; switching folders waits for downloads too.
+  // A scan holds up another scan; switching folders waits for downloads and
+  // for a file still arriving from this computer, as the server does.
   const busy = scanning();
-  const engaged = busy || downloading();
+  const engaged = busy || downloading() || uploading();
   $("version").textContent = state.version;
   // The look is settings.js's business, and so is the panel itself.
   applyAppearance(state.appearance);
@@ -401,6 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") { e.preventDefault(); browse($("picker-input").value.trim()); }
   });
   $("picker-use").addEventListener("click", useFolder);
+  wireUpload();
   $("picker-refresh").addEventListener("click", () => browse(pickerPath));
   refresh();
   // Keep "checked 5 min ago" fresh.

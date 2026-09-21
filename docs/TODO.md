@@ -57,11 +57,17 @@ refused for as long as a queue takes. What was learned doing it:
 
 ## Then, in order
 
-4. **Upload from the browser** (from the review doc). Drag a file onto the
-   page, or pick one, and it lands in the folder. Its own step, because it
-   writes to the drive: image files only, inside the chosen folder, nothing
-   overwritten without asking, and the same "what is this file?" pass
-   afterwards that a copied-in file gets.
+4. ~~**Upload from the browser**~~ *(done in v0.3.5. `internal/upload` does
+   the placing, `internal/web/upload.go` the endpoint - the request body is
+   the file itself rather than a form, so it streams to the disk - and
+   `static/upload.js` the page. What was learned: the file goes to
+   `.isoshelf/incoming` and is renamed into place only once all of it has
+   arrived, so a dropped connection costs nothing; and the page's content
+   policy forbids inline styles, so a progress bar's width is set with
+   `.style.width`, never a `style` attribute. It also turned up a bug older
+   than itself - a file replaced by one of the same name disappeared from the
+   archive at the next scan while still using room - fixed in the same
+   release.)*
 5. **Where each folder's records live** (decision 10 in STATUS.md). The
    fields are already in `internal/settings` (`StateLocation`, `StateDir`,
    `InFolder`/`WithApp`/`Elsewhere`); nothing reads them yet, and the method

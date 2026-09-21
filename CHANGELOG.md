@@ -6,6 +6,35 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.3.5] - 2026-09-21
+
+### Added
+- **Add a file from your own computer.** Drag an image anywhere onto the page,
+  or choose one, and it goes straight into the folder - for the images no
+  catalog will ever know: a Windows ISO you downloaded by hand, a recovery
+  image your work gave you, something you built yourself. isoshelf works out
+  what it is afterwards, the same way it does for a file copied in with
+  Explorer. Only image files, only into the folder you chose, and a file of
+  the same name is never written over without asking: the answers are the
+  same two an update offers, *Archive the old one* or *Replace it*. The file
+  arrives in `.isoshelf/incoming` and is only moved into place once all of it
+  is there, so an upload that fails or is stopped leaves the folder exactly
+  as it was.
+
+### Fixed
+- **A file replaced by one of the same name no longer vanishes from the
+  archive.** It was moved aside correctly and kept on the drive, but the next
+  scan dropped the note about it - the folder had that name in it again - so
+  it disappeared from the page while still using room, with no way to restore
+  it or see why the drive was fuller than the list suggested. The archive now
+  lists what is actually waiting in `.isoshelf/removed`, whatever the notes
+  say. This could happen to any image whose filename never changes, like
+  `netboot.xyz.iso`, since v0.2.8.
+- **The archive and the history are told apart by whether the file is still
+  there**, not by whether it can be put back this minute. One waiting under a
+  name a newer file has taken is in the archive, where it can be seen and
+  emptied, and says what to do to get it back.
+
 ## [v0.3.4] - 2026-09-21
 
 ### Fixed
