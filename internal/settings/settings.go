@@ -14,6 +14,25 @@ import (
 // FileName is the settings file inside the config folder.
 const FileName = "ui.json"
 
+// What happens by default to the copy an update replaces. Each image can be
+// given its own answer instead; this is what the ones that haven't been do.
+const (
+	OldReplace = "replace"
+	OldArchive = "archive"
+	OldKeep    = "keep"
+)
+
+// CleanOldFiles turns anything unexpected into "", which means the default,
+// so a hand-edited file can't leave an image with an answer isoshelf doesn't
+// understand.
+func CleanOldFiles(choice string) string {
+	switch choice {
+	case OldReplace, OldArchive, OldKeep:
+		return choice
+	}
+	return ""
+}
+
 // Where isoshelf keeps what it has learned about a folder.
 const (
 	// InFolder is the default: a .isoshelf folder inside the images folder.
@@ -39,6 +58,28 @@ type Settings struct {
 	// for Elsewhere.
 	StateLocation string `json:"state_location,omitempty"`
 	StateDir      string `json:"state_dir,omitempty"`
+	// OldFiles is what happens by default to the copy an update replaces:
+	// OldReplace, OldArchive or OldKeep. An image that has been given its own
+	// answer in its details panel wins over this one.
+	OldFiles string `json:"old_files,omitempty"`
+	// ReplaceAction is what versions before v0.3.1 wrote here, in the words
+	// the download code uses. Load turns it into OldFiles and forgets it.
+	ReplaceAction string `json:"replace_action,omitempty"`
+	// Appearance is how the page looks.
+	Appearance Appearance `json:"appearance,omitzero"`
+}
+
+// Reset returns the settings with every choice back at its default. What is
+// not a choice stays: the folder that is open, the folders pinned in the
+// chooser, and where isoshelf keeps what it has learned. Someone who presses
+// "Reset to defaults" wants the switches back, not their folders forgotten.
+func (s Settings) Reset() Settings {
+	return Settings{
+		Target:        s.Target,
+		Bookmarks:     s.Bookmarks,
+		StateLocation: s.StateLocation,
+		StateDir:      s.StateDir,
+	}
 }
 
 // Load reads the settings, or returns the defaults when there are none. A
@@ -52,6 +93,16 @@ func Load(configDir string) Settings {
 	if data, err := os.ReadFile(filepath.Join(configDir, FileName)); err == nil {
 		json.Unmarshal(data, &s)
 	}
+	// Before v0.3.1 the answer was kept in the download code's words, and
+	// nothing on the page read it. Carry it over once, then let it go.
+	if s.OldFiles == "" && s.ReplaceAction == "move-aside" {
+		s.OldFiles = OldArchive
+	} else if s.OldFiles == "" && s.ReplaceAction == "delete" {
+		s.OldFiles = OldReplace
+	}
+	s.ReplaceAction = ""
+	s.Appearance.Theme = CleanTheme(s.Appearance.Theme)
+	s.OldFiles = CleanOldFiles(s.OldFiles)
 	return s
 }
 

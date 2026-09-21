@@ -69,6 +69,11 @@ isoshelf does that for you:
   download is, and the folder shows how much room is left, counting the
   downloads already queued. An image too big for the space says so instead of
   failing half way through.
+- **Yours to set up.** One Settings panel with a search box: light, dark or
+  whatever your computer is set to, higher contrast, larger text, less
+  movement, and what should happen to the files updates replace. Nothing
+  there has to be touched — the defaults are the sensible ones — and "Reset
+  to defaults" puts every switch back without forgetting your folders.
 - **Learns about new images on its own.** The list of images isoshelf knows is
   data, not code, so it refreshes itself from this repository — you get new
   distributions without installing a new isoshelf. It's a checkbox you can
@@ -200,9 +205,12 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 row of things to do, plain-language statuses, one filter menu with chips, a
 details panel for each image, Archive and History apart, and
 [a layout for phones](https://github.com/ZachCurry13/isoshelf/issues/10).<br>
-**v0.3.1 (next): Settings.** Light and dark themes, high contrast, larger
-text, checking for updates by itself, where each folder's records live, and
-isoshelf updating itself with one click.<br>
+**v0.3.1: Settings.** *Released 2026-09-21:* one searchable Settings panel —
+light and dark themes, higher contrast, larger text, less movement, what
+happens to the files updates replace, and Reset to defaults.<br>
+**v0.3.2 (next):** checking for updates by itself and remembering the answer
+for a day, where each folder's records live, and isoshelf updating itself
+with one click.<br>
 **v0.4:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),

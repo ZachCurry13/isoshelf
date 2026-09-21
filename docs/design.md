@@ -503,7 +503,7 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   time, in the background; the page polls `/api/state` while it runs. Scans and
   switching folders wait for downloads (`busyLocked`); removing, archiving,
   identifying, putting back and stars only wait for a scan (`scanningLocked`).
-  Nobody saves their whole copy of the folder.s state over the file: each
+  Nobody saves their whole copy of the folder's state over the file: each
   writer keeps the copy from before its change and `state.Merge` carries only
   that change onto the file as it is on disk (`saveStateLocked`, statefile.go).
 - The folder picker lists subfolders through `/api/browse` (browsers can't see
@@ -536,12 +536,41 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   I got, the other what could I add. Each entry shows about how big its
   download is, and one too big for the room left says so instead of failing
   part way through.
+- **Settings** (v0.3.1) is one panel, opened from the top bar and closed with
+  Escape, holding everything isoshelf lets a person change. Each setting is
+  one entry in `SETTING_GROUPS` (`internal/web/static/settings.js`): its name,
+  a line saying what it does, the words a search should find it by, and the
+  control. The search box matches all of those, so nothing has to be listed
+  twice. Settings and the details panel share a place on the screen, so
+  opening one closes the other.
+  - The answers live in `<config>/ui.json`, which `internal/settings` owns.
+    The web server keeps no second copy of the fields: when it did, a switch
+    flicked on the page erased what the command line had written. `Load`
+    cleans anything it doesn't understand and carries the pre-v0.3.1
+    `replace_action` over to `old_files`.
+  - `POST /api/settings` takes one answer at a time - every field is a
+    pointer, so absent means "leave it alone" - and answers with the whole
+    page state. `{"reset": true}` puts the choices back to their defaults and
+    keeps what isn't a choice: the folder in use, the pinned folders and
+    where records are kept.
+  - How it looks is four attributes on `<html>`: `data-theme`,
+    `data-contrast`, `data-text` and `data-motion`. The colours are written
+    once with `light-dark()`, so a theme is `color-scheme` and nothing else,
+    and sizes are in `rem` against one number on `:root`, so "larger text"
+    raises all of them together. A copy of the answers is kept in the
+    browser's localStorage as well, so the page opens in the right colours
+    instead of changing under the reader a moment later; isoshelf is still
+    the one that remembers.
+  - The panel is redrawn only when what it shows changes (`settingsKey`),
+    because the page asks how downloads are doing twice a second and a redraw
+    would take the focus out of the control someone is using.
 - The folder's free space (`internal/space`) sits next to the scan time. It is
   read before the server's lock is taken and cached for five seconds, because
   the page polls twice a second during a scan and a NAS answers over the
   network. A folder that won't say leaves the line out.
-- Each row has a "…" menu with the download page, website, forum and release
-  notes, an Update button when there is one, and Remove.
+- A row's links (download page, website, forum, release notes), its Update
+  button and Remove live in the details panel; the "…" menu the rows used to
+  carry went with the v0.3.0 redesign.
 - Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
   with `go run ./internal/web/logos/fetch`. `/logo/{slug}` serves those, then
   ones fetched earlier from `<config>/logos`, then fetches from the CDN once

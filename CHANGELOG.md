@@ -3,8 +3,43 @@
 What changed in each release of isoshelf, newest first.
 
 Version numbers: the middle number rises for new abilities or a new look
-(v0.3.0 was the redesign; Settings follows in v0.3.1); the last number rises
-for improvements to what it already does.
+(v0.3.0 was the redesign, v0.3.1 Settings); the last number rises for
+improvements to what it already does.
+
+## [v0.3.1] - 2026-09-21
+
+Settings. Everything isoshelf lets you change is in one panel now, with a
+search box, and nothing in it has to be touched for isoshelf to work.
+
+### Added
+- **A Settings panel**, from the button in the top bar or by pressing Escape
+  to close it again. Each setting says what it is and what it does, and the
+  search box finds one by name or by what it's for ("dark", "text", "bug").
+- **How it looks:** *Light*, *Dark* or *Match this computer*; *Higher
+  contrast* for a bright room or tired eyes; *Larger text*, a size up for the
+  whole page without the browser's zoom; and *Less movement*, which stops the
+  spinners and bars while isoshelf works.
+- **What happens to the file an update replaces** — replace it, move it to
+  the archive, or keep both — for every image that hasn't been given its own
+  answer in its panel. This setting existed in the file but nothing read it;
+  now it's the one the page starts from.
+- **Where things are:** the folder isoshelf is watching, with the button to
+  change it, and isoshelf's own folder, so nobody has to hunt for where the
+  settings live.
+- **Help:** the version you're running, whether a newer one is out, and
+  *Report a bug*, which opens a new issue with the version already filled in.
+  Nothing is sent until you press send yourself.
+- **Reset to defaults**, which puts every switch back and keeps your folder,
+  your pinned folders and everything isoshelf has learned about your images.
+
+### Changed
+- The colours are written once instead of twice, so choosing a theme is the
+  page following your choice rather than your computer's.
+- Sizes on the page are measured against one number, which is what lets
+  *Larger text* move all of them together.
+- The settings file has one owner (`internal/settings`) rather than a second
+  copy of the fields in the web server. A choice made on the page could
+  quietly erase one made on the command line; it can't now.
 
 ## [v0.3.0] - 2026-09-21
 

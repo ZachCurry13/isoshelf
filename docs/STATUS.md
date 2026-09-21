@@ -2,7 +2,7 @@
 
 ## Where things stand (2026-09-18)
 
-- **Released:** v0.3.0 (the redesign; Settings follows in v0.3.1). Scans a folder, works out each image, checks for
+- **Released:** v0.3.1 (Settings; v0.3.0 was the redesign). Scans a folder, works out each image, checks for
   updates online, downloads and verifies (resumable, queued one at a time,
   reorderable), replaces or archives old files, identifies unknown files, and
   keeps a catalog that updates itself from this repository. While downloads
@@ -12,7 +12,7 @@
   revision `2026091804`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm
-  Chicago, just after the maintainer.s weekly usage resets;
+  Chicago, just after the maintainer's weekly usage resets;
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
@@ -64,10 +64,13 @@ and plain words on the surface; everything adjustable in Settings.
 
 ## Next, in order
 
-1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout (#10).
-2. v0.3.x: automatic remembered checks (3); records location and remembered
-   folders (10; `internal/settings` has a start); one-click self-update with
-   signed releases (13, 14).
+1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout
+   (#10). *Done.* v0.3.1: the Settings panel (9). *Done.*
+2. v0.3.x: automatic remembered checks (3, next); records location and
+   remembered folders (10; `internal/settings` holds the fields already);
+   the rest of decision 15 (empty the archive after so many days, a download
+   speed limit, hiding kinds and architectures) now that Settings has a home
+   for them; one-click self-update with signed releases (13, 14).
 3. v0.4.0: `isoshelf update` (#1), older versions with a hold (#2), Make
    bootable (#3), signatures on images (#5), two downloads at once (#4),
    portable test (#7).
@@ -75,6 +78,16 @@ and plain words on the surface; everything adjustable in Settings.
 
 ## Latest change (2026-09-21)
 
+- v0.3.1 shipped Settings: one searchable panel (theme, higher contrast,
+  larger text, less movement, what happens to the files updates replace,
+  where things are, Report a bug, Reset to defaults). Settings live in
+  `<config>/ui.json`, which `internal/settings` now owns alone - the web
+  server's second copy of the fields could erase what the command line
+  wrote. The page's colours are written once with `light-dark()` and its
+  sizes in `rem`, which is what makes a theme and larger text one line each.
+  The panel is its own file, `internal/web/static/settings.js`.
+- Known debt: `app.js` is still ~2,550 lines against the ~200-line rule.
+  New work went beside it rather than into it; splitting it is its own step.
 - v0.3.0 shipped the new look: jump bar, to-do cards, plain statuses with
   explanations, one filter menu with chips, slim rows, a details panel,
   Archive and History apart, a per-image choice for old files, a checklist
@@ -89,6 +102,7 @@ and plain words on the surface; everything adjustable in Settings.
   "Make bootable" starts with renaming only; no notification when downloads
   finish; phone access and the QR code come with Docker; isoshelf will not
   empty a NAS recycle bin, only explain it.
-- Next: v0.3.1 Settings (search, groups, defaults with Reset, Report a bug;
-  theme, high contrast, larger text, less motion) and automatic remembered
-  checking.
+- Next: v0.3.2, checking by itself (decision 3) - on open and after a scan,
+  the answer remembered for a day and written down so a restart keeps it, one
+  Refresh button, and the switch for it in Settings, which is now there to
+  put it in.

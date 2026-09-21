@@ -37,7 +37,6 @@ var staticFiles embed.FS
 const (
 	cookieName    = "isoshelf_token"
 	requestHeader = "X-Isoshelf"
-	settingsFile  = "ui.json"
 )
 
 // Config is what the server needs.

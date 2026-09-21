@@ -197,6 +197,9 @@ function render() {
   drawn = drawnKey(state);
   const busy = Boolean(state.run);
   $("version").textContent = state.version;
+  // The look is settings.js's business, and so is the panel itself.
+  applyAppearance(state.appearance);
+  renderSettings();
 
   const update = $("app-update");
   update.hidden = !state.app_update;
@@ -1212,7 +1215,7 @@ function readableBrand(color) {
   const value = parseInt(color.slice(1), 16);
   const [r, g, b] = [(value >> 16) & 255, (value >> 8) & 255, value & 255];
   const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-  const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const dark = darkNow();
   if (dark && luminance < 0.25) return "#c9d2df";
   if (!dark && luminance > 0.9) return "#5f6878";
   return color;
@@ -2132,7 +2135,9 @@ document.addEventListener("DOMContentLoaded", () => {
   $("dock-clear").addEventListener("click", clearFinished);
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape" || document.querySelector("dialog[open]")) return;
-    if (detailsOpen) {
+    if (settingsOpen) {
+      closeSettings();
+    } else if (detailsOpen) {
       closeDetails();
     } else if (dockOpen) {
       dockOpen = false;
@@ -2196,6 +2201,7 @@ function detailsKey(item) {
 }
 
 function openDetails(item) {
+  if (settingsOpen) closeSettings();
   detailsOpen = detailsKey(item);
   renderDetails();
   renderRows();
@@ -2330,7 +2336,8 @@ function sameName(item) {
 
 function choiceFor(item) {
   const track = (item.entry && state.tracks[item.entry]) || {};
-  let choice = track.old_files || (track.keep_old ? "keep" : "replace");
+  const usually = state.old_files || "replace";
+  let choice = track.old_files || (track.keep_old ? "keep" : usually);
   if (choice === "keep" && sameName(item)) choice = "archive";
   return choice;
 }

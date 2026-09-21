@@ -8,6 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='5' width='26' height='5' rx='2' fill='%232f6fed'/%3E%3Crect x='3' y='13.5' width='26' height='5' rx='2' fill='%2360a5fa'/%3E%3Crect x='3' y='22' width='26' height='5' rx='2' fill='%2393c5fd'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/static/app.css">
 <script src="/static/app.js" defer></script>
+<script src="/static/settings.js" defer></script>
 </head>
 <body>
 <header class="topbar">
@@ -21,6 +22,9 @@
     <span class="version" id="version"></span>
   </div>
   <a id="app-update" class="app-update" hidden target="_blank" rel="noopener noreferrer"></a>
+  <button type="button" class="btn small settings-button" id="settings-open" aria-expanded="false">
+    <span class="gear" aria-hidden="true">⚙</span> Settings
+  </button>
 </header>
 
 <nav class="jump" id="jump" aria-label="Sections">
@@ -203,6 +207,27 @@
     <button type="button" class="btn small icon" id="details-close" aria-label="Close">✕</button>
   </header>
   <div class="details-body" id="details-body"></div>
+</aside>
+
+<!-- Settings: everything isoshelf lets you change, in one place. -->
+<aside class="details settings" id="settings" hidden aria-labelledby="settings-title">
+  <header class="details-head">
+    <div class="details-title">
+      <div>
+        <h2 id="settings-title">Settings</h2>
+        <div class="muted">Sensible defaults, all of them yours to change</div>
+      </div>
+    </div>
+    <button type="button" class="btn small icon" id="settings-close" aria-label="Close">✕</button>
+  </header>
+  <div class="settings-find">
+    <input type="search" id="settings-search" placeholder="Search settings…" aria-label="Search settings">
+  </div>
+  <div class="details-body" id="settings-body"></div>
+  <footer class="settings-foot">
+    <button type="button" class="btn small" id="settings-reset">Reset to defaults</button>
+    <span class="muted" id="settings-where"></span>
+  </footer>
 </aside>
 
 <dialog id="ask" class="ask" aria-labelledby="ask-title">

@@ -7,6 +7,7 @@ import (
 
 	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	"github.com/ZachCurry13/isoshelf/internal/check"
+	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/space"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 	"github.com/ZachCurry13/isoshelf/internal/update"
@@ -27,12 +28,17 @@ type stateJSON struct {
 	UsualSet  []string               `json:"usual_set"`
 	Recent    []string               `json:"recent_targets"`
 	Bookmarks []string               `json:"bookmarks"`
-	// ReplaceAction is the answer the user usually gives when an update
-	// replaces a file.
-	ReplaceAction string            `json:"replace_action,omitempty"`
-	Removed       removedJSON       `json:"removed"`
-	Catalog       catalogStatusJSON `json:"catalog"`
-	AppUpdate     *appupdate.Notice `json:"app_update,omitempty"`
+	// OldFiles is what happens to the copy an update replaces, for images
+	// that haven't been given their own answer.
+	OldFiles string `json:"old_files,omitempty"`
+	// Appearance is how the page should look: the answers in Settings.
+	Appearance settings.Appearance `json:"appearance"`
+	// ConfigDir is where isoshelf keeps its own files. Settings shows it so
+	// nobody has to hunt for it.
+	ConfigDir string            `json:"config_dir,omitempty"`
+	Removed   removedJSON       `json:"removed"`
+	Catalog   catalogStatusJSON `json:"catalog"`
+	AppUpdate *appupdate.Notice `json:"app_update,omitempty"`
 	// ReportURL is where a missing image can be reported.
 	ReportURL string `json:"report_url,omitempty"`
 	// Space is the room left in the folder, when the disk says.
@@ -143,22 +149,25 @@ func (s *Server) removedInfo(target string) removedJSON {
 
 // stateLocked builds the page state; s.mu must be held.
 func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
+	saved := s.loadSettings()
 	out := stateJSON{
-		Version:       s.cfg.Version,
-		Portable:      s.cfg.Dirs.Portable,
-		Target:        s.target,
-		Error:         s.lastErr,
-		Warnings:      nonNil(s.warnings),
-		Tracks:        map[string]state.Track{},
-		UsualSet:      []string{},
-		Recent:        recent,
-		Bookmarks:     nonNil(s.loadSettings().Bookmarks),
-		ReplaceAction: s.loadSettings().ReplaceAction,
-		Removed:       s.removedInfo(s.target),
-		Catalog:       s.catalogStatusLocked(),
-		ReportURL:     "https://github.com/" + appupdate.Repo + "/issues/new",
-		AppUpdate:     s.notice,
-		Downloads:     s.downloadsLocked(),
+		Version:    s.cfg.Version,
+		Portable:   s.cfg.Dirs.Portable,
+		Target:     s.target,
+		Error:      s.lastErr,
+		Warnings:   nonNil(s.warnings),
+		Tracks:     map[string]state.Track{},
+		UsualSet:   []string{},
+		Recent:     recent,
+		Bookmarks:  nonNil(saved.Bookmarks),
+		OldFiles:   saved.OldFiles,
+		Appearance: saved.Appearance,
+		ConfigDir:  s.cfg.Dirs.Config,
+		Removed:    s.removedInfo(s.target),
+		Catalog:    s.catalogStatusLocked(),
+		ReportURL:  "https://github.com/" + appupdate.Repo + "/issues/new",
+		AppUpdate:  s.notice,
+		Downloads:  s.downloadsLocked(),
 	}
 	if room.Known() {
 		out.Space = &spaceJSON{Free: room.Free, Total: room.Total}
