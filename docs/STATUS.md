@@ -89,6 +89,13 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-21)
 
+- Decided 2026-09-21: **v0.4.0 includes redoing the page.** The maintainer's
+  words were "clean up the UI - make it look like something I could show an
+  investor", driven by the page not looking modern or polished rather than by
+  any particular screen, and starting fresh rather than from a list of
+  complaints. Not before the 0.3.x items, which stay the priority. Higher
+  contrast, larger text, less movement and the phone layout all have to
+  survive it.
 - v0.3.4 splits the one `s.run` slot a scan and a download shared into
   `s.scanning` and `s.downloading`, so a scan or Refresh is no longer refused
   while a queue runs and the page shows both at once. Switching folders and
