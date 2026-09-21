@@ -283,13 +283,3 @@ func (e *Entry) Updates() string {
 	}
 	return UpdatesCheckOnly
 }
-
-// DefaultBytes returns the catalog file built into the binary, so a
-// downloaded one can be compared against it.
-func DefaultBytes() []byte {
-	data, err := defaultFS.ReadFile("default.toml")
-	if err != nil {
-		panic("catalog: the built-in catalog is missing: " + err.Error())
-	}
-	return data
-}

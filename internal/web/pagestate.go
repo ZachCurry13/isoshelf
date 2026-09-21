@@ -64,14 +64,13 @@ type removedJSON struct {
 }
 
 type runJSON struct {
-	Kind    string    `json:"kind"`
-	Stage   string    `json:"stage"`
-	File    string    `json:"file,omitempty"`
-	Done    int64     `json:"done"`
-	Total   int64     `json:"total"`
-	Item    int       `json:"item,omitempty"`
-	Items   int       `json:"items,omitempty"`
-	Started time.Time `json:"started"`
+	Kind  string `json:"kind"`
+	Stage string `json:"stage"`
+	File  string `json:"file,omitempty"`
+	Done  int64  `json:"done"`
+	Total int64  `json:"total"`
+	Item  int    `json:"item,omitempty"`
+	Items int    `json:"items,omitempty"`
 }
 
 func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
@@ -185,14 +184,13 @@ func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 	}
 	if s.run != nil {
 		out.Run = &runJSON{
-			Kind:    s.run.kind,
-			Stage:   string(s.run.progress.Stage),
-			File:    s.run.progress.File,
-			Done:    s.run.progress.Done,
-			Total:   s.run.progress.Total,
-			Item:    s.run.progress.Item,
-			Items:   s.run.progress.Items,
-			Started: s.run.started,
+			Kind:  s.run.kind,
+			Stage: string(s.run.progress.Stage),
+			File:  s.run.progress.File,
+			Done:  s.run.progress.Done,
+			Total: s.run.progress.Total,
+			Item:  s.run.progress.Item,
+			Items: s.run.progress.Items,
 		}
 	}
 	return out

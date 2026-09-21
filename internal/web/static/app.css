@@ -228,7 +228,6 @@ input[type="search"], input[type="text"], select {
   cursor: pointer;
 }
 .chip .count { font-weight: 700; font-variant-numeric: tabular-nums; }
-.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
 .chip[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
 
 /* Status colors */
@@ -241,7 +240,6 @@ input[type="search"], input[type="text"], select {
 .s-missing { --fg: var(--missing-fg); --bgc: var(--missing-bg); }
 .s-manual { --fg: var(--manual-fg); --bgc: var(--manual-bg); }
 .s-muted { --fg: var(--muted-fg); --bgc: var(--muted-bg); }
-.chip .dot { color: var(--fg); }
 
 .pill {
   display: inline-block;
@@ -277,14 +275,13 @@ tbody tr:hover td { background: var(--surface-2); }
 tbody tr:last-child td { border-bottom: none; }
 
 .col-star { width: 36px; padding-right: 0; }
-.col-replace { text-align: center; }
 td.replace { text-align: center; }
 
 .name { font-weight: 600; }
 .name a { color: inherit; }
 .name a:hover { color: var(--accent); }
 .arch { margin-left: 6px; font-size: 0.7857rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; font-weight: 500; }
-td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .latest-new { font-weight: 650; color: var(--update-fg); }
 .file { font-family: var(--mono); font-size: 0.8929rem; overflow-wrap: break-word; min-width: 170px; }
 .size { color: var(--muted); font-size: 0.8571rem; }
@@ -494,10 +491,6 @@ td.version-cell, td.latest-cell { font-variant-numeric: tabular-nums; white-spac
 .menu-items a:hover { background: color-mix(in srgb, var(--accent), transparent 88%); text-decoration: none; }
 
 /* The list of images that were here needs more room than the catalog grid. */
-.past-list { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
-.past-list li { flex-wrap: wrap; row-gap: 8px; }
-.past-list .info { flex: 1 1 220px; }
-.past-list .kind { overflow-wrap: anywhere; }
 
 /* "What is this file?" */
 
@@ -556,7 +549,6 @@ th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
 th.sortable:hover { color: var(--text); }
 th.sortable.sorted::after { content: " ▲"; font-size: 0.7143rem; color: var(--accent); }
 th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
-.size-cell { white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
 
 .updates {
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
@@ -578,7 +570,6 @@ th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
 .caution { color: var(--warn-fg, #b45309); margin: 0 4px; cursor: help; }
 .legend { margin: 10px 16px 4px; font-size: 0.9286rem; color: var(--muted); }
 .legend .caution { margin-left: 0; }
-.added-cell { white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 /* A name wraps as a whole; its badges go on the line below, never dangling
    off the end of a wrapped name. */

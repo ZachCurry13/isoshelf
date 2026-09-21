@@ -21,7 +21,9 @@ func readStatic(t *testing.T, name string) string {
 // scripts are the page's own JavaScript files, in the order index.html loads
 // them. Everything below checks all of them: a mistake in the newer file
 // leaves just as blank a page as one in the older.
-var scripts = []string{"app.js", "settings.js"}
+var scripts = []string{
+	"app.js", "images.js", "details.js", "downloads.js", "actions.js", "folders.js", "archive.js", "settings.js",
+}
 
 // There is no JavaScript engine in these tests, so the page scripts can't be
 // run. These checks catch the mistakes that would otherwise only show up as a

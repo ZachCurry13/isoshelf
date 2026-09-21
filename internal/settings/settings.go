@@ -121,16 +121,3 @@ func Save(configDir string, s Settings) error {
 	}
 	return os.WriteFile(filepath.Join(configDir, FileName), data, 0o644)
 }
-
-// StateDirFor returns the folder a target's state belongs in: "" for inside
-// the folder itself, which is what state.Load and state.Save expect by
-// default. appDir is where the isoshelf program lives.
-func (s Settings) StateDirFor(appDir string) string {
-	switch s.StateLocation {
-	case WithApp:
-		return appDir
-	case Elsewhere:
-		return s.StateDir
-	}
-	return ""
-}
