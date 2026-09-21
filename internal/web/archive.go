@@ -3,7 +3,9 @@ package web
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 	"path"
+	"path/filepath"
 	"slices"
 	"time"
 
@@ -20,7 +22,14 @@ type archiveItemJSON struct {
 	Size    int64     `json:"size"`
 	Gone    string    `json:"gone"`
 	GoneAt  time.Time `json:"gone_at"`
-	// Restorable is true while the file still waits in .isoshelf/removed.
+	// OnDisk is true while the file itself still waits in .isoshelf/removed,
+	// using room. That is what tells the archive from the history: the
+	// history is only a record of images that have left.
+	OnDisk bool `json:"on_disk"`
+	// Restorable is true when it can go back now. A file whose name has been
+	// taken by the one that replaced it is still in the archive, still uses
+	// room and can still be emptied - it just can't be put back until that
+	// name is free.
 	Restorable bool `json:"restorable"`
 	// Downloadable is true when isoshelf can fetch this image again.
 	Downloadable bool   `json:"downloadable"`
@@ -39,13 +48,22 @@ func (s *Server) getArchive(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	waiting, _, _ := update.Removed(s.target)
+	noted := map[string]bool{}
+	// A file can only go back if its name is free: restore won't put it on
+	// top of whatever is there now, so the page mustn't offer to.
+	free := func(name string) bool {
+		_, err := os.Lstat(filepath.Join(s.target, name))
+		return err != nil
+	}
 
 	for _, past := range s.st.Archive() {
+		noted[path.Base(past.Path)] = true
 		item := archiveItemJSON{
 			Path: past.Path, Entry: past.Entry, Name: past.Path, Version: past.Version,
 			Size: past.Size, Gone: past.Gone, GoneAt: past.GoneAt,
-			Restorable: past.Gone == state.GoneMovedAside && slices.Contains(waiting, path.Base(past.Path)),
+			OnDisk: past.Gone == state.GoneMovedAside && slices.Contains(waiting, path.Base(past.Path)),
 		}
+		item.Restorable = item.OnDisk && free(path.Base(past.Path))
 		if e := s.cat.Entry(past.Entry); e != nil {
 			item.Name = e.Name
 			item.Page, item.Icon, item.IconColor = e.Page, e.Icon, e.IconColor
@@ -53,6 +71,25 @@ func (s *Server) getArchive(w http.ResponseWriter, r *http.Request) {
 		}
 		items = append(items, item)
 	}
+
+	// Files waiting in .isoshelf/removed that no note mentions. A file
+	// replaced by one of the same name loses its note at the next scan,
+	// because that path is in the folder again - but the old file is still on
+	// the disk, still using room, and still the one thing the archive exists
+	// to let someone undo. Listing what is actually there keeps the archive
+	// honest about both.
+	for _, name := range waiting {
+		if noted[name] {
+			continue
+		}
+		item := archiveItemJSON{Path: name, Name: name, Gone: state.GoneMovedAside, OnDisk: true, Restorable: free(name)}
+		if info, err := os.Stat(filepath.Join(s.target, state.DirName, update.RemovedDir, name)); err == nil {
+			item.Size, item.GoneAt = info.Size(), info.ModTime()
+		}
+		items = append(items, item)
+	}
+	// Most recent first, however the item got here.
+	slices.SortStableFunc(items, func(a, b archiveItemJSON) int { return b.GoneAt.Compare(a.GoneAt) })
 	writeJSON(w, http.StatusOK, map[string]any{"items": items})
 }
 

@@ -11,7 +11,7 @@
 async function renderArchive() {
   const past = await archiveItems();
   if (!past) return;
-  const here = past.filter((item) => item.restorable);
+  const here = past.filter((item) => item.on_disk);
   $("archive").hidden = here.length === 0;
   $("archive-count").textContent = here.length
     ? `${plural(here.length, "file")} · ${formatBytes(here.reduce((sum, i) => sum + (i.size || 0), 0))}`
@@ -23,7 +23,7 @@ async function renderArchive() {
 async function renderHistory() {
   const past = await archiveItems();
   if (!past) return;
-  const gone = past.filter((item) => !item.restorable);
+  const gone = past.filter((item) => !item.on_disk);
   $("history").hidden = gone.length === 0;
   $("jump-history").hidden = gone.length === 0;
   $("history-count").textContent = plural(gone.length, "image");
@@ -45,11 +45,17 @@ async function archiveItems() {
   }
 }
 
-function pastItem(item, restorable) {
+function pastItem(item, onDisk) {
   const when = item.gone_at ? timeAgo(item.gone_at) : "";
-  const detail = [GONE_LABEL[item.gone] || item.gone, when, formatBytes(item.size)].filter(Boolean).join(" · ");
+  const parts = [GONE_LABEL[item.gone] || item.gone, when, formatBytes(item.size)];
+  if (onDisk && !item.restorable) {
+    // It's here and it's using room, but its name is taken by the file that
+    // replaced it, so there is nowhere to put it back to yet.
+    parts.push("a newer file has its name — remove that one to put this back");
+  }
+  const detail = parts.filter(Boolean).join(" · ");
   const buttons = [];
-  if (restorable) {
+  if (onDisk && item.restorable) {
     buttons.push(el("button", {
       type: "button", class: "btn small primary", disabled: scanning(),
       title: "Move it back into the folder",
@@ -58,7 +64,7 @@ function pastItem(item, restorable) {
   }
   // A file still in the archive doesn't need downloading again: restoring it
   // is instant, costs nothing and gives back the very file that was there.
-  if (item.downloadable && !restorable) {
+  if (item.downloadable && !onDisk) {
     buttons.push(jobButton(item.entry, el("button", {
       type: "button", class: "btn small",
       title: "Download the current version again",

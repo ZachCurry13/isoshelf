@@ -222,6 +222,9 @@ says how much room the images use and how much the queue will download.<br>
 is no longer refused while images download - the two run side by side, and
 the page shows both. A scan also stops being able to undo the record of a
 file a download had just placed.<br>
+**v0.3.5: add a file from your computer.** *2026-09-21:* drag an image onto
+the page, or choose one, and it lands in the folder - for the images no
+catalog knows. Nothing is written over without asking.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.4:** [`isoshelf update` on the command
