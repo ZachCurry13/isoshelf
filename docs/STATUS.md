@@ -65,6 +65,12 @@ and plain words on the surface; everything adjustable in Settings.
     (deleted, replaced, vanished) with Download again. "Archive" stays the
     word everywhere.
 
+## Where to pick up
+
+`docs/TODO.md` is the running work list: what to do next, in order, with what
+a cold session needs to know before starting each one. This file stays the
+record of where things stand and what was decided.
+
 ## Next, in order
 
 1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout
@@ -94,6 +100,12 @@ and plain words on the surface; everything adjustable in Settings.
   keep the plain name, since that is the one run from the drive and the one
   self-update will replace in place. Anything that downloads an update must
   match its asset by pattern, not by an exact name.
+- Six specialized agents now live in `.claude/agents/`: `explorer` (find
+  things, haiku), `worker` (small specified edits), `page` (the web page),
+  `words` (UI text and docs), `bugs` (reproduce and diagnose), `core` (the Go
+  that reads and reasons). Architecture, anything writing to a drive, and
+  decisions stay with the main session. CLAUDE.md also says plainly when
+  delegating costs more than it saves.
 - Still owed from that review: scanning and checking while downloads run
   (needs the server's single run slot split in two - its own step, v0.3.4),
   and uploading a file to the drive from the browser (its own step too, since

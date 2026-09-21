@@ -108,7 +108,9 @@ Tests never touch a real drive (temp folders only) and never reach the network
 ## Changing the code
 
 [`docs/design.md`](docs/design.md) is the design document: the hard rules, how the four
-stages fit together, and why things are the way they are. Read the hard rules
+stages fit together, and why things are the way they are.
+[`docs/TODO.md`](docs/TODO.md) is what's being worked on next, if you'd like
+to pick something up. Read the hard rules
 before changing anything that deletes, replaces or downloads a file. If a
 change makes one of them wrong, say so in the pull request — the rule can
 change, but not by accident.
