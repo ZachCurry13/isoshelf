@@ -111,6 +111,18 @@ textContent and never as HTML.
 Whatever is proposed, the maintainer wants to be asked about anything where
 more than one answer is good, rather than shown a finished redesign.
 
+`docs/design-audit.md` is a critique of the page written before any of this
+was built, with seven such questions already worked out and a staged plan.
+Start there; it is a proposal, not a decision.
+
+It also turned up **two live bugs**, small enough to fix in a 0.3.x release
+rather than wait:
+
+- The Filter menu runs off the **left** edge at phone width (390px).
+  `placeMenu` clamps against the right edge only.
+- **Escape doesn't close the details panel's "…" menu.** Settings, the
+  details panel and the dock are wired to Escape; `details.menu` isn't.
+
 ## Worth knowing before you start
 
 - **The page is eight scripts**, not one. `app.js` was 2,544 lines until
