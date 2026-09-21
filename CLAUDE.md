@@ -64,5 +64,20 @@ people have downloaded. Work never happens directly on it.
   a bug that needs reproducing from scratch, a batch of wording. Keep a small
   edit in hand.
 - Each batch of changes gets a version (0.0.1 steps) and a CHANGELOG.md section (the release build needs it). Catalog changes also raise its `revision` and get a dated CATALOG-CHANGES.md section.
+- **Nothing in the repository may say something that is no longer true, and
+  this is checked before every push, not later.** People read this repository
+  on GitHub without cloning it, so a stale sentence is the product as far as
+  they are concerned. Before pushing, re-read whatever the change affects -
+  README, `docs/*.md`, `CLAUDE.md`, issue templates, workflow text - and make
+  it agree with what the code now does: version numbers, counts (catalog
+  entries, sample-drive files, script names), file names, and anything
+  described as "next" or "not done yet". `CHANGELOG.md` and
+  `CATALOG-CHANGES.md` are the exception: they are a record of what each
+  release held, so old versions stay written there exactly as they were.
+- **Better still, don't write down anything that has to be maintained.** A
+  download is "the file ending in `-windows-amd64.exe`", never a file name
+  with a real version in it; an example version is written `vMAJOR.MINOR.PATCH`
+  or `vX.Y.Z`. A test (`internal/docs`) fails the build if a release file name
+  carrying a real version reappears outside the changelogs.
 - Commit and push after each step; keep README and docs current.
 - Never stop or restart the maintainer's preview (port 8765) without asking; test downloads in a scratch folder.

@@ -14,7 +14,7 @@ body:
     attributes:
       label: Which isoshelf?
       description: The version in the top left of the page, or `isoshelf version`.
-      placeholder: v0.2.0
+      placeholder: v0.0.0
   - type: dropdown
     id: os
     attributes:
