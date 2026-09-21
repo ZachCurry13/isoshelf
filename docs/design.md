@@ -360,7 +360,9 @@ and keep. The binaries *inside* the portable zip keep the plain name
 one a future "update isoshelf" replaces in place, so it must not change every
 release. Whatever downloads an update must therefore find its asset by
 pattern (the name contains `windows-amd64.exe`) rather than by an exact name,
-which would go stale every release. The update check itself reads only
+which would go stale every release. Releases up to v0.3.0 attached plain
+names; those releases keep them, so anything reading old releases has to cope
+with both shapes. The update check itself reads only
 `tag_name` and `html_url`, so it is unaffected either way.
 
 ### The archive of images that have left

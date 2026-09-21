@@ -96,6 +96,9 @@ record of where things stand and what was decided.
   "Restore" in place of "Put back"; tidier Archive and History cards with no
   redundant "Download again"; and two numbers people kept asking for - what
   the images use, and how much the queue still has to download.
+- Released so far: v0.2.1 through v0.3.0, eleven of them. v0.3.1, v0.3.2 and
+  v0.3.3 are pushed to the branch but unreleased until it is merged and
+  tagged.
 - Release files now carry the version; the copies inside the portable zip
   keep the plain name, since that is the one run from the drive and the one
   self-update will replace in place. Anything that downloads an update must

@@ -40,7 +40,10 @@ Fixes and tidying from a run through the whole page on a full drive.
   `isoshelf-v0.3.3-windows-amd64.exe` — so two downloads can be told apart.
   The copies inside the portable zip keep the plain name, because that is
   what you run from the drive and what a future self-update replaces in
-  place.
+  place. Releases up to v0.3.0 attached plain names, so a link straight to
+  `releases/latest/download/isoshelf-windows-amd64.exe` stops working; there
+  is no such link in this project, and the older releases keep their files
+  exactly as they are.
 
 ## [v0.3.2] - 2026-09-21
 

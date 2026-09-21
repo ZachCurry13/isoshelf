@@ -9,9 +9,16 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**Branch:** `claude/next-version-37h9uj`. `main` is still at v0.3.0 and six
-commits sit ahead of it. **Nothing has been tagged, so no release exists yet**
-and no published file has ever carried the old asset names.
+**Branch:** `claude/next-version-37h9uj`. `main` is still at v0.3.0 and seven
+commits sit ahead of it.
+
+**v0.3.0 is the latest release** (published 2026-09-21), and there are eleven
+releases going back to v0.2.1. v0.3.1, v0.3.2 and v0.3.3 are written and
+pushed but unreleased, because a release happens when a `v*` tag is pushed
+and the branch hasn't been merged yet. Note for anyone checking this the way
+it was got wrong once: this is a shallow clone with no tags fetched, so
+`git tag` prints nothing even though releases exist. Ask GitHub, not the
+clone.
 
 1. **Merge to `main`.** Open a pull request from the branch and merge it:
    v0.3.1 (Settings), the dead-code clear-out and the `app.js` split, the
@@ -19,10 +26,18 @@ and no published file has ever carried the old asset names.
    tidying), and the versioned release filenames.
 2. **Close issue #10** ("Make the page work on a phone"). It shipped in
    v0.3.0 and is still open.
-3. **Tag the first release** (`v0.3.3`). The release workflow has never run,
-   so this also proves it works: three binaries, the portable zip and
-   `SHA256SUMS`, all named with the version, and the release notes taken from
+3. **Tag v0.3.3** once it is merged. The workflow has run fine eleven times,
+   but this is the first release with versioned asset names
+   (`isoshelf-v0.3.3-windows-amd64.exe`), so check what it attaches: three
+   binaries, the portable zip and `SHA256SUMS`, all carrying the version,
+   with the plain names still inside the zip, and release notes taken from
    that version's `CHANGELOG.md` section.
+
+   That rename is a real break for anyone using a
+   `releases/latest/download/isoshelf-windows-amd64.exe` link. Nothing in
+   this repository used one and the published downloads have been taken a
+   handful of times at most, so now is the cheapest possible moment - but it
+   is a break, not a free change, and it shouldn't happen twice.
 
 ## v0.3.4: scanning while downloads run
 
