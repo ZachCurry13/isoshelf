@@ -7,6 +7,7 @@ import (
 
 	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	"github.com/ZachCurry13/isoshelf/internal/check"
+	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/space"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 	"github.com/ZachCurry13/isoshelf/internal/update"
@@ -27,12 +28,24 @@ type stateJSON struct {
 	UsualSet  []string               `json:"usual_set"`
 	Recent    []string               `json:"recent_targets"`
 	Bookmarks []string               `json:"bookmarks"`
-	// ReplaceAction is the answer the user usually gives when an update
-	// replaces a file.
-	ReplaceAction string            `json:"replace_action,omitempty"`
-	Removed       removedJSON       `json:"removed"`
-	Catalog       catalogStatusJSON `json:"catalog"`
-	AppUpdate     *appupdate.Notice `json:"app_update,omitempty"`
+	// OldFiles is what happens to the copy an update replaces, for images
+	// that haven't been given their own answer.
+	OldFiles string `json:"old_files,omitempty"`
+	// AutoCheck is whether isoshelf checks for updates by itself, and
+	// AppUpdateCheck whether it looks for a newer isoshelf.
+	AutoCheck      bool `json:"auto_check"`
+	AppUpdateCheck bool `json:"app_update_check"`
+	// CheckedAt is when the oldest answer the report rests on was given, so
+	// the page can say how fresh it really is rather than when it last drew.
+	CheckedAt *time.Time `json:"checked_at,omitempty"`
+	// Appearance is how the page should look: the answers in Settings.
+	Appearance settings.Appearance `json:"appearance"`
+	// ConfigDir is where isoshelf keeps its own files. Settings shows it so
+	// nobody has to hunt for it.
+	ConfigDir string            `json:"config_dir,omitempty"`
+	Removed   removedJSON       `json:"removed"`
+	Catalog   catalogStatusJSON `json:"catalog"`
+	AppUpdate *appupdate.Notice `json:"app_update,omitempty"`
 	// ReportURL is where a missing image can be reported.
 	ReportURL string `json:"report_url,omitempty"`
 	// Space is the room left in the folder, when the disk says.
@@ -58,14 +71,13 @@ type removedJSON struct {
 }
 
 type runJSON struct {
-	Kind    string    `json:"kind"`
-	Stage   string    `json:"stage"`
-	File    string    `json:"file,omitempty"`
-	Done    int64     `json:"done"`
-	Total   int64     `json:"total"`
-	Item    int       `json:"item,omitempty"`
-	Items   int       `json:"items,omitempty"`
-	Started time.Time `json:"started"`
+	Kind  string `json:"kind"`
+	Stage string `json:"stage"`
+	File  string `json:"file,omitempty"`
+	Done  int64  `json:"done"`
+	Total int64  `json:"total"`
+	Item  int    `json:"item,omitempty"`
+	Items int    `json:"items,omitempty"`
 }
 
 func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
@@ -143,22 +155,27 @@ func (s *Server) removedInfo(target string) removedJSON {
 
 // stateLocked builds the page state; s.mu must be held.
 func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
+	saved := s.loadSettings()
 	out := stateJSON{
-		Version:       s.cfg.Version,
-		Portable:      s.cfg.Dirs.Portable,
-		Target:        s.target,
-		Error:         s.lastErr,
-		Warnings:      nonNil(s.warnings),
-		Tracks:        map[string]state.Track{},
-		UsualSet:      []string{},
-		Recent:        recent,
-		Bookmarks:     nonNil(s.loadSettings().Bookmarks),
-		ReplaceAction: s.loadSettings().ReplaceAction,
-		Removed:       s.removedInfo(s.target),
-		Catalog:       s.catalogStatusLocked(),
-		ReportURL:     "https://github.com/" + appupdate.Repo + "/issues/new",
-		AppUpdate:     s.notice,
-		Downloads:     s.downloadsLocked(),
+		Version:        s.cfg.Version,
+		Portable:       s.cfg.Dirs.Portable,
+		Target:         s.target,
+		Error:          s.lastErr,
+		Warnings:       nonNil(s.warnings),
+		Tracks:         map[string]state.Track{},
+		UsualSet:       []string{},
+		Recent:         recent,
+		Bookmarks:      nonNil(saved.Bookmarks),
+		OldFiles:       saved.OldFiles,
+		AutoCheck:      settings.On(saved.AutoCheck),
+		AppUpdateCheck: settings.On(saved.AppUpdateCheck),
+		Appearance:     saved.Appearance,
+		ConfigDir:      s.cfg.Dirs.Config,
+		Removed:        s.removedInfo(s.target),
+		Catalog:        s.catalogStatusLocked(),
+		ReportURL:      "https://github.com/" + appupdate.Repo + "/issues/new",
+		AppUpdate:      s.notice,
+		Downloads:      s.downloadsLocked(),
 	}
 	if room.Known() {
 		out.Space = &spaceJSON{Free: room.Free, Total: room.Total}
@@ -171,19 +188,22 @@ func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 	if s.report != nil {
 		j := s.report.JSON()
 		out.Report = &j
+		if !s.report.CheckedAt.IsZero() {
+			at := s.report.CheckedAt
+			out.CheckedAt = &at
+		}
 		t := s.updatedAt
 		out.UpdatedAt = &t
 	}
 	if s.run != nil {
 		out.Run = &runJSON{
-			Kind:    s.run.kind,
-			Stage:   string(s.run.progress.Stage),
-			File:    s.run.progress.File,
-			Done:    s.run.progress.Done,
-			Total:   s.run.progress.Total,
-			Item:    s.run.progress.Item,
-			Items:   s.run.progress.Items,
-			Started: s.run.started,
+			Kind:  s.run.kind,
+			Stage: string(s.run.progress.Stage),
+			File:  s.run.progress.File,
+			Done:  s.run.progress.Done,
+			Total: s.run.progress.Total,
+			Item:  s.run.progress.Item,
+			Items: s.run.progress.Items,
 		}
 	}
 	return out

@@ -30,8 +30,9 @@ func TestScanCheckAndSettings(t *testing.T) {
 	if rec := request(t, s, http.MethodPost, "/api/scan", nil); rec.Code != http.StatusAccepted {
 		t.Fatalf("scan: %d %s", rec.Code, rec.Body)
 	}
+	// A scan checks for updates too, unless Settings says not to (v0.3.2).
 	st := waitIdle(t, s)
-	if st.Report == nil || st.Report.Checked || len(st.Report.Items) != len(sampledrive.Files)-1 || st.Error != "" {
+	if st.Report == nil || !st.Report.Checked || len(st.Report.Items) != len(sampledrive.Files)-1 || st.Error != "" {
 		t.Fatalf("after scan: %+v", st)
 	}
 

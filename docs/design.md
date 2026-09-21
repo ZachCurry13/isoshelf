@@ -16,9 +16,12 @@ project, not affiliated with Ventoy.
 - Never touch partitions, bootloaders, or Ventoy's `/ventoy` folder. Only work
   with image files inside the folder the user picks.
 - Never delete or overwrite anything the user hasn't chosen to replace. Each
-  track has a "replace old file" checkbox, on by default; off = keep old files.
-  Replace = download -> verify -> rename into place -> only then delete the old
-  file(s) of that same track.
+  image carries one choice - replace, archive, or keep both - made in its
+  details panel and followed by every update of that image from then on
+  (`old_files` in state; v0.3.0 replaced the old "replace old file" checkbox
+  with it). An image nobody has answered for follows the default in Settings,
+  which is replace until it is changed (v0.3.1). Replace = download -> verify
+  -> rename into place -> only then delete the old file(s) of that same track.
 - A download without a published checksum ("unverified") never replaces
   anything on its own: the old file stays until the user confirms that item.
 - Only ever delete image files inside the folder the user picked: recognized
@@ -26,9 +29,15 @@ project, not affiliated with Ventoy.
   2026-09-17, replacing "only files matched to a catalog entry"). Never other
   files (notes, archives, anything without an image extension or image
   content), and never anything outside that folder.
-- Every delete asks first, per file, and offers both: move aside into
+- Removing an image asks first, per file, and offers both: move aside into
   `<target>/.isoshelf/removed/` (instant and undoable; the space is freed when
   the user empties it, and isoshelf shows how much it holds), or delete now.
+  An update is the one thing that doesn't stop to ask, because the image's
+  own choice above already is the answer - given once, in plain sight in its
+  panel, and changeable at any time (decided 2026-09-18, built in v0.3.0;
+  this is the wording that decision said to come back and fix). Either way
+  nothing goes without the user having chosen it, and archiving is always
+  offered instead of deleting.
 - A mismatch against a published checksum always blocks placement. No published
   checksum -> allow, but mark the file "unverified".
 - Updates never change an entry's architecture, edition or channel. A 32-bit
@@ -255,7 +264,7 @@ alone is not an update.
     single-board computers, "gaming" includes handhelds), `family` (groups one
     product's tracks), `site`, `forum`, `popular` (a hand-picked hint from
     public round-ups, not a rating), and `icon` + `icon_color` (a Simple Icons
-    name and brand colour).
+    name and brand color).
   - `caution`: one line of fact worth knowing before using the image
     (support ended on a date, an unofficial modification, a preview that
     expires), at most 200 characters. The page shows a ⚠ beside the name,
@@ -327,7 +336,7 @@ alone is not an update.
 1. Downloads: resumable fetch, checksum verification, place into the target.
    An Update button per image plus "Update all". *Done.*
 2. Delete: remove images the user no longer wants. *Done.*
-3. The archive of images that have left, with put back and download again,
+3. The archive of images that have left, with Restore and Download again,
    plus filters, sorting, logos and links. *Done.*
 4. Assign: suggest what an unrecognized file is and confirm it (below).
    *Done.*
@@ -343,7 +352,18 @@ of decisions is in [STATUS.md](STATUS.md)).
 **v0.4** - the items moved from v0.2 above; then rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
-binaries, the portable zip, and `SHA256SUMS` to the release.
+binaries, the portable zip, and `SHA256SUMS` to the release. Every file
+attached to a release carries the version
+(`isoshelf-v0.3.3-windows-amd64.exe`), because that is what people download
+and keep. The binaries *inside* the portable zip keep the plain name
+(`isoshelf-windows-amd64.exe`): that is the file run from the drive, and the
+one a future "update isoshelf" replaces in place, so it must not change every
+release. Whatever downloads an update must therefore find its asset by
+pattern (the name contains `windows-amd64.exe`) rather than by an exact name,
+which would go stale every release. Releases up to v0.3.0 attached plain
+names; those releases keep them, so anything reading old releases has to cope
+with both shapes. The update check itself reads only
+`tag_name` and `html_url`, so it is unaffected either way.
 
 ### The archive of images that have left
 
@@ -351,7 +371,7 @@ binaries, the portable zip, and `SHA256SUMS` to the release.
   version, size, hash and where it came from, when it was last seen, and how it
   went (`removed`, `moved-aside`, `replaced`, `vanished`). Capped at 500, newest
   first, and a path is forgotten as soon as that file is back.
-- Files moved aside wait in `<target>/.isoshelf/removed/` and can be put back
+- Files moved aside wait in `<target>/.isoshelf/removed/` and can be restored
   while they are there; catalog images can always be downloaded again.
 
 ### Assign: suggesting what an unrecognized file is
@@ -449,8 +469,10 @@ For when a new release breaks something and the user needs the previous one.
   Development builds report `dev` and never check.
 - On start (at most once an hour; daily in server mode), ask the GitHub API for the latest
   release of `ZachCurry13/isoshelf`. If it's newer, show a notice with a link
-  to the release notes: one line on stderr in the CLI, a banner in the web UI.
-  The check can be turned off; the last check time lives in the config folder.
+  to the release notes: one line on stderr in the CLI, a link in the top bar
+  of the page and again under Help in Settings. The check is turned off with
+  `--no-update-check` or `ISOSHELF_NO_UPDATE_CHECK`, not yet in Settings; the
+  last check time lives in the config folder.
 - Only a notice for now: users download the new build themselves (portable:
   replace the files on the drive; Docker: pull the new image). A later
   "install update" must verify the release's `SHA256SUMS` first.
@@ -503,20 +525,36 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   time, in the background; the page polls `/api/state` while it runs. Scans and
   switching folders wait for downloads (`busyLocked`); removing, archiving,
   identifying, putting back and stars only wait for a scan (`scanningLocked`).
-  Nobody saves their whole copy of the folder.s state over the file: each
+  Nobody saves their whole copy of the folder's state over the file: each
   writer keeps the copy from before its change and `state.Merge` carries only
   that change onto the file as it is on disk (`saveStateLocked`, statefile.go).
 - The folder picker lists subfolders through `/api/browse` (browsers can't see
   the computer's folders), with drives or mount points and recent folders
   (from the mirrors; none in portable mode). The last folder is remembered in
   `<config>/ui.json`.
-- A filled star means the user starred the image: it is a favourite, sorts
+- A filled star means the user starred the image: it is a favorite, sorts
   first, and is reported if it goes missing. The replace switch shows only for
   entries that can download.
+- Menus (`details.menu`) are pinned to the window by `placeMenu` and wired by
+  `wireMenu`: only one open at a time, opening upwards when there is more room
+  there, and scrolling when a long list of filters fits neither way. Every
+  menu needs the wiring - the Filter menu went without it until v0.3.3, so on
+  a full drive it hung off the bottom of the window.
+- A download that would land on top of a file already in the folder stops and
+  asks (v0.3.3). `update.ErrSameName` is the one failure that is really a
+  question: the server marks that job `conflict`, and the page offers
+  "Archive the old one" and "Replace it" instead of a Try again that would
+  fail the same way. Nothing in the folder has changed when it asks.
+- The words are American English (the maintainer's decision, v0.3.3):
+  *Favorites*, *color*. "Restore" is the word for bringing a file back from
+  the archive, everywhere.
+- One **Refresh** button (v0.3.2) replaced *Scan* and *Check for updates*:
+  read the folder again and ask every project again. Scanning without going
+  online is what turning the setting off does, not a second button.
 - The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
   images, Archive, History. Above the list, one card per thing to do
-  (`renderTodo`). The list has four columns - image (file, size and date
-  underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
+  (`renderTodo`). The list is a favorite star and four columns - image (file,
+  size and date underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
   row opens the details panel: everything about one image, its links, and
   the choice below. Statuses are shown in plain words (`STATUS_WORDS`), each
   explaining itself; the report keeps its own words for the CLI and JSON.
@@ -524,7 +562,7 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   replace, archive or keep; `Track.Choice()`), set in the details panel and
   followed by every update, so updating never stops to ask. "Update all" and
   "clear older versions" share one checklist dialog (`pickFiles`).
-- The list filters by kind, architecture, updates, favourites, older
+- The list filters by kind, architecture, updates, favorites, older
   versions and the caution mark through one Filter menu; everything switched
   on shows as a chip above the list. Sorting is a menu and the three column
   headings (empty cells last).
@@ -536,18 +574,80 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   I got, the other what could I add. Each entry shows about how big its
   download is, and one too big for the room left says so instead of failing
   part way through.
+- **Checking by itself** (v0.3.2, decision 3). Every scan is also a check
+  unless Settings says otherwise, and the answers are remembered, so this
+  costs almost nothing.
+  - `internal/lastcheck` keeps what each project said in
+    `<config>/last-check.json`: the `source.Release` and `resolve.Artifact`
+    per entry, with the time. An answer under a day old (`lastcheck.Fresh`)
+    is used as it stands; anything older is asked again. Answers nobody has
+    wanted for a month are dropped on the next save, so the file can't grow
+    by every image that ever left the catalog.
+  - A failure is never remembered. A site that was down for a minute must not
+    look like bad news until tomorrow.
+  - None of it is trusted for a download. `update.Run` resolves the release
+    and its checksum again from scratch, so a remembered answer can only ever
+    be wrong about what a row *says*, never about what lands on a drive.
+  - `check.Memory` is the interface `Report.Online` asks before the network
+    and hands each fresh answer to; `inventory.Options.Memory` passes it
+    through. Nil means ask about everything.
+  - The server picks the memory per scan (`memoryFor`, scanrun.go):
+    `askIfDue` is the ordinary scan and obeys the setting, `askAgain` is
+    Refresh and asks every project however recently it answered
+    (`Answers.Asking()`). The command line's own `check` uses `Asking()` too,
+    since typing it is asking, but still writes down what it learns.
+  - `Report.CheckedAt` is the oldest answer the report rests on, and the page
+    says that rather than when it last drew: a check that reused this
+    morning's answers says this morning.
+- **Settings** (v0.3.1) is one panel, opened from the top bar and closed with
+  Escape, holding everything isoshelf lets a person change. Each setting is
+  one entry in `SETTING_GROUPS` (`internal/web/static/settings.js`): its name,
+  a line saying what it does, the words a search should find it by, and the
+  control. The search box matches all of those, so nothing has to be listed
+  twice. Settings and the details panel share a place on the screen, so
+  opening one closes the other.
+  - The answers live in `<config>/ui.json`, which `internal/settings` owns.
+    The web server keeps no second copy of the fields: when it did, a switch
+    flicked on the page erased what the command line had written. `Load`
+    cleans anything it doesn't understand and carries the pre-v0.3.1
+    `replace_action` over to `old_files`.
+  - `POST /api/settings` takes one answer at a time - every field is a
+    pointer, so absent means "leave it alone" - and answers with the whole
+    page state. `{"reset": true}` puts the choices back to their defaults and
+    keeps what isn't a choice: the folder in use, the pinned folders and
+    where records are kept.
+  - How it looks is four attributes on `<html>`: `data-theme`,
+    `data-contrast`, `data-text` and `data-motion`. The colors are written
+    once with `light-dark()`, so a theme is `color-scheme` and nothing else,
+    and sizes are in `rem` against one number on `:root`, so "larger text"
+    raises all of them together. A copy of the answers is kept in the
+    browser's localStorage as well, so the page opens in the right colors
+    instead of changing under the reader a moment later; isoshelf is still
+    the one that remembers.
+  - The panel is redrawn only when what it shows changes (`settingsKey`),
+    because the page asks how downloads are doing twice a second and a redraw
+    would take the focus out of the control someone is using.
 - The folder's free space (`internal/space`) sits next to the scan time. It is
   read before the server's lock is taken and cached for five seconds, because
   the page polls twice a second during a scan and a NAS answers over the
   network. A folder that won't say leaves the line out.
-- Each row has a "…" menu with the download page, website, forum and release
-  notes, an Update button when there is one, and Remove.
+- A row's links (download page, website, forum, release notes), its Update
+  button and Remove live in the details panel; the "…" menu the rows used to
+  carry went with the v0.3.0 redesign.
+- The page is one script per part, all plain scripts sharing the same names
+  and loaded in the order `index.html` lists them: `app.js` (what isoshelf has
+  said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
+  to-do cards, filters, rows), `details.js` (the panel and the checklist),
+  `downloads.js` (the queue), `actions.js` (updating, removing, identifying),
+  `folders.js` (the chooser), `archive.js`, `settings.js`. They were one
+  2,544-line `app.js` until v0.3.1; the split is what keeps changing one
+  corner from meaning reading all of it.
 - Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
   with `go run ./internal/web/logos/fetch`. `/logo/{slug}` serves those, then
   ones fetched earlier from `<config>/logos`, then fetches from the CDN once
-  and remembers misses. Entries without one get coloured initials, drawn from
+  and remembers misses. Entries without one get colored initials, drawn from
   the name.
-- "Images that were here" lists the archive, with Put back for files still in
+- "Images that were here" lists the archive, with Restore for files still in
   `.isoshelf/removed` and Download again for catalog images.
 - Downloads (`queue.go`): Add, Update, Update all and Download again join a
   queue that runs one at a time, and the queue drains into one rescan. The

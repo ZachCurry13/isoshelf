@@ -94,6 +94,9 @@ type Report struct {
 	Problems []scan.Problem
 	// Checked is set once the online check has run.
 	Checked bool
+	// CheckedAt is when the oldest answer the report rests on was given.
+	// A check that reused yesterday's answers says yesterday.
+	CheckedAt time.Time
 }
 
 // Offline builds a report from a scan and the target's state, without the
@@ -143,11 +146,24 @@ func Offline(res *scan.Result, st *state.State, cat *catalog.Catalog) *Report {
 	return r
 }
 
+// Memory is what isoshelf found the last time it asked. Online asks it
+// before the network, and tells it every fresh answer. A nil Memory means
+// every entry is asked about.
+type Memory interface {
+	// Recall returns an answer worth reusing, and whether there was one.
+	Recall(entry string) (*source.Release, *resolve.Artifact, bool)
+	// Remember keeps an answer that has just come back.
+	Remember(entry string, rel *source.Release, art *resolve.Artifact)
+	// Asked says when an entry's answer is from.
+	Asked(entry string) time.Time
+}
+
 // Online asks each recognized entry's source for its latest release and fills
 // in the statuses. Entries are checked a few at a time; a failure affects only
-// that entry's items. progress, if not nil, is called after each entry with
-// how many of them are done.
-func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.State, progress func(done, total int)) {
+// that entry's items. An entry mem already has a fresh answer for is not asked
+// again, which is what makes opening the page cost nothing. progress, if not
+// nil, is called after each entry with how many of them are done.
+func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.State, mem Memory, progress func(done, total int)) {
 	byEntry := map[string][]int{}
 	for i, it := range r.Items {
 		if it.Entry != nil && it.Entry.Source.Type != catalog.SourceManual {
@@ -155,6 +171,7 @@ func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.St
 		}
 	}
 
+	now := time.Now()
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	limit := make(chan struct{}, 4)
@@ -164,12 +181,29 @@ func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.St
 			limit <- struct{}{}
 			defer func() { <-limit }()
 			e := r.Items[indexes[0]].Entry
-			rel, art, err := latest(ctx, client, e)
+			rel, art, remembered := recall(mem, e.ID)
+			var err error
+			if !remembered {
+				rel, art, err = latest(ctx, client, e)
+				// Only answers worth reusing are kept; a site that was down
+				// is asked again next time rather than looking like bad news
+				// until tomorrow.
+				if err == nil && mem != nil {
+					mem.Remember(e.ID, rel, art)
+				}
+			}
 			mu.Lock()
 			defer mu.Unlock()
 			for _, i := range indexes {
 				it := &r.Items[i]
 				decide(it, rel, art, err, st.Files[it.Path].SHA256)
+			}
+			// The report is only as fresh as its oldest answer, and the page
+			// says so rather than claiming it all just happened.
+			if err == nil {
+				if asked := askedAt(mem, e.ID, now); r.CheckedAt.IsZero() || asked.Before(r.CheckedAt) {
+					r.CheckedAt = asked
+				}
 			}
 			done++
 			if progress != nil {
@@ -181,6 +215,26 @@ func (r *Report) Online(ctx context.Context, client *remote.Client, st *state.St
 	markOlderCopies(r.Items)
 	r.Checked = true
 	r.sort()
+}
+
+// recall asks what isoshelf already knows, if anything.
+func recall(mem Memory, entry string) (*source.Release, *resolve.Artifact, bool) {
+	if mem == nil {
+		return nil, nil, false
+	}
+	return mem.Recall(entry)
+}
+
+// askedAt is when an entry's answer is from, falling back to now for an
+// answer nothing is remembering.
+func askedAt(mem Memory, entry string, now time.Time) time.Time {
+	if mem == nil {
+		return now
+	}
+	if at := mem.Asked(entry); !at.IsZero() {
+		return at
+	}
+	return now
 }
 
 // latest finds an entry's latest release and, if it has one, its file.

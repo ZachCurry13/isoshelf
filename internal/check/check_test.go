@@ -147,7 +147,7 @@ func TestSampleDrive(t *testing.T) {
 	client := remote.New("test")
 	client.HTTP = &http.Client{Transport: remotetest.Recorded()}
 	var lastDone, lastTotal int
-	report.Online(ctx, client, st, func(done, total int) { lastDone, lastTotal = done, total })
+	report.Online(ctx, client, st, nil, func(done, total int) { lastDone, lastTotal = done, total })
 	if lastDone == 0 || lastDone != lastTotal {
 		t.Errorf("progress ended at %d of %d", lastDone, lastTotal)
 	}

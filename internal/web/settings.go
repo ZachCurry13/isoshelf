@@ -3,64 +3,90 @@ package web
 import (
 	"encoding/json"
 	"net/http"
-	"os"
-	"path/filepath"
 	"slices"
 	"strings"
+
+	"github.com/ZachCurry13/isoshelf/internal/settings"
 )
 
-type settings struct {
-	Target string `json:"target,omitempty"`
-	// CatalogAuto is nil until the user says either way; the default is on.
-	CatalogAuto *bool `json:"catalog_auto,omitempty"`
-	// Bookmarks are folders the user pinned in the chooser.
-	Bookmarks []string `json:"bookmarks,omitempty"`
-	// ReplaceAction is what the user last chose for the file an update
-	// replaces: "move-aside" or "delete".
-	ReplaceAction string `json:"replace_action,omitempty"`
+// The choices below belong to this computer rather than to any one folder, so
+// they live in the settings file that internal/settings owns. The web UI and
+// the command line read the same file; keeping a second copy of the fields
+// here once meant a choice made on the page quietly erased one made on the
+// command line.
+
+func (s *Server) loadSettings() settings.Settings {
+	return settings.Load(s.cfg.Dirs.Config)
 }
 
-func (s *Server) loadSettings() settings {
-	var st settings
-	if data, err := os.ReadFile(filepath.Join(s.cfg.Dirs.Config, settingsFile)); err == nil {
-		json.Unmarshal(data, &st)
-	}
-	return st
-}
-
-func (s *Server) saveSettings(st settings) {
-	if s.cfg.Dirs.Config == "" {
-		return
-	}
-	data, err := json.MarshalIndent(st, "", "  ")
-	if err == nil && os.MkdirAll(s.cfg.Dirs.Config, 0o755) == nil {
-		os.WriteFile(filepath.Join(s.cfg.Dirs.Config, settingsFile), data, 0o644) // best effort
-	}
+func (s *Server) saveSettings(st settings.Settings) {
+	settings.Save(s.cfg.Dirs.Config, st) // best effort: settings are a convenience
 }
 
 // setSettings stores the choices that live on this computer rather than in a
-// folder's state.
+// folder's state. Anything the request leaves out is left as it was, so the
+// page can send one switch at a time.
 func (s *Server) setSettings(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		CatalogAuto   *bool  `json:"catalog_auto"`
-		ReplaceAction string `json:"replace_action"`
+		CatalogAuto *bool  `json:"catalog_auto"`
+		OldFiles    string `json:"old_files"`
+		// AutoCheck is whether isoshelf checks the images for updates by
+		// itself; AppUpdateCheck whether it looks for a newer isoshelf.
+		AutoCheck      *bool `json:"auto_check"`
+		AppUpdateCheck *bool `json:"app_update_check"`
+		// Appearance fields are sent one at a time, so each is a pointer:
+		// absent means "leave it alone", which false could not say.
+		Theme        *string `json:"theme"`
+		HighContrast *bool   `json:"high_contrast"`
+		LargerText   *bool   `json:"larger_text"`
+		ReduceMotion *bool   `json:"reduce_motion"`
+		// Reset puts every choice back to its default.
+		Reset bool `json:"reset"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "bad request")
 		return
 	}
+	current := s.loadSettings()
+	if req.Reset {
+		current = current.Reset()
+	}
 	if req.CatalogAuto != nil {
-		current := s.loadSettings()
 		current.CatalogAuto = req.CatalogAuto
-		s.saveSettings(current)
-		if *req.CatalogAuto {
+	}
+	if choice := settings.CleanOldFiles(req.OldFiles); choice != "" {
+		current.OldFiles = choice
+	}
+	if req.AutoCheck != nil {
+		current.AutoCheck = req.AutoCheck
+	}
+	if req.AppUpdateCheck != nil {
+		current.AppUpdateCheck = req.AppUpdateCheck
+	}
+	if req.Theme != nil {
+		current.Appearance.Theme = settings.CleanTheme(*req.Theme)
+	}
+	if req.HighContrast != nil {
+		current.Appearance.HighContrast = *req.HighContrast
+	}
+	if req.LargerText != nil {
+		current.Appearance.LargerText = *req.LargerText
+	}
+	if req.ReduceMotion != nil {
+		current.Appearance.ReduceMotion = *req.ReduceMotion
+	}
+	s.saveSettings(current)
+	// Saying yes to looking for a newer isoshelf means looking now, rather
+	// than at the next start.
+	if (req.AppUpdateCheck != nil || req.Reset) && settings.On(current.AppUpdateCheck) && s.notice == nil {
+		go s.checkAppUpdate()
+	}
+	// Turning the catalog back on, whether by switch or by reset, means it
+	// should look for a newer list now rather than at the next start.
+	if current.CatalogAuto == nil || *current.CatalogAuto {
+		if req.CatalogAuto != nil || req.Reset {
 			s.startCatalogRefresh(false)
 		}
-	}
-	if req.ReplaceAction == "move-aside" || req.ReplaceAction == "delete" {
-		current := s.loadSettings()
-		current.ReplaceAction = req.ReplaceAction
-		s.saveSettings(current)
 	}
 	s.getState(w, r)
 }

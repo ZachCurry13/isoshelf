@@ -30,7 +30,10 @@ isoshelf does that for you:
   architecture and version each image is.
 - **Update check.** Asks each project where its latest release is, using
   [endoflife.date](https://endoflife.date), GitHub releases, or the project's
-  own download listings.
+  own download listings. It does this by itself when you open the page, and
+  remembers each answer for a day, so the list is right straight away without
+  asking sixty websites every time. Refresh asks again; Settings turns it
+  off.
 - **Verified downloads.** Downloads the new image, checks it against the
   project's published checksum, and only then puts it in place. Interrupted
   downloads carry on where they stopped.
@@ -38,7 +41,7 @@ isoshelf does that for you:
   never forced to update everything at once. Add and Update join a download
   queue, like a game launcher's: one at a time, in an order you can change by
   dragging, with each button saying *Queued*, *Downloading* or *Added*.
-- **Tidying up.** Remove images you no longer want: archive them (undo any
+- **Tidying up.** Remove images you no longer want: archive them (restore any
   time) or delete them. Older copies of the same image are found and cleared in
   one go. isoshelf remembers what left the folder and can download it again.
 - **Works out what mystery files are.** A file the catalog doesn't know by
@@ -59,7 +62,7 @@ isoshelf does that for you:
 - **Plain words, explained.** Statuses read *Update ready*, *Old release*,
   *Check by hand* or *Won't boot here*, and each explains itself when you
   hover over it.
-- **Finds things fast.** Search, one Filter menu (updates, favourites, older
+- **Finds things fast.** Search, one Filter menu (updates, favorites, older
   versions, kinds, architectures) showing a chip for everything switched on,
   and sorting by name, size, version or age. Click any image for a panel with
   everything about it: its file, its versions, its links and its settings.
@@ -69,6 +72,11 @@ isoshelf does that for you:
   download is, and the folder shows how much room is left, counting the
   downloads already queued. An image too big for the space says so instead of
   failing half way through.
+- **Yours to set up.** One Settings panel with a search box: light, dark or
+  whatever your computer is set to, higher contrast, larger text, less
+  movement, and what should happen to the files updates replace. Nothing
+  there has to be touched — the defaults are the sensible ones — and "Reset
+  to defaults" puts every switch back without forgetting your folders.
 - **Learns about new images on its own.** The list of images isoshelf knows is
   data, not code, so it refreshes itself from this repository — you get new
   distributions without installing a new isoshelf. It's a checkbox you can
@@ -83,7 +91,7 @@ isoshelf manages files you care about, so it is deliberately cautious:
   folder.** It only works with image files in the folder you pick.
 - **Nothing is deleted unless you choose it.** Every removal asks first, and
   offers archiving, which keeps the file in the folder until you empty the
-  archive, so it can be put back until then.
+  archive, so it can be restored until then.
 - **You decide what happens to old versions.** Each image has a *replace old
   file* switch, on by default; turn it off to keep old versions side by side.
   A replacement is downloaded, verified and renamed into place before the old
@@ -200,9 +208,18 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 row of things to do, plain-language statuses, one filter menu with chips, a
 details panel for each image, Archive and History apart, and
 [a layout for phones](https://github.com/ZachCurry13/isoshelf/issues/10).<br>
-**v0.3.1 (next): Settings.** Light and dark themes, high contrast, larger
-text, checking for updates by itself, where each folder's records live, and
-isoshelf updating itself with one click.<br>
+**v0.3.1: Settings.** *Released 2026-09-21:* one searchable Settings panel —
+light and dark themes, higher contrast, larger text, less movement, what
+happens to the files updates replace, and Reset to defaults.<br>
+**v0.3.2: checking by itself.** *Released 2026-09-21:* the page checks for
+updates when it opens and after each scan, remembers what each project said
+for a day, and has one Refresh button. Both can be turned off in Settings.<br>
+**v0.3.3: fixes and tidying.** *Released 2026-09-21:* the Filter menu stays
+inside the window, a download that would overwrite a file asks what to do
+instead of failing, American spelling, *Restore* in the archive, and the page
+says how much room the images use and how much the queue will download.<br>
+**v0.3.4 (next):** scanning while downloads run, where each folder's records
+live, and isoshelf updating itself with one click.<br>
 **v0.4:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
@@ -237,9 +254,14 @@ installer and nothing to set up — it's one file.
 
 | You're on | Download | Then |
 |---|---|---|
-| **Windows** | `isoshelf-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
-| **Linux** | `isoshelf-linux-amd64` (or `-arm64`) | `chmod +x isoshelf-linux-amd64` then `./isoshelf-linux-amd64` |
-| **A USB drive** | `isoshelf-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
+| **Windows** | `isoshelf-v0.3.3-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
+| **Linux** | `isoshelf-v0.3.3-linux-amd64` (or `-arm64`) | `chmod +x` the file, then run it |
+| **A USB drive** | `isoshelf-v0.3.3-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
+
+Each download carries its version, so you can tell two of them apart in your
+Downloads folder. The files *inside* the portable zip don't: that's the copy
+you run from the drive, and it keeps the same name every release so nothing
+you've set up points at the wrong file.
 
 Every release also has a `SHA256SUMS` file, if you'd like to check what you
 downloaded is what was built.

@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
-	"github.com/ZachCurry13/isoshelf/internal/scan"
 	"github.com/ZachCurry13/isoshelf/internal/sniff"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 )
@@ -130,15 +129,4 @@ func insideTarget(target, rel string) (string, error) {
 		return "", fmt.Errorf("%q is outside the folder", rel)
 	}
 	return full, nil
-}
-
-// Files returns the paths of an entry's files in a scan, newest first.
-func Files(res *scan.Result, st *state.State, entry string) []string {
-	var out []string
-	for _, f := range res.Files {
-		if rec, ok := st.Files[f.Path]; ok && rec.Entry == entry {
-			out = append(out, f.Path)
-		}
-	}
-	return out
 }

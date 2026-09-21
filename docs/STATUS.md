@@ -2,7 +2,8 @@
 
 ## Where things stand (2026-09-18)
 
-- **Released:** v0.3.0 (the redesign; Settings follows in v0.3.1). Scans a folder, works out each image, checks for
+- **Released:** v0.3.3 (fixes and tidying; v0.3.2 checking by itself, v0.3.1
+  Settings, v0.3.0 the redesign). Scans a folder, works out each image, checks for
   updates online, downloads and verifies (resumable, queued one at a time,
   reorderable), replaces or archives old files, identifies unknown files, and
   keeps a catalog that updates itself from this repository. While downloads
@@ -12,7 +13,7 @@
   revision `2026091804`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm
-  Chicago, just after the maintainer.s weekly usage resets;
+  Chicago, just after the maintainer's weekly usage resets;
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
@@ -41,6 +42,8 @@ and plain words on the surface; everything adjustable in Settings.
 8. Update dialog: Replace pre-selected, sizes as the change ("about +6 MB"),
    "Don't ask again" (turned back on in Settings). This relaxes the "every
    delete asks" rule for updates only; update docs/design.md when built.
+   *Built in v0.3.0 (each image carries its own choice, so updates never ask)
+   and the hard rules in docs/design.md and SECURITY.md now say so.*
 9. Settings: Light/Dark/System, high contrast, larger text, reduce motion.
 10. Records: the user chooses per folder (in the folder, in isoshelf's folder,
     or a folder they pick), plus a remembered-folders list with last used,
@@ -57,17 +60,27 @@ and plain words on the surface; everything adjustable in Settings.
     limit, hide architectures and kinds you don't use, a notification when
     downloads finish.
 . "Images that were here" is split in two. **Archive**: only files still on
-    the drive (size, Put back, Delete for good, Empty archive), with a to-do
+    the drive (size, Restore, Delete for good, Empty archive), with a to-do
     card and a jump-bar link. **History**: a folded log of images that left
     (deleted, replaced, vanished) with Download again. "Archive" stays the
     word everywhere.
 
+## Where to pick up
+
+`docs/TODO.md` is the running work list: what to do next, in order, with what
+a cold session needs to know before starting each one. This file stays the
+record of where things stand and what was decided.
+
 ## Next, in order
 
-1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout (#10).
-2. v0.3.x: automatic remembered checks (3); records location and remembered
-   folders (10; `internal/settings` has a start); one-click self-update with
-   signed releases (13, 14).
+1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout
+   (#10). *Done.* v0.3.1: the Settings panel (9). *Done.*
+2. v0.3.x: automatic remembered checks (3). *Done in v0.3.2.* Next: records
+   location and remembered folders (10; `internal/settings` holds the fields
+   already);
+   the rest of decision 15 (empty the archive after so many days, a download
+   speed limit, hiding kinds and architectures) now that Settings has a home
+   for them; one-click self-update with signed releases (13, 14).
 3. v0.4.0: `isoshelf update` (#1), older versions with a hold (#2), Make
    bootable (#3), signatures on images (#5), two downloads at once (#4),
    portable test (#7).
@@ -75,6 +88,63 @@ and plain words on the surface; everything adjustable in Settings.
 
 ## Latest change (2026-09-21)
 
+- v0.3.3 worked through the maintainer's own review of the page on a full
+  drive (`isoshelf_v0.3.1_tasks.md`): the Filter menu now stays inside the
+  window and its tick boxes line up (it was the one menu never wired to
+  `placeMenu`); a download that would land on top of a file asks "Archive the
+  old one" or "Replace it" instead of failing with advice; American spelling;
+  "Restore" in place of "Put back"; tidier Archive and History cards with no
+  redundant "Download again"; and two numbers people kept asking for - what
+  the images use, and how much the queue still has to download.
+- Released so far: v0.2.1 through v0.3.0, eleven of them. v0.3.1, v0.3.2 and
+  v0.3.3 are pushed to the branch but unreleased until it is merged and
+  tagged.
+- Release files now carry the version; the copies inside the portable zip
+  keep the plain name, since that is the one run from the drive and the one
+  self-update will replace in place. Anything that downloads an update must
+  match its asset by pattern, not by an exact name.
+- Six specialized agents now live in `.claude/agents/`: `explorer` (find
+  things, haiku), `worker` (small specified edits), `page` (the web page),
+  `words` (UI text and docs), `bugs` (reproduce and diagnose), `core` (the Go
+  that reads and reasons). Architecture, anything writing to a drive, and
+  decisions stay with the main session. CLAUDE.md also says plainly when
+  delegating costs more than it saves.
+- Still owed from that review: scanning and checking while downloads run
+  (needs the server's single run slot split in two - its own step, v0.3.4),
+  and uploading a file to the drive from the browser (its own step too, since
+  it writes to the drive).
+- v0.3.2 shipped checking by itself: every scan is also a check unless
+  Settings says otherwise, and `internal/lastcheck` keeps each project's
+  answer in `<config>/last-check.json` for a day, so opening the page a
+  second time asks nobody. One Refresh button replaced Scan and Check for
+  updates; Settings gained "Check for updates by itself" and "Tell me when a
+  new isoshelf is out" (which was a command-line flag only). Failures are
+  never remembered, and nothing remembered is trusted for a download - a
+  download still resolves everything again.
+- Also: the three r/Ventoy cases the maintainer found are issues #11 (rebuild
+  a drive from what isoshelf remembers - the config-folder mirror already
+  holds the list) and #12 (move a drive's images to a bigger drive). Both are
+  the same feature and the same 2026-09-21 decision.
+- v0.3.1 shipped Settings: one searchable panel (theme, higher contrast,
+  larger text, less movement, what happens to the files updates replace,
+  where things are, Report a bug, Reset to defaults). Settings live in
+  `<config>/ui.json`, which `internal/settings` now owns alone - the web
+  server's second copy of the fields could erase what the command line
+  wrote. The page's colors are written once with `light-dark()` and its
+  sizes in `rem`, which is what makes a theme and larger text one line each.
+  The panel is its own file, `internal/web/static/settings.js`.
+- Then a clear-out: everything the dead-code checkers (x/tools `deadcode`,
+  `staticcheck`) name as unreachable is gone, both come back clean, and `app.js`
+  is no longer one 2,544-line file. The page is eight scripts, one per part
+  of it, none over ~700 lines: reading one corner no longer means reading all
+  of it. A line-by-line comparison showed nothing lost in the move, and the
+  whole page was exercised in a browser afterwards.
+- Docs checked against the code: CLAUDE.md and design.md describe the new
+  script layout, CONTRIBUTING says how to add one, the "…" row menu the
+  redesign removed is out of design.md, and the app-update notice is
+  described as what it is (a link in the top bar and in Settings).
+- That gap is closed: the app-update check now has its switch in Settings,
+  and the command line reads the same answer.
 - v0.3.0 shipped the new look: jump bar, to-do cards, plain statuses with
   explanations, one filter menu with chips, slim rows, a details panel,
   Archive and History apart, a per-image choice for old files, a checklist
@@ -89,6 +159,7 @@ and plain words on the surface; everything adjustable in Settings.
   "Make bootable" starts with renaming only; no notification when downloads
   finish; phone access and the QR code come with Docker; isoshelf will not
   empty a NAS recycle bin, only explain it.
-- Next: v0.3.1 Settings (search, groups, defaults with Reset, Report a bug;
-  theme, high contrast, larger text, less motion) and automatic remembered
-  checking.
+- Next: v0.3.2, checking by itself (decision 3) - on open and after a scan,
+  the answer remembered for a day and written down so a restart keeps it, one
+  Refresh button, and the switch for it in Settings, which is now there to
+  put it in.

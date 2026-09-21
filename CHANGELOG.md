@@ -3,8 +3,119 @@
 What changed in each release of isoshelf, newest first.
 
 Version numbers: the middle number rises for new abilities or a new look
-(v0.3.0 was the redesign; Settings follows in v0.3.1); the last number rises
-for improvements to what it already does.
+(v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
+last number rises for improvements to what it already does, like v0.3.3.
+
+## [v0.3.3] - 2026-09-21
+
+Fixes and tidying from a run through the whole page on a full drive.
+
+### Fixed
+- **The Filter menu no longer hangs off the screen.** On a folder with a lot
+  of kinds and architectures it ran past the bottom of the window with the
+  last filters out of reach, because it was the one menu never told to keep
+  itself inside the window. It now opens upwards when there's more room
+  there, and scrolls when there isn't room either way.
+- **Tick boxes line up.** In that menu each one sat at a different place,
+  with its words pushed to the right, because the boxes were being stretched
+  to fill the row.
+- **A download that would land on top of a file you have now asks.** It used
+  to fail with advice and a *Try again* button that failed the same way. It
+  now offers the two answers — *Archive the old one* or *Replace it* — and
+  says plainly that nothing in the folder has changed meanwhile.
+
+### Changed
+- **American spelling** throughout: *Favorites*, *color*.
+- ***Restore*** is the word for bringing a file back from the archive, in the
+  button, the page and the docs. It was "Put back".
+- **Archive and History cards** are tidier: the filename on its own line, the
+  buttons together at the end of the row, and *Page* is now *Download page*.
+- **No *Download again* on a file that's still in the archive.** Restoring it
+  is instant, costs nothing and gives back the very file that was there.
+- **The downloads bar says how much is left**, not just how many: "12 waiting
+  · 31.4 GB to download".
+- **The folder line says what the images take up**: "42.5 GB in images · 68
+  GB free of 252 GB".
+- **Every file in a release carries its version** —
+  `isoshelf-v0.3.3-windows-amd64.exe` — so two downloads can be told apart.
+  The copies inside the portable zip keep the plain name, because that is
+  what you run from the drive and what a future self-update replaces in
+  place. Releases up to v0.3.0 attached plain names, so a link straight to
+  `releases/latest/download/isoshelf-windows-amd64.exe` stops working; there
+  is no such link in this project, and the older releases keep their files
+  exactly as they are.
+
+## [v0.3.2] - 2026-09-21
+
+isoshelf now checks for updates by itself, and remembers the answers, so the
+page is right the moment it opens instead of after you press a button.
+
+### Added
+- **Checking happens on its own**: when you open the page and after every
+  scan. What each project says is written down and used for a day, so only
+  the images nobody has asked about lately cost anything. Opening the page a
+  second time asks nobody at all.
+- **One Refresh button** in place of *Scan* and *Check for updates*. It reads
+  the folder again and asks every project again, however recently it
+  answered.
+- **Settings → Checking for updates**: *Check for updates by itself*, which
+  turns all of that off and leaves isoshelf offline until you press Refresh,
+  and *Tell me when a new isoshelf is out*, which was only a command-line
+  flag before. The first says underneath when the projects were last asked.
+
+### Changed
+- The line under the folder says how fresh the answers really are. A check
+  that reused this morning's answers says this morning, not "just now".
+- `isoshelf check` on the command line still asks every project, since typing
+  it is asking, but what it learns is written down for the page.
+- A project that couldn't be reached is never remembered, so a site that was
+  down for a minute isn't bad news for the rest of the day.
+
+## [v0.3.1] - 2026-09-21
+
+Settings. Everything isoshelf lets you change is in one panel now, with a
+search box, and nothing in it has to be touched for isoshelf to work.
+
+### Added
+- **A Settings panel**, from the button in the top bar or by pressing Escape
+  to close it again. Each setting says what it is and what it does, and the
+  search box finds one by name or by what it's for ("dark", "text", "bug").
+- **How it looks:** *Light*, *Dark* or *Match this computer*; *Higher
+  contrast* for a bright room or tired eyes; *Larger text*, a size up for the
+  whole page without the browser's zoom; and *Less movement*, which stops the
+  spinners and bars while isoshelf works.
+- **What happens to the file an update replaces** — replace it, move it to
+  the archive, or keep both — for every image that hasn't been given its own
+  answer in its panel. This setting existed in the file but nothing read it;
+  now it's the one the page starts from.
+- **Where things are:** the folder isoshelf is watching, with the button to
+  change it, and isoshelf's own folder, so nobody has to hunt for where the
+  settings live.
+- **Help:** the version you're running, whether a newer one is out, and
+  *Report a bug*, which opens a new issue with the version already filled in.
+  Nothing is sent until you press send yourself.
+- **Reset to defaults**, which puts every switch back and keeps your folder,
+  your pinned folders and everything isoshelf has learned about your images.
+
+### Changed
+- The colours are written once instead of twice, so choosing a theme is the
+  page following your choice rather than your computer's.
+- Sizes on the page are measured against one number, which is what lets
+  *Larger text* move all of them together.
+- The settings file has one owner (`internal/settings`) rather than a second
+  copy of the fields in the web server. A choice made on the page could
+  quietly erase one made on the command line; it can't now.
+- The page is now one script per part of it — the list, the details panel,
+  downloads, updating and identifying, the folder chooser, the archive, and
+  Settings — instead of one 2,544-line file. Nothing about the page changed;
+  it is a change for whoever works on it next.
+
+### Removed
+- Code nothing called any more: two helpers left over from features the
+  redesign replaced, the sort orders for columns the page no longer has, a
+  field sent to the page twice a second during a scan and read by nothing,
+  and nine stylesheet rules for parts of the old table. Two dead-code
+  checkers come back clean.
 
 ## [v0.3.0] - 2026-09-21
 

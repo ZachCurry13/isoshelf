@@ -95,8 +95,12 @@ To try the web UI while you work on it:
 go run ./cmd/isoshelf ui --port 8765 --no-browser /path/to/your/isos
 ```
 
-Open the link it prints. The page, CSS and script are embedded in the binary,
-so restart it after changing them.
+Open the link it prints. The page, its CSS and its scripts are embedded in
+the binary, so restart it after changing them. `index.html` loads one script
+per part of the page (`app.js`, `images.js`, `details.js`, `downloads.js`,
+`actions.js`, `folders.js`, `archive.js`, `settings.js`); a new one has to be
+added to `scripts` in `internal/web/static_test.go` too, which is what keeps
+the page and the tests honest about each other.
 
 Tests never touch a real drive (temp folders only) and never reach the network
 (recorded responses only). Please keep it that way.
@@ -104,7 +108,9 @@ Tests never touch a real drive (temp folders only) and never reach the network
 ## Changing the code
 
 [`docs/design.md`](docs/design.md) is the design document: the hard rules, how the four
-stages fit together, and why things are the way they are. Read the hard rules
+stages fit together, and why things are the way they are.
+[`docs/TODO.md`](docs/TODO.md) is what's being worked on next, if you'd like
+to pick something up. Read the hard rules
 before changing anything that deletes, replaces or downloads a file. If a
 change makes one of them wrong, say so in the pull request — the rule can
 change, but not by accident.

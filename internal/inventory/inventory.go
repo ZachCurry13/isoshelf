@@ -48,6 +48,9 @@ type Options struct {
 	// Online checks sources for updates; Client must then be set.
 	Online bool
 	Client *remote.Client
+	// Memory, if set, is what isoshelf found last time it asked: an entry it
+	// already has a fresh answer for isn't asked about again.
+	Memory check.Memory
 	// NoHash skips hashing fixed-name images.
 	NoHash  bool
 	Catalog *catalog.Catalog
@@ -142,7 +145,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}
 	if opts.Online && ctx.Err() == nil {
 		progress(Progress{Stage: Checking})
-		out.Report.Online(ctx, opts.Client, st, func(done, total int) {
+		out.Report.Online(ctx, opts.Client, st, opts.Memory, func(done, total int) {
 			progress(Progress{Stage: Checking, Done: int64(done), Total: int64(total)})
 		})
 	}

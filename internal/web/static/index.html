@@ -8,6 +8,13 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='5' width='26' height='5' rx='2' fill='%232f6fed'/%3E%3Crect x='3' y='13.5' width='26' height='5' rx='2' fill='%2360a5fa'/%3E%3Crect x='3' y='22' width='26' height='5' rx='2' fill='%2393c5fd'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/static/app.css">
 <script src="/static/app.js" defer></script>
+<script src="/static/images.js" defer></script>
+<script src="/static/details.js" defer></script>
+<script src="/static/downloads.js" defer></script>
+<script src="/static/actions.js" defer></script>
+<script src="/static/folders.js" defer></script>
+<script src="/static/archive.js" defer></script>
+<script src="/static/settings.js" defer></script>
 </head>
 <body>
 <header class="topbar">
@@ -21,6 +28,9 @@
     <span class="version" id="version"></span>
   </div>
   <a id="app-update" class="app-update" hidden target="_blank" rel="noopener noreferrer"></a>
+  <button type="button" class="btn small settings-button" id="settings-open" aria-expanded="false">
+    <span class="gear" aria-hidden="true">⚙</span> Settings
+  </button>
 </header>
 
 <nav class="jump" id="jump" aria-label="Sections">
@@ -49,8 +59,8 @@
     </div>
     <div class="target-actions">
       <button type="button" class="btn" id="choose">Choose folder…</button>
-      <button type="button" class="btn" id="scan" disabled>Scan</button>
-      <button type="button" class="btn primary" id="check" disabled>Check for updates</button>
+      <button type="button" class="btn primary" id="refresh" disabled
+        title="Read the folder again and ask every project for its newest version">Refresh</button>
     </div>
   </section>
 
@@ -77,7 +87,7 @@
       </details>
       <select id="sort" aria-label="Sort by">
         <option value="attention">Needs attention first</option>
-        <option value="favorites">Favourites first</option>
+        <option value="favorites">Favorites first</option>
         <option value="name">Name</option>
         <option value="size">Largest first</option>
         <option value="version">Newest version here</option>
@@ -92,7 +102,7 @@
       <table id="table">
         <thead>
           <tr>
-            <th class="col-star"><span class="sr-only">Favourite</span></th>
+            <th class="col-star"><span class="sr-only">Favorite</span></th>
             <th id="col-image" class="sortable" aria-sort="none">Image</th>
             <th id="col-version" class="sortable" aria-sort="none">Version</th>
             <th id="col-status" class="sortable" aria-sort="none">Status</th>
@@ -171,7 +181,7 @@
       </div>
       <button type="button" class="btn small" id="archive-empty">Empty archive</button>
     </div>
-    <p class="muted more-hint">Files isoshelf set aside instead of deleting. They still use room in this folder until you empty the archive, and you can put any of them back.</p>
+    <p class="muted more-hint">Files isoshelf set aside instead of deleting. They still use room in this folder until you empty the archive, and you can restore any of them.</p>
     <ul class="catalog" id="archive-list"></ul>
   </section>
 
@@ -203,6 +213,27 @@
     <button type="button" class="btn small icon" id="details-close" aria-label="Close">✕</button>
   </header>
   <div class="details-body" id="details-body"></div>
+</aside>
+
+<!-- Settings: everything isoshelf lets you change, in one place. -->
+<aside class="details settings" id="settings" hidden aria-labelledby="settings-title">
+  <header class="details-head">
+    <div class="details-title">
+      <div>
+        <h2 id="settings-title">Settings</h2>
+        <div class="muted">Sensible defaults, all of them yours to change</div>
+      </div>
+    </div>
+    <button type="button" class="btn small icon" id="settings-close" aria-label="Close">✕</button>
+  </header>
+  <div class="settings-find">
+    <input type="search" id="settings-search" placeholder="Search settings…" aria-label="Search settings">
+  </div>
+  <div class="details-body" id="settings-body"></div>
+  <footer class="settings-foot">
+    <button type="button" class="btn small" id="settings-reset">Reset to defaults</button>
+    <span class="muted" id="settings-where"></span>
+  </footer>
 </aside>
 
 <dialog id="ask" class="ask" aria-labelledby="ask-title">
