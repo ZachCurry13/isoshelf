@@ -51,8 +51,8 @@ function pendingBytes() {
   const d = downloads();
   let bytes = d.queued.reduce((sum, job) => sum + (job.size || 0), 0);
   if (d.current) {
-    const run = state.run;
-    bytes += run && run.total ? Math.max(run.total - run.done, 0) : d.current.size || 0;
+    const cur = d.current;
+    bytes += cur.total ? Math.max(cur.total - cur.done, 0) : cur.size || 0;
   }
   return bytes;
 }
@@ -60,8 +60,10 @@ function pendingBytes() {
 // downloadProgress describes the download that is running, in words and as a
 // fraction (null when there's no telling).
 function downloadProgress() {
-  const run = state.run;
-  if (!run || run.kind !== "update") return { text: "Starting…", fraction: null, short: "Starting…" };
+  // The download carries its own progress, so the page can draw it and a
+  // scan's card at the same time.
+  const run = downloads().current;
+  if (!run) return { text: "Starting…", fraction: null, short: "Starting…" };
   if (run.stage === "downloading" && run.total > 0) {
     const fraction = run.done / run.total;
     const pct = `${Math.floor(fraction * 100)}%`;
@@ -87,8 +89,7 @@ function downloadProgress() {
 }
 
 function downloadRate(run) {
-  const d = downloads();
-  const id = d.current && d.current.id;
+  const id = run.id;
   const now = Date.now();
   if (speed.id !== id || run.done < speed.done) {
     speed = { id, done: run.done, at: now, rate: 0 };
@@ -344,7 +345,7 @@ function renderDockProgress() {
       count("stopped") && `${count("stopped")} stopped`,
     ].filter(Boolean);
     text = `Finished: ${parts.join(", ")}.`;
-    if (state.run) text += " Looking at the folder again…";
+    if (scanning()) text += " Looking at the folder again…";
   }
   $("dock-text").textContent = text;
   // With thirty images queued, "30 waiting" doesn't answer the question

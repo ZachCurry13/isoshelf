@@ -180,7 +180,7 @@ function renderFooter() {
   if (state.removed && state.removed.files > 0) {
     footer.append(el("div", { class: "footer-row" },
       `Removed files waiting in .isoshelf/removed: ${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)}.`,
-      el("button", { type: "button", class: "btn small", disabled: Boolean(state.run), onclick: emptyRemoved }, "Empty it")));
+      el("button", { type: "button", class: "btn small", disabled: scanning() || downloading(), onclick: emptyRemoved }, "Empty it")));
   }
   if (!state.report) return;
   for (const trash of state.report.trash) {
@@ -545,9 +545,10 @@ async function restore(item) {
     showNotice(err.message, true);
     return;
   }
-  // A scan waits for downloads; the one that follows them picks the file up.
-  if (state.run && state.run.kind === "update") {
-    flashNotice(`Put ${item.path} back. It shows in the list once the downloads finish.`);
+  // A scan of its own would fight the one already running; that one, or the
+  // one after the downloads, picks the file up.
+  if (scanning()) {
+    flashNotice(`Put ${item.path} back. It shows in the list once the scan finishes.`);
     await refresh();
     return;
   }

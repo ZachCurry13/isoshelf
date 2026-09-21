@@ -31,8 +31,8 @@ func (s *Server) start(w http.ResponseWriter, ask asking) {
 	case s.target == "":
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
-	case s.busyLocked() != "":
-		writeError(w, http.StatusConflict, s.busyLocked())
+	case s.scanBusyLocked() != "":
+		writeError(w, http.StatusConflict, s.scanBusyLocked())
 		return
 	}
 	s.lastErr = ""
@@ -40,8 +40,8 @@ func (s *Server) start(w http.ResponseWriter, ask asking) {
 	writeJSON(w, http.StatusAccepted, map[string]string{"status": "started"})
 }
 
-// startScanLocked starts a scan; s.mu must be held and nothing may be
-// running.
+// startScanLocked starts a scan; s.mu must be held and no other scan may be
+// running. A download may be: it has its own slot.
 func (s *Server) startScanLocked(ask asking) {
 	ctx, cancel := context.WithCancel(context.Background())
 	mem := s.memoryFor(ask)
@@ -49,7 +49,7 @@ func (s *Server) startScanLocked(ask asking) {
 	if mem != nil {
 		kind = "check"
 	}
-	s.run = &run{kind: kind, started: s.cfg.Now(), progress: inventory.Progress{Stage: inventory.Scanning}, cancel: cancel}
+	s.scanning = &run{kind: kind, started: s.cfg.Now(), progress: inventory.Progress{Stage: inventory.Scanning}, cancel: cancel}
 	go s.execute(ctx, s.target, s.st.Profile, mem)
 }
 
@@ -92,8 +92,8 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 		},
 		Progress: func(p inventory.Progress) {
 			s.mu.Lock()
-			if s.run != nil {
-				s.run.progress = p
+			if s.scanning != nil {
+				s.scanning.progress = p
 			}
 			s.mu.Unlock()
 		},
@@ -107,7 +107,7 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.run = nil
+	s.scanning = nil
 	if res != nil && s.target == target {
 		s.report, s.st, s.scan, s.warnings, s.updatedAt = res.Report, res.State, res.Scan, res.Warnings, s.cfg.Now()
 	}
@@ -117,7 +117,8 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 	case err != nil:
 		s.lastErr = err.Error()
 	}
-	// Downloads added while the scan ran go now.
+	// A download that placed a file while this scan ran left s.placed set and
+	// no scan able to start; this is where that scan goes.
 	s.startNextLocked()
 }
 
@@ -125,11 +126,12 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 // one running stops, and the ones waiting are taken off the queue.
 func (s *Server) cancel(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
-	if s.run != nil {
-		if s.run.job != nil {
-			s.queue = nil
-		}
-		s.run.cancel()
+	if s.scanning != nil {
+		s.scanning.cancel()
+	}
+	if s.downloading != nil {
+		s.queue = nil
+		s.downloading.cancel()
 	}
 	s.mu.Unlock()
 	writeJSON(w, http.StatusOK, map[string]string{"status": "stopping"})

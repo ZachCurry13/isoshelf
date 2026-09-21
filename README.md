@@ -218,8 +218,12 @@ for a day, and has one Refresh button. Both can be turned off in Settings.<br>
 inside the window, a download that would overwrite a file asks what to do
 instead of failing, American spelling, *Restore* in the archive, and the page
 says how much room the images use and how much the queue will download.<br>
-**v0.3.4 (next):** scanning while downloads run, where each folder's records
-live, and isoshelf updating itself with one click.<br>
+**v0.3.4: scanning while downloads run.** *2026-09-21:* a scan or *Refresh*
+is no longer refused while images download - the two run side by side, and
+the page shows both. A scan also stops being able to undo the record of a
+file a download had just placed.<br>
+**Next:** where each folder's records live, and isoshelf updating itself with
+one click.<br>
 **v0.4:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),

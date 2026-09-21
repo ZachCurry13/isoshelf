@@ -4,10 +4,12 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync/atomic"
 	"testing"
 
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
+	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/lastcheck"
 	"github.com/ZachCurry13/isoshelf/internal/remote/remotetest"
@@ -23,7 +25,13 @@ func countingServer(t *testing.T, dirs appdir.Dirs, target string, asked *atomic
 	}
 	recorded := remotetest.Recorded()
 	counting := roundTripFunc(func(r *http.Request) (*http.Response, error) {
-		asked.Add(1)
+		// Only what the images' own projects were asked counts. isoshelf's
+		// housekeeping - the check for a newer isoshelf and the catalog
+		// refresh - starts with the server and would otherwise land in the
+		// count at whatever moment it finished.
+		if !strings.Contains(r.URL.String(), appupdate.Repo) {
+			asked.Add(1)
+		}
 		return recorded.RoundTrip(r)
 	})
 	return New(Config{

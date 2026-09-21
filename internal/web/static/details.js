@@ -279,7 +279,7 @@ async function reviewOlder(older) {
   flashNotice(answer.action === "delete"
     ? `${plural(answer.ids.length, "older version")} deleted.`
     : `${plural(answer.ids.length, "older version")} archived, under Archive on this page.`);
-  if (state.run && state.run.kind === "update") {
+  if (scanning()) {
     render();
     return;
   }
