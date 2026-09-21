@@ -20,12 +20,12 @@ it was got wrong once: this is a shallow clone with no tags fetched, so
 `git tag` prints nothing even though releases exist. Ask GitHub, not the
 clone.
 
-1. **Merge to `main`.** Open a pull request from the branch and merge it:
-   v0.3.1 (Settings), the dead-code clear-out and the `app.js` split, the
-   documentation pass, v0.3.2 (checking by itself), v0.3.3 (fixes and
-   tidying), and the versioned release filenames.
-2. **Close issue #10** ("Make the page work on a phone"). It shipped in
-   v0.3.0 and is still open.
+1. **Merge [#13]**, the pull request holding all of it: v0.3.1 (Settings),
+   the dead-code clear-out and the `app.js` split, the documentation pass,
+   v0.3.2 (checking by itself), v0.3.3 (fixes and tidying), the versioned
+   release filenames, and the agents. Delete the branch afterwards; from here
+   on a branch is named after its work (see CLAUDE.md).
+2. ~~Close issue #10~~ *(done: it shipped in v0.3.0 and was left open)*.
 3. **Tag v0.3.3** once it is merged. The workflow has run fine eleven times,
    but this is the first release with versioned asset names
    (`isoshelf-v0.3.3-windows-amd64.exe`), so check what it attaches: three
@@ -128,6 +128,7 @@ sits next to the state file.
 - Anything from the review doc listed as done that doesn't feel done when
   used on a real drive.
 
+[#13]: https://github.com/ZachCurry13/isoshelf/pull/13
 [#1]: https://github.com/ZachCurry13/isoshelf/issues/1
 [#2]: https://github.com/ZachCurry13/isoshelf/issues/2
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

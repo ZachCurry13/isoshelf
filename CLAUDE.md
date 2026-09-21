@@ -19,6 +19,23 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `go run ./cmd/isoshelf ui --port 8765 --no-browser <folder>`: preview; restart after editing static files
 - `go run ./internal/remote/remotetest/record -sizes`: the only thing that goes online; run after catalog changes
 
+## Branches and releases
+`main` is what the latest release was built from: it always matches something
+people have downloaded. Work never happens directly on it.
+
+- **One branch per piece of work, named after the work**: `settings`,
+  `auto-check`, `fix-filter-menu`. Not a date, not a session id, not
+  `next-version`. If you can't name it, the piece of work is too vague.
+- Branch from the current `main`, commit as you go, push, and open a pull
+  request when it's done. Merge it, then delete the branch - it has served
+  its purpose and its commits live on in `main`.
+- **Releasing** is pushing a `v*` tag on `main`: the workflow builds the
+  three binaries and the portable zip, names them with the version, attaches
+  `SHA256SUMS`, and takes the release notes from that version's
+  `CHANGELOG.md` section. No section, no release - the workflow stops.
+- The maintainer is new to Git, so say which of these you are doing and why,
+  in plain words, rather than just running it.
+
 ## Hard rules (details in docs/design.md)
 - Only image files inside the folder the user picked; never partitions, bootloaders or `ventoy/`.
 - Nothing is deleted unless the user chose it; archiving to `.isoshelf/removed` is always offered.
