@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Tag to build, for a dry run"
+        description: "Version to build and publish, such as v0.3.3. This makes a real release."
         required: true
 
 permissions:
@@ -23,9 +23,22 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      # Started by a tag push, the tag is the ref. Started by hand, it is
+      # what was typed: GITHUB_REF_NAME is the branch then ("main"), so the
+      # typed value has to win, or a hand-started run would build a version
+      # called "main" and try to release it under that name.
       - name: work out the version
         id: version
-        run: echo "tag=${GITHUB_REF_NAME:-${{ inputs.tag }}}" >> "$GITHUB_OUTPUT"
+        env:
+          TYPED: ${{ inputs.tag }}
+        run: |
+          set -eu
+          tag="${TYPED:-$GITHUB_REF_NAME}"
+          case "$tag" in
+            v[0-9]*) ;;
+            *) echo "\"$tag\" is not a version like v0.3.3." >&2; exit 1 ;;
+          esac
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
       # One static binary per platform. No cgo, so nothing has to be installed
       # to run them.

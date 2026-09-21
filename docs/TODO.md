@@ -26,7 +26,11 @@ clone.
    release filenames, and the agents. Delete the branch afterwards; from here
    on a branch is named after its work (see CLAUDE.md).
 2. ~~Close issue #10~~ *(done: it shipped in v0.3.0 and was left open)*.
-3. **Tag v0.3.3** once it is merged. The workflow has run fine eleven times,
+3. **Release v0.3.3.** Pushing a `v*` tag is the normal way; where that is
+   not possible (the sandbox this was built in blocks tag pushes with a 403,
+   though branch pushes work), the release workflow can be started by hand
+   from the Actions tab with the version typed in, which creates the tag and
+   the release itself. The workflow has run fine eleven times,
    but this is the first release with versioned asset names
    (`isoshelf-v0.3.3-windows-amd64.exe`), so check what it attaches: three
    binaries, the portable zip and `SHA256SUMS`, all carrying the version,
