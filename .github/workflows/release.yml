@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Version to build and publish, such as v0.3.3. This makes a real release."
+        description: "Version to build and publish, written as vMAJOR.MINOR.PATCH. This makes a real release."
         required: true
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
           tag="${TYPED:-$GITHUB_REF_NAME}"
           case "$tag" in
             v[0-9]*) ;;
-            *) echo "\"$tag\" is not a version like v0.3.3." >&2; exit 1 ;;
+            *) echo "\"$tag\" is not a version like vMAJOR.MINOR.PATCH." >&2; exit 1 ;;
           esac
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 

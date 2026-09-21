@@ -354,7 +354,7 @@ of decisions is in [STATUS.md](STATUS.md)).
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release. Every file
 attached to a release carries the version
-(`isoshelf-v0.3.3-windows-amd64.exe`), because that is what people download
+(`isoshelf-vX.Y.Z-windows-amd64.exe`), because that is what people download
 and keep. The binaries *inside* the portable zip keep the plain name
 (`isoshelf-windows-amd64.exe`): that is the file run from the drive, and the
 one a future "update isoshelf" replaces in place, so it must not change every

@@ -257,11 +257,14 @@ Download it from the [latest
 release](https://github.com/ZachCurry13/isoshelf/releases/latest). There's no
 installer and nothing to set up — it's one file.
 
-| You're on | Download | Then |
+Every file on that page starts with the version, like
+`isoshelf-vX.Y.Z-…`, so pick the one whose name ends the way your row says.
+
+| You're on | The file ending in | Then |
 |---|---|---|
-| **Windows** | `isoshelf-v0.3.3-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
-| **Linux** | `isoshelf-v0.3.3-linux-amd64` (or `-arm64`) | `chmod +x` the file, then run it |
-| **A USB drive** | `isoshelf-v0.3.3-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
+| **Windows** | `-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
+| **Linux** | `-linux-amd64` (or `-linux-arm64`) | `chmod +x` the file, then run it |
+| **A USB drive** | `-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
 
 Each download carries its version, so you can tell two of them apart in your
 Downloads folder. The files *inside* the portable zip don't: that's the copy
