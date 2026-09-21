@@ -42,6 +42,9 @@ type ItemJSON struct {
 	Modified time.Time `json:"modified,omitzero"`
 	// Added is when the file arrived in the folder, when that can be known.
 	Added time.Time `json:"added,omitzero"`
+	// Placed is true when isoshelf downloaded and placed this file, rather
+	// than the file just turning up in the folder.
+	Placed bool `json:"placed,omitempty"`
 	// Caution is something worth knowing before using the image.
 	Caution string `json:"caution,omitempty"`
 	// Category and Family group the image; the rest are for showing it.
@@ -83,7 +86,7 @@ func (r *Report) JSON() ReportJSON {
 			Version: it.Version, Status: string(it.Status), EOL: it.EOL,
 			Assigned: it.Assigned, Older: it.Older,
 			Latest: it.Latest, LatestFile: it.LatestFile, Note: it.Note,
-			Modified: it.ModTime, Added: it.Added, Release: it.Release,
+			Modified: it.ModTime, Added: it.Added, Placed: it.Placed, Release: it.Release,
 		}
 		if e := it.Entry; e != nil {
 			j.Entry, j.Arch, j.Page, j.Updates = e.ID, e.Arch, e.Page, e.Updates()

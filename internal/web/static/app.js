@@ -34,32 +34,40 @@ let autoScanned = false;
 let drawn = "";
 let lastScan;
 
-// What the list shows, kept in the browser between visits.
+// What the list shows, kept in the browser between visits. Filters live in
+// one menu and show up as chips, so it is always clear why the list is short.
 const view = {
-  category: "",
-  arch: "",
   sort: "attention",
   desc: false,
-  updatesOnly: false,
-  favoritesOnly: false,
-  olderOnly: false,
+  show: { updates: false, favorites: false, older: false, caution: false },
+  kinds: [],
+  arches: [],
+  status: "",
 };
 
 function loadView() {
+  let saved = {};
   try {
-    Object.assign(view, JSON.parse(localStorage.getItem("isoshelf.view") || "{}"));
+    saved = JSON.parse(localStorage.getItem("isoshelf.view") || "{}");
   } catch {
     // A browser that will not remember settings is fine; the defaults apply.
   }
+  Object.assign(view, saved, { show: { ...view.show, ...(saved.show || {}) } });
+  // Older versions kept each filter on its own; carry those over once.
+  if (saved.category) view.kinds = [saved.category];
+  if (saved.arch) view.arches = [saved.arch];
+  if (saved.updatesOnly) view.show.updates = true;
+  if (saved.favoritesOnly) view.show.favorites = true;
+  if (saved.olderOnly) view.show.older = true;
   // "Recently changed" became "Recently added": a copied file keeps its old
   // change date, so it never answered the question people were asking.
   if (view.sort === "modified") view.sort = "added";
-  $("category").value = view.category;
-  $("arch").value = view.arch;
+  delete view.category;
+  delete view.arch;
+  delete view.updatesOnly;
+  delete view.favoritesOnly;
+  delete view.olderOnly;
   $("sort").value = view.sort;
-  $("only-updates").checked = view.updatesOnly;
-  $("only-favorites").checked = view.favoritesOnly;
-  $("only-older").checked = view.olderOnly;
 }
 
 function saveView() {
@@ -215,15 +223,16 @@ function render() {
   else if (state.warnings.length) showNotice(state.warnings.join(" "), false);
   else $("notice").hidden = true;
 
-  $("changed-banner").hidden = !state.folder_changed;
-  $("changed-scan").disabled = busy;
-
-  renderSummary();
+  renderJump();
+  renderTodo();
+  renderFilters();
   renderHeadings();
   renderRows();
   renderFooter();
   renderCatalog();
-  renderPast();
+  renderArchive();
+  renderHistory();
+  renderDetails();
 }
 
 function renderRun() {
@@ -717,34 +726,306 @@ function showNotice(message, isError) {
   notice.hidden = false;
 }
 
-function renderSummary() {
-  const summary = $("summary");
-  summary.replaceChildren();
-  if (!state.report) return;
-  const counts = {};
-  for (const item of state.report.items) counts[item.status] = (counts[item.status] || 0) + 1;
-  if (statusFilter && !counts[statusFilter]) statusFilter = null;
+// ---- Statuses in plain words ----------------------------------------------
 
-  for (const [status, cls] of STATUSES) {
-    if (!counts[status]) continue;
-    summary.append(el("button", {
-      type: "button",
-      class: `chip ${cls}`,
-      "aria-pressed": statusFilter === status ? "true" : "false",
-      onclick: () => { statusFilter = statusFilter === status ? null : status; renderSummary(); renderRows(); },
-    }, el("span", { class: "dot" }), el("span", { class: "count" }, counts[status]), status));
+// What the page calls each status, and what it means. The report keeps its
+// own words for the command line and for scripts; only the page speaks
+// plainly, and every status explains itself when you hover or tap it.
+const STATUS_WORDS = {
+  "update available": ["Update ready", "A newer version is published. isoshelf can download it, check it, and put it in place."],
+  "up to date": ["Up to date", "This is the newest version the project publishes."],
+  "EOL": ["Old release", "This release no longer gets security fixes. Fine to keep for a virtual machine, an old PC or tinkering."],
+  "not bootable": ["Won't boot here", "An image, but not in a shape this folder's boot menu can use."],
+  "manual": ["Check by hand", "The project publishes nothing isoshelf can check against, so updates are up to you. Its download page is one click away."],
+  "missing": ["Missing", "You usually keep this image here, but the file isn't in the folder."],
+  "unrecognized": ["Unknown file", "isoshelf doesn't know what this file is. It can work it out, or you can name it yourself."],
+  "checksum mismatch": ["Doesn't match", "The file doesn't match the checksum the project publishes: a broken download, or a changed file."],
+  "unverified": ["Not checked", "The project publishes no checksum for this file, so nothing can prove it arrived intact."],
+  "check failed": ["Couldn't check", "isoshelf couldn't reach the project this time. The note says what went wrong."],
+  "unknown": ["Not sure yet", "isoshelf hasn't worked out enough about this file to say."],
+  "not checked": ["Not checked yet", "Press Check for updates and isoshelf will ask each project what's newest."],
+};
+
+function statusWord(status) {
+  return (STATUS_WORDS[status] || [status])[0];
+}
+
+function statusHelp(status) {
+  return (STATUS_WORDS[status] || [])[1] || "";
+}
+
+// showMeanings lists every status and what it means, for anyone who wants
+// the whole key rather than one explanation at a time.
+function showMeanings() {
+  const dialog = $("ask");
+  $("ask-title").textContent = "What the statuses mean";
+  const text = $("ask-text");
+  text.replaceChildren(el("dl", { class: "meanings" },
+    Object.entries(STATUS_WORDS).flatMap(([status, [word, help]]) => [
+      el("dt", {}, el("span", { class: `pill ${STATUS_CLASS[status] || "s-muted"}` }, word)),
+      el("dd", {}, help),
+    ])));
+  const buttons = $("ask-buttons");
+  buttons.replaceChildren(el("button", { type: "button", class: "btn primary", onclick: () => dialog.close() }, "Got it"));
+  dialog.showModal();
+}
+
+// ---- Things to do ----------------------------------------------------------
+
+// One card per thing that wants doing, instead of a stack of banners in
+// different styles. A card only appears when there is something to do.
+function renderTodo() {
+  const todo = $("todo");
+  todo.replaceChildren();
+  if (!state.report) return;
+  const items = state.report.items;
+  const cards = [];
+
+  const updates = updatable();
+  const byHand = items.filter((it) => it.status === "update available" && it.updates !== "download").length;
+  if (updates.length || byHand) {
+    const waiting = updates.filter((it) => inDownloads(it.entry)).length;
+    const left = updates.length - waiting;
+    const bytes = updates.reduce((sum, it) => sum + (it.size || 0), 0);
+    const all = updates.length + byHand;
+    cards.push(todoCard({
+      tone: "s-update",
+      title: all === 1 ? "1 update ready" : `${all} updates ready`,
+      detail: bytes ? `about ${formatBytes(bytes)} to download` : "",
+      note: [
+        byHand ? `${byHand} to download by hand` : "",
+        waiting ? `${waiting} already in the downloads` : "",
+      ].filter(Boolean).join(" 00b7 "),
+      actions: [el("button", {
+        type: "button", class: "btn primary", disabled: left === 0,
+        onclick: updateAll,
+      }, left === 0 ? (updates.length ? "All queued" : "By hand only")
+        : left === all ? "Update all" : `Update ${left}`)],
+    }));
   }
+
+  const older = items.filter((it) => it.older && it.path);
+  if (older.length) {
+    const bytes = older.reduce((sum, it) => sum + (it.size || 0), 0);
+    cards.push(todoCard({
+      title: older.length === 1 ? "1 older version" : `${older.length} older versions`,
+      detail: bytes ? `${formatBytes(bytes)} you could free` : "",
+      note: "You have a newer version of each of these.",
+      actions: [el("button", {
+        type: "button", class: "btn", disabled: scanning(),
+        onclick: () => reviewOlder(older),
+      }, "Review…")],
+    }));
+  }
+
+  if (state.removed && state.removed.files) {
+    cards.push(todoCard({
+      title: "Archive",
+      detail: `${plural(state.removed.files, "file")} · ${formatBytes(state.removed.bytes)}`,
+      note: "Set aside, still using room here.",
+      actions: [
+        el("button", { type: "button", class: "btn", onclick: () => jumpTo("archive") }, "View"),
+        el("button", { type: "button", class: "btn", disabled: Boolean(state.run), onclick: emptyRemoved }, "Empty"),
+      ],
+    }));
+  }
+
+  const stuck = items.filter((it) => it.status === "not bootable");
+  if (stuck.length) {
+    cards.push(todoCard({
+      tone: "s-warn",
+      title: stuck.length === 1 ? "1 file won't boot here" : `${stuck.length} files won't boot here`,
+      note: "An image, but not in a shape this folder's boot menu can use.",
+      actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("not bootable") }, "Show them")],
+    }));
+  }
+
+  const unknown = items.filter((it) => it.status === "unrecognized");
+  if (unknown.length) {
+    cards.push(todoCard({
+      title: unknown.length === 1 ? "1 unknown file" : `${unknown.length} unknown files`,
+      note: "isoshelf can work out what they are.",
+      actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("unrecognized") }, "Show them")],
+    }));
+  }
+
+  const missing = items.filter((it) => it.status === "missing");
+  if (missing.length) {
+    cards.push(todoCard({
+      tone: "s-missing",
+      title: missing.length === 1 ? "1 image missing" : `${missing.length} images missing`,
+      note: "You usually keep these here.",
+      actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("missing") }, "Show them")],
+    }));
+  }
+
+  if (state.folder_changed) {
+    cards.push(todoCard({
+      title: "The folder changed",
+      note: "Something was added or removed outside isoshelf.",
+      actions: [el("button", {
+        type: "button", class: "btn", disabled: Boolean(state.run),
+        onclick: () => start("scan"),
+      }, "Look again")],
+    }));
+  }
+
+  todo.append(...cards);
+}
+
+function todoCard({ title, detail, note, actions, tone }) {
+  return el("div", { class: `todo-card ${tone || ""}` },
+    el("div", { class: "todo-title" }, title),
+    detail ? el("div", { class: "todo-detail" }, detail) : null,
+    note ? el("div", { class: "todo-note" }, note) : null,
+    el("div", { class: "todo-actions" }, actions));
+}
+
+function jumpTo(id) {
+  const section = $(id);
+  const details = section.querySelector("details");
+  if (details) details.open = true;
+  section.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// showOnly filters the list down to one status, as a chip you can remove.
+function showOnly(status) {
+  view.status = status;
+  saveView();
+  renderFilters();
+  renderRows();
+  jumpTo("images");
+}
+
+// ---- Filters ---------------------------------------------------------------
+
+const KINDS = [
+  ["desktop", "Desktop"],
+  ["gaming", "Gaming and handhelds"],
+  ["server", "Server and homelab"],
+  ["boards", "Raspberry Pi and other boards"],
+  ["security", "Security and privacy"],
+  ["rescue", "Rescue and tools"],
+  ["windows", "Windows"],
+  ["other", "Other"],
+];
+
+const ARCHES = [
+  ["x86_64", "64-bit (x86_64)"],
+  ["x86", "32-bit (x86)"],
+  ["arm64", "ARM 64-bit"],
+  ["arm", "ARM 32-bit"],
+  ["multi", "Multi"],
+];
+
+const SHOW = [
+  ["updates", "Updates ready"],
+  ["favorites", "Favourites"],
+  ["older", "Older versions"],
+  ["caution", "Worth knowing (⚠)"],
+];
+
+// renderFilters fills the Filter menu with what this folder actually holds,
+// and shows every filter that is on as a chip above the list.
+function renderFilters() {
+  const box = $("filter-items");
+  box.replaceChildren();
+  if (!state.report) return;
+  const items = state.report.items;
+  const has = (pick) => items.some(pick);
+
+  const group = (title, boxes) => boxes.length
+    ? el("div", { class: "filter-group" }, el("div", { class: "filter-title" }, title), boxes)
+    : null;
+
+  box.append(
+    group("Show", SHOW.filter(([key]) => {
+      if (key === "updates") return has((it) => it.status === "update available");
+      if (key === "favorites") return has((it) => it.entry && (state.tracks[it.entry] || {}).starred);
+      if (key === "older") return has((it) => it.older);
+      return has((it) => cautionOf(it));
+    }).map(([key, label]) => filterBox(label, view.show[key], (on) => {
+      view.show[key] = on;
+    }))),
+    group("Kind", KINDS.filter(([kind]) => has((it) => (it.category || "other") === kind))
+      .map(([kind, label]) => filterBox(label, view.kinds.includes(kind), (on) => {
+        view.kinds = on ? [...view.kinds, kind] : view.kinds.filter((k) => k !== kind);
+      }))),
+    group("Architecture", ARCHES.filter(([arch]) => has((it) => it.arch === arch))
+      .map(([arch, label]) => filterBox(label, view.arches.includes(arch), (on) => {
+        view.arches = on ? [...view.arches, arch] : view.arches.filter((a) => a !== arch);
+      }))));
+
+  const count = activeFilters().length;
+  const badge = $("filter-count");
+  badge.hidden = count === 0;
+  badge.textContent = count;
+  renderChips();
+}
+
+function filterBox(label, checked, set) {
+  return el("label", { class: "check" },
+    el("input", {
+      type: "checkbox",
+      checked: checked || undefined,
+      onchange: (e) => {
+        set(e.target.checked);
+        saveView();
+        renderFilters();
+        renderRows();
+      },
+    }),
+    label);
+}
+
+// activeFilters lists what is filtering the list right now: each one gets a
+// chip, so a short list always says why it is short.
+function activeFilters() {
+  const chips = [];
+  if (view.status) {
+    chips.push({ label: statusWord(view.status), off: () => { view.status = ""; } });
+  }
+  for (const [key, label] of SHOW) {
+    if (view.show[key]) chips.push({ label, off: () => { view.show[key] = false; } });
+  }
+  for (const [kind, label] of KINDS) {
+    if (view.kinds.includes(kind)) chips.push({ label, off: () => { view.kinds = view.kinds.filter((k) => k !== kind); } });
+  }
+  for (const [arch, label] of ARCHES) {
+    if (view.arches.includes(arch)) chips.push({ label, off: () => { view.arches = view.arches.filter((a) => a !== arch); } });
+  }
+  const query = $("search").value.trim();
+  if (query) chips.push({ label: `“${query}”`, off: () => { $("search").value = ""; } });
+  return chips;
+}
+
+function renderChips() {
+  const box = $("chips");
+  const chips = activeFilters();
+  box.hidden = chips.length === 0;
+  box.replaceChildren(
+    ...chips.map((chip) => el("button", {
+      type: "button", class: "chip-off", title: "Stop filtering by this",
+      onclick: () => {
+        chip.off();
+        saveView();
+        renderFilters();
+        renderRows();
+      },
+    }, chip.label, el("span", { class: "x", "aria-hidden": "true" }, "✕"))),
+    chips.length > 1
+      ? el("button", { type: "button", class: "linkish", onclick: clearFilters }, "Clear all")
+      : null);
 }
 
 function clearFilters() {
-  statusFilter = null;
-  view.category = view.arch = "";
-  view.updatesOnly = view.favoritesOnly = view.olderOnly = false;
+  view.status = "";
+  view.kinds = [];
+  view.arches = [];
+  for (const [key] of SHOW) view.show[key] = false;
   $("search").value = "";
-  $("category").value = $("arch").value = "";
-  $("only-updates").checked = $("only-favorites").checked = $("only-older").checked = false;
   saveView();
-  renderSummary();
+  renderFilters();
   renderRows();
 }
 
@@ -765,13 +1046,14 @@ function renderRows() {
   const items = sortItems(state.report.items.filter((item) => {
     const haystack = `${item.name} ${item.path || ""} ${item.entry || ""} ${item.family || ""}`.toLowerCase();
     const starred = item.entry && (state.tracks[item.entry] || {}).starred;
-    return (!statusFilter || item.status === statusFilter) &&
+    return (!view.status || item.status === view.status) &&
       (!query || haystack.includes(query)) &&
-      (!view.category || item.category === view.category) &&
-      (!view.arch || item.arch === view.arch) &&
-      (!view.updatesOnly || item.status === "update available") &&
-      (!view.favoritesOnly || starred) &&
-      (!view.olderOnly || item.older);
+      (!view.kinds.length || view.kinds.includes(item.category || "other")) &&
+      (!view.arches.length || view.arches.includes(item.arch)) &&
+      (!view.show.updates || item.status === "update available") &&
+      (!view.show.favorites || starred) &&
+      (!view.show.older || item.older) &&
+      (!view.show.caution || cautionOf(item));
   }));
 
   for (const item of items) rows.append(renderRow(item));
@@ -781,66 +1063,14 @@ function renderRows() {
   const total = state.report.items.length;
   $("shown").textContent = items.length === total ? plural(total, "image") : `${items.length} of ${plural(total, "image")}`;
 
-  // A folder collects older copies: one downloaded by hand, one isoshelf
-  // fetched, one from last year. Offer to clear them in one go.
-  const older = state.report.items.filter((it) => it.older && it.path);
-  const tidy = $("older-banner");
-  tidy.hidden = older.length === 0;
-  if (older.length) {
-    const bytes = older.reduce((sum, it) => sum + (it.size || 0), 0);
-    $("older-text").textContent =
-      `${plural(older.length, "older copy", "older copies")} of images you already have${bytes ? `, using ${formatBytes(bytes)}` : ""}.`;
-    $("older-clear").disabled = scanning();
-    $("older-clear").onclick = () => clearOlder(older);
-    // Showing only the older copies is a filter; the same button turns it off
-    // again, so the list never gets stuck showing just those.
-    $("older-show").textContent = view.olderOnly ? "Show all images" : "Show them";
-    $("older-show").onclick = () => {
-      statusFilter = null;
-      view.olderOnly = !view.olderOnly;
-      $("only-older").checked = view.olderOnly;
-      saveView();
-      renderSummary();
-      renderRows();
-    };
-  }
-
-  // Updates get their own line above the list rather than a button at the
-  // end of the filters, where it was easy to miss.
-  const updates = updatable();
-  const banner = $("updates-banner");
-  banner.hidden = updates.length === 0;
-  const waiting = updates.filter((it) => inDownloads(it.entry)).length;
-  if (updates.length) {
-    const bytes = updates.reduce((sum, it) => sum + (it.size || 0), 0);
-    $("updates-text").textContent = (updates.length === 1
-      ? `${updates[0].name} has an update.`
-      : `${plural(updates.length, "image")} have updates${bytes ? `, replacing about ${formatBytes(bytes)}` : ""}.`) +
-      (waiting ? ` ${waiting === updates.length ? (updates.length === 1 ? "It's" : "All are") : waiting} in the downloads.` : "");
-  }
-  const all = $("update-all");
-  const left = updates.length - waiting;
-  all.disabled = left === 0;
-  all.textContent = left === updates.length
-    ? (updates.length === 1 ? "Update it" : `Update all ${updates.length}`)
-    : left ? `Update the other ${left}` : "Queued";
   empty.hidden = items.length > 0;
   empty.replaceChildren();
   if (items.length === 0) {
     if (total === 0) {
       empty.append("No images found in this folder.");
     } else {
-      const active = [
-        statusFilter && `status "${statusFilter}"`,
-        view.category && $("category").selectedOptions[0].textContent,
-        view.arch && $("arch").selectedOptions[0].textContent,
-        view.updatesOnly && "updates only",
-        view.favoritesOnly && "favourites only",
-        view.olderOnly && "older copies only",
-        $("search").value.trim() && `search "${$("search").value.trim()}"`,
-      ].filter(Boolean);
       empty.append(
-        `None of the ${plural(total, "image")} here match ${active.join(", ")}.`,
+        `None of the ${plural(total, "image")} here match ${activeFilters().map((c) => c.label).join(", ")}.`,
         el("div", {},
           el("button", { type: "button", class: "btn small", onclick: clearFilters }, "Clear filters")));
     }
@@ -920,14 +1150,9 @@ function sortItems(items) {
 // Columns that can be sorted by clicking their heading, and what each one
 // means the first time it's clicked.
 const COLUMN_SORTS = [
-  ["col-status", "attention", "Most urgent first"],
   ["col-image", "name", "By name, A to Z"],
   ["col-version", "version", "Newest version here first"],
-  ["col-latest", "latest", "Newest available first"],
-  ["col-file", "file", "By filename, A to Z"],
-  ["col-size", "size", "Largest first"],
-  ["col-added", "added", "Most recently added first"],
-  ["col-replace", "replace", "Images set to replace first"],
+  ["col-status", "attention", "Most urgent first"],
 ];
 
 // renderHeadings makes the column titles sort the list, and shows which one
@@ -1077,8 +1302,11 @@ function renderRow(item) {
   }, track.starred ? "★" : "☆");
 
   const statusCell = el("td", {},
-    el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}` }, item.status),
-    item.eol && item.status !== "EOL" ? el("span", { class: "pill s-eol", title: "This release is no longer supported" }, "EOL") : null);
+    el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}`, title: statusHelp(item.status) },
+      statusWord(item.status)),
+    item.eol && item.status !== "EOL"
+      ? el("span", { class: "pill s-eol", title: statusHelp("EOL") }, "Old release")
+      : null);
 
   const name = item.page
     ? el("a", { href: item.page, target: "_blank", rel: "noopener noreferrer", title: "Open the download page" }, item.name)
@@ -1095,34 +1323,26 @@ function renderRow(item) {
       item.arch ? el("div", { class: "meta-line" }, el("span", { class: "arch" }, item.arch)) : null,
       item.note ? el("div", { class: "note" }, item.note) : null)));
 
-  const newer = item.latest && item.status === "update available";
-  const latestCell = el("td", { class: "latest-cell" },
-    item.latest ? el("span", { class: newer ? "latest-new" : "", title: item.latest_file || "" }, item.latest) : "–");
-
-  const fileCell = el("td", {},
-    item.path
-      ? [
-        el("div", { class: "file", title: item.path }, breakable(item.path)),
-        item.kind && item.kind !== "unknown" ? el("div", { class: "size" }, item.kind) : null,
-      ]
-      : el("span", { class: "muted" }, "Not in this folder"));
-
-  // Size gets a column of its own, so the shelf can be sorted by what's
-  // taking up the room.
-  const sizeCell = el("td", { class: "size-cell" },
-    item.path && item.size ? formatBytes(item.size) : el("span", { class: "muted" }, "–"));
-
-  let replace = el("span", { class: "muted", title: "Nothing to download for this image" }, "–");
-  if (item.entry && item.updates === "download") {
-    const input = el("input", {
-      type: "checkbox",
-      "aria-label": `Replace old ${item.name} files after an update`,
-      checked: !track.keep_old,
-      disabled: scanning(),
-      onchange: (e) => setTrack(item.entry, { keep_old: !e.target.checked }),
-    });
-    replace = el("label", { class: "switch", title: "On: replace the old file after a verified update. Off: keep both." }, input, el("span", { class: "track" }));
+  // The file, its size and when it arrived go under the name: one line each
+  // instead of four columns.
+  const under = [];
+  if (item.path) {
+    under.push(el("span", { class: "file", title: item.path }, breakable(item.path)));
+    if (item.size) under.push(el("span", {}, formatBytes(item.size)));
+    if (item.added) {
+      under.push(el("span", { title: new Date(item.added).toLocaleString() },
+        `${item.placed ? "Updated" : "Added"} ${shortDate(item.added)}`));
+    }
+  } else {
+    under.push(el("span", { class: "muted" }, "Not in this folder"));
   }
+  imageCell.querySelector(".image-text").append(el("div", { class: "under" }, join(under, " · ")));
+
+  // "22.04 → 24.04" says more in one column than two ever did.
+  const newer = item.latest && item.status === "update available";
+  const versionCell = el("td", { class: "version-cell" },
+    item.version || (item.latest ? "" : "–"),
+    newer ? el("span", { class: "latest-new", title: item.latest_file || "" }, `${item.version ? " → " : ""}${item.latest}`) : null);
 
   const actions = [];
   if (item.entry && item.updates === "download" && item.status === "update available") {
@@ -1131,8 +1351,7 @@ function renderRow(item) {
       title: `Download ${item.latest || "the newest version"} and put it in this folder`,
       onclick: () => updateItem(item),
     }, "Update"), true));
-  }
-  if (item.path && !item.entry) {
+  } else if (item.path && !item.entry) {
     actions.push(el("button", {
       type: "button", class: "btn small primary", disabled: scanning(),
       title: "Let isoshelf work out what this file is",
@@ -1140,38 +1359,31 @@ function renderRow(item) {
       onclick: () => openIdentify(item),
     }, "What is this?"));
   }
-  if (item.path && item.assigned) {
-    actions.push(el("button", {
-      type: "button", class: "btn small", disabled: scanning(),
-      title: "You told isoshelf what this file is. Change that.",
-      "aria-label": `Change what ${item.path} is`,
-      onclick: () => openIdentify(item),
-    }, "Not right?"));
-  }
-  if (item.path) {
-    actions.push(el("button", {
-      type: "button", class: "btn small", disabled: scanning(),
-      title: "Remove this file from the folder",
-      "aria-label": `Remove ${item.path}`,
-      onclick: () => removeItem(item),
-    }, "Remove"));
-  }
+  actions.push(el("button", {
+    type: "button", class: "btn small", "aria-label": `Everything about ${item.name}`,
+    title: "Links, settings and everything else about this image",
+    onclick: () => openDetails(item),
+  }, "Details"));
 
-  const menu = linksMenu(item);
-  if (menu) actions.push(menu);
-
-  return el("tr", {},
+  // The whole row opens the details panel; the buttons in it don't.
+  const row = el("tr", {
+    class: detailsKey(item) === detailsOpen ? "row picked" : "row",
+    onclick: (e) => {
+      if (e.target.closest("button, a, input, label, summary")) return;
+      openDetails(item);
+    },
+  },
     el("td", { class: "col-star" }, star),
-    statusCell,
     imageCell,
-    el("td", { class: "version-cell" }, item.version || "–"),
-    latestCell,
-    fileCell,
-    sizeCell,
-    el("td", { class: "added-cell", title: item.added ? new Date(item.added).toLocaleString() : "" },
-      item.added ? shortDate(item.added) : el("span", { class: "muted" }, "–")),
-    el("td", { class: "replace" }, replace),
+    versionCell,
+    statusCell,
     el("td", { class: "row-actions" }, actions));
+  return row;
+}
+
+// join puts a separator between parts, the way a sentence would.
+function join(parts, separator) {
+  return parts.flatMap((part, i) => (i ? [separator, part] : [part]));
 }
 
 // breakable lets a long filename wrap after its separators — the _ - and .
@@ -1225,56 +1437,13 @@ function ask(title, text, choices) {
   });
 }
 
-// removalChoice asks what should happen to the files an update replaces.
-async function removalChoice(item) {
-  const track = (item.entry && state.tracks[item.entry]) || {};
-  if (!item.path) return "keep";
-  // Images whose filename never changes land on top of the old file, so
-  // keeping both isn't possible, whatever the switch says.
-  const sameName = item.latest_file && item.path.split("/").pop() === item.latest_file;
-  if (track.keep_old && !sameName) return "keep";
+// REMOVAL turns an image's saved choice into what a download needs.
+const REMOVAL = { replace: "delete", archive: "move-aside", keep: "keep" };
 
-  // Moving aside keeps the old file on the drive, which is the safe answer
-  // until the drive is nearly full: then keeping both is what makes the next
-  // download fail.
-  const room = item.size ? formatBytes(item.size) : null;
-  const tight = Boolean(item.size && state.space && state.space.total &&
-    state.space.free - item.size < Math.min(state.space.total / 100, 1 << 30));
-  const preferReplace = tight || state.replace_action === "delete";
-
-  const replace = {
-    label: room ? `Replace it (frees ${room})` : "Replace it",
-    value: "delete",
-    primary: preferReplace,
-  };
-  const aside = {
-    label: room ? `Archive it (still uses ${room}, undo any time)` : "Archive it",
-    value: "move-aside",
-    primary: !preferReplace,
-  };
-  const choices = preferReplace ? [replace, aside] : [aside, replace];
-  if (!sameName) choices.push({ label: "Keep both where they are", value: "keep" });
-  choices.push({ label: "Cancel", value: null });
-
-  const what = sameName
-    ? `The new file has the same name, so it takes the place of ${item.path}. It is downloaded and checked first.`
-    : `The new file is downloaded and checked first, then ${item.path} is dealt with.`;
-  const space = tight
-    ? " There isn't room for both, so archiving the old one would leave the next download short."
-    : " Archiving keeps it in this folder, under “Images that were here”, until you empty it.";
-
-  const answer = await ask(`Update ${item.name}`, what + space, choices);
-  // Remember which way they went, so the same question comes pre-answered.
-  if (answer === "delete" || answer === "move-aside") {
-    rememberReplaceAction(answer);
-  }
-  return answer;
-}
-
+// Updating one image asks nothing: the image carries its own choice about
+// what happens to the copy it replaces (see choiceField).
 async function updateItem(item) {
-  const removal = await removalChoice(item);
-  if (!removal) return;
-  await queueDownload(item.entry, removal);
+  await queueDownload(item.entry, REMOVAL[choiceFor(item)]);
 }
 
 // updatable lists the images with an update isoshelf can download.
@@ -1282,40 +1451,29 @@ function updatable() {
   return state.report.items.filter((it) => it.entry && it.updates === "download" && it.status === "update available");
 }
 
-// updateAll puts every update not already in the downloads on the queue,
-// asking once what should happen to the old files.
+// updateAll shows what it is about to do, image by image, and updates the
+// ones still ticked.
 async function updateAll() {
   const items = updatable().filter((it) => !inDownloads(it.entry));
   if (!items.length) return;
-
-  // Images whose filename never changes can't keep their old file beside
-  // the new one, whatever their switch says; they follow the answer here.
-  const sameName = (it) => it.latest_file && it.path && it.path.split("/").pop() === it.latest_file;
-  const replacing = items.filter((it) => it.path && (!(state.tracks[it.entry] || {}).keep_old || sameName(it)));
-  let removal = "keep";
-  if (replacing.length) {
-    const bytes = replacing.reduce((sum, it) => sum + (it.size || 0), 0);
-    const room = bytes ? formatBytes(bytes) : null;
-    const preferReplace = state.replace_action === "delete";
-    const replace = { label: room ? `Replace them (frees ${room})` : "Replace them", value: "delete", primary: preferReplace };
-    const aside = { label: room ? `Archive them (still uses ${room}, undo any time)` : "Archive them", value: "move-aside", primary: !preferReplace };
-    removal = await ask(
-      `Update ${plural(items.length, "image")}`,
-      "They join the downloads and go one at a time. Each is downloaded and checked before anything is replaced. What should happen to the old files? Images whose replace switch is off keep theirs, except those whose filename never changes: there, the old one is archived.",
-      [
-        ...(preferReplace ? [replace, aside] : [aside, replace]),
-        { label: "Keep both where they are", value: "keep" },
-        { label: "Cancel", value: null },
-      ]);
-    if (!removal) return;
-    if (removal !== "keep") rememberReplaceAction(removal);
-  }
-
-  for (const item of items) {
-    let choice = (state.tracks[item.entry] || {}).keep_old ? "keep" : removal;
-    if (choice === "keep" && sameName(item)) choice = "move-aside";
+  const answer = await pickFiles({
+    title: items.length === 1 ? "Update 1 image?" : `Update ${items.length} images?`,
+    text: "Each one is downloaded and checked before anything is replaced. Untick any you would rather leave.",
+    sizeLabel: "downloading about",
+    rows: items.map((item) => ({
+      id: item.entry,
+      size: item.size,
+      name: item.name,
+      detail: `${item.version || "?"} → ${item.latest || "newest"}`,
+      note: CHOICE_WORD[choiceFor(item)],
+    })),
+    actions: [{ label: "Update them", value: "go", primary: true }],
+  });
+  if (!answer) return;
+  const chosen = new Set(answer.ids);
+  for (const item of items.filter((it) => chosen.has(it.entry))) {
     try {
-      await api("POST", "/api/update", { entry: item.entry, removal: choice });
+      await api("POST", "/api/update", { entry: item.entry, removal: REMOVAL[choiceFor(item)] });
     } catch (err) {
       showNotice(err.message, true);
     }
@@ -1341,8 +1499,7 @@ async function removeItem(item) {
     return;
   }
   if (how === "move-aside") {
-    $("past").open = true;
-    flashNotice(`Archived ${item.path}. It's under “Images that were here” at the bottom of the page, where you can put it back. The space is freed when you empty the archive.`);
+    flashNotice(`Archived ${item.path}. You will find it under Archive on this page, where you can put it back; the space is freed when you empty the archive.`);
   } else {
     flashNotice(`Deleted ${item.path}.`);
   }
@@ -1790,53 +1947,6 @@ const GONE_LABEL = {
   "vanished": "gone from the folder",
 };
 
-async function renderPast() {
-  if (!state.target) {
-    $("past-count").textContent = "";
-    $("past-list").replaceChildren();
-    return;
-  }
-  let items;
-  try {
-    items = (await api("GET", "/api/archive")).items;
-  } catch {
-    return;
-  }
-  $("past").hidden = items.length === 0;
-  $("past-count").textContent = plural(items.length, "image");
-
-  const list = $("past-list");
-  list.replaceChildren();
-  for (const item of items) {
-    const when = item.gone_at ? timeAgo(item.gone_at) : "";
-    const detail = [GONE_LABEL[item.gone] || item.gone, when, formatBytes(item.size)].filter(Boolean).join(" \u00b7 ");
-    const buttons = [];
-    if (item.restorable) {
-      buttons.push(el("button", {
-        type: "button", class: "btn small", disabled: scanning(),
-        title: "Move it back into the folder",
-        onclick: () => restore(item),
-      }, "Put back"));
-    }
-    if (item.downloadable) {
-      buttons.push(el("button", {
-        type: "button", class: "btn small",
-        title: "Download the current version again",
-        onclick: () => queueDownload(item.entry, "keep"),
-      }, "Download again"));
-    }
-    if (item.page) {
-      buttons.push(el("a", { class: "btn small", href: item.page, target: "_blank", rel: "noopener noreferrer" }, "Page"));
-    }
-    list.append(el("li", {},
-      logoTile(item),
-      el("div", { class: "info" },
-        el("div", {}, el("span", { class: "name" }, item.name),
-          item.version ? el("span", { class: "arch" }, item.version) : null),
-        el("div", { class: "kind" }, `${item.path} \u00b7 ${detail}`)),
-      buttons));
-  }
-}
 
 async function restore(item) {
   try {
@@ -2014,7 +2124,6 @@ document.addEventListener("DOMContentLoaded", () => {
       showNotice(err.message, true);
     }
   });
-  $("update-all").addEventListener("click", updateAll);
   $("dock-toggle").addEventListener("click", () => {
     dockOpen = !dockOpen;
     renderDock();
@@ -2022,17 +2131,19 @@ document.addEventListener("DOMContentLoaded", () => {
   $("dock-stop").addEventListener("click", stopDownloads);
   $("dock-clear").addEventListener("click", clearFinished);
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && dockOpen && !document.querySelector("dialog[open]")) {
+    if (e.key !== "Escape" || document.querySelector("dialog[open]")) return;
+    if (detailsOpen) {
+      closeDetails();
+    } else if (dockOpen) {
       dockOpen = false;
       renderDock();
     }
   });
-  $("changed-scan").addEventListener("click", () => start("scan"));
-  $("search").addEventListener("input", renderRows);
+  $("search").addEventListener("input", () => { renderChips(); renderRows(); });
+  $("details-close").addEventListener("click", closeDetails);
+  $("what-mean").addEventListener("click", showMeanings);
+  $("archive-empty").addEventListener("click", emptyRemoved);
   loadView();
-  for (const [id, key] of [["category", "category"], ["arch", "arch"]]) {
-    $(id).addEventListener("change", (e) => { view[key] = e.target.value; saveView(); renderRows(); });
-  }
   // Picking a sort from the list means the way that option is worded:
   // "largest first" is already the right way round.
   $("sort").addEventListener("change", (e) => {
@@ -2042,9 +2153,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderHeadings();
     renderRows();
   });
-  for (const [id, key] of [["only-updates", "updatesOnly"], ["only-favorites", "favoritesOnly"], ["only-older", "olderOnly"]]) {
-    $(id).addEventListener("change", (e) => { view[key] = e.target.checked; saveView(); renderRows(); });
-  }
   $("more-search").addEventListener("input", renderCatalog);
   for (const id of ["more-category", "more-arch", "more-sort", "more-updates", "more-fits", "more-popular"]) {
     $(id).addEventListener("change", renderCatalog);
@@ -2074,56 +2182,365 @@ async function toggleBookmark(path, pinned) {
   await browse(pickerPath);
 }
 
-// rememberReplaceAction stores which answer the user gives when an update
-// replaces a file, so they aren't asked the same thing from scratch forever.
-// They are still asked: it only decides which button is the ready one.
-async function rememberReplaceAction(action) {
-  if (state.replace_action === action) return;
-  try {
-    state = await api("POST", "/api/settings", { replace_action: action });
-  } catch {
-    // Not remembering is a small thing; the update itself carries on.
-  }
+// ---- Details panel ---------------------------------------------------------
+
+// Everything about one image sits in a panel beside the list: where it came
+// from, what happens to old copies, its links, and what you can do with it.
+// The row itself stays short.
+let detailsOpen = null;
+
+const KIND_LABEL = Object.fromEntries(KINDS);
+
+function detailsKey(item) {
+  return item.path || item.entry || item.name;
 }
 
-// clearOlder gets rid of every older copy at once, after showing exactly
-// which files it means. The same two ways out as any other removal: archive
-// them, or delete them now.
-async function clearOlder(older) {
-  const bytes = older.reduce((sum, it) => sum + (it.size || 0), 0);
-  const names = older.map((it) => it.path);
-  const listed = names.length > 6
-    ? `${names.slice(0, 6).join("\n")}\nand ${names.length - 6} more`
-    : names.join("\n");
+function openDetails(item) {
+  detailsOpen = detailsKey(item);
+  renderDetails();
+  renderRows();
+  $("details-close").focus();
+}
 
-  const how = await ask(
-    `Clear ${plural(older.length, "older copy", "older copies")}?`,
-    `These are images you have a newer copy of, using ${formatBytes(bytes)}:\n\n${listed}\n\n` +
-    "Archiving keeps them in this folder until you empty it; deleting frees the space now.",
-    [
-      { label: `Delete them (frees ${formatBytes(bytes)})`, value: "delete" },
+function closeDetails() {
+  detailsOpen = null;
+  $("details").hidden = true;
+  renderRows();
+}
+
+function renderDetails() {
+  const panel = $("details");
+  const item = detailsOpen && state.report
+    ? state.report.items.find((it) => detailsKey(it) === detailsOpen)
+    : null;
+  if (!item) {
+    detailsOpen = null;
+    panel.hidden = true;
+    return;
+  }
+  panel.hidden = false;
+  $("details-logo").replaceChildren(logoTile(item));
+  $("details-name").textContent = item.name;
+  $("details-sub").textContent = [item.arch, KIND_LABEL[item.category], item.family]
+    .filter(Boolean).join(" · ");
+
+  const track = (item.entry && state.tracks[item.entry]) || {};
+  const parts = [];
+  parts.push(detailRow("Status", [
+    el("div", {}, el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}` }, statusWord(item.status))),
+    el("div", { class: "muted" }, statusHelp(item.status)),
+    item.note ? el("div", { class: "note" }, item.note) : null,
+    cautionOf(item) ? el("div", { class: "note" }, `⚠ ${cautionOf(item)}`) : null,
+  ]));
+
+  if (item.path) {
+    parts.push(detailRow("File", [
+      el("div", { class: "file" }, breakable(item.path)),
+      el("div", { class: "muted" }, join([
+        item.size ? formatBytes(item.size) : null,
+        item.kind && item.kind !== "unknown" ? item.kind : null,
+        item.added ? `${item.placed ? "updated" : "added"} ${shortDate(item.added)}` : null,
+      ].filter(Boolean), " · ")),
+    ]));
+  }
+
+  parts.push(detailRow("Version", [
+    el("div", {}, item.version || el("span", { class: "muted" }, "not known")),
+    item.latest ? el("div", { class: "muted" }, `newest published: ${item.latest}`) : null,
+    versionField(item),
+  ]));
+
+  if (item.entry && item.updates === "download") {
+    parts.push(detailRow("When an update arrives", [choiceField(item, track)]));
+  }
+
+  const links = linkList(item);
+  if (links.length) parts.push(detailRow("Links", el("div", { class: "detail-links" }, links)));
+
+  const buttons = [];
+  if (item.entry && item.updates === "download" && item.status === "update available") {
+    buttons.push(jobButton(item.entry, el("button", {
+      type: "button", class: "btn primary",
+      onclick: () => updateItem(item),
+    }, "Update"), true));
+  }
+  if (item.path && !item.entry) {
+    buttons.push(el("button", {
+      type: "button", class: "btn primary", disabled: scanning(),
+      onclick: () => openIdentify(item),
+    }, "What is this?"));
+  }
+  if (item.path && item.assigned) {
+    buttons.push(el("button", {
+      type: "button", class: "btn", disabled: scanning(),
+      title: "You told isoshelf what this file is. Change that.",
+      onclick: () => openIdentify(item),
+    }, "Not right?"));
+  }
+  if (item.path) {
+    buttons.push(el("button", {
+      type: "button", class: "btn", disabled: scanning(),
+      onclick: () => removeItem(item),
+    }, "Remove…"));
+  }
+  parts.push(el("div", { class: "details-buttons" }, buttons));
+  $("details-body").replaceChildren(...parts.filter(Boolean));
+}
+
+function detailRow(label, children) {
+  return el("div", { class: "detail-row" },
+    el("div", { class: "detail-label" }, label),
+    el("div", { class: "detail-value" }, children));
+}
+
+// versionField lets you say which version a file is when its name doesn't
+// say and the project publishes nothing to compare against - Hiren's BootCD,
+// for one. isoshelf remembers it until the file itself changes.
+function versionField(item) {
+  if (!item.path || !item.entry || item.version) return null;
+  const input = el("input", {
+    type: "text", class: "version-input", maxlength: "40", spellcheck: "false",
+    placeholder: "1.0.8", "aria-label": `Version of ${item.path}`,
+  });
+  return el("div", { class: "version-set" },
+    input,
+    el("button", {
+      type: "button", class: "btn small", disabled: scanning(),
+      onclick: async () => {
+        const version = input.value.trim();
+        if (!version) return;
+        try {
+          await api("POST", "/api/identify", { path: item.path, entry: item.entry, version });
+        } catch (err) {
+          showNotice(err.message, true);
+          return;
+        }
+        flashNotice(`${item.path} is version ${version}.`);
+        await refresh();
+      },
+    }, "Save"),
+    el("div", { class: "muted" }, "isoshelf can't tell which version this file is. If you know, say so here."));
+}
+
+// sameName is true for images whose filename never changes, where the new
+// file lands on top of the old one and keeping both is impossible.
+function sameName(item) {
+  return Boolean(item.latest_file && item.path && item.path.split("/").pop() === item.latest_file);
+}
+
+function choiceFor(item) {
+  const track = (item.entry && state.tracks[item.entry]) || {};
+  let choice = track.old_files || (track.keep_old ? "keep" : "replace");
+  if (choice === "keep" && sameName(item)) choice = "archive";
+  return choice;
+}
+
+const CHOICES = [
+  ["replace", "Replace the old file"],
+  ["archive", "Archive the old file (undo any time)"],
+  ["keep", "Keep both"],
+];
+
+const CHOICE_WORD = {
+  replace: "replaces the old file",
+  archive: "archives the old file",
+  keep: "keeps both",
+};
+
+// choiceField is the one decision each image carries: what happens to the
+// copy it replaces. It is saved the moment it changes, so an update never
+// has to stop and ask.
+function choiceField(item, track) {
+  const current = choiceFor(item);
+  const select = el("select", {
+    "aria-label": `What happens to old ${item.name} files`,
+    disabled: scanning(),
+    onchange: (e) => setTrack(item.entry, { old_files: e.target.value }),
+  }, CHOICES.filter(([value]) => value !== "keep" || !sameName(item))
+    .map(([value, label]) => el("option", { value, selected: value === current || undefined }, label)));
+  return el("div", {},
+    select,
+    el("div", { class: "muted" }, sameName(item)
+      ? "This image always has the same filename, so the new one takes its place. Archiving keeps the old one in this folder until you empty the archive."
+      : "Used for every update of this image from now on."));
+}
+
+function linkList(item) {
+  return [
+    ["Download page", item.page],
+    ["Website", item.site],
+    ["Forum", item.forum],
+    ["Release notes", item.release],
+    problemLink(item),
+  ].filter((link) => link && link[1])
+    .map(([label, url]) => el("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, label));
+}
+
+// ---- The checklist ---------------------------------------------------------
+
+// One dialog for every "which of these?" question: updating several images,
+// clearing older versions. It lists what will happen to each, lets you untick
+// anything, and adds up what it frees or downloads.
+function pickFiles({ title, text, rows, actions, sizeLabel }) {
+  const dialog = $("pick");
+  $("pick-title").textContent = title;
+  $("pick-text").textContent = text;
+  const list = $("pick-list");
+  const total = $("pick-total");
+  const boxes = new Map();
+
+  const tally = () => {
+    const chosen = rows.filter((row) => boxes.get(row.id).checked);
+    const bytes = chosen.reduce((sum, row) => sum + (row.size || 0), 0);
+    total.textContent = `${plural(chosen.length, "image")} chosen${bytes ? ` · ${sizeLabel || "about"} ${formatBytes(bytes)}` : ""}`;
+  };
+
+  list.replaceChildren(...rows.map((row) => {
+    const box = el("input", { type: "checkbox", checked: row.checked !== false || undefined, onchange: tally });
+    boxes.set(row.id, box);
+    return el("li", {},
+      el("label", { class: "pick-item" },
+        box,
+        el("span", { class: "info" },
+          el("span", { class: "name" }, row.name),
+          row.detail ? el("span", { class: "kind" }, row.detail) : null),
+        row.note ? el("span", { class: "muted pick-note" }, row.note) : null));
+  }));
+  tally();
+
+  return new Promise((resolve) => {
+    $("pick-actions").replaceChildren(...actions.map((action) => el("button", {
+      type: "button", class: `btn ${action.primary ? "primary" : ""}`,
+      onclick: () => {
+        const chosen = rows.filter((row) => boxes.get(row.id).checked).map((row) => row.id);
+        dialog.close();
+        resolve(chosen.length ? { action: action.value, ids: chosen } : null);
+      },
+    }, action.label)));
+    dialog.addEventListener("close", () => resolve(null), { once: true });
+    dialog.showModal();
+  });
+}
+
+// reviewOlder lists the older versions and clears the ones you tick.
+async function reviewOlder(older) {
+  const newest = {};
+  for (const item of state.report.items) {
+    if (item.entry && !item.older && item.path) newest[item.entry] = item.path.split("/").pop();
+  }
+  const answer = await pickFiles({
+    title: "Older versions you could clear",
+    text: "You have a newer version of each of these. Untick anything you want to keep.",
+    sizeLabel: "freeing",
+    rows: older.map((item) => ({
+      id: item.path,
+      size: item.size,
+      name: item.name,
+      detail: `${item.path}${item.size ? ` · ${formatBytes(item.size)}` : ""}`,
+      note: newest[item.entry] ? `newer here: ${newest[item.entry]}` : "",
+    })),
+    actions: [
       { label: "Archive them", value: "move-aside", primary: true },
-      { label: "Cancel", value: null },
-    ]);
-  if (!how) return;
-
+      { label: "Delete them", value: "delete" },
+    ],
+  });
+  if (!answer) return;
   try {
-    state = await api("POST", "/api/remove", { paths: names, how });
+    state = await api("POST", "/api/remove", { paths: answer.ids, how: answer.action });
     catalog = null;
   } catch (err) {
     showNotice(err.message, true);
     return;
   }
-  view.olderOnly = false;
-  $("only-older").checked = false;
-  saveView();
-  if (how === "move-aside") $("past").open = true;
-  flashNotice(how === "delete"
-    ? `${plural(names.length, "older copy", "older copies")} deleted.`
-    : `${plural(names.length, "older copy", "older copies")} archived, under “Images that were here” at the bottom of the page.`);
+  flashNotice(answer.action === "delete"
+    ? `${plural(answer.ids.length, "older version")} deleted.`
+    : `${plural(answer.ids.length, "older version")} archived, under Archive on this page.`);
   if (state.run && state.run.kind === "update") {
     render();
     return;
   }
   await start("scan");
+}
+
+// ---- Archive and history ---------------------------------------------------
+
+// Two different things, so two sections: files still on the drive that you
+// can put back, and a record of images that have left.
+async function renderArchive() {
+  const past = await archiveItems();
+  if (!past) return;
+  const here = past.filter((item) => item.restorable);
+  $("archive").hidden = here.length === 0;
+  $("archive-count").textContent = here.length
+    ? `${plural(here.length, "file")} · ${formatBytes(here.reduce((sum, i) => sum + (i.size || 0), 0))}`
+    : "";
+  $("archive-empty").disabled = Boolean(state.run);
+  $("archive-list").replaceChildren(...here.map((item) => pastItem(item, true)));
+}
+
+async function renderHistory() {
+  const past = await archiveItems();
+  if (!past) return;
+  const gone = past.filter((item) => !item.restorable);
+  $("history").hidden = gone.length === 0;
+  $("jump-history").hidden = gone.length === 0;
+  $("history-count").textContent = plural(gone.length, "image");
+  $("history-list").replaceChildren(...gone.map((item) => pastItem(item, false)));
+}
+
+// archiveItems fetches the archive once per draw, for both sections.
+let archiveCache = { at: 0, items: null };
+
+async function archiveItems() {
+  if (!state.target) return [];
+  if (Date.now() - archiveCache.at < 1000 && archiveCache.items) return archiveCache.items;
+  try {
+    const items = (await api("GET", "/api/archive")).items;
+    archiveCache = { at: Date.now(), items };
+    return items;
+  } catch {
+    return null;
+  }
+}
+
+function pastItem(item, restorable) {
+  const when = item.gone_at ? timeAgo(item.gone_at) : "";
+  const detail = [GONE_LABEL[item.gone] || item.gone, when, formatBytes(item.size)].filter(Boolean).join(" · ");
+  const buttons = [];
+  if (restorable) {
+    buttons.push(el("button", {
+      type: "button", class: "btn small", disabled: scanning(),
+      title: "Move it back into the folder",
+      onclick: () => restore(item),
+    }, "Put back"));
+  }
+  if (item.downloadable) {
+    buttons.push(jobButton(item.entry, el("button", {
+      type: "button", class: "btn small",
+      title: "Download the current version again",
+      onclick: () => queueDownload(item.entry, "keep"),
+    }, "Download again"), false));
+  }
+  if (item.page) {
+    buttons.push(el("a", { class: "btn small", href: item.page, target: "_blank", rel: "noopener noreferrer" }, "Page"));
+  }
+  return el("li", {},
+    logoTile(item),
+    el("div", { class: "info" },
+      el("div", {}, el("span", { class: "name" }, item.name),
+        item.version ? el("span", { class: "arch" }, item.version) : null),
+      el("div", { class: "kind" }, `${item.path} · ${detail}`)),
+    buttons);
+}
+
+// renderJump keeps the bar at the top honest: how many images are in each
+// section, and no link to a section that has nothing in it.
+function renderJump() {
+  const images = state.report ? state.report.items.length : 0;
+  $("jump-images").textContent = images ? `Your images (${images})` : "Your images";
+  const missing = catalog ? catalog.filter((e) => !e.on_target).length : 0;
+  $("jump-more").textContent = missing ? `Add images (${missing})` : "Add images";
+  const archived = state.removed ? state.removed.files : 0;
+  $("jump-archive").hidden = !archived;
+  $("jump-archive").textContent = archived ? `Archive (${archived})` : "Archive";
 }

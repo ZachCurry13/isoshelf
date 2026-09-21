@@ -52,11 +52,19 @@ isoshelf does that for you:
   files your boot menu won't list, and files it doesn't recognize, and puts a
   ⚠ on images worth knowing about, such as releases that no longer get
   security fixes.
-- **Finds things fast.** Search; filter by kind, architecture, updates,
-  favourites or older copies; sort by any column; and jump to each project's
-  website, forum or release notes. The catalog of images you *could* add has
-  its own filters: kind, architecture, how it updates, what fits in this
-  folder, and popular picks.
+- **Says what wants doing.** Cards at the top of the page: updates ready,
+  older versions you could clear, what's in the archive, files that won't
+  boot, and anything it doesn't recognize. Each says how much space is
+  involved and carries the button for it.
+- **Plain words, explained.** Statuses read *Update ready*, *Old release*,
+  *Check by hand* or *Won't boot here*, and each explains itself when you
+  hover over it.
+- **Finds things fast.** Search, one Filter menu (updates, favourites, older
+  versions, kinds, architectures) showing a chip for everything switched on,
+  and sorting by name, size, version or age. Click any image for a panel with
+  everything about it: its file, its versions, its links and its settings.
+  The catalog of images you *could* add has its own filters: kind,
+  architecture, how it updates, what fits in this folder, and popular picks.
 - **Knows what will fit.** Every image in the catalog shows about how big its
   download is, and the folder shows how much room is left, counting the
   downloads already queued. An image too big for the space says so instead of
@@ -188,11 +196,13 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 - [x] Filters, sorting, logos and links
 - [x] A catalog that keeps itself current
 
-**v0.3 (next): a redesign.** One page with a jump bar, a row of things to do,
-plain-language statuses, a filter menu, a details panel for each image,
-[a page that works on a phone](https://github.com/ZachCurry13/isoshelf/issues/10),
-and Settings: light and dark themes, high contrast, larger text, where each
-folder's records live, and isoshelf updating itself with one click.<br>
+**v0.3.0: the redesign.** *Released 2026-09-21:* one page with a jump bar, a
+row of things to do, plain-language statuses, one filter menu with chips, a
+details panel for each image, Archive and History apart, and
+[a layout for phones](https://github.com/ZachCurry13/isoshelf/issues/10).<br>
+**v0.3.1 (next): Settings.** Light and dark themes, high contrast, larger
+text, checking for updates by itself, where each folder's records live, and
+isoshelf updating itself with one click.<br>
 **v0.4:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),

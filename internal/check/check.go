@@ -80,6 +80,9 @@ type Item struct {
 	// Added is when the file arrived in the folder, as well as that can be
 	// known; zero when it can't.
 	Added time.Time
+	// Placed is true when isoshelf downloaded and placed this file, rather
+	// than the file just turning up in the folder.
+	Placed bool
 }
 
 // Report is the state of every image on a target.
@@ -102,6 +105,7 @@ func Offline(res *scan.Result, st *state.State, cat *catalog.Catalog) *Report {
 		it := Item{Path: f.Path, Size: f.Size, Kind: f.Kind, ModTime: f.ModTime}
 		rec := st.Files[f.Path]
 		it.Added = addedAt(f, rec)
+		it.Placed = !rec.PlacedAt.IsZero()
 		if e := cat.Entry(rec.Entry); e != nil {
 			it.Entry, it.Version, it.Assigned = e, rec.Version, rec.Assigned
 			found[e.ID] = true

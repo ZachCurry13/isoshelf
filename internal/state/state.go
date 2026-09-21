@@ -85,10 +85,27 @@ func (r FileRecord) current(f scan.File) bool {
 // Track holds the user's settings for one entry.
 type Track struct {
 	// KeepOld keeps old files after an update. The default (false) replaces
-	// them once the new file is downloaded and verified.
+	// them once the new file is downloaded and verified. Superseded by
+	// OldFiles, kept so older state files still make sense; see Choice.
 	KeepOld bool `json:"keep_old,omitempty"`
+	// OldFiles says what happens to this image's old files after an update:
+	// "replace", "archive" or "keep". Empty means not chosen yet; see Choice.
+	OldFiles string `json:"old_files,omitempty"`
 	// Starred puts the entry in the usual set even if it's not on the target.
 	Starred bool `json:"starred,omitempty"`
+}
+
+// Choice says what happens to this image's old files after an update:
+// "replace", "archive" or "keep". It falls back to the older keep_old
+// setting, and to "replace" when neither was set.
+func (t Track) Choice() string {
+	if t.OldFiles != "" {
+		return t.OldFiles
+	}
+	if t.KeepOld {
+		return "keep"
+	}
+	return "replace"
 }
 
 // ScanRecord is one entry in the scan history.

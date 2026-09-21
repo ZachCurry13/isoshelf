@@ -513,9 +513,21 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 - A filled star means the user starred the image: it is a favourite, sorts
   first, and is reported if it goes missing. The replace switch shows only for
   entries that can download.
-- The list filters by kind, architecture, updates, favourites and older
-  copies, searches by name or file, and sorts by any column (empty cells
-  last) or by attention, favourites or when a file was added.
+- The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
+  images, Archive, History. Above the list, one card per thing to do
+  (`renderTodo`). The list has four columns - image (file, size and date
+  underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
+  row opens the details panel: everything about one image, its links, and
+  the choice below. Statuses are shown in plain words (`STATUS_WORDS`), each
+  explaining itself; the report keeps its own words for the CLI and JSON.
+- Each track carries what happens to its old files (`old_files` in state:
+  replace, archive or keep; `Track.Choice()`), set in the details panel and
+  followed by every update, so updating never stops to ask. "Update all" and
+  "clear older versions" share one checklist dialog (`pickFiles`).
+- The list filters by kind, architecture, updates, favourites, older
+  versions and the caution mark through one Filter menu; everything switched
+  on shows as a chip above the list. Sorting is a menu and the three column
+  headings (empty cells last).
   The choices live in the browser's localStorage. When a filter hides
   everything, the empty message names the filters and offers to clear them.
 - "More in the catalog" has its own copy of those filters, plus how an image

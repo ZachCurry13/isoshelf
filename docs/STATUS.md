@@ -2,7 +2,7 @@
 
 ## Where things stand (2026-09-18)
 
-- **Released:** v0.2.9. Scans a folder, works out each image, checks for
+- **Released:** v0.3.0 (the redesign; Settings follows in v0.3.1). Scans a folder, works out each image, checks for
   updates online, downloads and verifies (resumable, queued one at a time,
   reorderable), replaces or archives old files, identifies unknown files, and
   keeps a catalog that updates itself from this repository. While downloads
@@ -73,11 +73,22 @@ and plain words on the surface; everything adjustable in Settings.
    portable test (#7).
 4. Later: server mode in Docker (16).
 
-## Latest change (2026-09-18)
+## Latest change (2026-09-21)
 
-- v0.2.9: downloads stop blocking Remove, Archive, "What is this?", Put back
-  and Clear older copies (`state.Merge`, `saveStateLocked`); menu no longer
-  cut off; a way back from "older copies"; archiving says where files went.
-- Text files audited line by line; ten stale facts fixed (roadmap, profiles,
-  portable contents, SECURITY versions, the wish list).
-- Weekly catalog check (GitHub Actions) and weekly catalog routine set up.
+- v0.3.0 shipped the new look: jump bar, to-do cards, plain statuses with
+  explanations, one filter menu with chips, slim rows, a details panel,
+  Archive and History apart, a per-image choice for old files, a checklist
+  for "update all" and "older versions", a version field for images whose
+  name doesn't say, and a phone layout.
+- Decided 2026-09-21 (reviewing every feature against "simple defaults,
+  everything in Settings"): backup = export the list, rebuild from it, and
+  verify a copy (no file copying of our own); several drives kept alike =
+  named Sets a drive can follow (no two-way sync); reuse = copy from folders
+  you name, with other isoshelf instances later alongside Docker; drop
+  version numbers in fixed filenames (breaks Proxmox VMs, fragile matching);
+  "Make bootable" starts with renaming only; no notification when downloads
+  finish; phone access and the QR code come with Docker; isoshelf will not
+  empty a NAS recycle bin, only explain it.
+- Next: v0.3.1 Settings (search, groups, defaults with Reset, Report a bug;
+  theme, high contrast, larger text, less motion) and automatic remembered
+  checking.

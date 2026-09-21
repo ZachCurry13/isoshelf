@@ -643,3 +643,153 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
   .dock-item { flex-wrap: wrap; }
   .dock-buttons { margin-left: auto; }
 }
+
+/* ---- v0.3: jump bar, things to do, filters, details ---------------------- */
+
+.jump {
+  position: sticky; top: 0; z-index: 15;
+  display: flex; gap: 4px; flex-wrap: wrap;
+  padding: 6px 20px;
+  background: color-mix(in srgb, var(--surface), transparent 8%);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(6px);
+}
+.jump a {
+  padding: 5px 10px; border-radius: 8px;
+  color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none;
+}
+.jump a:hover { background: var(--surface-2); color: var(--text); }
+
+/* One card per thing that wants doing. */
+.todo {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+.todo-card { max-width: 340px; }
+.todo:empty { display: none; }
+.todo-card {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--fg, var(--accent));
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.todo-card.s-update { --fg: var(--update-fg); }
+.todo-card.s-warn { --fg: var(--warn-fg); }
+.todo-card.s-missing { --fg: var(--missing-fg); }
+.todo-title { font-weight: 700; }
+.todo-detail { font-size: 13px; color: var(--muted); }
+.todo-note { font-size: 12px; color: var(--muted); }
+.todo-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+
+/* Filters: one menu, and a chip for everything that is on. */
+.filter-menu > summary { list-style: none; cursor: pointer; }
+.filter-menu > summary::-webkit-details-marker { display: none; }
+.filter-count {
+  display: inline-block; min-width: 18px; margin-left: 4px; padding: 0 5px;
+  border-radius: 99px; background: var(--accent); color: var(--accent-text);
+  font-size: 11px; font-weight: 700; text-align: center;
+}
+.filter-items { min-width: 230px; padding: 10px; gap: 10px; }
+.filter-group { display: grid; gap: 2px; }
+.filter-group + .filter-group { border-top: 1px solid var(--border); padding-top: 8px; }
+.filter-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--muted); padding-bottom: 2px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px; align-items: center; }
+.chip-off {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px; border-radius: 99px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 60%);
+  background: color-mix(in srgb, var(--accent), transparent 90%);
+  color: var(--text); font: inherit; font-size: 12px;
+}
+.chip-off .x { color: var(--muted); }
+.chip-off:hover .x { color: var(--bad-fg); }
+.linkish {
+  border: 0; background: none; padding: 0; cursor: pointer;
+  color: var(--accent); font: inherit; font-size: 13px; text-decoration: underline;
+}
+
+/* Slim rows: the file, its size and its date live under the name. */
+tbody tr.row { cursor: pointer; }
+tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 92%); }
+.under {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-top: 3px; font-size: 12px; color: var(--muted);
+}
+.under .file { font-family: var(--mono); font-size: 11.5px; overflow-wrap: anywhere; }
+.version-cell .latest-new { font-weight: 600; }
+
+/* The details panel: everything about one image, beside the list. */
+.details {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 25;
+  width: min(400px, 100vw);
+  display: flex; flex-direction: column;
+  background: var(--surface); border-left: 1px solid var(--border);
+  box-shadow: -8px 0 30px rgba(10, 14, 22, 0.18);
+}
+.details-head {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+}
+.details-title { display: flex; gap: 10px; align-items: flex-start; flex: 1; min-width: 0; }
+.details-head h2 { margin: 0; font-size: 16px; overflow-wrap: break-word; }
+.details-head .muted { font-size: 12px; }
+.details-body { padding: 8px 16px 20px; overflow-y: auto; }
+.detail-row { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.detail-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--muted); margin-bottom: 4px;
+}
+.detail-value { display: grid; gap: 4px; font-size: 13px; }
+.detail-value .file { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+.detail-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.details-buttons { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 14px; }
+.version-set { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; }
+.version-input { width: 120px; }
+
+/* The checklist, shared by "update all" and "review older versions". */
+.pick { width: min(620px, calc(100vw - 32px)); }
+.pick-body { overflow-y: auto; padding: 4px 20px 12px; }
+.pick-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.pick-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--surface-2); cursor: pointer;
+}
+.pick-item .info { display: grid; flex: 1; min-width: 0; }
+.pick-item .kind { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.pick-note { font-size: 12px; white-space: nowrap; }
+
+.meanings { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0; text-align: left; }
+.meanings dd { margin: 0; color: var(--muted); font-size: 13px; }
+
+.archive-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+@media (max-width: 720px) {
+  .details { top: auto; width: 100vw; max-height: 80vh; border-left: 0; border-top: 1px solid var(--border); }
+  .jump { padding: 6px 12px; }
+  .chips { padding: 0 12px 10px; }
+  .pick-note { white-space: normal; }
+}
+.filter-group .check { display: flex; align-items: center; gap: 8px; justify-content: flex-start; padding: 2px 0; }
+
+/* On a phone the list stops being a table: each image is a small card, with
+   its version and status under the name and the buttons below. */
+@media (max-width: 720px) {
+  .table-wrap { overflow-x: visible; }
+  #table thead { display: none; }
+  #table, #table tbody, #table tr, #table td { display: block; width: auto; }
+  #table tr.row {
+    position: relative;
+    padding: 10px 14px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  #table td { border: 0; padding: 2px 0; }
+  #table td.col-star { position: absolute; top: 10px; right: 10px; padding: 0; }
+  #table .version-cell { font-size: 13px; color: var(--muted); }
+  .row-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .image-cell { padding-right: 28px; }
+}

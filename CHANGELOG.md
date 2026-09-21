@@ -3,15 +3,59 @@
 What changed in each release of isoshelf, newest first.
 
 Version numbers: the middle number rises for new abilities or a new look
-(v0.3.0 will be a redesign of the page, with Settings); the last number rises
+(v0.3.0 was the redesign; Settings follows in v0.3.1); the last number rises
 for improvements to what it already does.
 
-## [Unreleased]
+## [v0.3.0] - 2026-09-21
+
+A new look. The page says what wants doing, in plain words, and everything
+about an image is one click away instead of spread across ten columns.
+
+### Added
+- **Things to do, as cards at the top.** Updates ready, older versions you
+  could clear, the archive, files that won't boot, unknown files, images
+  missing, and "the folder changed". Each card says how much space is
+  involved and has the button for it. The old row of banners is gone.
+- **A checklist instead of a question.** "Update all" now shows every image
+  it means, what happens to each one's old file, and how much it will
+  download. Untick anything you'd rather leave. Clearing older versions uses
+  the same checklist, with the newer file named beside each one.
+- **A details panel.** Click any image: where it came from, its file, size
+  and dates, the version here and the newest published, its links, what
+  happens to old copies, and the buttons for it. The "…" menu is gone, and
+  with it the way it used to get cut off at the bottom of the list.
+- **Plain status words** — *Update ready*, *Old release*, *Check by hand*,
+  *Won't boot here*, *Unknown file* — each explaining itself when you hover
+  or tap, with a full key behind "What do the statuses mean?".
+- **One Filter menu** with tick boxes for updates, favourites, older
+  versions and ⚠ marks, plus the kinds and architectures this folder
+  actually holds. Whatever is on shows as a chip you can remove, so a short
+  list always says why it's short.
+- **A jump bar** across the top: Your images, Add images, Archive, History,
+  with counts.
+- **Each image decides what happens to its old file**, once: replace,
+  archive, or keep both, in its details panel. Updates stop asking.
+- **Say which version a file is** for images whose name doesn't say and
+  whose project publishes nothing to compare against, like Hiren's BootCD.
+- **A layout for phones.** The list becomes a card per image, with no
+  sideways scrolling.
+
+### Changed
+- **Archive and History are separate.** *Archive* holds files isoshelf set
+  aside: still on your drive, still using room, with Put back and Empty.
+  *History* is a record of images that left, with Download again. The old
+  "Images that were here" mixed the two.
+- The date column now says **Updated** for images isoshelf replaced, and
+  **Added** for files that simply turned up.
+- The list is four columns wide: the image (with its file, size and date
+  underneath), its version, its status, and what you can do.
 
 ### Fixed
 - A new isoshelf release could take up to a day to be noticed, because the
   answer from GitHub was remembered for 24 hours. It is now remembered for an
   hour, so opening isoshelf shortly after a release shows it.
+- Removing or archiving a file no longer makes isoshelf announce that the
+  folder changed; it knows it was the one who changed it.
 
 ## [v0.2.9] - 2026-09-18
 
@@ -215,6 +259,7 @@ The first release.
 - Keeps that catalog current from this repository without a new release.
 - Runs as a page in your browser, or from the command line.
 
+[v0.3.0]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.3.0
 [v0.2.9]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.9
 [v0.2.8]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.8
 [v0.2.7]: https://github.com/ZachCurry13/isoshelf/releases/tag/v0.2.7

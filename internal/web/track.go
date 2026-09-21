@@ -7,12 +7,17 @@ import (
 
 func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		Entry   string `json:"entry"`
-		KeepOld *bool  `json:"keep_old"`
-		Starred *bool  `json:"starred"`
+		Entry    string  `json:"entry"`
+		KeepOld  *bool   `json:"keep_old"`
+		OldFiles *string `json:"old_files"`
+		Starred  *bool   `json:"starred"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "bad request")
+		return
+	}
+	if req.OldFiles != nil && *req.OldFiles != "replace" && *req.OldFiles != "archive" && *req.OldFiles != "keep" {
+		writeError(w, http.StatusBadRequest, `old_files must be "replace", "archive" or "keep".`)
 		return
 	}
 	s.mu.Lock()
@@ -32,6 +37,10 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 	t := s.st.Track(req.Entry)
 	if req.KeepOld != nil {
 		t.KeepOld = *req.KeepOld
+	}
+	if req.OldFiles != nil {
+		t.OldFiles = *req.OldFiles
+		t.KeepOld = t.OldFiles == "keep"
 	}
 	if req.Starred != nil {
 		t.Starred = *req.Starred

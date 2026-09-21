@@ -94,6 +94,25 @@ func TestSaveAndLoad(t *testing.T) {
 	}
 }
 
+func TestTrackChoice(t *testing.T) {
+	tests := []struct {
+		name string
+		t    Track
+		want string
+	}{
+		{"unset", Track{}, "replace"},
+		{"old keep_old true", Track{KeepOld: true}, "keep"},
+		{"replace", Track{OldFiles: "replace"}, "replace"},
+		{"archive", Track{OldFiles: "archive"}, "archive"},
+		{"keep", Track{OldFiles: "keep"}, "keep"},
+	}
+	for _, tt := range tests {
+		if got := tt.t.Choice(); got != tt.want {
+			t.Errorf("%s: Choice() = %q, want %q", tt.name, got, tt.want)
+		}
+	}
+}
+
 func TestLoadRejectsBadState(t *testing.T) {
 	tests := map[string]string{
 		"newer version": `{"version": 2, "target_id": "ABCDEFGHIJ", "profile": "ventoy"}`,

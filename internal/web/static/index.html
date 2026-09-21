@@ -23,6 +23,13 @@
   <a id="app-update" class="app-update" hidden target="_blank" rel="noopener noreferrer"></a>
 </header>
 
+<nav class="jump" id="jump" aria-label="Sections">
+  <a href="#images" id="jump-images">Your images</a>
+  <a href="#more" id="jump-more">Add images</a>
+  <a href="#archive" id="jump-archive">Archive</a>
+  <a href="#history" id="jump-history">History</a>
+</nav>
+
 <main>
   <section class="card target">
     <div class="target-info">
@@ -58,75 +65,37 @@
 
   <div class="notice" id="notice" role="status" hidden></div>
 
-  <section class="summary" id="summary" aria-label="Filter by status"></section>
+  <!-- Everything that wants doing, as one row of cards. -->
+  <section class="todo" id="todo" aria-label="Things to do"></section>
 
-  <section class="card updates" id="changed-banner" hidden>
-    <span>Something in this folder changed since the last look.</span>
-    <button type="button" class="btn" id="changed-scan">Scan again</button>
-  </section>
-
-  <section class="card updates" id="older-banner" hidden>
-    <span id="older-text"></span>
-    <button type="button" class="btn small" id="older-show">Show them</button>
-    <button type="button" class="btn" id="older-clear">Clear them</button>
-  </section>
-
-  <section class="card updates" id="updates-banner" hidden>
-    <span id="updates-text"></span>
-    <button type="button" class="btn primary" id="update-all"></button>
-  </section>
-
-  <section class="card images">
+  <section class="card images" id="images">
     <div class="toolbar">
-      <input type="search" id="search" placeholder="Filter by name or file…" aria-label="Filter images">
-      <select id="category" aria-label="Category">
-        <option value="">All kinds</option>
-        <option value="desktop">Desktop</option>
-        <option value="gaming">Gaming and handhelds</option>
-        <option value="server">Server and homelab</option>
-        <option value="boards">Raspberry Pi and other boards</option>
-        <option value="security">Security and privacy</option>
-        <option value="rescue">Rescue and tools</option>
-        <option value="windows">Windows</option>
-        <option value="other">Other</option>
-      </select>
-      <select id="arch" aria-label="Architecture">
-        <option value="">Any architecture</option>
-        <option value="x86_64">64-bit (x86_64)</option>
-        <option value="x86">32-bit (x86)</option>
-        <option value="arm64">ARM 64-bit</option>
-        <option value="arm">ARM 32-bit</option>
-        <option value="multi">Multi</option>
-      </select>
+      <input type="search" id="search" placeholder="Search your images…" aria-label="Search your images">
+      <details class="menu filter-menu" id="filter">
+        <summary class="btn">Filter <span id="filter-count" class="filter-count" hidden></span></summary>
+        <div class="menu-items filter-items" id="filter-items"></div>
+      </details>
       <select id="sort" aria-label="Sort by">
         <option value="attention">Needs attention first</option>
-        <option value="favorites">Favorites first</option>
+        <option value="favorites">Favourites first</option>
         <option value="name">Name</option>
         <option value="size">Largest first</option>
         <option value="version">Newest version here</option>
         <option value="latest">Newest available</option>
         <option value="file">File name</option>
-        <option value="replace">Replace setting</option>
-        <option value="added">Recently added</option>
+        <option value="added">Recently updated or added</option>
       </select>
-      <label class="check"><input type="checkbox" id="only-updates"> Updates only</label>
-      <label class="check"><input type="checkbox" id="only-favorites"> Favorites</label>
-      <label class="check" title="Files you have a newer copy of"><input type="checkbox" id="only-older"> Older copies</label>
       <span class="muted" id="shown"></span>
     </div>
+    <div class="chips" id="chips" hidden></div>
     <div class="table-wrap">
       <table id="table">
         <thead>
           <tr>
-            <th class="col-star"><span class="sr-only">Usual set</span></th>
-            <th id="col-status" class="sortable" aria-sort="none">Status</th>
+            <th class="col-star"><span class="sr-only">Favourite</span></th>
             <th id="col-image" class="sortable" aria-sort="none">Image</th>
             <th id="col-version" class="sortable" aria-sort="none">Version</th>
-            <th id="col-latest" class="sortable" aria-sort="none">Latest</th>
-            <th id="col-file" class="sortable" aria-sort="none">File</th>
-            <th id="col-size" class="sortable" aria-sort="none">Size</th>
-            <th id="col-added" class="sortable" aria-sort="none">Added</th>
-            <th id="col-replace" class="col-replace sortable" aria-sort="none">Replace old</th>
+            <th id="col-status" class="sortable" aria-sort="none">Status</th>
             <th class="col-actions"><span class="sr-only">Actions</span></th>
           </tr>
         </thead>
@@ -139,29 +108,19 @@
       Worth knowing before you use it: the release no longer gets security fixes,
       or there's a note about it. Fine to keep for a VM, an old PC or tinkering —
       hover over the mark to see why.
+      <button type="button" class="linkish" id="what-mean">What do the statuses mean?</button>
     </p>
   </section>
 
-  <section class="card more">
-    <details id="past">
+  <section class="card more" id="more">
+    <details id="more-details">
       <summary>
-        <span class="more-title">Images that were here</span>
-        <span class="muted" id="past-count"></span>
-      </summary>
-      <p class="muted more-hint">Removed, replaced, or gone by some other means. isoshelf can put back anything still waiting in the removed folder, and download the rest again.</p>
-      <ul class="catalog past-list" id="past-list"></ul>
-    </details>
-  </section>
-
-  <section class="card more">
-    <details id="more">
-      <summary>
-        <span class="more-title">More in the catalog</span>
+        <span class="more-title">Add images</span>
         <span class="muted" id="more-count"></span>
       </summary>
       <p class="muted more-hint">Images isoshelf knows that aren't in this folder.</p>
       <div class="toolbar">
-        <input type="search" id="more-search" placeholder="Filter the catalog…" aria-label="Filter the catalog">
+        <input type="search" id="more-search" placeholder="Search the catalog…" aria-label="Search the catalog">
         <select id="more-category" aria-label="Category">
           <option value="">All kinds</option>
           <option value="desktop">Desktop</option>
@@ -203,14 +162,73 @@
     </details>
   </section>
 
+  <!-- Files isoshelf set aside: still on the drive, still using room. -->
+  <section class="card more" id="archive" hidden>
+    <div class="archive-head">
+      <div>
+        <span class="more-title">Archive</span>
+        <span class="muted" id="archive-count"></span>
+      </div>
+      <button type="button" class="btn small" id="archive-empty">Empty archive</button>
+    </div>
+    <p class="muted more-hint">Files isoshelf set aside instead of deleting. They still use room in this folder until you empty the archive, and you can put any of them back.</p>
+    <ul class="catalog" id="archive-list"></ul>
+  </section>
+
+  <!-- Images that are gone: a record only, with a way to get them back. -->
+  <section class="card more" id="history">
+    <details id="history-details">
+      <summary>
+        <span class="more-title">History</span>
+        <span class="muted" id="history-count"></span>
+      </summary>
+      <p class="muted more-hint">Images that have left this folder: deleted, replaced by an update, or gone some other way. The files aren't here any more, but isoshelf can download the ones it knows again.</p>
+      <ul class="catalog" id="history-list"></ul>
+    </details>
+  </section>
+
   <footer class="footer" id="footer"></footer>
 </main>
+
+<!-- Everything about one image, out of the way until asked for. -->
+<aside class="details" id="details" hidden aria-labelledby="details-name">
+  <header class="details-head">
+    <div class="details-title">
+      <span id="details-logo"></span>
+      <div>
+        <h2 id="details-name"></h2>
+        <div class="muted" id="details-sub"></div>
+      </div>
+    </div>
+    <button type="button" class="btn small icon" id="details-close" aria-label="Close">✕</button>
+  </header>
+  <div class="details-body" id="details-body"></div>
+</aside>
 
 <dialog id="ask" class="ask" aria-labelledby="ask-title">
   <form method="dialog" class="ask-form">
     <h2 id="ask-title"></h2>
     <p id="ask-text"></p>
     <div class="ask-buttons" id="ask-buttons"></div>
+  </form>
+</dialog>
+
+<!-- One checklist for "update all", "clear older versions" and the like. -->
+<dialog id="pick" class="picker pick" aria-labelledby="pick-title">
+  <form method="dialog" class="picker-form">
+    <header class="picker-head">
+      <h2 id="pick-title"></h2>
+      <p class="muted" id="pick-text"></p>
+    </header>
+    <div class="pick-body">
+      <ul class="pick-list" id="pick-list"></ul>
+    </div>
+    <footer class="picker-foot">
+      <span class="muted" id="pick-total"></span>
+      <span class="spacer"></span>
+      <button type="submit" class="btn" value="cancel">Cancel</button>
+      <span id="pick-actions"></span>
+    </footer>
   </form>
 </dialog>
 

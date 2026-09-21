@@ -162,6 +162,11 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 	if saveErr := s.saveStateLocked(base); err == nil {
 		err = saveErr
 	}
+	if len(removed) > 0 {
+		// isoshelf changed the folder itself just now, so this is not a
+		// change worth offering a scan for: the report is kept in step below.
+		s.updatedAt = s.cfg.Now()
+	}
 	if len(removed) > 0 && s.report != nil {
 		gone := map[string]bool{}
 		for _, p := range removed {
