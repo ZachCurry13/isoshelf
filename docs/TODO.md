@@ -9,39 +9,38 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**Branch:** `claude/next-version-37h9uj`. `main` is still at v0.3.0 and seven
-commits sit ahead of it.
+**Nothing is in flight.** `main` is at `c49b13a` and carries everything
+through v0.3.3, so the next piece of work branches from there, named after
+the work (see CLAUDE.md).
 
-**v0.3.0 is the latest release** (published 2026-09-21), and there are eleven
-releases going back to v0.2.1. v0.3.1, v0.3.2 and v0.3.3 are written and
-pushed but unreleased, because a release happens when a `v*` tag is pushed
-and the branch hasn't been merged yet. Note for anyone checking this the way
+**v0.3.3 is the latest release** (published 2026-09-21), and there are twelve
+releases going back to v0.2.0, the first one. There is no v0.3.1 or v0.3.2
+release: both versions have their own `CHANGELOG.md` section, but they went
+out inside the v0.3.3 release, because a release happens when a `v*` tag is
+pushed and those two were never tagged. Note for anyone checking this the way
 it was got wrong once: this is a shallow clone with no tags fetched, so
 `git tag` prints nothing even though releases exist. Ask GitHub, not the
 clone.
 
-1. **Merge [#13]**, the pull request holding all of it: v0.3.1 (Settings),
-   the dead-code clear-out and the `app.js` split, the documentation pass,
-   v0.3.2 (checking by itself), v0.3.3 (fixes and tidying), the versioned
-   release filenames, and the agents. Delete the branch afterwards; from here
-   on a branch is named after its work (see CLAUDE.md).
-2. ~~Close issue #10~~ *(done: it shipped in v0.3.0 and was left open)*.
-3. **Release v0.3.3.** Pushing a `v*` tag is the normal way; where that is
-   not possible (the sandbox this was built in blocks tag pushes with a 403,
-   though branch pushes work), the release workflow can be started by hand
-   from the Actions tab with the version typed in, which creates the tag and
-   the release itself. The workflow has run fine eleven times,
-   but this is the first release with versioned asset names
-   (`isoshelf-v0.3.3-windows-amd64.exe`), so check what it attaches: three
-   binaries, the portable zip and `SHA256SUMS`, all carrying the version,
-   with the plain names still inside the zip, and release notes taken from
-   that version's `CHANGELOG.md` section.
+The three things that stood here are all done:
 
-   That rename is a real break for anyone using a
-   `releases/latest/download/isoshelf-windows-amd64.exe` link. Nothing in
-   this repository used one and the published downloads have been taken a
-   handful of times at most, so now is the cheapest possible moment - but it
-   is a break, not a free change, and it shouldn't happen twice.
+1. ~~Merge [#13]~~ *(done: merged as `9f609a6` - v0.3.1 (Settings), the
+   dead-code clear-out and the `app.js` split, the documentation pass, v0.3.2
+   (checking by itself), v0.3.3 (fixes and tidying), the versioned release
+   filenames, and the agents. The release-workflow fix followed in [#14] as
+   `c49b13a`. Both branches are deleted.)*
+2. ~~Close issue #10~~ *(done: it shipped in v0.3.0 and was left open)*.
+3. ~~Release v0.3.3~~ *(done: pushing a `v*` tag is the normal way, but the
+   sandbox blocks tag pushes with a 403, so the release workflow was started
+   by hand from the Actions tab with the version typed in - that creates the
+   tag and the release itself. The first release with versioned asset names
+   came out right: `isoshelf-v0.3.3-windows-amd64.exe`,
+   `isoshelf-v0.3.3-linux-amd64`, `isoshelf-v0.3.3-linux-arm64`,
+   `isoshelf-v0.3.3-portable.zip` and `SHA256SUMS`, with the plain names
+   still inside the zip and the notes taken from that version's
+   `CHANGELOG.md` section.)*
+
+So the next piece of work is v0.3.4, below.
 
 ## v0.3.4: scanning while downloads run
 
@@ -121,6 +120,11 @@ sits next to the state file.
   shows "Couldn't check" on every row. That is the sandbox, not a bug. The
   recorded responses in tests are the way to check that path.
 - **Don't touch port 8765**: the maintainer's own preview runs there.
+- **Release files carry the version** since v0.3.3, so a link straight to
+  `releases/latest/download/isoshelf-windows-amd64.exe` no longer works.
+  Nothing in this repository used one and the published downloads had been
+  taken a handful of times at most, so it was the cheapest possible moment
+  - but it was a break, not a free change, and it shouldn't happen twice.
 
 ## Questions the maintainer still owes an answer to
 
@@ -133,6 +137,7 @@ sits next to the state file.
   used on a real drive.
 
 [#13]: https://github.com/ZachCurry13/isoshelf/pull/13
+[#14]: https://github.com/ZachCurry13/isoshelf/pull/14
 [#1]: https://github.com/ZachCurry13/isoshelf/issues/1
 [#2]: https://github.com/ZachCurry13/isoshelf/issues/2
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
