@@ -86,7 +86,30 @@ refused for as long as a queue takes. What was learned doing it:
 9. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
    an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
    once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
-   drive ([#7]).
+   drive ([#7]) - **and the redesign below**.
+
+## v0.4.0: the page, redone
+
+The maintainer's brief, given 2026-09-21: **"clean up the UI - make it look
+like something I could show an investor."** Not a priority before then; the
+0.3.x items above come first. What was said when asked what drives it: the
+page doesn't look modern or polished, and it is a fresh start rather than a
+list of complaints about particular screens.
+
+Read that as a design job, not a tidy-up. The bones were decided deliberately
+(decisions 1-9 and 15-17 in STATUS.md: one page, a sticky jump bar, to-do
+cards, plain status words, one filter menu with chips, slim rows, a details
+panel) and v0.3.0 delivered them; what this asks for is the surface those
+bones are wearing - type, colour, spacing, rhythm, polish - and a willingness
+to overturn a decision where it earns it, by argument rather than quietly.
+
+Three things it must not cost, because each has a switch in Settings and
+someone relying on it: higher contrast, larger text, and less movement. Nor
+the phone layout, nor the rule that text from the drive is inserted with
+textContent and never as HTML.
+
+Whatever is proposed, the maintainer wants to be asked about anything where
+more than one answer is good, rather than shown a finished redesign.
 
 ## Worth knowing before you start
 

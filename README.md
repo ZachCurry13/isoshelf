@@ -229,7 +229,8 @@ line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
 [two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
-and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
+and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5),
+along with a redesign of the page.<br>
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and
 [requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
