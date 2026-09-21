@@ -40,7 +40,10 @@ type finishedJob struct {
 	job
 	outcome string // "done", "failed" or "stopped"
 	message string
-	at      time.Time
+	// conflict marks the one failure that is really a question: a file of
+	// the same name is already there.
+	conflict bool
+	at       time.Time
 }
 
 type downloadsJSON struct {
@@ -57,10 +60,13 @@ type jobJSON struct {
 	Size int64 `json:"size,omitempty"`
 	// Update is set when the download replaces files already in the folder,
 	// rather than adding an image that isn't there.
-	Update  bool       `json:"update,omitempty"`
-	Outcome string     `json:"outcome,omitempty"`
-	Message string     `json:"message,omitempty"`
-	At      *time.Time `json:"at,omitempty"`
+	Update  bool   `json:"update,omitempty"`
+	Outcome string `json:"outcome,omitempty"`
+	Message string `json:"message,omitempty"`
+	// Conflict marks a download that stopped to ask what happens to the file
+	// already in the folder, rather than one that went wrong.
+	Conflict bool       `json:"conflict,omitempty"`
+	At       *time.Time `json:"at,omitempty"`
 }
 
 func (j *job) json() jobJSON {
@@ -80,7 +86,7 @@ func (s *Server) downloadsLocked() downloadsJSON {
 	for i := range s.finished {
 		f := &s.finished[i]
 		j := f.job.json()
-		j.Outcome, j.Message = f.outcome, f.message
+		j.Outcome, j.Message, j.Conflict = f.outcome, f.message, f.conflict
 		at := f.at
 		j.At = &at
 		out.Finished = append(out.Finished, j)
@@ -150,6 +156,13 @@ func (s *Server) executeJob(ctx context.Context, j *job) {
 	case errors.Is(err, context.Canceled):
 		f.outcome = "stopped"
 		f.message = "Stopped. The part-finished download is kept, so adding it again carries on where it left off."
+	case errors.Is(err, update.ErrSameName):
+		// Not a failure so much as a question: the page offers the answers
+		// rather than leaving a message nobody can act on.
+		f.outcome = "failed"
+		f.conflict = true
+		f.message = "There's already a file of that name here, and this image's filename never changes. " +
+			"Say what should happen to the one you have. Nothing has changed in the folder."
 	case err != nil:
 		f.outcome = "failed"
 		f.message = err.Error()

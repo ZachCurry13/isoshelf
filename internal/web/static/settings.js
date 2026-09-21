@@ -19,7 +19,7 @@ let drawnSettings = "";
 // ---- The look of the page ------------------------------------------------
 
 // The answers are kept by isoshelf, but a copy lives in the browser as well,
-// so the page opens in the right colours instead of changing under the
+// so the page opens in the right colors instead of changing under the
 // reader a moment later.
 function savedLook() {
   try {
@@ -106,7 +106,7 @@ const SETTING_GROUPS = [
       {
         name: "Theme",
         hint: "Light, dark, or whatever this computer is set to.",
-        words: "dark mode night light colour color appearance",
+        words: "dark mode night light color theme appearance",
         control: () => choiceRow("Theme", [
           ["", "Match this computer"],
           ["light", "Light"],
@@ -164,7 +164,7 @@ const SETTING_GROUPS = [
       {
         name: "What happens to the file an update replaces",
         hint: "For images you haven't answered for yourself. Each image can say " +
-          "otherwise in its own panel, and archived files can be put back until you empty the archive.",
+          "otherwise in its own panel, and an archived file can be restored until you empty the archive.",
         words: "replace archive delete keep both old copies updates",
         control: () => choiceRow("What happens to the file an update replaces", [
           ["replace", "Replace it"],

@@ -79,6 +79,12 @@ type Result struct {
 // manual or check-only.
 var ErrNothingToDownload = errors.New("this image has no download source yet")
 
+// ErrSameName is returned when the new file would take the place of one
+// already in the folder, because this image's filename never carries a
+// version. Only the user can say what should happen to the old copy, so the
+// download stops and asks rather than guessing.
+var ErrSameName = errors.New("the new file would take the old one's place")
+
 // Run downloads the entry's newest file, verifies it, places it in the
 // target, and then keeps or removes the old files as Removal says.
 func Run(ctx context.Context, opts Options) (*Result, error) {
@@ -116,7 +122,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	// moves once the new file is downloaded and verified.
 	sameName := slices.Contains(opts.Old, artifact.Filename)
 	if sameName && (opts.Removal == Keep || opts.Removal == "") {
-		return nil, fmt.Errorf("%s always has the same filename, so the new file would take its place; choose to move the old one aside or delete it", artifact.Filename)
+		return nil, fmt.Errorf("%w: %s always has the same filename, so the new file would land on top of the one you have", ErrSameName, artifact.Filename)
 	}
 	// A download nothing can check never replaces anything on its own: the old
 	// files stay until the user has looked at the new one. The built-in

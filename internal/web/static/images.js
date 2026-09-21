@@ -198,7 +198,7 @@ const ARCHES = [
 
 const SHOW = [
   ["updates", "Updates ready"],
-  ["favorites", "Favourites"],
+  ["favorites", "Favorites"],
   ["older", "Older versions"],
   ["caution", "Worth knowing (⚠)"],
 ];
@@ -448,7 +448,7 @@ function renderHeadings() {
   }
 }
 
-// logoTile is the project logo, or coloured initials when there is none.
+// logoTile is the project logo, or colored initials when there is none.
 function logoTile(item) {
   const tile = el("span", { class: "logo", "aria-hidden": "true" });
   if (item.icon) {
@@ -474,7 +474,7 @@ function colorFor(name) {
   return `hsl(${hash} 45% 42%)`;
 }
 
-// readableBrand keeps brand colours visible: a few are nearly black, which
+// readableBrand keeps brand colors visible: a few are nearly black, which
 // disappears on a dark background.
 function readableBrand(color) {
   if (!color) return "currentColor";
@@ -522,6 +522,15 @@ function linksMenu(item) {
     el("summary", { title: "Links", "aria-label": `Links for ${item.name}` }, "\u2026"),
     el("div", { class: "menu-items" },
       links.map(([label, url]) => el("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, label))));
+  wireMenu(menu);
+  return menu;
+}
+
+// wireMenu makes a menu behave: only one open at a time, and pinned to the
+// window where there is room for it. Every details.menu needs this, the
+// Filter menu included - it was left out, so on a full drive it hung off the
+// bottom of the window with the last filters out of reach.
+function wireMenu(menu) {
   menu.addEventListener("toggle", () => {
     if (!menu.open) return;
     for (const other of document.querySelectorAll("details.menu[open]")) {
@@ -529,7 +538,6 @@ function linksMenu(item) {
     }
     placeMenu(menu);
   });
-  return menu;
 }
 
 // placeMenu pins an open menu to the window, so the table's scroll box can't
@@ -540,10 +548,24 @@ function placeMenu(menu) {
   const floor = innerHeight - ($("dock").hidden ? 8 : $("dock").offsetHeight + 8);
   items.classList.add("pinned");
   items.style.right = `${Math.max(8, innerWidth - anchor.right)}px`;
+  // Measure without the limit a previous opening may have left behind.
+  items.style.maxHeight = "";
+  const wanted = items.offsetHeight;
   const below = anchor.bottom + 4;
-  items.style.top = below + items.offsetHeight > floor
-    ? `${Math.max(8, anchor.top - items.offsetHeight - 4)}px`
-    : `${below}px`;
+  const roomBelow = floor - below;
+  const roomAbove = anchor.top - 12;
+  if (wanted <= roomBelow) {
+    items.style.top = `${below}px`;
+  } else if (wanted <= roomAbove) {
+    items.style.top = `${anchor.top - wanted - 4}px`;
+  } else {
+    // A long list of filters on a short window fits neither way. Take the
+    // roomier side and let the menu scroll, so the last filter is still
+    // reachable instead of hanging off the screen.
+    const under = roomBelow >= roomAbove;
+    items.style.top = under ? `${below}px` : "8px";
+    items.style.maxHeight = `${Math.max(140, under ? roomBelow : roomAbove)}px`;
+  }
 }
 
 function closeMenus() {

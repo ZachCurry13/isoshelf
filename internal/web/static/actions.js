@@ -235,7 +235,7 @@ async function renderCatalog() {
     ? ""
     : `showing ${shown.length} of ${listed.length}`;
 
-  // Whatever isoshelf knows, someone's favourite image won't be in it.
+  // Whatever isoshelf knows, someone's favorite image won't be in it.
   const request = $("catalog-request");
   request.replaceChildren();
   if (state.report_url) {

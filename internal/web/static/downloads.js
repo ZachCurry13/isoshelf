@@ -287,7 +287,8 @@ function finishedItem(job) {
     [mark, tone] = ["!", "s-warn"];
     what += `. ${job.message}`;
   }
-  if (job.outcome === "failed") what = `Didn't work: ${job.message}`;
+  if (job.outcome === "failed") what = job.conflict ? job.message : `Didn't work: ${job.message}`;
+  if (job.conflict) [mark, tone] = ["?", "s-update"];
   if (job.outcome === "stopped") what = "Stopped. The part-finished download is kept, so trying again carries on from there.";
   // Only the latest try gets the button, and not once it is queued again.
   const again = job.outcome !== "done" && jobFor(job.entry).job.id === job.id;
@@ -296,13 +297,32 @@ function finishedItem(job) {
     el("div", { class: "info" },
       el("div", { class: "name" }, job.name),
       el("div", { class: "kind" }, what, job.at ? ` · ${timeAgo(job.at)}` : "")),
-    again
-      ? el("button", {
-        type: "button", class: "btn small",
-        title: "Add it to the queue again",
-        onclick: () => retryJob(job),
-      }, job.outcome === "stopped" ? "Carry on" : "Try again")
-      : null);
+    again ? againButtons(job) : null);
+}
+
+// againButtons is what to do about a download that didn't finish. A name
+// clash is a question, not a failure, so it gets the answers themselves
+// instead of a "Try again" that would fail the same way. Doing nothing is
+// always allowed: nothing has changed in the folder either way.
+function againButtons(job) {
+  if (!job.conflict) {
+    return el("button", {
+      type: "button", class: "btn small",
+      title: "Add it to the queue again",
+      onclick: () => retryJob(job),
+    }, job.outcome === "stopped" ? "Carry on" : "Try again");
+  }
+  return el("div", { class: "conflict-choices" },
+    el("button", {
+      type: "button", class: "btn small",
+      title: "Download it and put the old file in the archive, where you can restore it",
+      onclick: () => queueDownload(job.entry, "move-aside"),
+    }, "Archive the old one"),
+    el("button", {
+      type: "button", class: "btn small",
+      title: "Download it and delete the old file once the new one is verified",
+      onclick: () => queueDownload(job.entry, "delete"),
+    }, "Replace it"));
 }
 
 // renderDockProgress updates the moving parts of the downloads: the summary
@@ -327,7 +347,12 @@ function renderDockProgress() {
     if (state.run) text += " Looking at the folder again…";
   }
   $("dock-text").textContent = text;
-  $("dock-waiting").textContent = d.queued.length ? `${d.queued.length} waiting` : "";
+  // With thirty images queued, "30 waiting" doesn't answer the question
+  // anyone actually has, which is how long and how much room.
+  const left = pendingBytes();
+  $("dock-waiting").textContent = d.queued.length
+    ? `${d.queued.length} waiting${left ? ` · ${formatBytes(left)} to download` : ""}`
+    : "";
 
   const bar = $("dock-bar");
   bar.hidden = !d.current;

@@ -1,13 +1,13 @@
 "use strict";
 
 // Two different things, kept apart on the page as well: the archive, which
-// is files still on the drive that can be put back, and history, which is a
+// is files still on the drive that can be restored, and history, which is a
 // record of images that have left.
 
 // ---- Archive and history ---------------------------------------------------
 
 // Two different things, so two sections: files still on the drive that you
-// can put back, and a record of images that have left.
+// can restore, and a record of images that have left.
 async function renderArchive() {
   const past = await archiveItems();
   if (!past) return;
@@ -51,12 +51,14 @@ function pastItem(item, restorable) {
   const buttons = [];
   if (restorable) {
     buttons.push(el("button", {
-      type: "button", class: "btn small", disabled: scanning(),
+      type: "button", class: "btn small primary", disabled: scanning(),
       title: "Move it back into the folder",
       onclick: () => restore(item),
-    }, "Put back"));
+    }, "Restore"));
   }
-  if (item.downloadable) {
+  // A file still in the archive doesn't need downloading again: restoring it
+  // is instant, costs nothing and gives back the very file that was there.
+  if (item.downloadable && !restorable) {
     buttons.push(jobButton(item.entry, el("button", {
       type: "button", class: "btn small",
       title: "Download the current version again",
@@ -64,15 +66,19 @@ function pastItem(item, restorable) {
     }, "Download again"), false));
   }
   if (item.page) {
-    buttons.push(el("a", { class: "btn small", href: item.page, target: "_blank", rel: "noopener noreferrer" }, "Page"));
+    buttons.push(el("a", {
+      class: "btn small", href: item.page, target: "_blank", rel: "noopener noreferrer",
+      title: `Where ${item.name} is published`,
+    }, "Download page"));
   }
   return el("li", {},
     logoTile(item),
     el("div", { class: "info" },
       el("div", {}, el("span", { class: "name" }, item.name),
         item.version ? el("span", { class: "arch" }, item.version) : null),
-      el("div", { class: "kind" }, `${item.path} · ${detail}`)),
-    buttons);
+      el("div", { class: "file" }, item.path),
+      el("div", { class: "kind" }, detail)),
+    el("div", { class: "past-actions" }, buttons));
 }
 
 // renderJump keeps the bar at the top honest: how many images are in each

@@ -41,7 +41,7 @@ isoshelf does that for you:
   never forced to update everything at once. Add and Update join a download
   queue, like a game launcher's: one at a time, in an order you can change by
   dragging, with each button saying *Queued*, *Downloading* or *Added*.
-- **Tidying up.** Remove images you no longer want: archive them (undo any
+- **Tidying up.** Remove images you no longer want: archive them (restore any
   time) or delete them. Older copies of the same image are found and cleared in
   one go. isoshelf remembers what left the folder and can download it again.
 - **Works out what mystery files are.** A file the catalog doesn't know by
@@ -62,7 +62,7 @@ isoshelf does that for you:
 - **Plain words, explained.** Statuses read *Update ready*, *Old release*,
   *Check by hand* or *Won't boot here*, and each explains itself when you
   hover over it.
-- **Finds things fast.** Search, one Filter menu (updates, favourites, older
+- **Finds things fast.** Search, one Filter menu (updates, favorites, older
   versions, kinds, architectures) showing a chip for everything switched on,
   and sorting by name, size, version or age. Click any image for a panel with
   everything about it: its file, its versions, its links and its settings.
@@ -91,7 +91,7 @@ isoshelf manages files you care about, so it is deliberately cautious:
   folder.** It only works with image files in the folder you pick.
 - **Nothing is deleted unless you choose it.** Every removal asks first, and
   offers archiving, which keeps the file in the folder until you empty the
-  archive, so it can be put back until then.
+  archive, so it can be restored until then.
 - **You decide what happens to old versions.** Each image has a *replace old
   file* switch, on by default; turn it off to keep old versions side by side.
   A replacement is downloaded, verified and renamed into place before the old
@@ -214,8 +214,12 @@ happens to the files updates replace, and Reset to defaults.<br>
 **v0.3.2: checking by itself.** *Released 2026-09-21:* the page checks for
 updates when it opens and after each scan, remembers what each project said
 for a day, and has one Refresh button. Both can be turned off in Settings.<br>
-**v0.3.3 (next):** where each folder's records live, and isoshelf updating
-itself with one click.<br>
+**v0.3.3: fixes and tidying.** *Released 2026-09-21:* the Filter menu stays
+inside the window, a download that would overwrite a file asks what to do
+instead of failing, American spelling, *Restore* in the archive, and the page
+says how much room the images use and how much the queue will download.<br>
+**v0.3.4 (next):** scanning while downloads run, where each folder's records
+live, and isoshelf updating itself with one click.<br>
 **v0.4:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),

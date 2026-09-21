@@ -264,7 +264,7 @@ alone is not an update.
     single-board computers, "gaming" includes handhelds), `family` (groups one
     product's tracks), `site`, `forum`, `popular` (a hand-picked hint from
     public round-ups, not a rating), and `icon` + `icon_color` (a Simple Icons
-    name and brand colour).
+    name and brand color).
   - `caution`: one line of fact worth knowing before using the image
     (support ended on a date, an unofficial modification, a preview that
     expires), at most 200 characters. The page shows a ⚠ beside the name,
@@ -336,7 +336,7 @@ alone is not an update.
 1. Downloads: resumable fetch, checksum verification, place into the target.
    An Update button per image plus "Update all". *Done.*
 2. Delete: remove images the user no longer wants. *Done.*
-3. The archive of images that have left, with put back and download again,
+3. The archive of images that have left, with Restore and Download again,
    plus filters, sorting, logos and links. *Done.*
 4. Assign: suggest what an unrecognized file is and confirm it (below).
    *Done.*
@@ -360,7 +360,7 @@ binaries, the portable zip, and `SHA256SUMS` to the release.
   version, size, hash and where it came from, when it was last seen, and how it
   went (`removed`, `moved-aside`, `replaced`, `vanished`). Capped at 500, newest
   first, and a path is forgotten as soon as that file is back.
-- Files moved aside wait in `<target>/.isoshelf/removed/` and can be put back
+- Files moved aside wait in `<target>/.isoshelf/removed/` and can be restored
   while they are there; catalog images can always be downloaded again.
 
 ### Assign: suggesting what an unrecognized file is
@@ -521,15 +521,28 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   the computer's folders), with drives or mount points and recent folders
   (from the mirrors; none in portable mode). The last folder is remembered in
   `<config>/ui.json`.
-- A filled star means the user starred the image: it is a favourite, sorts
+- A filled star means the user starred the image: it is a favorite, sorts
   first, and is reported if it goes missing. The replace switch shows only for
   entries that can download.
+- Menus (`details.menu`) are pinned to the window by `placeMenu` and wired by
+  `wireMenu`: only one open at a time, opening upwards when there is more room
+  there, and scrolling when a long list of filters fits neither way. Every
+  menu needs the wiring - the Filter menu went without it until v0.3.3, so on
+  a full drive it hung off the bottom of the window.
+- A download that would land on top of a file already in the folder stops and
+  asks (v0.3.3). `update.ErrSameName` is the one failure that is really a
+  question: the server marks that job `conflict`, and the page offers
+  "Archive the old one" and "Replace it" instead of a Try again that would
+  fail the same way. Nothing in the folder has changed when it asks.
+- The words are American English (the maintainer's decision, v0.3.3):
+  *Favorites*, *color*. "Restore" is the word for bringing a file back from
+  the archive, everywhere.
 - One **Refresh** button (v0.3.2) replaced *Scan* and *Check for updates*:
   read the folder again and ask every project again. Scanning without going
   online is what turning the setting off does, not a second button.
 - The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
   images, Archive, History. Above the list, one card per thing to do
-  (`renderTodo`). The list is a favourite star and four columns - image (file,
+  (`renderTodo`). The list is a favorite star and four columns - image (file,
   size and date underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
   row opens the details panel: everything about one image, its links, and
   the choice below. Statuses are shown in plain words (`STATUS_WORDS`), each
@@ -538,7 +551,7 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   replace, archive or keep; `Track.Choice()`), set in the details panel and
   followed by every update, so updating never stops to ask. "Update all" and
   "clear older versions" share one checklist dialog (`pickFiles`).
-- The list filters by kind, architecture, updates, favourites, older
+- The list filters by kind, architecture, updates, favorites, older
   versions and the caution mark through one Filter menu; everything switched
   on shows as a chip above the list. Sorting is a menu and the three column
   headings (empty cells last).
@@ -593,11 +606,11 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
     keeps what isn't a choice: the folder in use, the pinned folders and
     where records are kept.
   - How it looks is four attributes on `<html>`: `data-theme`,
-    `data-contrast`, `data-text` and `data-motion`. The colours are written
+    `data-contrast`, `data-text` and `data-motion`. The colors are written
     once with `light-dark()`, so a theme is `color-scheme` and nothing else,
     and sizes are in `rem` against one number on `:root`, so "larger text"
     raises all of them together. A copy of the answers is kept in the
-    browser's localStorage as well, so the page opens in the right colours
+    browser's localStorage as well, so the page opens in the right colors
     instead of changing under the reader a moment later; isoshelf is still
     the one that remembers.
   - The panel is redrawn only when what it shows changes (`settingsKey`),
@@ -621,9 +634,9 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 - Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
   with `go run ./internal/web/logos/fetch`. `/logo/{slug}` serves those, then
   ones fetched earlier from `<config>/logos`, then fetches from the CDN once
-  and remembers misses. Entries without one get coloured initials, drawn from
+  and remembers misses. Entries without one get colored initials, drawn from
   the name.
-- "Images that were here" lists the archive, with Put back for files still in
+- "Images that were here" lists the archive, with Restore for files still in
   `.isoshelf/removed` and Download again for catalog images.
 - Downloads (`queue.go`): Add, Update, Update all and Download again join a
   queue that runs one at a time, and the queue drains into one rescan. The

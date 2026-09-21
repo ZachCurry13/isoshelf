@@ -157,7 +157,7 @@ day they went in; a few sites answer scripted requests with 403
 or 406 but are fine in a browser (MX Linux, Kali's forums, Q4OS, Microsoft).
 
 Twenty-one projects have a logo in Simple Icons and ship inside isoshelf;
-refresh them with `go run ./internal/web/logos/fetch`. The rest show coloured
+refresh them with `go run ./internal/web/logos/fetch`. The rest show colored
 initials. Entries added later, or from a user's own catalog, have their logo
 fetched once at runtime and kept in the settings folder.
 

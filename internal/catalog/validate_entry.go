@@ -90,7 +90,7 @@ func (ec entryCheck) checkExtras(hashes map[string]string) {
 		ec.problem("icon", "%q is not a Simple Icons name", e.Icon)
 	}
 	if e.IconColor != "" && !colorPattern.MatchString(e.IconColor) {
-		ec.problem("icon_color", "%q is not a colour like #0078d4", e.IconColor)
+		ec.problem("icon_color", "%q is not a color like #0078d4", e.IconColor)
 	}
 	// A caution is one sentence someone reads while hovering a mark, so it
 	// stays short and on one line.

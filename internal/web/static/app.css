@@ -1,4 +1,4 @@
-/* The colours. Each one says its light value and its dark value; which is
+/* The colors. Each one says its light value and its dark value; which is
    used follows color-scheme below, so "Dark" in Settings is one line, not a
    second copy of the whole palette. */
 :root {
@@ -35,7 +35,7 @@
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
 
-/* A shadow is not a colour, so it needs saying twice: once for a dark
+/* A shadow is not a color, so it needs saying twice: once for a dark
    computer with no theme chosen, once for Dark chosen outright. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { --shadow: none; }
@@ -433,6 +433,7 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .toolbar { flex-wrap: wrap; }
 .toolbar select { max-width: 190px; }
 .check { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); white-space: nowrap; }
+.check input[type="checkbox"], .check input[type="radio"] { flex: none; width: auto; margin: 0; }
 
 .image-cell { display: flex; align-items: flex-start; gap: 10px; }
 .image-text { min-width: 0; }
@@ -486,7 +487,7 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
   box-shadow: 0 10px 30px rgba(10, 14, 22, 0.18);
   text-align: left;
 }
-.menu-items.pinned { position: fixed; top: auto; z-index: 30; }
+.menu-items.pinned { position: fixed; top: auto; z-index: 30; overflow-y: auto; overscroll-behavior: contain; }
 .menu-items a { padding: 6px 10px; border-radius: 6px; color: var(--text); }
 .menu-items a:hover { background: color-mix(in srgb, var(--accent), transparent 88%); text-decoration: none; }
 
@@ -619,6 +620,13 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
   border: 1px solid var(--border); border-radius: 8px;
 }
 .dock-item .info { flex: 1; min-width: 0; }
+.conflict-choices { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* The archive and history cards: the buttons belong together at the end of
+   the row, not spread across it. */
+.past-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: flex-end; }
+#archive-list .file, #history-list .file { font-family: var(--mono); font-size: 0.8571rem; color: var(--muted); overflow-wrap: anywhere; margin-top: 2px; }
+#archive-list .kind, #history-list .kind { margin-top: 2px; }
 .dock-item .name { font-weight: 600; overflow-wrap: break-word; }
 .dock-item .kind { font-size: 0.8571rem; color: var(--muted); }
 .dock-item .bar { margin-top: 6px; }

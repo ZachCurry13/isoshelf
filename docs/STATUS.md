@@ -2,7 +2,8 @@
 
 ## Where things stand (2026-09-18)
 
-- **Released:** v0.3.2 (checking by itself; v0.3.1 Settings, v0.3.0 the redesign). Scans a folder, works out each image, checks for
+- **Released:** v0.3.3 (fixes and tidying; v0.3.2 checking by itself, v0.3.1
+  Settings, v0.3.0 the redesign). Scans a folder, works out each image, checks for
   updates online, downloads and verifies (resumable, queued one at a time,
   reorderable), replaces or archives old files, identifies unknown files, and
   keeps a catalog that updates itself from this repository. While downloads
@@ -59,7 +60,7 @@ and plain words on the surface; everything adjustable in Settings.
     limit, hide architectures and kinds you don't use, a notification when
     downloads finish.
 . "Images that were here" is split in two. **Archive**: only files still on
-    the drive (size, Put back, Delete for good, Empty archive), with a to-do
+    the drive (size, Restore, Delete for good, Empty archive), with a to-do
     card and a jump-bar link. **History**: a folded log of images that left
     (deleted, replaced, vanished) with Download again. "Archive" stays the
     word everywhere.
@@ -81,6 +82,18 @@ and plain words on the surface; everything adjustable in Settings.
 
 ## Latest change (2026-09-21)
 
+- v0.3.3 worked through the maintainer's own review of the page on a full
+  drive (`isoshelf_v0.3.1_tasks.md`): the Filter menu now stays inside the
+  window and its tick boxes line up (it was the one menu never wired to
+  `placeMenu`); a download that would land on top of a file asks "Archive the
+  old one" or "Replace it" instead of failing with advice; American spelling;
+  "Restore" in place of "Put back"; tidier Archive and History cards with no
+  redundant "Download again"; and two numbers people kept asking for - what
+  the images use, and how much the queue still has to download.
+- Still owed from that review: scanning and checking while downloads run
+  (needs the server's single run slot split in two - its own step, v0.3.4),
+  and uploading a file to the drive from the browser (its own step too, since
+  it writes to the drive).
 - v0.3.2 shipped checking by itself: every scan is also a check unless
   Settings says otherwise, and `internal/lastcheck` keeps each project's
   answer in `<config>/last-check.json` for a day, so opening the page a
@@ -98,7 +111,7 @@ and plain words on the surface; everything adjustable in Settings.
   where things are, Report a bug, Reset to defaults). Settings live in
   `<config>/ui.json`, which `internal/settings` now owns alone - the web
   server's second copy of the fields could erase what the command line
-  wrote. The page's colours are written once with `light-dark()` and its
+  wrote. The page's colors are written once with `light-dark()` and its
   sizes in `rem`, which is what makes a theme and larger text one line each.
   The panel is its own file, `internal/web/static/settings.js`.
 - Then a clear-out: everything the dead-code checkers (x/tools `deadcode`,

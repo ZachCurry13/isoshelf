@@ -199,9 +199,22 @@ function freshness() {
 }
 
 function renderSpace() {
-  $("space").textContent = state.space && state.space.total
-    ? `${formatBytes(state.space.free)} free of ${formatBytes(state.space.total)}`
-    : "";
+  const parts = [];
+  // What the images themselves take up, which is the number someone
+  // deciding what to clear actually wants. A folder can hold plenty else.
+  const used = imageBytes();
+  if (used) parts.push(`${formatBytes(used)} in images`);
+  if (state.space && state.space.total) {
+    parts.push(`${formatBytes(state.space.free)} free of ${formatBytes(state.space.total)}`);
+  }
+  $("space").textContent = parts.join(" · ");
+}
+
+// imageBytes is how much room the images in this folder use. Entries with no
+// file - an image isoshelf expected but didn't find - count for nothing.
+function imageBytes() {
+  if (!state.report) return 0;
+  return state.report.items.reduce((sum, it) => sum + (it.path ? it.size || 0 : 0), 0);
 }
 
 // scanning is true while a scan or check runs. Downloads are different: the
@@ -341,6 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderDock();
     }
   });
+  wireMenu($("filter"));
   $("search").addEventListener("input", () => { renderChips(); renderRows(); });
   $("details-close").addEventListener("click", closeDetails);
   $("what-mean").addEventListener("click", showMeanings);

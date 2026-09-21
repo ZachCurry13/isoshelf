@@ -4,7 +4,38 @@ What changed in each release of isoshelf, newest first.
 
 Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
-last number rises for improvements to what it already does.
+last number rises for improvements to what it already does, like v0.3.3.
+
+## [v0.3.3] - 2026-09-21
+
+Fixes and tidying from a run through the whole page on a full drive.
+
+### Fixed
+- **The Filter menu no longer hangs off the screen.** On a folder with a lot
+  of kinds and architectures it ran past the bottom of the window with the
+  last filters out of reach, because it was the one menu never told to keep
+  itself inside the window. It now opens upwards when there's more room
+  there, and scrolls when there isn't room either way.
+- **Tick boxes line up.** In that menu each one sat at a different place,
+  with its words pushed to the right, because the boxes were being stretched
+  to fill the row.
+- **A download that would land on top of a file you have now asks.** It used
+  to fail with advice and a *Try again* button that failed the same way. It
+  now offers the two answers — *Archive the old one* or *Replace it* — and
+  says plainly that nothing in the folder has changed meanwhile.
+
+### Changed
+- **American spelling** throughout: *Favorites*, *color*.
+- ***Restore*** is the word for bringing a file back from the archive, in the
+  button, the page and the docs. It was "Put back".
+- **Archive and History cards** are tidier: the filename on its own line, the
+  buttons together at the end of the row, and *Page* is now *Download page*.
+- **No *Download again* on a file that's still in the archive.** Restoring it
+  is instant, costs nothing and gives back the very file that was there.
+- **The downloads bar says how much is left**, not just how many: "12 waiting
+  · 31.4 GB to download".
+- **The folder line says what the images take up**: "42.5 GB in images · 68
+  GB free of 252 GB".
 
 ## [v0.3.2] - 2026-09-21
 
