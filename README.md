@@ -254,9 +254,14 @@ installer and nothing to set up — it's one file.
 
 | You're on | Download | Then |
 |---|---|---|
-| **Windows** | `isoshelf-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
-| **Linux** | `isoshelf-linux-amd64` (or `-arm64`) | `chmod +x isoshelf-linux-amd64` then `./isoshelf-linux-amd64` |
-| **A USB drive** | `isoshelf-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
+| **Windows** | `isoshelf-v0.3.3-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
+| **Linux** | `isoshelf-v0.3.3-linux-amd64` (or `-arm64`) | `chmod +x` the file, then run it |
+| **A USB drive** | `isoshelf-v0.3.3-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
+
+Each download carries its version, so you can tell two of them apart in your
+Downloads folder. The files *inside* the portable zip don't: that's the copy
+you run from the drive, and it keeps the same name every release so nothing
+you've set up points at the wrong file.
 
 Every release also has a `SHA256SUMS` file, if you'd like to check what you
 downloaded is what was built.

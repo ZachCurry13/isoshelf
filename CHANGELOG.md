@@ -36,6 +36,11 @@ Fixes and tidying from a run through the whole page on a full drive.
   · 31.4 GB to download".
 - **The folder line says what the images take up**: "42.5 GB in images · 68
   GB free of 252 GB".
+- **Every file in a release carries its version** —
+  `isoshelf-v0.3.3-windows-amd64.exe` — so two downloads can be told apart.
+  The copies inside the portable zip keep the plain name, because that is
+  what you run from the drive and what a future self-update replaces in
+  place.
 
 ## [v0.3.2] - 2026-09-21
 

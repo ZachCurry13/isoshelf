@@ -90,6 +90,10 @@ and plain words on the surface; everything adjustable in Settings.
   "Restore" in place of "Put back"; tidier Archive and History cards with no
   redundant "Download again"; and two numbers people kept asking for - what
   the images use, and how much the queue still has to download.
+- Release files now carry the version; the copies inside the portable zip
+  keep the plain name, since that is the one run from the drive and the one
+  self-update will replace in place. Anything that downloads an update must
+  match its asset by pattern, not by an exact name.
 - Still owed from that review: scanning and checking while downloads run
   (needs the server's single run slot split in two - its own step, v0.3.4),
   and uploading a file to the drive from the browser (its own step too, since

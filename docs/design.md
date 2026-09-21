@@ -352,7 +352,16 @@ of decisions is in [STATUS.md](STATUS.md)).
 **v0.4** - the items moved from v0.2 above; then rebuild and repair modes.
 **Later** - server mode (below); macOS build.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
-binaries, the portable zip, and `SHA256SUMS` to the release.
+binaries, the portable zip, and `SHA256SUMS` to the release. Every file
+attached to a release carries the version
+(`isoshelf-v0.3.3-windows-amd64.exe`), because that is what people download
+and keep. The binaries *inside* the portable zip keep the plain name
+(`isoshelf-windows-amd64.exe`): that is the file run from the drive, and the
+one a future "update isoshelf" replaces in place, so it must not change every
+release. Whatever downloads an update must therefore find its asset by
+pattern (the name contains `windows-amd64.exe`) rather than by an exact name,
+which would go stale every release. The update check itself reads only
+`tag_name` and `html_url`, so it is unaffected either way.
 
 ### The archive of images that have left
 
