@@ -33,7 +33,10 @@ broken is a security report, not a feature request.
   and only if you chose replacing.
 - **A download nobody can verify never replaces anything by itself.**
 - **isoshelf only writes inside the folder you pick** (plus its own settings
-  folder), and only deletes image files there, one confirmation at a time.
+  folder), and only deletes image files there. Removing one asks you first,
+  file by file, and always offers to archive it instead. An update follows
+  the choice that image already carries — replace, archive or keep both,
+  shown in its panel and changeable at any time — rather than asking again.
 - **The web UI answers your computer only.** It listens on 127.0.0.1, needs a
   random token issued at startup, checks the `Host` header so a hostile website
   can't reach it by DNS rebinding, requires a custom header and a same-origin

@@ -41,6 +41,8 @@ and plain words on the surface; everything adjustable in Settings.
 8. Update dialog: Replace pre-selected, sizes as the change ("about +6 MB"),
    "Don't ask again" (turned back on in Settings). This relaxes the "every
    delete asks" rule for updates only; update docs/design.md when built.
+   *Built in v0.3.0 (each image carries its own choice, so updates never ask)
+   and the hard rules in docs/design.md and SECURITY.md now say so.*
 9. Settings: Light/Dark/System, high contrast, larger text, reduce motion.
 10. Records: the user chooses per folder (in the folder, in isoshelf's folder,
     or a folder they pick), plus a remembered-folders list with last used,
@@ -86,8 +88,18 @@ and plain words on the surface; everything adjustable in Settings.
   wrote. The page's colours are written once with `light-dark()` and its
   sizes in `rem`, which is what makes a theme and larger text one line each.
   The panel is its own file, `internal/web/static/settings.js`.
-- Known debt: `app.js` is still ~2,550 lines against the ~200-line rule.
-  New work went beside it rather than into it; splitting it is its own step.
+- Then a clear-out: everything the dead-code checkers (x/tools `deadcode`,
+  `staticcheck`) name as unreachable is gone, both come back clean, and `app.js`
+  is no longer one 2,544-line file. The page is eight scripts, one per part
+  of it, none over ~700 lines: reading one corner no longer means reading all
+  of it. A line-by-line comparison showed nothing lost in the move, and the
+  whole page was exercised in a browser afterwards.
+- Docs checked against the code: CLAUDE.md and design.md describe the new
+  script layout, CONTRIBUTING says how to add one, the "…" row menu the
+  redesign removed is out of design.md, and the app-update notice is
+  described as what it is (a link in the top bar and in Settings).
+- Gap worth closing: `--no-update-check` has no switch in Settings, which the
+  guiding principle says it should have.
 - v0.3.0 shipped the new look: jump bar, to-do cards, plain statuses with
   explanations, one filter menu with chips, slim rows, a details panel,
   Archive and History apart, a per-image choice for old files, a checklist

@@ -40,6 +40,17 @@ search box, and nothing in it has to be touched for isoshelf to work.
 - The settings file has one owner (`internal/settings`) rather than a second
   copy of the fields in the web server. A choice made on the page could
   quietly erase one made on the command line; it can't now.
+- The page is now one script per part of it — the list, the details panel,
+  downloads, updating and identifying, the folder chooser, the archive, and
+  Settings — instead of one 2,544-line file. Nothing about the page changed;
+  it is a change for whoever works on it next.
+
+### Removed
+- Code nothing called any more: two helpers left over from features the
+  redesign replaced, the sort orders for columns the page no longer has, a
+  field sent to the page twice a second during a scan and read by nothing,
+  and nine stylesheet rules for parts of the old table. Two dead-code
+  checkers come back clean.
 
 ## [v0.3.0] - 2026-09-21
 

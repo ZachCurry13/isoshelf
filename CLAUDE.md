@@ -7,7 +7,10 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/catalog`: catalog format and `default.toml`, the list of known images
 - `internal/{source,resolve,verify,fetch,update}`: latest version → exact file and checksum → download → place
 - `internal/{scan,sniff,state,inventory,check,identify}`: read a folder, keep its records, work out statuses
-- `internal/web`: HTTP server and the embedded page (`static/app.js`, `app.css`, `index.html`)
+- `internal/web`: HTTP server and the embedded page. `static/index.html` loads
+  one script per part of the page: `app.js` (state, asking, drawing, wiring),
+  `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
+  `archive.js`, `settings.js`, plus `app.css`
 - `internal/remote/remotetest/recorded`: recorded HTTP responses the tests replay
 - `docs/design.md` (full rules and design), `docs/STATUS.md` (where things stand), `docs/catalog-sources.md`
 

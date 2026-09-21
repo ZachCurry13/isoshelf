@@ -16,9 +16,12 @@ project, not affiliated with Ventoy.
 - Never touch partitions, bootloaders, or Ventoy's `/ventoy` folder. Only work
   with image files inside the folder the user picks.
 - Never delete or overwrite anything the user hasn't chosen to replace. Each
-  track has a "replace old file" checkbox, on by default; off = keep old files.
-  Replace = download -> verify -> rename into place -> only then delete the old
-  file(s) of that same track.
+  image carries one choice - replace, archive, or keep both - made in its
+  details panel and followed by every update of that image from then on
+  (`old_files` in state; v0.3.0 replaced the old "replace old file" checkbox
+  with it). An image nobody has answered for follows the default in Settings,
+  which is replace until it is changed (v0.3.1). Replace = download -> verify
+  -> rename into place -> only then delete the old file(s) of that same track.
 - A download without a published checksum ("unverified") never replaces
   anything on its own: the old file stays until the user confirms that item.
 - Only ever delete image files inside the folder the user picked: recognized
@@ -26,9 +29,15 @@ project, not affiliated with Ventoy.
   2026-09-17, replacing "only files matched to a catalog entry"). Never other
   files (notes, archives, anything without an image extension or image
   content), and never anything outside that folder.
-- Every delete asks first, per file, and offers both: move aside into
+- Removing an image asks first, per file, and offers both: move aside into
   `<target>/.isoshelf/removed/` (instant and undoable; the space is freed when
   the user empties it, and isoshelf shows how much it holds), or delete now.
+  An update is the one thing that doesn't stop to ask, because the image's
+  own choice above already is the answer - given once, in plain sight in its
+  panel, and changeable at any time (decided 2026-09-18, built in v0.3.0;
+  this is the wording that decision said to come back and fix). Either way
+  nothing goes without the user having chosen it, and archiving is always
+  offered instead of deleting.
 - A mismatch against a published checksum always blocks placement. No published
   checksum -> allow, but mark the file "unverified".
 - Updates never change an entry's architecture, edition or channel. A 32-bit
@@ -449,8 +458,10 @@ For when a new release breaks something and the user needs the previous one.
   Development builds report `dev` and never check.
 - On start (at most once an hour; daily in server mode), ask the GitHub API for the latest
   release of `ZachCurry13/isoshelf`. If it's newer, show a notice with a link
-  to the release notes: one line on stderr in the CLI, a banner in the web UI.
-  The check can be turned off; the last check time lives in the config folder.
+  to the release notes: one line on stderr in the CLI, a link in the top bar
+  of the page and again under Help in Settings. The check is turned off with
+  `--no-update-check` or `ISOSHELF_NO_UPDATE_CHECK`, not yet in Settings; the
+  last check time lives in the config folder.
 - Only a notice for now: users download the new build themselves (portable:
   replace the files on the drive; Docker: pull the new image). A later
   "install update" must verify the release's `SHA256SUMS` first.
@@ -515,8 +526,8 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   entries that can download.
 - The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
   images, Archive, History. Above the list, one card per thing to do
-  (`renderTodo`). The list has four columns - image (file, size and date
-  underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
+  (`renderTodo`). The list is a favourite star and four columns - image (file,
+  size and date underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
   row opens the details panel: everything about one image, its links, and
   the choice below. Statuses are shown in plain words (`STATUS_WORDS`), each
   explaining itself; the report keeps its own words for the CLI and JSON.
@@ -571,6 +582,14 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 - A row's links (download page, website, forum, release notes), its Update
   button and Remove live in the details panel; the "…" menu the rows used to
   carry went with the v0.3.0 redesign.
+- The page is one script per part, all plain scripts sharing the same names
+  and loaded in the order `index.html` lists them: `app.js` (what isoshelf has
+  said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
+  to-do cards, filters, rows), `details.js` (the panel and the checklist),
+  `downloads.js` (the queue), `actions.js` (updating, removing, identifying),
+  `folders.js` (the chooser), `archive.js`, `settings.js`. They were one
+  2,544-line `app.js` until v0.3.1; the split is what keeps changing one
+  corner from meaning reading all of it.
 - Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
   with `go run ./internal/web/logos/fetch`. `/logo/{slug}` serves those, then
   ones fetched earlier from `<config>/logos`, then fetches from the CDN once
