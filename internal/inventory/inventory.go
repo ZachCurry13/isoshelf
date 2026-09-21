@@ -103,6 +103,10 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	if err != nil {
 		return nil, err
 	}
+	// The copy to measure this scan's own changes against. A download can
+	// finish while the scan reads the folder, and its file must not be lost
+	// when the scan saves (see SaveOnto).
+	base := st.Clone()
 	if opts.Profile != "" {
 		st.Profile = opts.Profile
 	}
@@ -151,11 +155,16 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}
 
 	progress(Progress{Stage: Saving})
-	if err := st.Save(target); err != nil {
+	// Only what this scan learned goes onto the records as they are now, so
+	// that a download which placed a file meanwhile keeps its own.
+	saved, err := st.SaveOnto(target, base)
+	if err != nil {
 		out.Warnings = append(out.Warnings, fmt.Sprintf("couldn't save what was learned to %s: %v", filepath.Join(target, state.DirName), err))
+		saved = st
 	}
+	out.State = saved
 	if !opts.Dirs.Portable && opts.Dirs.Config != "" {
-		if err := st.SaveMirror(opts.Dirs.Config, target, opts.Now()); err != nil {
+		if err := saved.SaveMirror(opts.Dirs.Config, target, opts.Now()); err != nil {
 			out.Warnings = append(out.Warnings, fmt.Sprintf("couldn't save a copy of the history: %v", err))
 		}
 	}

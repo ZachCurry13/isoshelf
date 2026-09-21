@@ -521,13 +521,18 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 - API: `GET /api/state`, `/api/catalog`, `/api/browse?path=`; `POST /api/target`
   (folder + profile), `/api/scan`, `/api/check`, `/api/cancel`, `/api/track`
   (keep_old, starred), `/api/update` (queues a download), `/api/queue/move`,
-  `/api/queue/drop`, `/api/queue/clear`. One scan, check or download runs at a
-  time, in the background; the page polls `/api/state` while it runs. Scans and
-  switching folders wait for downloads (`busyLocked`); removing, archiving,
-  identifying, putting back and stars only wait for a scan (`scanningLocked`).
-  Nobody saves their whole copy of the folder's state over the file: each
-  writer keeps the copy from before its change and `state.Merge` carries only
-  that change onto the file as it is on disk (`saveStateLocked`, statefile.go).
+  `/api/queue/drop`, `/api/queue/clear`. A scan and a download have a slot
+  each (`s.scanning`, `s.downloading`) and run side by side in the background,
+  one of each at a time; the page polls `/api/state` while either runs, draws
+  the scan from `run` and the download from `downloads.current`, which carries
+  its own progress. A scan waits only for another scan (`scanBusyLocked`);
+  switching folders and emptying the archive wait for both (`busyLocked`);
+  removing, archiving, identifying, putting back and stars wait only for a
+  scan (`scanningLocked`). Nobody saves their whole copy of the folder's state
+  over the file: each writer keeps the copy from before its change and
+  `state.Merge` carries only that change onto the file as it is on disk
+  (`state.SaveOnto`, statefile.go). A scan saves that way too, so a download
+  that places a file while it reads the folder keeps that file's record.
 - The folder picker lists subfolders through `/api/browse` (browsers can't see
   the computer's folders), with drives or mount points and recent folders
   (from the mirrors; none in portable mode). The last folder is remembered in

@@ -89,6 +89,17 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-21)
 
+- v0.3.4 splits the one `s.run` slot a scan and a download shared into
+  `s.scanning` and `s.downloading`, so a scan or Refresh is no longer refused
+  while a queue runs and the page shows both at once. Switching folders and
+  emptying the archive still wait for downloads; scans wait only for scans.
+- Underneath it was a second, worse bug: a scan loaded the folder's records
+  at the start and saved them wholesale at the end, so a file a download
+  placed meanwhile lost its record and could be listed as an image that had
+  left. `state.SaveOnto` gives a scan the merge every other writer already
+  used. It was reachable before the slot was split.
+- Next: where each folder's records live and the remembered-folders list
+  (decision 10), then isoshelf updating itself (13, 14).
 - The v0.3.x branch is merged and released. [#13] went in as `9f609a6` and
   the release-workflow fix [#14] as `c49b13a`; `main` now carries everything
   through v0.3.3 and both branches are deleted. The release itself was

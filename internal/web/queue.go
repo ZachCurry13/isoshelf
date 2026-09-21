@@ -15,9 +15,10 @@ import (
 // queue's order, which the page can change. Once the queue is empty the folder
 // is scanned once, so the list shows what arrived.
 //
-// Invariant: while the queue holds a job, s.run is set. Whatever clears s.run
-// calls startNextLocked straight after, under the same lock, so there is never
-// a moment with jobs waiting and nothing running.
+// Invariant: while the queue holds a job, s.downloading is set. Whatever
+// clears it calls startNextLocked straight after, under the same lock, so
+// there is never a moment with jobs waiting and nothing running. A scan has
+// its own slot (s.scanning) and neither waits for the other.
 
 // maxFinished is how many finished downloads the page is shown.
 const maxFinished = 20
@@ -67,6 +68,11 @@ type jobJSON struct {
 	// already in the folder, rather than one that went wrong.
 	Conflict bool       `json:"conflict,omitempty"`
 	At       *time.Time `json:"at,omitempty"`
+	// Stage, Done and Total describe the download running now, and are set
+	// only on Current.
+	Stage string `json:"stage,omitempty"`
+	Done  int64  `json:"done,omitempty"`
+	Total int64  `json:"total,omitempty"`
 }
 
 func (j *job) json() jobJSON {
@@ -76,8 +82,12 @@ func (j *job) json() jobJSON {
 // downloadsLocked describes the queue; s.mu must be held.
 func (s *Server) downloadsLocked() downloadsJSON {
 	out := downloadsJSON{Queued: []jobJSON{}, Finished: []jobJSON{}}
-	if s.run != nil && s.run.job != nil {
-		j := s.run.job.json()
+	if s.downloading != nil {
+		j := s.downloading.job.json()
+		// The dock draws its own progress from these, since the scan's card
+		// has the s.scanning slot to itself.
+		p := s.downloading.progress
+		j.Stage, j.Done, j.Total = string(p.Stage), p.Done, p.Total
 		out.Current = &j
 	}
 	for _, j := range s.queue {
@@ -96,7 +106,7 @@ func (s *Server) downloadsLocked() downloadsJSON {
 
 // queuedLocked reports whether an entry is waiting or downloading.
 func (s *Server) queuedLocked(entry string) bool {
-	if s.run != nil && s.run.job != nil && s.run.job.entry == entry {
+	if s.downloading != nil && s.downloading.job.entry == entry {
 		return true
 	}
 	for _, j := range s.queue {
@@ -107,29 +117,43 @@ func (s *Server) queuedLocked(entry string) bool {
 	return false
 }
 
-// busyLocked says why a scan can't start or the folder can't be switched
-// right now, or "" when it can: both wait for any scan or download. Changes
-// to single files only wait for a scan (scanningLocked).
+// busyLocked says why the folder can't be switched and the archive can't be
+// emptied right now, or "" when they can: both wait for any scan or download,
+// because both pull the ground out from under one. Scanning only waits for
+// another scan (scanBusyLocked), and changes to single files only for a scan
+// (scanningLocked).
 func (s *Server) busyLocked() string {
 	switch {
-	case s.run == nil && len(s.queue) == 0:
-		return ""
-	case s.run != nil && s.run.job == nil:
+	case s.scanning != nil:
 		return "Wait until the scan finishes, or stop it."
-	default:
+	case s.downloading != nil || len(s.queue) > 0:
 		return "Wait until the downloads finish, or stop them."
+	default:
+		return ""
 	}
+}
+
+// scanBusyLocked says why a scan can't start, or "" when it can. Downloads
+// are no longer a reason: they write one file each through the state file's
+// merge, and a scan saves the same way, so the two run side by side.
+func (s *Server) scanBusyLocked() string {
+	if s.scanning != nil {
+		return "Wait until the scan finishes, or stop it."
+	}
+	return ""
 }
 
 // startNextLocked starts the next download if nothing is running. When the
 // queue has just run dry and something arrived, it scans the folder instead,
 // so the list catches up with what is there. s.mu must be held.
 func (s *Server) startNextLocked() {
-	if s.run != nil {
+	if s.downloading != nil {
 		return
 	}
 	if len(s.queue) == 0 {
-		if s.placed && s.target != "" && s.st != nil {
+		// The scan that catches the list up waits for a scan already running,
+		// and s.placed stays set so that one's ending starts it.
+		if s.placed && s.scanning == nil && s.target != "" && s.st != nil {
 			s.placed = false
 			// The same rule as any other scan: check for updates unless
 			// Settings says not to. The answers are moments old, so this
@@ -141,7 +165,7 @@ func (s *Server) startNextLocked() {
 	j := s.queue[0]
 	s.queue = s.queue[1:]
 	ctx, cancel := context.WithCancel(context.Background())
-	s.run = &run{kind: "update", job: j, started: s.cfg.Now(), cancel: cancel}
+	s.downloading = &run{kind: "update", job: j, started: s.cfg.Now(), cancel: cancel}
 	go s.executeJob(ctx, j)
 }
 
@@ -174,7 +198,7 @@ func (s *Server) executeJob(ctx context.Context, j *job) {
 	if len(s.finished) > maxFinished {
 		s.finished = s.finished[:maxFinished]
 	}
-	s.run = nil
+	s.downloading = nil
 	s.startNextLocked()
 }
 
@@ -214,8 +238,8 @@ func (s *Server) dropQueued(w http.ResponseWriter, r *http.Request) {
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if s.run != nil && s.run.job != nil && s.run.job.id == req.ID {
-		s.run.cancel()
+	if s.downloading != nil && s.downloading.job.id == req.ID {
+		s.downloading.cancel()
 		writeJSON(w, http.StatusOK, s.downloadsLocked())
 		return
 	}

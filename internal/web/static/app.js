@@ -130,7 +130,7 @@ async function refresh() {
   } catch (err) {
     showNotice(`Something went wrong while drawing the page: ${err.message}`, true);
   }
-  if (state.run) {
+  if (state.run || downloading()) {
     schedule(600);
     return;
   }
@@ -177,8 +177,17 @@ function el(tag, attrs = {}, ...children) {
 // drawnKey is the state minus the parts that move on their own: progress and
 // free space. When it hasn't changed, renderMoving is enough.
 function drawnKey(s) {
-  const { run, space, ...rest } = s;
-  return JSON.stringify([rest, run ? run.kind : null]);
+  const { run, space, downloads, ...rest } = s;
+  let queue = downloads;
+  if (downloads && downloads.current) {
+    // The running download's progress moves twice a second and is drawn by
+    // renderDockProgress. Leaving it in here would redraw the whole page
+    // that often, closing any open menu, which is the very thing this key
+    // exists to avoid.
+    const { stage, done, total, ...current } = downloads.current;
+    queue = { ...downloads, current };
+  }
+  return JSON.stringify([rest, queue, run ? run.kind : null]);
 }
 
 // renderMoving updates only what changes while something runs.
@@ -217,15 +226,26 @@ function imageBytes() {
   return state.report.items.reduce((sum, it) => sum + (it.path ? it.size || 0 : 0), 0);
 }
 
-// scanning is true while a scan or check runs. Downloads are different: the
-// page stays usable while they run, and more can be added to the queue.
+// scanning is true while a scan or check runs; state.run is that and nothing
+// else now, since a download has its own slot. Downloads are different: the
+// page stays usable while they run, and more can be added to the queue - a
+// scan included.
 function scanning() {
-  return Boolean(state.run && state.run.kind !== "update");
+  return Boolean(state.run);
+}
+
+// downloading is true while an image is coming down. Only the few things that
+// pull the ground out from under it - switching folders, emptying the archive
+// - wait for that.
+function downloading() {
+  return Boolean(downloads().current);
 }
 
 function render() {
   drawn = drawnKey(state);
-  const busy = Boolean(state.run);
+  // A scan holds up another scan; switching folders waits for downloads too.
+  const busy = scanning();
+  const engaged = busy || downloading();
   $("version").textContent = state.version;
   // The look is settings.js's business, and so is the panel itself.
   applyAppearance(state.appearance);
@@ -240,8 +260,8 @@ function render() {
 
   $("target-path").textContent = state.target || "No folder chosen yet";
   $("profile").value = state.profile || "ventoy";
-  $("profile").disabled = busy || !state.target;
-  $("choose").disabled = busy;
+  $("profile").disabled = engaged || !state.target;
+  $("choose").disabled = engaged;
   $("refresh").disabled = busy || !state.target;
   $("updated-at").textContent = freshness();
   renderSpace();
@@ -268,8 +288,8 @@ function render() {
 function renderRun() {
   const run = state.run;
   // Downloads have their own bar at the bottom of the page.
-  $("run").hidden = !run || run.kind === "update";
-  if (!run || run.kind === "update") return;
+  $("run").hidden = !run;
+  if (!run) return;
   let text = "Scanning the folder…";
   let fraction = null;
   if (run.stage === "hashing") {
@@ -384,5 +404,5 @@ document.addEventListener("DOMContentLoaded", () => {
   $("picker-refresh").addEventListener("click", () => browse(pickerPath));
   refresh();
   // Keep "checked 5 min ago" fresh.
-  setInterval(() => { if (state && !state.run) render(); }, 60000);
+  setInterval(() => { if (state && !state.run && !downloading()) render(); }, 60000);
 });

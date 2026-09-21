@@ -103,7 +103,7 @@ function renderTodo() {
       note: "Set aside, still using room here.",
       actions: [
         el("button", { type: "button", class: "btn", onclick: () => jumpTo("archive") }, "View"),
-        el("button", { type: "button", class: "btn", disabled: Boolean(state.run), onclick: emptyRemoved }, "Empty"),
+        el("button", { type: "button", class: "btn", disabled: scanning() || downloading(), onclick: emptyRemoved }, "Empty"),
       ],
     }));
   }
@@ -142,7 +142,7 @@ function renderTodo() {
       title: "The folder changed",
       note: "Something was added or removed outside isoshelf.",
       actions: [el("button", {
-        type: "button", class: "btn", disabled: Boolean(state.run),
+        type: "button", class: "btn", disabled: scanning() || downloading(),
         onclick: () => start("scan"),
       }, "Look again")],
     }));

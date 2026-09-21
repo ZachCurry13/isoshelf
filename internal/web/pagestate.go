@@ -89,7 +89,7 @@ func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	out := s.stateLocked(recent, room)
-	out.FolderChanged = changed && s.run == nil
+	out.FolderChanged = changed && s.scanning == nil && s.downloading == nil
 	writeJSON(w, http.StatusOK, out)
 }
 
@@ -195,15 +195,17 @@ func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 		t := s.updatedAt
 		out.UpdatedAt = &t
 	}
-	if s.run != nil {
+	// Run is the scan's own progress card. A download's progress rides with
+	// the download itself, in downloadsJSON.Current.
+	if s.scanning != nil {
 		out.Run = &runJSON{
-			Kind:  s.run.kind,
-			Stage: string(s.run.progress.Stage),
-			File:  s.run.progress.File,
-			Done:  s.run.progress.Done,
-			Total: s.run.progress.Total,
-			Item:  s.run.progress.Item,
-			Items: s.run.progress.Items,
+			Kind:  s.scanning.kind,
+			Stage: string(s.scanning.progress.Stage),
+			File:  s.scanning.progress.File,
+			Done:  s.scanning.progress.Done,
+			Total: s.scanning.progress.Total,
+			Item:  s.scanning.progress.Item,
+			Items: s.scanning.progress.Items,
 		}
 	}
 	return out

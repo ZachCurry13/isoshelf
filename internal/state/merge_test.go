@@ -71,3 +71,76 @@ func TestMergeOnlyCarriesChanges(t *testing.T) {
 		t.Errorf("profile = %s, want the one on disk", disk.Profile)
 	}
 }
+
+// The scan that runs beside a download reads the folder before the file
+// lands, so what it saves must not take that file's record away again.
+func TestSaveOntoKeepsWhatASaveDidntSee(t *testing.T) {
+	dir := t.TempDir()
+	start := New(scan.Folder)
+	start.Files["old.iso"] = FileRecord{Size: 1}
+	if err := start.Save(dir); err != nil {
+		t.Fatal(err)
+	}
+
+	// The scan loads the folder's records and works from them for a while.
+	scanning, err := Load(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	base := scanning.Clone()
+	scanning.Files["old.iso"] = FileRecord{Size: 1, Entry: "ubuntu-desktop-lts"}
+
+	// Meanwhile a download finishes and writes its own file's record.
+	during, err := Load(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	during.Files["new.iso"] = FileRecord{Size: 2, Entry: "archlinux", SourceURL: "https://example.org/new.iso"}
+	if err := during.Save(dir); err != nil {
+		t.Fatal(err)
+	}
+
+	saved, err := scanning.SaveOnto(dir, base)
+	if err != nil {
+		t.Fatal(err)
+	}
+	disk, err := Load(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, st := range map[string]*State{"returned": saved, "on disk": disk} {
+		if rec, ok := st.Files["new.iso"]; !ok || rec.Entry != "archlinux" {
+			t.Errorf("the download's file was lost: %+v", st.Files)
+		}
+		if rec := st.Files["old.iso"]; rec.Entry != "ubuntu-desktop-lts" {
+			t.Errorf("the scan's own finding was lost: %+v", rec)
+		}
+	}
+}
+
+// A folder with no records yet has no other writer to keep, and must not be
+// given the identity Load invents for the file that isn't there.
+func TestSaveOntoKeepsIdentityOnAFreshFolder(t *testing.T) {
+	dir := t.TempDir()
+	first := New(scan.Folder)
+	base := first.Clone()
+	first.Files["a.iso"] = FileRecord{Size: 1}
+
+	saved, err := first.SaveOnto(dir, base)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if saved.TargetID != first.TargetID {
+		t.Errorf("target id = %q, want the one the writer started with (%q)", saved.TargetID, first.TargetID)
+	}
+	disk, err := Load(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if disk.TargetID != first.TargetID {
+		t.Errorf("target id on disk = %q, want %q", disk.TargetID, first.TargetID)
+	}
+	if _, ok := disk.Files["a.iso"]; !ok {
+		t.Errorf("the first writer's file was lost: %+v", disk.Files)
+	}
+}

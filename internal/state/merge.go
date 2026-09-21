@@ -82,3 +82,23 @@ func mergeMap[V comparable](base, changed, onto map[string]V) map[string]V {
 	}
 	return onto
 }
+
+// SaveOnto saves the changes made to s since base, a copy taken before them,
+// onto the folder's state as it is on disk now, and returns what was saved.
+// It is how a writer saves while others may be writing too: whatever they
+// changed meanwhile is kept, and only this writer's own changes go on top.
+func (s *State) SaveOnto(target string, base *State) (*State, error) {
+	disk, err := Load(target)
+	if err != nil {
+		return nil, err
+	}
+	if disk.TargetID != base.TargetID {
+		// The records on disk aren't the ones this writer started from:
+		// either the folder had no state file and Load has just invented an
+		// id, or they were replaced wholesale meanwhile. There is nothing of
+		// anyone else's to keep, so this writer's own copy is what's saved.
+		disk = base.Clone()
+	}
+	Merge(base, s, disk)
+	return disk, disk.Save(target)
+}
