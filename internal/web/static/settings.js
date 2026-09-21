@@ -134,6 +134,31 @@ const SETTING_GROUPS = [
     ],
   },
   {
+    title: "Checking for updates",
+    settings: [
+      {
+        name: "Check for updates by itself",
+        hint: "isoshelf asks each project for its newest version when you open the page " +
+          "and after a scan, and uses that answer for a day. Turn this off and it only " +
+          "goes online when you press Refresh.",
+        words: "automatic online check updates network offline internet",
+        control: () => switchRow("Check for updates by itself", state && state.auto_check,
+          (on) => ({ auto_check: on })),
+        note: () => (state && state.checked_at)
+          ? `Last asked ${timeAgo(state.checked_at)}.`
+          : "",
+      },
+      {
+        name: "Tell me when a new isoshelf is out",
+        hint: "Asks GitHub once an hour for the newest release. Nothing is installed " +
+          "and nothing about you is sent; it's a link in the top bar.",
+        words: "isoshelf version update release new notify github",
+        control: () => switchRow("Tell me when a new isoshelf is out", state && state.app_update_check,
+          (on) => ({ app_update_check: on })),
+      },
+    ],
+  },
+  {
     title: "Updates and old files",
     settings: [
       {
@@ -255,6 +280,7 @@ function settingsKey() {
   if (!state) return "";
   return JSON.stringify([
     state.appearance, state.old_files, state.target, state.version,
+    state.auto_check, state.app_update_check, state.checked_at,
     state.config_dir, state.catalog, Boolean(state.app_update), $("settings-search").value,
   ]);
 }

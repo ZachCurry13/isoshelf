@@ -125,7 +125,10 @@ func (s *Server) startNextLocked() {
 	if len(s.queue) == 0 {
 		if s.placed && s.target != "" && s.st != nil {
 			s.placed = false
-			s.startScanLocked(s.report != nil && s.report.Checked)
+			// The same rule as any other scan: check for updates unless
+			// Settings says not to. The answers are moments old, so this
+			// costs nothing.
+			s.startScanLocked(askIfDue)
 		}
 		return
 	}

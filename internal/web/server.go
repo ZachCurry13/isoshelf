@@ -26,7 +26,9 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/check"
 	"github.com/ZachCurry13/isoshelf/internal/inventory"
+	"github.com/ZachCurry13/isoshelf/internal/lastcheck"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
+	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/space"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 )
@@ -96,6 +98,9 @@ type Server struct {
 	lastErr  string
 	warnings []string
 	notice   *appupdate.Notice
+	// memory is what each image's project said last time isoshelf asked. It
+	// has its own lock, so it is read and written without holding s.mu.
+	memory *lastcheck.Answers
 }
 
 // run is a scan, check or download in progress.
@@ -114,6 +119,10 @@ func New(cfg Config) *Server {
 		cfg.Now = time.Now
 	}
 	s := &Server{cfg: cfg, cat: cfg.Catalog, catSource: cfg.CatalogSource}
+	// What each project said last time. Opening the page then costs nothing
+	// for the images already asked about today.
+	s.memory = lastcheck.Load(cfg.Dirs.Config)
+	s.memory.Now = cfg.Now
 	s.runJob = s.runUpdate
 	if s.catSource == "" {
 		s.catSource = catalogBuiltIn
@@ -141,8 +150,10 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("GET /api/archive", s.getArchive)
 	mux.HandleFunc("POST /api/restore", s.restore)
 	mux.HandleFunc("POST /api/target", s.setTarget)
-	mux.HandleFunc("POST /api/scan", func(w http.ResponseWriter, r *http.Request) { s.start(w, false) })
-	mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) { s.start(w, true) })
+	// A scan checks for updates too, unless Settings says not to; Refresh
+	// asks every project again however recently it was asked.
+	mux.HandleFunc("POST /api/scan", func(w http.ResponseWriter, r *http.Request) { s.start(w, askIfDue) })
+	mux.HandleFunc("POST /api/check", func(w http.ResponseWriter, r *http.Request) { s.start(w, askAgain) })
 	mux.HandleFunc("POST /api/update", s.startUpdate)
 	mux.HandleFunc("POST /api/queue/move", s.moveQueued)
 	mux.HandleFunc("POST /api/queue/drop", s.dropQueued)
@@ -159,7 +170,9 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/bookmark", s.setBookmark)
 	s.handler = s.guard(mux)
 
-	go s.checkAppUpdate()
+	if settings.On(s.loadSettings().AppUpdateCheck) {
+		go s.checkAppUpdate()
+	}
 	s.startCatalogRefresh(false)
 	return s
 }

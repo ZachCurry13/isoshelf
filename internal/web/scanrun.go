@@ -5,11 +5,26 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/ZachCurry13/isoshelf/internal/check"
 	"github.com/ZachCurry13/isoshelf/internal/inventory"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
+	"github.com/ZachCurry13/isoshelf/internal/settings"
 )
 
-func (s *Server) start(w http.ResponseWriter, online bool) {
+// start begins a scan. ask is what the scan does about the internet:
+//
+//	askIfDue   - the ordinary scan: check for updates unless Settings says
+//	             not to, reusing the answers isoshelf already has
+//	askAgain   - Refresh: ask every project again, however recently it was
+//	             asked
+type asking int
+
+const (
+	askIfDue asking = iota
+	askAgain
+)
+
+func (s *Server) start(w http.ResponseWriter, ask asking) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	switch {
@@ -21,28 +36,45 @@ func (s *Server) start(w http.ResponseWriter, online bool) {
 		return
 	}
 	s.lastErr = ""
-	s.startScanLocked(online)
+	s.startScanLocked(ask)
 	writeJSON(w, http.StatusAccepted, map[string]string{"status": "started"})
 }
 
-// startScanLocked starts a scan, or a check when online; s.mu must be held
-// and nothing may be running.
-func (s *Server) startScanLocked(online bool) {
+// startScanLocked starts a scan; s.mu must be held and nothing may be
+// running.
+func (s *Server) startScanLocked(ask asking) {
 	ctx, cancel := context.WithCancel(context.Background())
+	mem := s.memoryFor(ask)
 	kind := "scan"
-	if online {
+	if mem != nil {
 		kind = "check"
 	}
 	s.run = &run{kind: kind, started: s.cfg.Now(), progress: inventory.Progress{Stage: inventory.Scanning}, cancel: cancel}
-	go s.execute(ctx, s.target, s.st.Profile, online)
+	go s.execute(ctx, s.target, s.st.Profile, mem)
 }
 
-func (s *Server) execute(ctx context.Context, target string, profile scan.Profile, online bool) {
+// memoryFor says whether this scan goes online and what it may reuse. Nil
+// means the folder only: either nothing was asked for, or the user turned
+// checking by itself off and this isn't Refresh.
+func (s *Server) memoryFor(ask asking) check.Memory {
+	switch ask {
+	case askAgain:
+		return s.memory.Asking()
+	case askIfDue:
+		if settings.On(s.loadSettings().AutoCheck) {
+			return s.memory
+		}
+	}
+	return nil
+}
+
+func (s *Server) execute(ctx context.Context, target string, profile scan.Profile, mem check.Memory) {
 	client := s.client()
 	res, err := inventory.Run(ctx, inventory.Options{
 		Target:  target,
 		Profile: profile,
-		Online:  online,
+		Online:  mem != nil,
+		Memory:  mem,
 		Client:  client,
 		Catalog: s.catalog(),
 		Dirs:    s.cfg.Dirs,
@@ -66,6 +98,12 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 			s.mu.Unlock()
 		},
 	})
+
+	// Answers that came back are worth keeping whether or not the scan
+	// finished: they cost a round trip each.
+	if mem != nil {
+		s.memory.Save() // best effort: the worst case is asking again
+	}
 
 	s.mu.Lock()
 	defer s.mu.Unlock()

@@ -30,7 +30,10 @@ isoshelf does that for you:
   architecture and version each image is.
 - **Update check.** Asks each project where its latest release is, using
   [endoflife.date](https://endoflife.date), GitHub releases, or the project's
-  own download listings.
+  own download listings. It does this by itself when you open the page, and
+  remembers each answer for a day, so the list is right straight away without
+  asking sixty websites every time. Refresh asks again; Settings turns it
+  off.
 - **Verified downloads.** Downloads the new image, checks it against the
   project's published checksum, and only then puts it in place. Interrupted
   downloads carry on where they stopped.
@@ -208,9 +211,11 @@ details panel for each image, Archive and History apart, and
 **v0.3.1: Settings.** *Released 2026-09-21:* one searchable Settings panel —
 light and dark themes, higher contrast, larger text, less movement, what
 happens to the files updates replace, and Reset to defaults.<br>
-**v0.3.2 (next):** checking for updates by itself and remembering the answer
-for a day, where each folder's records live, and isoshelf updating itself
-with one click.<br>
+**v0.3.2: checking by itself.** *Released 2026-09-21:* the page checks for
+updates when it opens and after each scan, remembers what each project said
+for a day, and has one Refresh button. Both can be turned off in Settings.<br>
+**v0.3.3 (next):** where each folder's records live, and isoshelf updating
+itself with one click.<br>
 **v0.4:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),

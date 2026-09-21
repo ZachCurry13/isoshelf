@@ -524,6 +524,9 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
 - A filled star means the user starred the image: it is a favourite, sorts
   first, and is reported if it goes missing. The replace switch shows only for
   entries that can download.
+- One **Refresh** button (v0.3.2) replaced *Scan* and *Check for updates*:
+  read the folder again and ask every project again. Scanning without going
+  online is what turning the setting off does, not a second button.
 - The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
   images, Archive, History. Above the list, one card per thing to do
   (`renderTodo`). The list is a favourite star and four columns - image (file,
@@ -547,6 +550,31 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   I got, the other what could I add. Each entry shows about how big its
   download is, and one too big for the room left says so instead of failing
   part way through.
+- **Checking by itself** (v0.3.2, decision 3). Every scan is also a check
+  unless Settings says otherwise, and the answers are remembered, so this
+  costs almost nothing.
+  - `internal/lastcheck` keeps what each project said in
+    `<config>/last-check.json`: the `source.Release` and `resolve.Artifact`
+    per entry, with the time. An answer under a day old (`lastcheck.Fresh`)
+    is used as it stands; anything older is asked again. Answers nobody has
+    wanted for a month are dropped on the next save, so the file can't grow
+    by every image that ever left the catalog.
+  - A failure is never remembered. A site that was down for a minute must not
+    look like bad news until tomorrow.
+  - None of it is trusted for a download. `update.Run` resolves the release
+    and its checksum again from scratch, so a remembered answer can only ever
+    be wrong about what a row *says*, never about what lands on a drive.
+  - `check.Memory` is the interface `Report.Online` asks before the network
+    and hands each fresh answer to; `inventory.Options.Memory` passes it
+    through. Nil means ask about everything.
+  - The server picks the memory per scan (`memoryFor`, scanrun.go):
+    `askIfDue` is the ordinary scan and obeys the setting, `askAgain` is
+    Refresh and asks every project however recently it answered
+    (`Answers.Asking()`). The command line's own `check` uses `Asking()` too,
+    since typing it is asking, but still writes down what it learns.
+  - `Report.CheckedAt` is the oldest answer the report rests on, and the page
+    says that rather than when it last drew: a check that reused this
+    morning's answers says this morning.
 - **Settings** (v0.3.1) is one panel, opened from the top bar and closed with
   Escape, holding everything isoshelf lets a person change. Each setting is
   one entry in `SETTING_GROUPS` (`internal/web/static/settings.js`): its name,

@@ -3,8 +3,34 @@
 What changed in each release of isoshelf, newest first.
 
 Version numbers: the middle number rises for new abilities or a new look
-(v0.3.0 was the redesign, v0.3.1 Settings); the last number rises for
-improvements to what it already does.
+(v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
+last number rises for improvements to what it already does.
+
+## [v0.3.2] - 2026-09-21
+
+isoshelf now checks for updates by itself, and remembers the answers, so the
+page is right the moment it opens instead of after you press a button.
+
+### Added
+- **Checking happens on its own**: when you open the page and after every
+  scan. What each project says is written down and used for a day, so only
+  the images nobody has asked about lately cost anything. Opening the page a
+  second time asks nobody at all.
+- **One Refresh button** in place of *Scan* and *Check for updates*. It reads
+  the folder again and asks every project again, however recently it
+  answered.
+- **Settings → Checking for updates**: *Check for updates by itself*, which
+  turns all of that off and leaves isoshelf offline until you press Refresh,
+  and *Tell me when a new isoshelf is out*, which was only a command-line
+  flag before. The first says underneath when the projects were last asked.
+
+### Changed
+- The line under the folder says how fresh the answers really are. A check
+  that reused this morning's answers says this morning, not "just now".
+- `isoshelf check` on the command line still asks every project, since typing
+  it is asking, but what it learns is written down for the page.
+- A project that couldn't be reached is never remembered, so a site that was
+  down for a minute isn't bad news for the rest of the day.
 
 ## [v0.3.1] - 2026-09-21
 

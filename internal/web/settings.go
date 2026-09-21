@@ -30,6 +30,10 @@ func (s *Server) setSettings(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		CatalogAuto *bool  `json:"catalog_auto"`
 		OldFiles    string `json:"old_files"`
+		// AutoCheck is whether isoshelf checks the images for updates by
+		// itself; AppUpdateCheck whether it looks for a newer isoshelf.
+		AutoCheck      *bool `json:"auto_check"`
+		AppUpdateCheck *bool `json:"app_update_check"`
 		// Appearance fields are sent one at a time, so each is a pointer:
 		// absent means "leave it alone", which false could not say.
 		Theme        *string `json:"theme"`
@@ -53,6 +57,12 @@ func (s *Server) setSettings(w http.ResponseWriter, r *http.Request) {
 	if choice := settings.CleanOldFiles(req.OldFiles); choice != "" {
 		current.OldFiles = choice
 	}
+	if req.AutoCheck != nil {
+		current.AutoCheck = req.AutoCheck
+	}
+	if req.AppUpdateCheck != nil {
+		current.AppUpdateCheck = req.AppUpdateCheck
+	}
 	if req.Theme != nil {
 		current.Appearance.Theme = settings.CleanTheme(*req.Theme)
 	}
@@ -66,6 +76,11 @@ func (s *Server) setSettings(w http.ResponseWriter, r *http.Request) {
 		current.Appearance.ReduceMotion = *req.ReduceMotion
 	}
 	s.saveSettings(current)
+	// Saying yes to looking for a newer isoshelf means looking now, rather
+	// than at the next start.
+	if (req.AppUpdateCheck != nil || req.Reset) && settings.On(current.AppUpdateCheck) && s.notice == nil {
+		go s.checkAppUpdate()
+	}
 	// Turning the catalog back on, whether by switch or by reset, means it
 	// should look for a newer list now rather than at the next start.
 	if current.CatalogAuto == nil || *current.CatalogAuto {

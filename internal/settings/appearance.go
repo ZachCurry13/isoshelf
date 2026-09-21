@@ -26,6 +26,10 @@ const (
 	ThemeDark   = "dark"
 )
 
+// On reads a switch that is on until the user turns it off: the settings
+// file leaves out what nobody has answered, and the answer then is "yes".
+func On(v *bool) bool { return v == nil || *v }
+
 // CleanTheme turns anything unexpected into ThemeSystem, so a hand-edited
 // settings file can't leave the page in a state nothing in isoshelf knows how
 // to draw.

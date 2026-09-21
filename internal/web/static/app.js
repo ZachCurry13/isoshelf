@@ -188,6 +188,16 @@ function renderMoving() {
   renderDockProgress();
 }
 
+// freshness says when the list was last brought up to date. Scanning and
+// checking are two different questions - what is in the folder, and what the
+// projects have published - and the answer to the second can be older,
+// because an answer from earlier today is used as it stands.
+function freshness() {
+  if (!state.updated_at) return "";
+  if (!state.report || !state.report.checked) return `Scanned ${timeAgo(state.updated_at)}`;
+  return `Checked ${timeAgo(state.checked_at || state.updated_at)}`;
+}
+
 function renderSpace() {
   $("space").textContent = state.space && state.space.total
     ? `${formatBytes(state.space.free)} free of ${formatBytes(state.space.total)}`
@@ -219,11 +229,8 @@ function render() {
   $("profile").value = state.profile || "ventoy";
   $("profile").disabled = busy || !state.target;
   $("choose").disabled = busy;
-  $("scan").disabled = busy || !state.target;
-  $("check").disabled = busy || !state.target;
-  $("updated-at").textContent = state.updated_at
-    ? `${state.report && state.report.checked ? "Checked" : "Scanned"} ${timeAgo(state.updated_at)}`
-    : "";
+  $("refresh").disabled = busy || !state.target;
+  $("updated-at").textContent = freshness();
   renderSpace();
   renderRun();
   renderDock();
@@ -304,8 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("scroll", closeMenus, true);
   window.addEventListener("resize", closeMenus);
   $("choose").addEventListener("click", openPicker);
-  $("scan").addEventListener("click", () => start("scan"));
-  $("check").addEventListener("click", () => start("check"));
+  $("refresh").addEventListener("click", () => start("check"));
   $("cancel").addEventListener("click", async () => {
     try { await api("POST", "/api/cancel"); } catch (err) { showNotice(err.message, true); }
   });

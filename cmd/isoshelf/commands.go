@@ -15,8 +15,10 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
 	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	inv "github.com/ZachCurry13/isoshelf/internal/inventory"
+	"github.com/ZachCurry13/isoshelf/internal/lastcheck"
 	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
+	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/web"
 )
 
@@ -50,7 +52,8 @@ func inventory(ctx context.Context, e *env, opts options) error {
 
 	// Ask GitHub about new isoshelf releases while the scan runs.
 	notices := make(chan *appupdate.Notice, 1)
-	if opts.online && !opts.noUpdateCheck && e.getenv("ISOSHELF_NO_UPDATE_CHECK") == "" {
+	wanted := settings.On(settings.Load(dirs.Config).AppUpdateCheck)
+	if opts.online && wanted && !opts.noUpdateCheck && e.getenv("ISOSHELF_NO_UPDATE_CHECK") == "" {
 		go func() {
 			ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 			defer cancel()
@@ -61,10 +64,17 @@ func inventory(ctx context.Context, e *env, opts options) error {
 		notices <- nil
 	}
 
+	// Typing "isoshelf check" is asking, so every project is asked however
+	// recently it answered. The answers are still written down, which saves
+	// the page from asking again when it opens.
+	answers := lastcheck.Load(dirs.Config)
+	answers.Now = e.now
+
 	res, err := inv.Run(ctx, inv.Options{
 		Target:   target,
 		Profile:  scan.Profile(opts.profile),
 		Online:   opts.online,
+		Memory:   answers.Asking(),
 		Client:   client,
 		NoHash:   opts.noHash,
 		Catalog:  cat,
@@ -73,6 +83,9 @@ func inventory(ctx context.Context, e *env, opts options) error {
 		Progress: func(p inv.Progress) { progress(e, opts, p) },
 	})
 	progress(e, opts, inv.Progress{})
+	if opts.online {
+		answers.Save() // best effort: the worst case is asking again
+	}
 	if res == nil {
 		return err
 	}

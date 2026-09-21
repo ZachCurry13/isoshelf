@@ -2,7 +2,7 @@
 
 ## Where things stand (2026-09-18)
 
-- **Released:** v0.3.1 (Settings; v0.3.0 was the redesign). Scans a folder, works out each image, checks for
+- **Released:** v0.3.2 (checking by itself; v0.3.1 Settings, v0.3.0 the redesign). Scans a folder, works out each image, checks for
   updates online, downloads and verifies (resumable, queued one at a time,
   reorderable), replaces or archives old files, identifies unknown files, and
   keeps a catalog that updates itself from this repository. While downloads
@@ -68,8 +68,9 @@ and plain words on the surface; everything adjustable in Settings.
 
 1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout
    (#10). *Done.* v0.3.1: the Settings panel (9). *Done.*
-2. v0.3.x: automatic remembered checks (3, next); records location and
-   remembered folders (10; `internal/settings` holds the fields already);
+2. v0.3.x: automatic remembered checks (3). *Done in v0.3.2.* Next: records
+   location and remembered folders (10; `internal/settings` holds the fields
+   already);
    the rest of decision 15 (empty the archive after so many days, a download
    speed limit, hiding kinds and architectures) now that Settings has a home
    for them; one-click self-update with signed releases (13, 14).
@@ -80,6 +81,18 @@ and plain words on the surface; everything adjustable in Settings.
 
 ## Latest change (2026-09-21)
 
+- v0.3.2 shipped checking by itself: every scan is also a check unless
+  Settings says otherwise, and `internal/lastcheck` keeps each project's
+  answer in `<config>/last-check.json` for a day, so opening the page a
+  second time asks nobody. One Refresh button replaced Scan and Check for
+  updates; Settings gained "Check for updates by itself" and "Tell me when a
+  new isoshelf is out" (which was a command-line flag only). Failures are
+  never remembered, and nothing remembered is trusted for a download - a
+  download still resolves everything again.
+- Also: the three r/Ventoy cases the maintainer found are issues #11 (rebuild
+  a drive from what isoshelf remembers - the config-folder mirror already
+  holds the list) and #12 (move a drive's images to a bigger drive). Both are
+  the same feature and the same 2026-09-21 decision.
 - v0.3.1 shipped Settings: one searchable panel (theme, higher contrast,
   larger text, less movement, what happens to the files updates replace,
   where things are, Report a bug, Reset to defaults). Settings live in
@@ -98,8 +111,8 @@ and plain words on the surface; everything adjustable in Settings.
   script layout, CONTRIBUTING says how to add one, the "…" row menu the
   redesign removed is out of design.md, and the app-update notice is
   described as what it is (a link in the top bar and in Settings).
-- Gap worth closing: `--no-update-check` has no switch in Settings, which the
-  guiding principle says it should have.
+- That gap is closed: the app-update check now has its switch in Settings,
+  and the command line reads the same answer.
 - v0.3.0 shipped the new look: jump bar, to-do cards, plain statuses with
   explanations, one filter menu with chips, slim rows, a details panel,
   Archive and History apart, a per-image choice for old files, a checklist

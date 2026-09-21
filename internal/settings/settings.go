@@ -65,6 +65,11 @@ type Settings struct {
 	// ReplaceAction is what versions before v0.3.1 wrote here, in the words
 	// the download code uses. Load turns it into OldFiles and forgets it.
 	ReplaceAction string `json:"replace_action,omitempty"`
+	// AutoCheck is nil until the user says either way; the default is on.
+	// When it is off, isoshelf only goes online when asked to.
+	AutoCheck *bool `json:"auto_check,omitempty"`
+	// AppUpdateCheck is whether to look for a newer isoshelf. Nil is on.
+	AppUpdateCheck *bool `json:"app_update_check,omitempty"`
 	// Appearance is how the page looks.
 	Appearance Appearance `json:"appearance,omitzero"`
 }
