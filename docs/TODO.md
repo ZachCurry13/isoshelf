@@ -133,22 +133,31 @@ starts it thinking it is a form to fill in:
    was learned: a narrow column of full paths is useless, because the start
    is what every folder on one machine has in common; the end is what tells
    them apart.)*
-8. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
+8. **Update the images by itself** (decided 2026-09-22, the maintainer's
+   ask). Fully automatic, end to end: on a schedule, check, download, verify
+   and put in place, with each image following the answer it already carries
+   about its old copy. What this needs that isn't there: a schedule in
+   Settings, something to run it while nobody is watching, and care about the
+   two ways it can go wrong unattended - a folder filling up, and a download
+   that fails over and over. Every existing rule still holds: a checksum
+   mismatch blocks the file, an unverified download never replaces anything,
+   and nothing is deleted that the user didn't choose to lose.
+9. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
    swaps its own program, restarts, page reconnects - and only installs a
    release carrying the project's signature, which needs the signing key set
    up once. Whatever downloads the new file must find its asset **by pattern**
    (the name contains `windows-amd64.exe`), never by an exact name: release
    files carry the version now, so an exact name goes stale every release.
-9. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
+10. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
    Same feature, two reasons for wanting it, both from real r/Ventoy posts
    where people lost a drive's worth of images. The list is already kept off
    the drive: `internal/state/mirror.go` copies each folder's state into the
    config folder, including the entry ids seen by each scan. What's missing is
    the verb, plus exporting the list to a file someone can keep elsewhere.
-10. **The rest of decision 15**: empty the archive after 7/30/90 days, a
+11. **The rest of decision 15**: empty the archive after 7/30/90 days, a
    download speed limit, hiding kinds and architectures you don't use.
    Settings has a home for all of them now.
-11. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
+12. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
    an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
    once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
    drive ([#7]) - **and the redesign below**.

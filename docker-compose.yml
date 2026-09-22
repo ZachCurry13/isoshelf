@@ -7,13 +7,19 @@ services:
     restart: unless-stopped
     ports:
       - "8765:8765"
-    # Nothing to set up: isoshelf makes the secret for its own link the first
-    # time it starts, keeps it in /config so a restart doesn't change it, and
-    # prints the link in the log - docker logs isoshelf.
+    # Nothing to set up: open the address and isoshelf asks you to choose a
+    # username and password. Until somebody does, whoever opens it first is
+    # the one who chooses, so do it as soon as it is up.
     #
-    # Treat that link like a password. Anyone on your network who has it can
-    # add, replace and delete images in the folder. Set ISOSHELF_TOKEN here
-    # instead if you would rather choose the secret yourself.
+    # To have them set before it ever starts, uncomment these:
+    # environment:
+    #   - ISOSHELF_USERNAME=you
+    #   - ISOSHELF_PASSWORD=something long and random
+    #
+    # isoshelf also prints a link with a secret on the end - docker logs
+    # isoshelf - which gets in without the password and is the way back if
+    # you forget it. Anyone who has either can add, replace and delete the
+    # images in the folder.
     volumes:
       # The folder of images to look after.
       - /mnt/tank/isos:/images

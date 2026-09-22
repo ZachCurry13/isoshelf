@@ -123,9 +123,11 @@ isoshelf manages files you care about, so it is deliberately cautious:
 
 On your PC, isoshelf opens in your web browser and only your own computer can
 reach it. In a container it has to answer to the machine's address instead, so
-there the token in the link is what keeps everyone else out — treat it like a
-password and keep it on a network you trust. [docs/docker.md](docs/docker.md)
-is the walkthrough.
+there it asks you to choose a username and password the first time you open
+it — one login, not user accounts. It also prints a link with a secret on the
+end, which gets in without the password and is the way back if you forget it.
+Keep it on a network you trust. [docs/docker.md](docs/docker.md) is the
+walkthrough.
 
 > **New to all this?** [Ventoy](https://www.ventoy.net) turns one USB stick
 > into a boot menu of every ISO you drop on it, and isoshelf keeps those ISOs
@@ -259,6 +261,10 @@ write to says which folder, which user it's running as and how to fix it,
 instead of a wall of "permission denied" later on. Reporting a problem gives
 you the details to copy, for when GitHub's form opens empty. Dialogs fit on a
 phone screen.<br>
+**v0.4.5: a username and password.** *2026-09-22:* isoshelf on a network asks
+you to choose one the first time you open it, and every device signs in with
+them after that. The link with the secret still works, and is the way back in
+if you forget. Nothing changes on your own computer.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

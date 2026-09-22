@@ -6,6 +6,36 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.5] - 2026-09-22
+
+### Added
+- **A username and password.** isoshelf on a network now asks you to choose
+  one the first time you open it, and every device signs in with them after
+  that. A sign-in lasts a month and survives a restart, so updating the app
+  doesn't sign you out. Settings, under *Who can get in*, changes them, signs
+  this browser out, or signs every browser out at once.
+  - Set `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` before it ever starts -
+    in a container's environment variables - and there is no first-run
+    question at all. Without them, whoever opens the address first is the one
+    who chooses, and isoshelf says so plainly in its log rather than leaving
+    it to be discovered.
+  - **The link with the secret still works**, and is the way back in if you
+    forget the password. Asked to change the password, isoshelf doesn't ask
+    for the old one when you arrived by the link - which is the whole point
+    of it.
+  - The password itself is never stored, only a scrambled form of it
+    (PBKDF2-HMAC-SHA256, 600,000 rounds, its own random salt). After a few
+    wrong guesses from one address, that address is made to wait.
+  - On your own computer nothing changes: nobody outside the machine can
+    reach it, the browser still opens itself with the link, and isoshelf
+    never asks you to invent a password.
+
+### Fixed
+- **Nothing here yet is a bug you would have hit** - but for the record, the
+  login page needed its own line in the page's content policy, or it would
+  have arrived as unstyled HTML. A test now checks the policy names exactly
+  the stylesheet that is served.
+
 ## [v0.4.4] - 2026-09-22
 
 ### Fixed

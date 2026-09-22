@@ -19,42 +19,60 @@ Two folders from the host, both mounted into the container:
 | `/images` | The folder of bootable images to look after. |
 | `/config` | isoshelf's own files: settings, its copy of the catalog, and the record of what each folder held. Losing it doesn't lose any images — but it does lose the history and your settings, so mount it somewhere real rather than leaving it in the container. |
 
-You don't have to set anything else. isoshelf makes the secret for its own
-link the first time it starts and keeps it in `/config`, so the link you
-bookmark still works after a restart or an update. Read it from the
-container's log:
+You don't have to set anything else.
+
+## Getting in: a username and password
+
+**Open the address and isoshelf asks you to choose a username and password.**
+That is the first run: pick them, and from then on every device on your
+network signs in with them. A sign-in lasts a month and survives restarts, so
+updating the app doesn't sign you out.
+
+Two things worth knowing:
+
+- **Until somebody sets them, whoever opens the address first is the one who
+  chooses.** isoshelf says so in its log, with the address, so it isn't a
+  surprise. Do it as soon as the app is up rather than later.
+- **To skip that window entirely**, set `ISOSHELF_USERNAME` and
+  `ISOSHELF_PASSWORD` before it ever starts — in the app's environment
+  variables, where you are already filling in a form. isoshelf then has a
+  login from its very first second and never offers to set one.
+
+Settings → *Who can get in* changes the username or password later, signs
+this browser out, or signs every browser out at once.
+
+### The link, which still works
+
+isoshelf also prints a link with a secret on the end, in the container's log:
 
 ```sh
 docker logs isoshelf
 ```
 
-If you would rather choose the secret yourself — to put it in a password
-manager, or to keep it the same across a rebuild — set `ISOSHELF_TOKEN` to
-something long and random and isoshelf will use that instead. Sixteen
-characters is the minimum it will accept.
+That link gets you in without the password, and it is **the way back in if
+you forget it** — so keep the log reachable. It is no weaker than the
+password: both are in reach of anyone who can read the container's log or its
+config folder. isoshelf makes the secret itself on first start and keeps it
+in `/config`, so it doesn't change when the app restarts. Set `ISOSHELF_TOKEN`
+to choose it yourself; sixteen characters is the minimum.
 
-## The thing to understand about the link
+Once you're in, Settings → *Who can get in* → *Change username or password*
+doesn't ask for the old one if you arrived by the link — which is the whole
+point of it.
+
+## What this is and isn't
 
 On your own computer, isoshelf answers only to `localhost`. In a container it
-has to answer to the machine's address, or you could never reach it — so
-**the token in the link is the only thing keeping other people out.**
+has to answer to the machine's address, or you could never reach it.
 
-That means:
-
-- Treat the link like a password. Anyone on your network who has it can add,
-  replace and delete images in that folder.
-- Put it on a network you trust. This is a home-lab tool; it has no user
-  accounts, and it is not built to face the internet.
-- If you want it reachable from outside your house, put it behind something
-  that does authentication properly — a VPN, or a reverse proxy with a login
-  in front of it. isoshelf works behind a proxy on `https` without any extra
-  configuration.
-
-Generate a token with something like:
-
-```sh
-head -c 32 /dev/urandom | base64
-```
+- **Put it on a network you trust.** This is a home-lab tool. It has one
+  login, not user accounts, and it is not built to face the internet.
+- **Anyone who gets in can add, replace and delete images in that folder.**
+- **Over plain `http` a password travels unencrypted.** On your own LAN that
+  is the same exposure as every other NAS app; over the internet it is not
+  good enough. If you want it reachable from outside your house, put it
+  behind a VPN, or a reverse proxy with `https`. isoshelf works behind a
+  proxy on `https` without any extra configuration.
 
 ## Docker Compose
 
@@ -94,9 +112,10 @@ don't.
 3. **Image**: repository `ghcr.io/zachcurry13/isoshelf`, tag `latest`. You can
    pin a version instead — `vX.Y.Z`, whichever is current — if you would rather decide when it
    changes.
-4. **Environment variables**: none needed. isoshelf makes its own secret and
-   keeps it in `/config`. (Set `ISOSHELF_TOKEN` if you would rather choose
-   it.)
+4. **Environment variables**: none needed — the first time you open it,
+   isoshelf asks you to choose a username and password. To have them set
+   before it ever starts, add `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD`
+   here.
 5. **Networking**: publish container port `8765` on host port `8765`. Pick a
    different host port if something else is already using it.
 6. **Storage**: two host-path mounts.
@@ -106,14 +125,13 @@ don't.
    and it is what owns app datasets there unless you changed it. (The image
    defaults to 1000 because that is the common one everywhere else; isoshelf
    runs happily as any user, so set this to whatever owns your datasets.)
-8. Install it and wait for it to go green. Then open its **Logs**: isoshelf
-   prints the link with its secret on the end. Open that, and bookmark it.
+8. Install it and wait for it to go green, then open
+   `http://your-truenas:8765/` and choose a username and password. (If you
+   set them in step 4, sign in with those instead.)
 
-**Typing the address on its own won't work**, and that is deliberate: the
-secret in the link is what keeps everyone else on your network out. You will
-get a page telling you the link is in the log. Once you have opened the real
-link once, the address alone works from then on, because your browser keeps
-the secret in a cookie.
+The app's **Logs** also hold a link with a secret on the end. You don't need
+it to get in, but it is the way back if you forget the password, so it is
+worth knowing it is there.
 
 ### If it starts but can't write
 
@@ -165,6 +183,38 @@ with everything else of its own.
 `http://your-truenas:8765/healthz` answers `ok` and needs no token. It says
 nothing else — not which folder is open, not what is in it — so it is safe to
 point a monitor at. The container's own health check uses it.
+
+## Updating it, without reinstalling
+
+Nothing in `/images` or `/config` is touched by an update: they are mounts
+from your own datasets, so your images, settings, history and login all stay
+exactly where they are. Updating replaces the program and nothing else.
+
+**On TrueNAS**, the reliable way is to name the version you want:
+
+1. **Apps → isoshelf → Edit.**
+2. Change the image **tag** to the new version — `vX.Y.Z`, whichever is
+   current on [the releases page](https://github.com/ZachCurry13/isoshelf/releases).
+3. **Save.** It pulls the new image and restarts the app.
+
+That always works, because the tag differs from the one already on disk.
+
+If you used `latest` instead, Edit → Save may or may not fetch a newer image:
+whether it re-checks the registry depends on the pull policy your version of
+TrueNAS uses. Stopping and starting the app does **not** fetch one — Docker
+serves the copy it already has. So if you follow `latest` and want to be
+sure, change the tag to the version number, save, and change it back if you
+prefer.
+
+**With Docker Compose** it is two commands:
+
+```sh
+docker compose pull
+docker compose up -d
+```
+
+Either way, isoshelf tells you when a new one is out: the top bar shows it,
+and Settings → *Tell me when a new isoshelf is out* turns that off.
 
 ## Building the image yourself
 

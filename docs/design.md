@@ -513,11 +513,33 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
 - **Done:** `isoshelf ui --listen ADDRESS` - the same binary and page as the
   desktop, answering to the machine's own address instead of only localhost.
   A Docker image (static binary plus CA certificates), built for amd64 and
-  arm64 and published to ghcr.io, which is also what a TrueNAS app is. The
-  secret in the link makes itself on first start and is kept in the config
-  folder, so a restart doesn't break a bookmark. `/healthz` is the one path
-  outside the guard. The rest of the page - browsing the catalog, updating,
-  the per-image answer, history - was already there and needed nothing.
+  arm64 and published to ghcr.io, which is also what a TrueNAS app is.
+  `/healthz` and `/login` are the two paths outside the guard. The rest of
+  the page - browsing the catalog, updating, the per-image answer, history -
+  was already there and needed nothing.
+- **Getting in** (v0.4.5, the maintainer's decision over keeping the token
+  alone): a username and password, chosen on first run or given in
+  `ISOSHELF_USERNAME`/`ISOSHELF_PASSWORD`. One login, not user accounts -
+  isoshelf looks after a folder, and there is one person's worth of access to
+  give. `internal/auth` keeps it: PBKDF2-HMAC-SHA256 with a random salt, from
+  the standard library, so the one dependency stays one.
+  - The session is **signed, not remembered**: the cookie says who and until
+    when, with an HMAC under a key in the config folder. A restart therefore
+    keeps everyone logged in, which matters because a NAS app restarts on
+    every update, and isoshelf keeps no list of who is logged in. Signing out
+    everywhere is throwing that key away.
+  - The **secret in the link still works**, and is the recovery path: asked
+    to change the password, isoshelf skips the old one when the browser
+    arrived by the link. It is no weaker than the password - both are in
+    reach of anyone who can read the log or the config folder.
+  - The login form **cannot use the Origin check** every other change uses.
+    isoshelf sends `Referrer-Policy: no-referrer`, and browsers then send
+    `Origin: null` on a plain form post. So the form carries a random value
+    set in a `SameSite=Strict` cookie and echoed in a hidden field; a form on
+    another site can produce neither.
+  - The page's inline stylesheet needs its **own hash in the content policy**,
+    derived from the same constant so it cannot drift. Without it the login
+    page still works and arrives unstyled.
 - **Not done:** a scheduler that checks daily by itself and downloads verified
   updates, with unverified ones waiting for the user. A Proxmox LXC with the
   ISO storage bind-mounted, documented. An official TrueNAS store app, which

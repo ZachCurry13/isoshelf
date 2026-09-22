@@ -44,7 +44,9 @@ type stateJSON struct {
 	// nobody has to hunt for it.
 	ConfigDir string `json:"config_dir,omitempty"`
 	// Records is where this folder's records are kept.
-	Records   recordsJSON       `json:"records"`
+	Records recordsJSON `json:"records"`
+	// Login is the username and password, for Settings to show and change.
+	Login     loginJSON         `json:"login"`
 	Removed   removedJSON       `json:"removed"`
 	Catalog   catalogStatusJSON `json:"catalog"`
 	AppUpdate *appupdate.Notice `json:"app_update,omitempty"`
@@ -88,9 +90,13 @@ func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
 	recent := s.recentTargets()
 	room := s.targetSpace()
 	changed := s.folderChanged()
+	// Who can get in is read from disk too, and depends on this request:
+	// whether this browser came in with a password or with the link.
+	login := s.loginInfo(r)
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	out := s.stateLocked(recent, room)
+	out.Login = login
 	out.FolderChanged = changed && s.scanning == nil && s.downloading == nil
 	writeJSON(w, http.StatusOK, out)
 }
