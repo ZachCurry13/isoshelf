@@ -6,6 +6,30 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.4] - 2026-09-22
+
+### Fixed
+- **A folder isoshelf can't write to now says how to fix it, at startup.**
+  Before, it came out later as a wall of "permission denied" from whichever
+  part of isoshelf happened to write first, saying what failed and nothing
+  about what to do. isoshelf now checks both folders when it starts and says
+  which folder is in the way, **which user it is running as** - the half
+  nobody can work out from outside a container - what stops working until it
+  is fixed, and the two ways to fix it on TrueNAS. It still starts either
+  way: a folder it can only read is still listed and still checked for
+  updates.
+- **Reporting a problem gives you the details to paste.** The report opens
+  GitHub's form with everything filled in, but GitHub's phone app ignores
+  anything filled in from a link, so the form arrived empty. The dialog now
+  shows the report as one block of text with a **Copy the details** button,
+  and says to paste it if the form opens empty. Copying works on a NAS too,
+  where the browser's own clipboard isn't available because the page isn't
+  served over https.
+- **Dialogs no longer put their buttons past the bottom of a phone screen.**
+  The question box had no height limit, so on a short screen the answer
+  buttons were somewhere below the edge with no way to scroll to them. It now
+  caps and scrolls, the same as the folder chooser always has.
+
 ## [v0.4.3] - 2026-09-22
 
 ### Added

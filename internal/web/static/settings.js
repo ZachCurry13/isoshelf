@@ -267,12 +267,15 @@ const SETTING_GROUPS = [
       },
       {
         name: "Report a bug",
-        hint: "Opens a new issue on the project with the version already filled in. " +
-          "Nothing is sent until you press send yourself.",
+        hint: "Shows you the details, lets you copy them, and opens GitHub's bug form " +
+          "with them filled in. Nothing is sent until you press submit there.",
         words: "bug problem issue report help support broken",
         available: () => state && state.report_url,
         control: () => el("div", { class: "setting-controls" },
-          el("a", { class: "btn small", href: bugReportURL(), target: "_blank", rel: "noopener noreferrer" }, "Report a bug"),
+          el("button", {
+            type: "button", class: "btn small",
+            onclick: () => reportProblem("", ""),
+          }, "Report a bug"),
           el("a", { class: "btn small", href: projectURL(), target: "_blank", rel: "noopener noreferrer" }, "The project")),
       },
     ],
@@ -326,19 +329,6 @@ function recordsControl() {
 function catalogNote() {
   const cat = (state && state.catalog) || {};
   return cat.error || cat.note || "";
-}
-
-// bugReportURL fills in what the maintainer would have to ask for anyway.
-function bugReportURL() {
-  const body = [
-    "**What happened:**",
-    "",
-    "**What I expected:**",
-    "",
-    `**isoshelf:** ${(state && state.version) || "unknown"}`,
-    `**Page:** ${navigator.userAgent}`,
-  ].join("\n");
-  return `${state.report_url}?title=${encodeURIComponent("Bug: ")}&body=${encodeURIComponent(body)}`;
 }
 
 function projectURL() {
