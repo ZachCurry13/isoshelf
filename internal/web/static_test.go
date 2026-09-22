@@ -114,3 +114,19 @@ func TestLinksOpenSafely(t *testing.T) {
 		}
 	}
 }
+
+// A grid column with a fixed minimum wider than the screen makes the whole
+// page scroll sideways on a phone, which is how this was found: a catalog
+// column with a 280px minimum on a 296px page. min() lets the last column
+// give way instead. Cheap to write, easy to forget, so the test remembers.
+func TestGridMinimumsCanGiveWayOnNarrowScreens(t *testing.T) {
+	css := readStatic(t, "app.css")
+	bare := regexp.MustCompile(`minmax\(\s*\d+px`)
+	for i, line := range strings.Split(css, "\n") {
+		if bare.MatchString(line) {
+			t.Errorf("app.css:%d has a grid minimum that can't shrink below its own width.\n  %s\n"+
+				"Write minmax(min(280px, 100%%), 1fr) so a narrower screen gets one column that fits.",
+				i+1, strings.TrimSpace(line))
+		}
+	}
+}

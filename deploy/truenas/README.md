@@ -6,8 +6,10 @@ rather than as a custom app. That means an entry in
 `ix-dev/community/isoshelf/`. These files are that entry, kept here so they
 are versioned alongside the thing they describe.
 
-**Nothing here has been submitted, and none of it has been run.** Read the
-next section before doing either.
+**Nothing here has been submitted.** The image itself is real - it is
+published, and isoshelf has been installed on a TrueNAS box as a custom app
+- but these catalog files have never been rendered or installed from. Read
+the next section before treating them as finished.
 
 ## What is real and what isn't
 
@@ -62,10 +64,11 @@ somebody's files on the network:
 
 ## Before submitting anything
 
-1. Build and run the image — see the note in `docs/TODO.md`; it has never
-   been built, because the machine these files were written on has a Docker
-   client and no daemon.
-2. Install it on a real TrueNAS box as a custom app first, following
-   `docs/docker.md`, and check the permissions advice is actually right.
-3. Then write the two missing files, render them, and install from a local
-   catalog before opening a pull request against somebody else's repository.
+1. ~~Build and run the image.~~ *Done:* the `container image` workflow builds
+   it for amd64 and arm64 and pushes it to `ghcr.io/zachcurry13/isoshelf`.
+2. ~~Install it on a real TrueNAS box as a custom app~~, following
+   `docs/docker.md`. *Done:* the walkthrough is what the maintainer followed,
+   and the two things it got wrong have been fixed since.
+3. Write the two missing files, render them, and install from a local catalog
+   before opening a pull request against somebody else's repository. An icon
+   too — see above.

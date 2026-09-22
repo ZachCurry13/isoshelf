@@ -84,7 +84,10 @@ a:hover { text-decoration: underline; }
 .topbar {
   display: flex;
   align-items: center;
-  gap: 16px;
+  /* Wraps rather than pushing Settings off the edge on the narrowest
+     screens - a folded phone is about 280px across. */
+  flex-wrap: wrap;
+  gap: 16px 12px;
   padding: 12px 24px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -118,6 +121,11 @@ main {
   display: grid;
   gap: 16px;
 }
+/* A grid item won't shrink below its own content unless it is told it may.
+   Without this one line, anything inside a card that refuses to get narrower
+   - a wide minimum in a nested grid, a long unbroken name - makes the whole
+   page wider than the phone it is on, and everything scrolls sideways. */
+main > * { min-width: 0; }
 
 .card {
   background: var(--surface);
@@ -343,7 +351,9 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .catalog {
   list-style: none; margin: 0; padding: 0 12px 12px;
   display: grid; gap: 8px;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  /* min() so a screen narrower than the 280px ideal gets one column that
+     fits, rather than one column 280px wide on a 296px page. */
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
 }
 .catalog li {
   display: flex; align-items: center; gap: 10px;
@@ -525,11 +535,11 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
   cursor: pointer; padding: 8px 12px; color: var(--muted); font-size: 0.9286rem;
 }
 #identify-search { margin: 0 12px 10px; width: calc(100% - 24px); max-width: 320px; }
-.identify .catalog { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.identify .catalog { grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
 
 .mine-form {
   display: grid; gap: 10px; padding: 0 12px 14px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
   align-items: end;
 }
 .mine-form label { display: grid; gap: 4px; font-size: 0.9286rem; color: var(--muted); }
@@ -560,7 +570,7 @@ th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
 
 /* Catalog cards: room for the name, with the buttons wrapping under it when
    the column is narrow. */
-.catalog { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.catalog { grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
 .catalog li { flex-wrap: wrap; }
 .catalog .info { flex: 1 1 150px; }
 .catalog li .btn, .catalog li a.btn { flex: none; }
@@ -676,7 +686,7 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
 /* One card per thing that wants doing. */
 .todo {
   display: grid; gap: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
 }
 .todo-card { max-width: 340px; }
 .todo:empty { display: none; }

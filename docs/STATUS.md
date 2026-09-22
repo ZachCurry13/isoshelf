@@ -92,7 +92,26 @@ record of where things stand and what was decided.
    portable test (#7).
 4. Later: server mode in Docker (16).
 
-## Latest change (2026-09-21)
+## Latest change (2026-09-22)
+
+- **isoshelf is running on the maintainer's NAS**, installed as a TrueNAS
+  custom app from the published image. The two things that first install
+  found are v0.4.1: the page scrolled sideways on a phone, and the refusal
+  page told a container user to go back to a window that doesn't exist.
+- The phone fix was measured, not guessed - at 320 pixels the document was
+  358 wide. A grid item won't shrink below its own content unless told it
+  may, and the catalog asked for 280-pixel columns on a 296-pixel page. A
+  test now fails the build on any grid minimum written without `min()`.
+- The container image is published and anonymously pullable (checked, both
+  architectures, both tags), so items 2 and 3 of TODO's open questions are
+  settled and the TrueNAS folder's checklist has two steps struck off.
+- `deploy/truenas/` names the version it packages in two files; a test now
+  fails the build when either falls behind the newest `CHANGELOG.md` section,
+  because that is exactly the kind of thing nobody remembers at release time.
+- Next: release v0.4.1 and rebuild the image, then decision 10 - where each
+  folder's records live.
+
+## Earlier (2026-09-21)
 
 - Numbering settled: the container work is **v0.4.0**, the redesign moves to
   **v0.5.0**, and an official TrueNAS app is the **1.0** goal.
@@ -118,9 +137,9 @@ record of where things stand and what was decided.
   same-origin check all stand, and the origin check now accepts `https` for a
   reverse proxy. `/healthz` is the one path outside the guard. `ISOSHELF_TOKEN`
   keeps a bookmark working across restarts.
-- **Neither is pushed.** Both sit on local branches `version-the-new-file`
-  (v0.3.7 and v0.4.0 both landed there) at the maintainer's instruction: they
-  asked for nothing to reach GitHub until they say so.
+- v0.3.7 and v0.4.0 were held on a local branch that evening at the
+  maintainer's instruction, then split into named branches and released
+  separately the next morning.
 - Decided 2026-09-21: **error reports go to GitHub, not to a server.** The
   page opens a prefilled issue form and the user submits it. No backend, no
   telemetry, nothing to opt out of.

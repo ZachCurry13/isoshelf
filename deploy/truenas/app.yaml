@@ -5,7 +5,9 @@
 name: isoshelf
 title: isoshelf
 description: Keeps the bootable images in a folder up to date, and verifies every download.
-app_version: 0.4.0
+# The version of isoshelf this entry packages. Moves with every release,
+# alongside the image tag in ix_values.yaml; internal/docs checks both.
+app_version: 0.4.1
 version: 1.0.0
 train: community
 categories:

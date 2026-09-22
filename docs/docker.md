@@ -92,7 +92,7 @@ don't.
 1. **Apps → Discover Apps → Custom App.**
 2. **Name** it `isoshelf`.
 3. **Image**: repository `ghcr.io/zachcurry13/isoshelf`, tag `latest`. You can
-   pin a version instead — `v0.4.0` — if you would rather decide when it
+   pin a version instead — `vX.Y.Z`, whichever is current — if you would rather decide when it
    changes.
 4. **Environment variables**: none needed. isoshelf makes its own secret and
    keeps it in `/config`. (Set `ISOSHELF_TOKEN` if you would rather choose
@@ -108,6 +108,12 @@ don't.
    runs happily as any user, so set this to whatever owns your datasets.)
 8. Install it and wait for it to go green. Then open its **Logs**: isoshelf
    prints the link with its secret on the end. Open that, and bookmark it.
+
+**Typing the address on its own won't work**, and that is deliberate: the
+secret in the link is what keeps everyone else on your network out. You will
+get a page telling you the link is in the log. Once you have opened the real
+link once, the address alone works from then on, because your browser keeps
+the secret in a cookie.
 
 ### If it starts but can't write
 
