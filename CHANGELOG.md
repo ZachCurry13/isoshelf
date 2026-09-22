@@ -6,6 +6,42 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.3.6] - 2026-09-22
+
+### Added
+- **Keep both copies of an image whose filename never changes.** Updating
+  netboot.xyz and the other fixed-name images used to mean choosing between
+  the old file and the new one - *Keep both* was refused outright, because
+  the new download wanted a name the old file already had. It no longer is:
+  the old copy steps aside under a name of its own
+  (`netboot.xyz-2026-09-01.iso`, or its version when isoshelf knows it) and
+  the new download takes the unchanging name. That way round on purpose -
+  anything pointing at the name that never changes, like a Proxmox VM, keeps
+  working and quietly gets the newer image, and on a Ventoy drive both simply
+  appear in the boot menu. The renamed file keeps its record, so it is still
+  recognized rather than becoming an unknown file at the next scan.
+- **Report a problem.** When something goes wrong there is now a button next
+  to it that opens GitHub's bug form with the details already filled in:
+  which isoshelf, which system, what kind of folder, and what isoshelf said.
+  Nothing is sent anywhere by isoshelf - the report is read, edited and
+  submitted by you, and closing the tab sends nothing. The dialog shows every
+  line before the tab opens and lets the system details be left out. Your
+  folder's location and the names of your files are never included.
+
+### Fixed
+- **The Filter menu no longer runs off the left of the screen on a phone.**
+  It was held inside the window on the right but not on the left, so on a
+  390-pixel screen the first filters were off the edge.
+- **Escape closes an open menu.** It closed Settings, the details panel and
+  the downloads bar, but left a menu hanging over whatever it closed.
+
+### Changed
+- **Plainer, shorter wording** through the page and its messages. *Carry on*
+  is now *Resume*, which is what it does. A stopped download says "Stopped.
+  What downloaded so far is kept, so Resume picks up from there" instead of
+  explaining itself twice. Messages that go wrong still say when nothing in
+  the folder has changed, because that is the part worth knowing.
+
 ## [v0.3.5] - 2026-09-21
 
 ### Added

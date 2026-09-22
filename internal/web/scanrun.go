@@ -113,7 +113,7 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 	}
 	switch {
 	case errors.Is(err, context.Canceled):
-		s.lastErr = "Stopped. What was found so far is shown."
+		s.lastErr = "Stopped. Showing what was found so far."
 	case err != nil:
 		s.lastErr = err.Error()
 	}

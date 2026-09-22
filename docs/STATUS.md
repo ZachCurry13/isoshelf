@@ -89,6 +89,20 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-21)
 
+- v0.3.6: keeping both copies of a fixed-name image, reporting a problem,
+  two menu bugs, and a plainer set of words.
+- **Keep both was refused, and that was wrong.** `internal/update/keepboth.go`
+  renames the old copy (its version when known, otherwise the day it arrived)
+  and lets the new download take the unchanging name. That direction is the
+  point: decision 2026-09-21 rejected version numbers in fixed filenames
+  because it breaks Proxmox VMs - which it does, if the *new* file is
+  renamed. Renaming the old one leaves whatever points at that name working
+  and quietly newer. The renamed file's record is marked assigned so the next
+  scan still knows what it is.
+- **Reporting sends nothing.** `/api/report` says only which isoshelf, which
+  system and what kind of folder; the page opens GitHub's bug form prefilled
+  and the user submits it. No server, no telemetry, nothing to opt out of. A
+  test proves the folder's path and its filenames never appear in it.
 - v0.3.5 adds a file from the user's own computer: dragged onto the page or
   chosen, streamed straight to the folder through `internal/upload`. Image
   files only, inside the chosen folder, and a name clash asks the same two

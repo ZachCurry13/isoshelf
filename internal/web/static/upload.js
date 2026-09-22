@@ -98,7 +98,7 @@ function send(file, replace) {
     renderUploads();
   });
   req.addEventListener("load", () => finish(file, req));
-  req.addEventListener("error", () => finish(file, req, "The connection to isoshelf dropped."));
+  req.addEventListener("error", () => finish(file, req, "The connection to isoshelf dropped. Nothing was added."));
   req.addEventListener("abort", () => finish(file, req, "Stopped. Nothing was added."));
   req.send(file);
 }
@@ -136,7 +136,7 @@ async function finish(file, req, trouble) {
       send(file, choice);
       return;
     }
-    record(file.name, "stopped", "Left alone. Nothing in the folder changed.");
+    record(file.name, "stopped", "Canceled. Nothing in the folder changed.");
     await refresh();
     sendNext();
     return;

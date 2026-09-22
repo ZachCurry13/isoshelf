@@ -181,14 +181,14 @@ func (s *Server) executeJob(ctx context.Context, j *job) {
 	switch {
 	case errors.Is(err, context.Canceled):
 		f.outcome = "stopped"
-		f.message = "Stopped. The part-finished download is kept, so adding it again carries on where it left off."
+		f.message = "Stopped. What downloaded so far is kept, so Resume picks up from there."
 	case errors.Is(err, update.ErrSameName):
 		// Not a failure so much as a question: the page offers the answers
 		// rather than leaving a message nobody can act on.
 		f.outcome = "failed"
 		f.conflict = true
-		f.message = "There's already a file of that name here, and this image's filename never changes. " +
-			"Say what should happen to the one you have. Nothing has changed in the folder."
+		f.message = j.name + " always uses the same filename, and a file of that name is already here. " +
+			"Choose what happens to it. Nothing in the folder has changed."
 	case err != nil:
 		f.outcome = "failed"
 		f.message = err.Error()

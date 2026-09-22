@@ -7,11 +7,17 @@
 // ---- Updating and removing -------------------------------------------------
 
 // ask shows a dialog and returns the value of the button the user picked, or
-// null if they closed it.
-function ask(title, text, choices) {
+// null if they closed it. body, when given, is shown under the text: a report
+// needs to show what it would send, which is more than a sentence.
+function ask(title, text, choices, body) {
   const dialog = $("ask");
   $("ask-title").textContent = title;
   $("ask-text").textContent = text;
+  $("ask-text").hidden = !text;
+  const extra = $("ask-body");
+  extra.replaceChildren();
+  extra.hidden = !body;
+  if (body) extra.append(body);
   const buttons = $("ask-buttons");
   buttons.replaceChildren();
   return new Promise((resolve) => {
