@@ -9,7 +9,8 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**Nothing is in flight.** Everything below the next heading has shipped.
+**In flight: v0.5.0, the redesign.** Its wording half shipped as v0.4.13;
+what is left is the look. Everything else below the next heading has shipped.
 
 **Which version is the latest is not written down here, on purpose.** It went
 stale three times in one evening. Ask GitHub: the releases page, or
@@ -225,6 +226,22 @@ textContent and never as HTML.
 
 Whatever is proposed, the maintainer wants to be asked about anything where
 more than one answer is good, rather than shown a finished redesign.
+
+**Asked and answered, 2026-09-22:**
+- *Words:* use the ordinary ones. A Settings switch for "simple mode" was
+  offered and turned down for now - two versions of every string across ten
+  files is a cost that never stops - so the page uses the normal word and
+  keeps its explanation in the hover and the second line. **Shipped as
+  v0.4.13**, which is the wording half of this done.
+- *Audience:* confident, not hand-holding. Same reasoning.
+- *Look:* "whichever option feels like TrueNAS does when using" - so
+  restrained palette, technical density: dark-first, dense, one blue accent,
+  real tables.
+- *The list:* keep the sortable table on desktop, cards on the phone.
+
+What is left of v0.5.0 is therefore the visual work: type scale, colour
+discipline, spacing and density. Show the maintainer what it looks like
+before committing to it.
 
 `docs/design-audit.md` is a critique of the page written before any of this
 was built, with seven such questions already worked out and a staged plan.

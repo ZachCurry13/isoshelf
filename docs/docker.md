@@ -38,7 +38,7 @@ Two things worth knowing:
   variables, where you are already filling in a form. isoshelf then has a
   login from its very first second and never offers to set one.
 
-Settings → *Who can get in* changes the username or password later, signs
+Settings → *Sign-in* changes the username or password later, signs
 this browser out, or signs every browser out at once.
 
 ### There is no token once you have a password
@@ -220,7 +220,7 @@ point a monitor at. The container's own health check uses it.
 ## Keeping the images up to date without doing anything
 
 A container is the one place isoshelf can do this properly, because it is
-always on. **Settings → Checking for updates → Update the images by itself**:
+always on. **Settings → Checking for updates → Update images automatically**:
 every day or every week it checks, downloads what it finds, verifies it
 against the project's published checksum and puts it in place. Each image
 follows the answer it already carries about its old copy — replace, archive
@@ -291,7 +291,7 @@ docker compose up -d
 ```
 
 Either way, isoshelf tells you when a new one is out: the top bar shows it,
-and Settings → *Tell me when a new isoshelf is out* turns that off.
+and Settings → *Tell me about new isoshelf versions* turns that off.
 
 ## Building the image yourself
 

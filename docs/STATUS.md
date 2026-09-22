@@ -38,8 +38,8 @@ and plain words on the surface; everything adjustable in Settings.
    boot); "Review" opens a checklist instead of filtering the list.
 3. Checking: automatic on open and after scans, results remembered for a day,
    one Refresh button; a setting turns automatic checks off.
-4. Statuses: plain words ("Update ready", "Old release", "Check by hand",
-   "Won't boot from here") with a hover explanation and a key.
+4. Statuses: plain words ("Update available", "End of life", "Download
+   manually", "Won't boot from here") with a hover explanation and a key.
 5. Filters: one Filter menu with checkmarks, active filters as removable chips
    plus "Clear all".
 6. Rows: slim; file and size under the name, version as "old → new", one
@@ -65,7 +65,7 @@ and plain words on the surface; everything adjustable in Settings.
 15. More settings: empty the archive after 7/30/90 days, a download speed
     limit, hide architectures and kinds you don't use, a notification when
     downloads finish.
-. "Images that were here" is split in two. **Archive**: only files still on
+16. "Images that were here" is split in two. **Archive**: only files still on
     the drive (size, Restore, Delete for good, Empty archive), with a to-do
     card and a jump-bar link. **History**: a folded log of images that left
     (deleted, replaced, vanished) with Download again. "Archive" stays the
@@ -95,6 +95,25 @@ record of where things stand and what was decided.
    once (#4), portable test (#7).
 
 ## Latest change (2026-09-22)
+
+- **v0.4.13: the words on the page.** The maintainer read the page and said
+  the wording "sounds so strange", and named two things: "1 to download by
+  hand" should say download manually, and the "By hand only" button looked
+  clickable but was a disabled label. Both fixed - that button is now "Show
+  them", filtering the list to the images you have to fetch yourself - and
+  every other label, status, button, hint and dialog went the same way,
+  toward the ordinary word: *Update available*, *End of life*, *Download
+  manually*, *Unrecognized*, *Checksum mismatch*, *Check failed*. In Settings,
+  *by itself* became *automatically* and *Who can get in* became *Sign-in*.
+  "Room" is space, *Didn't work* is *Failed*, and checking a download against
+  its checksum is called verifying, so it isn't confused with the update
+  check.
+  - Asked whether to keep both registers behind a "simple mode" switch, the
+    answer was to default to the normal words - so that switch was not built:
+    two versions of every string across ten files is a cost with no end, and
+    the explanations still live in the hover and the second line, which is
+    where they serve both readers.
+  - This is the wording half of v0.5.0. The look is what is left.
 
 - **v0.4.12: sign out never worked, and the reason was already written down
   three inches away.** It was a plain form posted to /login, and this server
@@ -383,8 +402,8 @@ record of where things stand and what was decided.
   Settings says otherwise, and `internal/lastcheck` keeps each project's
   answer in `<config>/last-check.json` for a day, so opening the page a
   second time asks nobody. One Refresh button replaced Scan and Check for
-  updates; Settings gained "Check for updates by itself" and "Tell me when a
-  new isoshelf is out" (which was a command-line flag only). Failures are
+  updates; Settings gained the automatic update check and the new-version
+  notice (which was a command-line flag only). Failures are
   never remembered, and nothing remembered is trusted for a download - a
   download still resolves everything again.
 - Also: the three r/Ventoy cases the maintainer found are issues #11 (rebuild

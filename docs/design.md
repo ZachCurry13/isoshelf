@@ -501,7 +501,7 @@ For when a new release breaks something and the user needs the previous one.
   a pre-release. If the answer is newer, show a notice with a link to the
   release notes: one line on stderr in the CLI, a link in the top bar of the
   page and again under Help in Settings. The check is turned off in Settings
-  ("Tell me when a new isoshelf is out"), or with `--no-update-check` or
+  ("Tell me about new isoshelf versions"), or with `--no-update-check` or
   `ISOSHELF_NO_UPDATE_CHECK`; the last check time lives in the config folder,
   in `update-check.json`.
 - Only a notice for now: users download the new build themselves (portable:
@@ -764,8 +764,9 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   ones fetched earlier from `<config>/logos`, then fetches from the CDN once
   and remembers misses. Entries without one get colored initials, drawn from
   the name.
-- "Images that were here" lists the archive, with Restore for files still in
-  `.isoshelf/removed` and Download again for catalog images.
+- **Archive** lists files still in `.isoshelf/removed`, with Restore;
+  **History** lists images that have left, with Download again for catalog
+  ones.
 - Downloads (`queue.go`): Add, Update, Update all and Download again join a
   queue that runs one at a time, and the queue drains into one rescan. The
   page shows it in a bar along the bottom (Steam-like): the running download
