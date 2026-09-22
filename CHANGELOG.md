@@ -9,6 +9,14 @@ last number rises for improvements to what it already does, like v0.3.3.
 ## [v0.4.1] - 2026-09-22
 
 ### Fixed
+- **No more sideways scrolling on a phone.** The catalog's columns had a
+  280-pixel minimum, and a card in a grid won't shrink below its own contents
+  unless it is told it may - so on a narrow screen the widest thing on the
+  page set the width of everything, and the whole page scrolled left and
+  right. Every grid minimum can now give way to a narrower screen, and the
+  top bar wraps rather than pushing *Settings* off the edge. Checked from 280
+  pixels up, with the catalog open, the details panel open, Settings open and
+  the filter menu open.
 - **Opening a server's address without the link now says where the link is.**
   It said "go back to the isoshelf window and open that link" - which is right
   on your own computer and useless in a container, where there is no window
