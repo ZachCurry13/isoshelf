@@ -20,10 +20,12 @@ func TestCheck(t *testing.T) {
 		c := remote.New("test")
 		c.HTTP = &http.Client{Transport: remotetest.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			calls.Add(1)
-			if r.URL.Path != "/repos/ZachCurry13/isoshelf/releases/latest" {
+			if r.URL.Path != "/repos/ZachCurry13/isoshelf/releases" {
 				t.Errorf("unexpected request for %s", r.URL)
 			}
-			w.Write([]byte(`{"tag_name": "` + latest + `", "html_url": "https://github.com/ZachCurry13/isoshelf/releases/tag/` + latest + `"}`))
+			// Below 1.0 every release is marked a pre-release, which is
+			// exactly why the list is asked for instead of "latest".
+			w.Write([]byte(`[{"tag_name": "` + latest + `", "prerelease": true, "html_url": "https://github.com/ZachCurry13/isoshelf/releases/tag/` + latest + `"}]`))
 		}))}
 		return c
 	}
@@ -64,5 +66,57 @@ func TestCheckError(t *testing.T) {
 	// A private repository looks like this to GitHub's API.
 	if n, err := Check(context.Background(), c, t.TempDir(), "v0.1.0", time.Now()); n != nil || err == nil {
 		t.Errorf("got %v, %v; want an error and no notice", n, err)
+	}
+}
+
+// Which release somebody is told about depends on which they are running.
+//
+// Below 1.0 every release is a pre-release, so leaving those out - which is
+// what GitHub's own "latest release" does - would mean telling nobody about
+// anything. After 1.0 a released version must never quietly point at a test
+// build, while anyone running one keeps hearing about the next.
+func TestWhichReleaseIsOffered(t *testing.T) {
+	releases := []release{
+		{TagName: "v2.0.0-rc1", Prerelease: true, HTMLURL: "rc"},
+		{TagName: "v1.2.0", HTMLURL: "stable"},
+		{TagName: "v1.1.0", HTMLURL: "older"},
+		{TagName: "v1.3.0", Draft: true, HTMLURL: "draft"},
+	}
+	for _, c := range []struct {
+		running, want, why string
+	}{
+		{"v1.1.0", "v1.2.0", "a released version is offered the newest released one"},
+		{"v2.0.0-rc1", "v2.0.0-rc1", "somebody on a test build is offered test builds"},
+		{"v1.2.0-rc3", "v2.0.0-rc1", "and the newest of them"},
+		{"v0.4.9", "v2.0.0-rc1", "below 1.0 everything is a pre-release, so they all count"},
+	} {
+		if got := pick(releases, c.running).TagName; got != c.want {
+			t.Errorf("running %s: offered %s, want %s - %s", c.running, got, c.want, c.why)
+		}
+	}
+	// A draft is nobody's business: it isn't published.
+	for _, running := range []string{"v1.1.0", "v1.2.0-rc1"} {
+		if got := pick(releases, running).TagName; got == "v1.3.0" {
+			t.Errorf("running %s was offered a draft", running)
+		}
+	}
+	// Nothing to offer is not a crash.
+	if got := pick(nil, "v1.0.0").TagName; got != "" {
+		t.Errorf("an empty list offered %q", got)
+	}
+}
+
+func TestIsPrerelease(t *testing.T) {
+	for _, c := range []struct {
+		version string
+		want    bool
+	}{
+		{"v0.4.9", true}, {"0.1.0", true},
+		{"v1.0.0", false}, {"v2.3.4", false},
+		{"v1.0.0-rc1", true}, {"v1.0.0-beta.2", true},
+	} {
+		if got := isPrerelease(c.version); got != c.want {
+			t.Errorf("isPrerelease(%q) = %v, want %v", c.version, got, c.want)
+		}
 	}
 }

@@ -12,10 +12,13 @@
 </div>
 
 > [!WARNING]
-> isoshelf is in early development, but it works: it lists the images in a
-> folder, checks them for updates, and downloads and verifies new ones, from a
-> web page in your browser or the command line. See the [roadmap](#roadmap) for
-> what's still missing.
+> **isoshelf is before 1.0, and every release says so.** It works — it lists
+> the images in a folder, checks them for updates, and downloads and verifies
+> new ones, from a web page in your browser or the command line — but things
+> can still change between versions. Releases are marked *pre-release* on
+> GitHub until 1.0, which is the point at which it does what it says and
+> won't change under you. See the [roadmap](#roadmap) for what's still
+> missing.
 
 ## Why
 
@@ -293,6 +296,10 @@ matters.<br>
 isoshelf on another machine already has an image, take it from there over your
 own network - still checked against the project's own checksum, and still
 falling back to the internet for anything it hasn't got.<br>
+**v0.4.10: honest version numbers.** *2026-09-22:* every release below 1.0 is
+marked a pre-release, and isoshelf still tells you about them - which needed
+it to stop asking GitHub for "the latest release", since that leaves
+pre-releases out.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command
