@@ -1,0 +1,26 @@
+# isoshelf on a NAS or home server. See docs/docker.md, which explains the
+# token and the permissions snag that catches people out on TrueNAS.
+services:
+  isoshelf:
+    image: ghcr.io/zachcurry13/isoshelf:latest
+    container_name: isoshelf
+    restart: unless-stopped
+    ports:
+      - "8765:8765"
+    # Nothing to set up: isoshelf makes the secret for its own link the first
+    # time it starts, keeps it in /config so a restart doesn't change it, and
+    # prints the link in the log - docker logs isoshelf.
+    #
+    # Treat that link like a password. Anyone on your network who has it can
+    # add, replace and delete images in the folder. Set ISOSHELF_TOKEN here
+    # instead if you would rather choose the secret yourself.
+    volumes:
+      # The folder of images to look after.
+      - /mnt/tank/isos:/images
+      # isoshelf's own files. Losing this loses settings and history, not
+      # images - but there is no reason to lose it.
+      - /mnt/tank/appdata/isoshelf:/config
+    # The image runs as 1000:1000 by default, but isoshelf works as any user:
+    # set this to whoever owns the folders rather than opening them up. On
+    # TrueNAS that is usually 568:568.
+    user: "1000:1000"

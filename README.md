@@ -115,10 +115,13 @@ isoshelf manages files you care about, so it is deliberately cautious:
 | **Ventoy USB drive** | Install isoshelf on your PC, or copy the portable folder onto the drive and run it from there. Portable mode keeps its settings and temporary files on the drive. |
 | **Any folder** | Point it at a folder instead of a drive, such as ISOs on a NAS share or your downloads. Compressed card images (`.img.xz`) count too. |
 | **Proxmox ISO storage** | Point it at `/var/lib/vz/template/iso` (or `/mnt/pve/<storage>/template/iso` for NAS storage). Proxmox only lists `.iso` and `.img` files at the top level of that folder, and isoshelf follows the same rule. |
-| **Server** *(planned)* | A Docker container, TrueNAS app or Proxmox LXC. Open it in your browser at `http://<server-ip>:<port>`, like your other homelab apps. It checks daily by default and keeps your images current. |
+| **NAS or home server** | A container, including [TrueNAS SCALE as a custom app](docs/docker.md). isoshelf runs next to the files rather than across the network, which for a 6 GB image is the difference between minutes and hours. Open it from your own machine at `http://<server>:8765/?token=...`, like your other homelab apps. |
 
-On your PC, isoshelf uses the same interface: it opens in your web browser, and
-only your own computer can reach it.
+On your PC, isoshelf opens in your web browser and only your own computer can
+reach it. In a container it has to answer to the machine's address instead, so
+there the token in the link is what keeps everyone else out — treat it like a
+password and keep it on a network you trust. [docs/docker.md](docs/docker.md)
+is the walkthrough.
 
 > **New to all this?** [Ventoy](https://www.ventoy.net) turns one USB stick
 > into a boot menu of every ISO you drop on it, and isoshelf keeps those ISOs
@@ -232,15 +235,20 @@ sends nothing itself. Plus a plainer set of words throughout.<br>
 **v0.3.7: the new file carries the version.** *2026-09-21:* when you keep
 both copies, it's the new download that gets `-2.0.87` in its name; the file
 already on your drive isn't touched at all.<br>
+**v0.4.0: run it on your NAS.** *2026-09-21:* a container image for amd64 and
+arm64, a compose file, and a walkthrough for adding it to TrueNAS SCALE as a
+custom app.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
-**v0.4:** [`isoshelf update` on the command
+**v0.5:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
 [two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
 and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5),
 along with a redesign of the page.<br>
+**1.0:** an official TrueNAS app, so it installs from the store rather than as
+a custom app.<br>
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and
 [requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>

@@ -1,0 +1,36 @@
+# The app manifest TrueNAS reads. Fields and their shapes were taken from a
+# real community app in truenas/apps rather than invented; the values are
+# ours. See README.md in this folder for what still has to be checked before
+# any of this is submitted.
+name: isoshelf
+title: isoshelf
+description: Keeps the bootable images in a folder up to date, and verifies every download.
+app_version: 0.4.0
+version: 1.0.0
+train: community
+categories:
+  - storage
+keywords:
+  - iso
+  - ventoy
+  - boot
+  - images
+home: https://github.com/ZachCurry13/isoshelf
+sources:
+  - https://github.com/ZachCurry13/isoshelf
+changelog_url: https://github.com/ZachCurry13/isoshelf/blob/main/CHANGELOG.md
+maintainers:
+  - name: ZachCurry13
+    url: https://github.com/ZachCurry13
+    email: zjboever@gmail.com
+# TrueNAS runs apps as its own "apps" user. isoshelf needs no home directory
+# and no passwd entry, so it is happy as any uid - what matters is that this
+# one can write to the folders the install form asks for.
+run_as_context:
+  - description: isoshelf runs as a non-root user.
+    gid: 568
+    group_name: apps
+    uid: 568
+    user_name: apps
+capabilities: []
+host_mounts: []

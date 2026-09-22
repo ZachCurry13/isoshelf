@@ -87,13 +87,43 @@ record of where things stand and what was decided.
    the rest of decision 15 (empty the archive after so many days, a download
    speed limit, hiding kinds and architectures) now that Settings has a home
    for them; one-click self-update with signed releases (13, 14).
-3. v0.4.0: `isoshelf update` (#1), older versions with a hold (#2), Make
+3. v0.5.0: `isoshelf update` (#1), older versions with a hold (#2), Make
    bootable (#3), signatures on images (#5), two downloads at once (#4),
    portable test (#7).
 4. Later: server mode in Docker (16).
 
 ## Latest change (2026-09-21)
 
+- Numbering settled: the container work is **v0.4.0**, the redesign moves to
+  **v0.5.0**, and an official TrueNAS app is the **1.0** goal.
+- Three things found by running the binary as TrueNAS's own app user (568)
+  rather than assuming, all fixed: the docs said 1000 and would have caused
+  the very permissions failure they warned about; a config folder isoshelf
+  couldn't read made it refuse to start instead of falling back to the
+  built-in catalog; and a folder named at startup that wasn't there produced
+  no complaint at all, which in a container is a mistyped mount and nothing
+  to go on.
+- The secret in the link now makes itself on a server and survives a restart,
+  so installing it asks nobody to invent a password for a box that is the
+  only thing between a stranger and their images.
+- `deploy/truenas/` has the start of a store entry, written against the real
+  schema of an existing community app. Two files are deliberately absent -
+  see that folder's README.
+- v0.3.7 reverses v0.3.6's keep-both direction at the maintainer's request:
+  the **new** download carries the version in its name and the file already on
+  the drive is not touched. Their call, and the safer one - nothing that
+  exists is renamed, so nothing pointing at a file by name can break.
+- v0.4.0 is server mode and the container. `--listen ADDRESS` turns off the
+  localhost-only rule deliberately; the token, cookie, custom header and
+  same-origin check all stand, and the origin check now accepts `https` for a
+  reverse proxy. `/healthz` is the one path outside the guard. `ISOSHELF_TOKEN`
+  keeps a bookmark working across restarts.
+- **Neither is pushed.** Both sit on local branches `version-the-new-file`
+  (v0.3.7 and v0.4.0 both landed there) at the maintainer's instruction: they
+  asked for nothing to reach GitHub until they say so.
+- Decided 2026-09-21: **error reports go to GitHub, not to a server.** The
+  page opens a prefilled issue form and the user submits it. No backend, no
+  telemetry, nothing to opt out of.
 - v0.3.6: keeping both copies of a fixed-name image, reporting a problem,
   two menu bugs, and a plainer set of words.
 - **Keep both was refused, and that was wrong.** `internal/update/keepboth.go`
@@ -124,7 +154,8 @@ record of where things stand and what was decided.
   versioned filename, which went stale every release. Names are now given by
   the part that doesn't change, the rule is in CLAUDE.md, and `internal/docs`
   fails the build if a versioned release filename reappears.
-- Decided 2026-09-21: **v0.4.0 includes redoing the page.** The maintainer's
+- Decided 2026-09-21: **v0.5.0 includes redoing the page** (v0.4.0 when this
+  was decided; the container work took that number instead). The maintainer's
   words were "clean up the UI - make it look like something I could show an
   investor", driven by the page not looking modern or polished rather than by
   any particular screen, and starting fresh rather than from a list of

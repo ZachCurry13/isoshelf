@@ -1,0 +1,12 @@
+images:
+  image:
+    repository: ghcr.io/zachcurry13/isoshelf
+    tag: v0.4.0
+consts:
+  isoshelf_container_name: isoshelf
+  # Where the two mounts land inside the container. The entrypoint opens
+  # images_path, and isoshelf keeps its own files - settings, the catalog
+  # copy, the secret for its link - under config_path.
+  images_path: /images
+  config_path: /config
+  web_port: 8765

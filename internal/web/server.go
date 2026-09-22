@@ -17,6 +17,7 @@ import (
 	"io/fs"
 	"net"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -57,6 +58,13 @@ type Config struct {
 	// CatalogSource says where Catalog came from: "built-in", "downloaded"
 	// or "yours". A catalog the user supplied is never replaced.
 	CatalogSource string
+	// AnyHost lets the page be opened by the machine's name or address on the
+	// network rather than only by localhost. It is set when isoshelf was told
+	// to listen somewhere other than loopback - in a container, mostly - and
+	// it is the only thing that changes about who may connect. The token, the
+	// cookie, the header on every change and the same-origin check all still
+	// apply, and they are what actually keeps other people out.
+	AnyHost bool
 	// Now defaults to time.Now.
 	Now func() time.Time
 }
@@ -188,7 +196,19 @@ func New(cfg Config) *Server {
 	return s
 }
 
+// healthPath answers whether isoshelf is up, for a container's health check.
+// It is the one path outside the guard, because a health check has no token
+// and shouldn't need one - and it says nothing at all: not which folder is
+// open, not what is in it, not even the version.
+const healthPath = "/healthz"
+
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path == healthPath {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.Header().Set("Cache-Control", "no-store")
+		w.Write([]byte("ok\n"))
+		return
+	}
 	s.handler.ServeHTTP(w, r)
 }
 
@@ -201,7 +221,7 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		h.Set("X-Frame-Options", "DENY")
 		h.Set("Content-Security-Policy", "default-src 'self'; img-src 'self' data:; frame-ancestors 'none'")
 
-		if !isLocalhost(r.Host) {
+		if !s.cfg.AnyHost && !isLocalhost(r.Host) {
 			http.Error(w, "isoshelf only answers on localhost", http.StatusForbidden)
 			return
 		}
@@ -220,7 +240,7 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		}
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
 			origin := r.Header.Get("Origin")
-			if r.Header.Get(requestHeader) != "1" || (origin != "" && origin != "http://"+r.Host) {
+			if r.Header.Get(requestHeader) != "1" || !sameOrigin(origin, r.Host) {
 				writeError(w, http.StatusForbidden, "request refused")
 				return
 			}
@@ -237,6 +257,22 @@ Go back to the isoshelf window and open that link, or start isoshelf again.</p>`
 
 func (s *Server) validToken(t string) bool {
 	return s.cfg.Token != "" && subtle.ConstantTimeCompare([]byte(t), []byte(s.cfg.Token)) == 1
+}
+
+// sameOrigin reports whether Origin, when the browser sent one, names this
+// same server. The scheme isn't compared beyond being a web one: behind a
+// reverse proxy - which is how this is reached on a NAS - the browser says
+// https while the request arrives here as plain http. The host is what has
+// to match, and a page on any other site can't forge that.
+func sameOrigin(origin, host string) bool {
+	if origin == "" {
+		return true // not a cross-origin request; the header is absent
+	}
+	u, err := url.Parse(origin)
+	if err != nil {
+		return false
+	}
+	return (u.Scheme == "http" || u.Scheme == "https") && u.Host == host
 }
 
 func isLocalhost(hostport string) bool {

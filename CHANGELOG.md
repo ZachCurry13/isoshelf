@@ -6,6 +6,54 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.0] - 2026-09-21
+
+isoshelf can live on the machine your images already live on.
+
+### Added
+- **Run isoshelf on a NAS or home server, in a container.** A `Dockerfile`, a
+  `docker-compose.yml` and [docs/docker.md](docs/docker.md), which walks
+  through adding it to TrueNAS SCALE as a custom app - including the
+  permissions snag that catches people out. Images are published for amd64
+  and arm64. If your images live on a NAS, this is the way to run it: the
+  work happens next to the files instead of across the network.
+- **`--listen ADDRESS`**, which is what makes that possible. isoshelf normally
+  answers only to localhost, because the page is for the person at the
+  keyboard. Given an address, it answers to the machine's own name as well -
+  and then the token in the link is the only thing keeping anyone out, so it
+  says so plainly when it starts. Everything else is unchanged: the token, the
+  cookie, the header on every change, and a same-origin check that now also
+  accepts `https`, since a reverse proxy in front of a NAS speaks https to the
+  browser and plain http to isoshelf.
+- **The secret in the link makes itself, once.** On a server isoshelf writes
+  it into its config folder the first time it starts and uses that one
+  afterwards, so the link you bookmarked still works after a restart or an
+  update - and installing it asks you to invent nothing. A box marked "token"
+  on an install form gets `password` typed into it, and that box is the only
+  thing between a stranger on your network and your images. Set
+  `ISOSHELF_TOKEN` if you would rather choose it; it must be at least sixteen
+  characters. On a desktop nothing changes: a fresh link every run, opened
+  for you.
+- **`/healthz`**, the one path that needs no token, for a container's health
+  check. It answers `ok` and says nothing else: not which folder is open, not
+  what is in it.
+
+### Fixed
+- **isoshelf says when the folder it was given isn't there.** It started
+  silently with an empty folder chooser and no hint about why, which in a
+  container - where the folder is named at startup and a mistyped mount is
+  the commonest first mistake - left nothing at all to go on. It now names
+  the folder and what is wrong with it, tells apart "nothing is there" from
+  "that is a file", and adds a line about checking the mount when it is
+  running as a server. It still starts, so you can choose a folder instead.
+- **A folder isoshelf can't read no longer stops it starting.** If something
+  other than "it isn't there" came back when it looked for your own catalog -
+  a config folder belonging to another user, which is the usual way this goes
+  wrong on a NAS - isoshelf decided you must have one and then failed trying
+  to open it. It now says which path it couldn't read and why, and carries on
+  with the built-in list of images. A permissions mistake looked like a crash
+  before; now it looks like a message telling you which folder to fix.
+
 ## [v0.3.7] - 2026-09-21
 
 ### Changed

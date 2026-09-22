@@ -1,0 +1,10 @@
+categories:
+  - storage
+tags:
+  - iso
+  - ventoy
+  - boot
+# TrueNAS serves these from its own media host once an app is accepted, so
+# these URLs are placeholders until then. An icon still has to be drawn.
+icon_url: https://raw.githubusercontent.com/ZachCurry13/isoshelf/main/deploy/truenas/icon.png
+screenshots: []
