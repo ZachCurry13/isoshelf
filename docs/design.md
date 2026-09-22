@@ -493,12 +493,17 @@ For when a new release breaks something and the user needs the previous one.
 
 - Release builds embed their version (`-ldflags "-X main.version=v0.1.0"`).
   Development builds report `dev` and never check.
-- On start (at most once an hour; daily in server mode), ask the GitHub API for the latest
-  release of `ZachCurry13/isoshelf`. If it's newer, show a notice with a link
-  to the release notes: one line on stderr in the CLI, a link in the top bar
-  of the page and again under Help in Settings. The check is turned off with
-  `--no-update-check` or `ISOSHELF_NO_UPDATE_CHECK`, not yet in Settings; the
-  last check time lives in the config folder.
+- On start (at most once an hour, the same everywhere - there is no separate
+  server-mode interval), ask the GitHub API for this repository's releases and
+  take the newest worth offering. **The list, not `/releases/latest`**: that
+  leaves pre-releases out, and a `-rc` build must not hide behind it for
+  somebody already running one. A pre-release is only offered to somebody on
+  a pre-release. If the answer is newer, show a notice with a link to the
+  release notes: one line on stderr in the CLI, a link in the top bar of the
+  page and again under Help in Settings. The check is turned off in Settings
+  ("Tell me when a new isoshelf is out"), or with `--no-update-check` or
+  `ISOSHELF_NO_UPDATE_CHECK`; the last check time lives in the config folder,
+  in `update-check.json`.
 - Only a notice for now: users download the new build themselves (portable:
   replace the files on the drive; Docker: pull the new image). A later
   "install update" must verify the release's `SHA256SUMS` first.
