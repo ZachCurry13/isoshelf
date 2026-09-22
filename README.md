@@ -280,6 +280,10 @@ username and password, the link with the secret stops working - `isoshelf
 password` or the environment variables are the way back if you forget. Plus:
 downloads failing with "permission denied" are now explained at startup, with
 the exact command to fix them.<br>
+**v0.4.8: Settings says when it saved.** *2026-09-22:* a green *Saved* beside
+whatever you just changed, and every setting's description cut to a sentence
+or two, with the small print moved under the control where it's read when it
+matters.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

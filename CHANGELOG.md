@@ -6,6 +6,23 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.8] - 2026-09-22
+
+### Fixed
+- **Settings now says when something saves.** Every answer in there saves
+  itself the moment you change it, which is the right behaviour and looks
+  exactly like nothing happening. A green **Saved** now appears beside the
+  setting you changed - beside that one, not somewhere general, because
+  "saved" only reassures if you can tell what was - and clears itself after a
+  few seconds.
+
+### Changed
+- **Settings reads shorter.** Each one now says what it does in a sentence or
+  two. The warnings and small print haven't gone; they've moved to the line
+  under the control, where they're read at the moment they matter instead of
+  standing between you and the switch. The longest hint was 463 characters;
+  none is now over 210, and a test keeps it that way.
+
 ## [v0.4.7] - 2026-09-22
 
 ### Changed

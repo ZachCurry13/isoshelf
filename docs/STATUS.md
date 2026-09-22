@@ -96,6 +96,15 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-22)
 
+- v0.4.8, both from the maintainer using it: Settings saved silently, and it
+  was too wordy. A "Saved" mark now appears beside the setting that changed -
+  each entry names the answer it owns, so the mark lands on the right row -
+  and every hint is cut to a sentence or two with the small print moved to
+  the note under the control. Two tests hold both: one fails if a setting
+  saves an answer no entry claims, the other if a hint goes over 210
+  characters. The longest was 463.
+
+
 - v0.4.7, both halves from the maintainer's own install. **The link's secret
   now stops working once a password is set** - their ask, outright: "I want
   to get rid of tokens moving forward and only have a login screen." It still

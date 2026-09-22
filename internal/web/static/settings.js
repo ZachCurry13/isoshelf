@@ -71,10 +71,43 @@ async function saveSetting(change) {
   try {
     state = await api("POST", "/api/settings", change);
     applyAppearance(state.appearance);
+    saved(Object.keys(change));
     render();
   } catch (err) {
     showNotice(err.message, true);
   }
+}
+
+// Saying so when something saves.
+//
+// Everything here saves itself the moment it changes, which is the right
+// behaviour and looks like nothing happening at all. So the setting that
+// changed says "Saved" for a few seconds - next to that setting rather than
+// somewhere general, because "saved" only reassures if you can tell what was.
+
+// savedFields are the answers saved a moment ago, and savedAt when.
+let savedFields = [];
+let savedAt = 0;
+let savedTimer = null;
+
+const SAVED_FOR = 3000;
+
+function saved(fields) {
+  savedFields = fields;
+  savedAt = Date.now();
+  clearTimeout(savedTimer);
+  // One redraw when the mark's time is up, rather than polling to notice:
+  // nothing else about the panel is changing meanwhile.
+  savedTimer = setTimeout(() => {
+    savedFields = [];
+    renderSettings(true);
+  }, SAVED_FOR);
+}
+
+// justSaved says whether this setting is one that saved a moment ago.
+function justSaved(setting) {
+  if (!setting.fields || Date.now() - savedAt > SAVED_FOR) return false;
+  return setting.fields.some((field) => savedFields.includes(field));
 }
 
 // saveRecords moves the open folder's records. It is not /api/settings: this
@@ -124,6 +157,7 @@ const SETTING_GROUPS = [
     settings: [
       {
         name: "Theme",
+        fields: ["theme"],
         hint: "Light, dark, or whatever this computer is set to.",
         words: "dark mode night light color theme appearance",
         control: () => choiceRow("Theme", [
@@ -134,18 +168,21 @@ const SETTING_GROUPS = [
       },
       {
         name: "Higher contrast",
+        fields: ["high_contrast"],
         hint: "Stronger words and firmer edges, for a bright room or tired eyes.",
         words: "accessibility contrast readable bold",
         control: () => switchRow("Higher contrast", look().high_contrast, (on) => ({ high_contrast: on })),
       },
       {
         name: "Larger text",
+        fields: ["larger_text"],
         hint: "Everything on the page a size bigger, without the browser's zoom.",
         words: "accessibility big font size zoom text",
         control: () => switchRow("Larger text", look().larger_text, (on) => ({ larger_text: on })),
       },
       {
         name: "Less movement",
+        fields: ["reduce_motion"],
         hint: "Stops the spinners and bars from moving while isoshelf works.",
         words: "accessibility animation motion spinner still",
         control: () => switchRow("Less movement", look().reduce_motion, (on) => ({ reduce_motion: on })),
@@ -157,9 +194,9 @@ const SETTING_GROUPS = [
     settings: [
       {
         name: "Check for updates by itself",
-        hint: "isoshelf asks each project for its newest version when you open the page " +
-          "and after a scan, and uses that answer for a day. Turn this off and it only " +
-          "goes online when you press Refresh.",
+        fields: ["auto_check"],
+        hint: "Asks each project for its newest version when the page opens, and " +
+          "remembers the answer for a day.",
         words: "automatic online check updates network offline internet",
         control: () => switchRow("Check for updates by itself", state && state.auto_check,
           (on) => ({ auto_check: on })),
@@ -169,12 +206,9 @@ const SETTING_GROUPS = [
       },
       {
         name: "Update the images by itself",
-        hint: "isoshelf checks on its own, downloads every update it finds, verifies it " +
-          "against the project's published checksum, and puts it in place - with no " +
-          "button pressed. Each image still follows the answer it already carries about " +
-          "its old copy, so nothing happens that the page hasn't been telling you it " +
-          "would. It stops before filling the folder, and a checksum that doesn't match " +
-          "still blocks the file.",
+        fields: ["auto_update", "auto_update_every"],
+        hint: "Downloads and installs updates on a schedule, with nothing to press. " +
+          "Verified the same way as when you press Update yourself.",
         words: "automatic update download schedule unattended by itself daily weekly",
         control: () => el("div", { class: "setting-controls" },
           switchRow("Update the images by itself", state && state.auto_update,
@@ -184,13 +218,16 @@ const SETTING_GROUPS = [
               (state && state.auto_update_every) || "day", (every) => ({ auto_update_every: every }))
             : null),
         note: () => (state && state.auto_update)
-          ? "This changes your folder while you aren't watching. Nothing is deleted that you didn't already choose to lose."
+          ? "Changes your folder while you aren't watching. Each image keeps its own answer " +
+            "about the file it replaces, nothing is deleted that you hadn't already chosen to " +
+            "lose, and it stops before the folder is full."
           : "",
       },
       {
         name: "Tell me when a new isoshelf is out",
-        hint: "Asks GitHub once an hour for the newest release. Nothing is installed " +
-          "and nothing about you is sent; it's a link in the top bar.",
+        fields: ["app_update_check"],
+        hint: "Checks GitHub for a newer isoshelf. Nothing is installed and nothing " +
+          "about you is sent - it's a link in the top bar.",
         words: "isoshelf version update release new notify github",
         control: () => switchRow("Tell me when a new isoshelf is out", state && state.app_update_check,
           (on) => ({ app_update_check: on })),
@@ -202,8 +239,9 @@ const SETTING_GROUPS = [
     settings: [
       {
         name: "What happens to the file an update replaces",
-        hint: "For images you haven't answered for yourself. Each image can say " +
-          "otherwise in its own panel, and an archived file can be restored until you empty the archive.",
+        fields: ["old_files"],
+        hint: "For images you haven't answered for yourself. Each one can choose " +
+          "differently in its own panel.",
         words: "replace archive delete keep both old copies updates",
         control: () => choiceRow("What happens to the file an update replaces", [
           ["replace", "Replace it"],
@@ -218,8 +256,9 @@ const SETTING_GROUPS = [
     settings: [
       {
         name: "Keep the list of images up to date",
-        hint: "New images arrive without a new isoshelf. Only the project's own " +
-          "repository is ever fetched, and a list that doesn't pass every check is refused.",
+        fields: ["catalog_auto"],
+        hint: "New images without waiting for a new isoshelf. Only ever read from " +
+          "this project's own repository.",
         words: "catalog list update images automatic",
         available: () => state && state.catalog && state.catalog.can_auto,
         control: () => el("div", { class: "setting-controls" },
@@ -249,29 +288,35 @@ const SETTING_GROUPS = [
       },
       {
         name: "Who can get in",
-        hint: "A username and password, for isoshelf running on your network. Once one " +
-          "is set it is the only way in: the link isoshelf prints when it starts stops " +
-          "working. Forgotten it? Set ISOSHELF_USERNAME and ISOSHELF_PASSWORD where " +
-          "isoshelf starts, or run \u201cisoshelf password\u201d on the machine it runs on.",
+        hint: "One username and password for this isoshelf. Once set, it's the only " +
+          "way in - the link isoshelf prints when it starts stops working.",
         words: "login password username sign in out account security who access",
         available: () => state && state.login && state.login.can_set,
         control: () => loginControl(),
         note: () => (state && state.login && state.login.user)
-          ? `Signed in as ${state.login.user}.`
-          : "Nobody has set one yet: anyone who can reach this address can use isoshelf.",
+          ? `Signed in as ${state.login.user}. Forgotten the password? Run \u201cisoshelf password\u201d ` +
+            "on the machine isoshelf runs on, or set ISOSHELF_USERNAME and ISOSHELF_PASSWORD and restart it."
+          : "Nobody has set one yet, so anyone who can reach this address can use isoshelf.",
       },
       {
         name: "Where this folder's records are kept",
         hint: "What isoshelf has worked out about this folder: its history, the images " +
-          "you starred, and what each file turned out to be. Normally they live in the " +
-          "folder itself, so the drive carries them to whatever computer it's plugged " +
-          "into next. Keep them elsewhere for a drive isoshelf shouldn't be writing to - " +
-          "but then they're found by the folder's path, so the same drive at a different " +
-          "letter starts with nothing. Your images are never moved, and neither is the archive.",
+          "you starred, and what each file turned out to be. Normally kept in the folder " +
+          "itself, so the drive carries them with it.",
         words: "records state history stars where kept read-only folder drive",
         available: () => state && state.target,
         control: () => recordsControl(),
-        note: () => (state && state.records && state.records.file) ? `Right now: ${state.records.file}` : "",
+        note: () => {
+          const r = (state && state.records) || {};
+          if (!r.file) return "";
+          const where = `Right now: ${r.file}`;
+          if (r.location === "folder") return where;
+          // Kept away from the folder, they are found by its path - which is
+          // the one thing about this choice that can surprise somebody later.
+          return where + " - kept away from the folder, they're found by its path, so the same " +
+            "drive at a different letter or mount point starts with nothing. Your images " +
+            "and the archive never move.";
+        },
       },
       {
         name: "isoshelf's own folder",
@@ -300,8 +345,8 @@ const SETTING_GROUPS = [
       },
       {
         name: "Report a bug",
-        hint: "Shows you the details, lets you copy them, and opens GitHub's bug form " +
-          "with them filled in. Nothing is sent until you press submit there.",
+        hint: "Shows the details, lets you copy them, and opens GitHub's form. " +
+          "Nothing is sent until you press submit.",
         words: "bug problem issue report help support broken",
         available: () => state && state.report_url,
         control: () => el("div", { class: "setting-controls" },
@@ -470,6 +515,7 @@ function settingsKey() {
     state.auto_update, state.auto_update_every,
     state.config_dir, state.catalog, state.records, recordsChoice, state.login,
     Boolean(state.app_update), $("settings-search").value,
+    savedFields.join(","),
   ]);
 }
 
@@ -510,7 +556,9 @@ function matches(setting, group, find) {
 function settingRow(setting) {
   const note = setting.note ? setting.note() : "";
   return el("div", { class: "setting" },
-    el("div", { class: "setting-name" }, setting.name),
+    el("div", { class: "setting-name" },
+      setting.name,
+      justSaved(setting) ? el("span", { class: "saved-mark" }, "Saved") : null),
     el("div", { class: "setting-hint" }, setting.hint),
     el("div", { class: "setting-control" }, setting.control()),
     note ? el("div", { class: "muted setting-note" }, note) : null);

@@ -130,3 +130,51 @@ func TestGridMinimumsCanGiveWayOnNarrowScreens(t *testing.T) {
 		}
 	}
 }
+
+// A setting that saves itself the moment it changes looks, to the person who
+// changed it, like nothing happened. Every switch and list in Settings has to
+// name the answer it owns, or the "Saved" mark has nothing to land on and
+// that silence comes back.
+func TestEverySavingSettingSaysWhichAnswerItOwns(t *testing.T) {
+	js := readStatic(t, "settings.js")
+	// Each entry that saves through /api/settings does it by sending one
+	// named answer; the same name has to appear in that entry's fields.
+	sending := regexp.MustCompile(`\(\w+\) => \(\{ (\w+)`)
+	for _, m := range sending.FindAllStringSubmatch(js, -1) {
+		field := m[1]
+		if !strings.Contains(js, `"`+field+`"`) {
+			t.Errorf("a setting saves %q but no entry lists it in fields, so it will "+
+				"save without saying so", field)
+		}
+	}
+	// And the mark itself has to be drawn from those fields.
+	for _, want := range []string{"justSaved(setting)", "saved-mark", "savedFields"} {
+		if !strings.Contains(js, want) {
+			t.Errorf("settings.js no longer has %q, so nothing says a setting saved", want)
+		}
+	}
+}
+
+// Settings is read by people who don't do this for a living, and a wall of
+// words is skipped rather than read. Anything that needs more than a couple
+// of sentences belongs in the note under the control, where it is read at the
+// moment it matters.
+func TestSettingHintsStayShort(t *testing.T) {
+	js := readStatic(t, "settings.js")
+	hints := regexp.MustCompile(`hint: ((?:"(?:[^"\\]|\\.)*"(?:\s*\+\s*)?\s*)+),`)
+	joined := regexp.MustCompile(`"\s*\+\s*"`)
+	const longest = 210
+	found := 0
+	for _, m := range hints.FindAllStringSubmatch(js, -1) {
+		text := strings.Trim(joined.ReplaceAllString(m[1], ""), `"`)
+		found++
+		if len(text) > longest {
+			t.Errorf("a setting's hint is %d characters, over %d:\n  %s\n"+
+				"Say what it does in a sentence and move the rest to its note.",
+				len(text), longest, text)
+		}
+	}
+	if found < 10 {
+		t.Fatalf("only found %d hints; this test has lost track of how they are written", found)
+	}
+}
