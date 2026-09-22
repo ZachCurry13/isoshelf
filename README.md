@@ -147,12 +147,12 @@ It currently knows **86 images**, grouped by what they're for:
 
 - **Desktop:** Ubuntu, Kubuntu and Xubuntu, Linux Mint and LMDE, Debian and
   Debian Live, Fedora, Arch, Omarchy, EndeavourOS, openSUSE Tumbleweed,
-  NixOS, Zorin OS, Pop!_OS, CachyOS, MX, Manjaro, Q4OS, Tiny Core.
+  NixOS, Zorin OS, Pop!_OS, CachyOS, MX, Manjaro, Q4OS, Tiny Core, FydeOS.
 - **Gaming and handhelds:** Bazzite, Nobara (including its Steam Handheld
   edition), Batocera.
 - **Server and homelab:** Proxmox VE, Backup Server and Mail Gateway,
-  TrueNAS, Home Assistant OS, Rocky Linux, AlmaLinux, FreeBSD, pfSense,
-  Alpine, Ubuntu Core.
+  TrueNAS, Home Assistant OS, Rocky Linux, AlmaLinux, CentOS, FreeBSD,
+  pfSense, Alpine, Ubuntu Server and Ubuntu Core.
 - **Raspberry Pi and other boards:** Raspberry Pi OS (desktop and Lite), Home
   Assistant OS for the Pi 5, Ubuntu Core and Manjaro ARM.
 - **Security and privacy:** Kali, Parrot, Qubes, Tails.
@@ -218,10 +218,13 @@ for a day, and has one Refresh button. Both can be turned off in Settings.<br>
 inside the window, a download that would overwrite a file asks what to do
 instead of failing, American spelling, *Restore* in the archive, and the page
 says how much room the images use and how much the queue will download.<br>
-**v0.3.4: scanning while downloads run.** *2026-09-21:* a scan or *Refresh*
+**v0.3.4: scanning while downloads run.** *Released 2026-09-21:* a scan or *Refresh*
 is no longer refused while images download - the two run side by side, and
 the page shows both. A scan also stops being able to undo the record of a
 file a download had just placed.<br>
+**v0.3.5: add a file from your computer.** *2026-09-21:* drag an image onto
+the page, or choose one, and it lands in the folder - for the images no
+catalog knows. Nothing is written over without asking.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.4:** [`isoshelf update` on the command
@@ -229,7 +232,8 @@ line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
 [two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
-and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
+and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5),
+along with a redesign of the page.<br>
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and
 [requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
@@ -256,11 +260,14 @@ Download it from the [latest
 release](https://github.com/ZachCurry13/isoshelf/releases/latest). There's no
 installer and nothing to set up — it's one file.
 
-| You're on | Download | Then |
+Every file on that page starts with the version, like
+`isoshelf-vX.Y.Z-…`, so pick the one whose name ends the way your row says.
+
+| You're on | The file ending in | Then |
 |---|---|---|
-| **Windows** | `isoshelf-v0.3.3-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
-| **Linux** | `isoshelf-v0.3.3-linux-amd64` (or `-arm64`) | `chmod +x` the file, then run it |
-| **A USB drive** | `isoshelf-v0.3.3-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
+| **Windows** | `-windows-amd64.exe` | Double-click it. Windows may warn that it's from an unknown publisher: choose **More info → Run anyway**. isoshelf opens in your browser. |
+| **Linux** | `-linux-amd64` (or `-linux-arm64`) | `chmod +x` the file, then run it |
+| **A USB drive** | `-portable.zip` | Unzip it onto the drive. It keeps its settings on the drive and opens that drive by default. |
 
 Each download carries its version, so you can tell two of them apart in your
 Downloads folder. The files *inside* the portable zip don't: that's the copy

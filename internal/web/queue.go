@@ -128,6 +128,8 @@ func (s *Server) busyLocked() string {
 		return "Wait until the scan finishes, or stop it."
 	case s.downloading != nil || len(s.queue) > 0:
 		return "Wait until the downloads finish, or stop them."
+	case s.uploads > 0:
+		return "Wait until the file you're adding has finished arriving."
 	default:
 		return ""
 	}

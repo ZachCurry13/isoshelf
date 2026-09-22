@@ -9,25 +9,21 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**Nothing is in flight.** `main` is at `c49b13a`. v0.3.4 is written and
-pushed but unreleased: release it the way v0.3.3 was released (the workflow
-started by hand from the Actions tab with the version typed in, since the
-sandbox refuses `v*` tag pushes with a 403).
+**v0.3.5 is in flight** on `upload-from-browser`. `main` carries everything
+through v0.3.4.
 
-**v0.3.3 is the latest release** (published 2026-09-21), and there are twelve
-releases going back to v0.2.0, the first one. There is no v0.3.1 or v0.3.2
-release: both versions have their own `CHANGELOG.md` section, but they went
-out inside the v0.3.3 release, because a release happens when a `v*` tag is
-pushed and those two were never tagged. Note for anyone checking this the way
-it was got wrong once: this is a shallow clone with no tags fetched, so
+**v0.3.4 is the latest release.** Releases go back to v0.2.0, the first one.
+There is no v0.3.1 or v0.3.2 release: both have their own `CHANGELOG.md`
+section but went out inside v0.3.3, because a release happens when a `v*` tag
+is pushed and those two were never tagged. Note for anyone checking this the
+way it was got wrong once: this is a shallow clone with no tags fetched, so
 `git tag` prints nothing even though releases exist. Ask GitHub, not the
 clone.
 
-1. ~~Merge [#13]~~ *(done: merged as `9f609a6`, with the release-workflow fix
-   [#14] as `c49b13a`; both branches are deleted)*.
-2. ~~Close issue #10~~ *(done: it shipped in v0.3.0 and was left open)*.
-3. ~~Release v0.3.3~~ *(done: the five versioned files came out right, with
-   the plain names still inside the portable zip)*.
+**How a release happens here:** merge the branch's pull request into `main`,
+then start the `release` workflow from the Actions tab with the version typed
+in. Pushing a `v*` tag is the normal way and does the same thing, but this
+sandbox's git proxy refuses tag pushes with a 403.
 
 ## ~~v0.3.4: scanning while downloads run~~ *(done)*
 
@@ -57,11 +53,17 @@ refused for as long as a queue takes. What was learned doing it:
 
 ## Then, in order
 
-4. **Upload from the browser** (from the review doc). Drag a file onto the
-   page, or pick one, and it lands in the folder. Its own step, because it
-   writes to the drive: image files only, inside the chosen folder, nothing
-   overwritten without asking, and the same "what is this file?" pass
-   afterwards that a copied-in file gets.
+4. ~~**Upload from the browser**~~ *(done in v0.3.5. `internal/upload` does
+   the placing, `internal/web/upload.go` the endpoint - the request body is
+   the file itself rather than a form, so it streams to the disk - and
+   `static/upload.js` the page. What was learned: the file goes to
+   `.isoshelf/incoming` and is renamed into place only once all of it has
+   arrived, so a dropped connection costs nothing; and the page's content
+   policy forbids inline styles, so a progress bar's width is set with
+   `.style.width`, never a `style` attribute. It also turned up a bug older
+   than itself - a file replaced by one of the same name disappeared from the
+   archive at the next scan while still using room - fixed in the same
+   release.)*
 5. **Where each folder's records live** (decision 10 in STATUS.md). The
    fields are already in `internal/settings` (`StateLocation`, `StateDir`,
    `InFolder`/`WithApp`/`Elsewhere`); nothing reads them yet, and the method
@@ -86,15 +88,50 @@ refused for as long as a queue takes. What was learned doing it:
 9. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
    an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
    once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
-   drive ([#7]).
+   drive ([#7]) - **and the redesign below**.
+
+## v0.4.0: the page, redone
+
+The maintainer's brief, given 2026-09-21: **"clean up the UI - make it look
+like something I could show an investor."** Not a priority before then; the
+0.3.x items above come first. What was said when asked what drives it: the
+page doesn't look modern or polished, and it is a fresh start rather than a
+list of complaints about particular screens.
+
+Read that as a design job, not a tidy-up. The bones were decided deliberately
+(decisions 1-9 and 15-17 in STATUS.md: one page, a sticky jump bar, to-do
+cards, plain status words, one filter menu with chips, slim rows, a details
+panel) and v0.3.0 delivered them; what this asks for is the surface those
+bones are wearing - type, colour, spacing, rhythm, polish - and a willingness
+to overturn a decision where it earns it, by argument rather than quietly.
+
+Three things it must not cost, because each has a switch in Settings and
+someone relying on it: higher contrast, larger text, and less movement. Nor
+the phone layout, nor the rule that text from the drive is inserted with
+textContent and never as HTML.
+
+Whatever is proposed, the maintainer wants to be asked about anything where
+more than one answer is good, rather than shown a finished redesign.
+
+`docs/design-audit.md` is a critique of the page written before any of this
+was built, with seven such questions already worked out and a staged plan.
+Start there; it is a proposal, not a decision.
+
+It also turned up **two live bugs**, small enough to fix in a 0.3.x release
+rather than wait:
+
+- The Filter menu runs off the **left** edge at phone width (390px).
+  `placeMenu` clamps against the right edge only.
+- **Escape doesn't close the details panel's "…" menu.** Settings, the
+  details panel and the dock are wired to Escape; `details.menu` isn't.
 
 ## Worth knowing before you start
 
-- **The page is eight scripts**, not one. `app.js` was 2,544 lines until
-  v0.3.3; it is now `app.js` (state, asking, drawing, wiring), `images.js`,
-  `details.js`, `downloads.js`, `actions.js`, `folders.js`, `archive.js` and
-  `settings.js`. Read the one you need. A new one goes in `index.html` and in
-  `scripts` in `internal/web/static_test.go`.
+- **The page is nine scripts**, not one. `app.js` was 2,544 lines until
+  v0.3.1; it is now `app.js` (state, asking, drawing, wiring), `images.js`,
+  `details.js`, `downloads.js`, `actions.js`, `folders.js`, `archive.js`,
+  `settings.js` and `upload.js`. Read the one you need. A new one goes in
+  `index.html` and in `scripts` in `internal/web/static_test.go`.
 - **`deadcode` comes back clean** and should stay that way:
   `GOTOOLCHAIN=go1.27.1 go run golang.org/x/tools/cmd/deadcode@latest -test ./...`.
   `staticcheck` is not clean and hasn't been: it flags

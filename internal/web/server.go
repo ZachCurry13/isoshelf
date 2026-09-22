@@ -97,6 +97,10 @@ type Server struct {
 	finished []finishedJob
 	nextJob  int
 	placed   bool
+	// uploads is how many files are arriving from the user's computer right
+	// now. They write straight to the folder, so switching folders waits for
+	// them, but nothing else does.
+	uploads int
 	// runJob downloads one queued image. Tests replace it.
 	runJob   func(context.Context, *job) (note string, err error)
 	lastErr  string
@@ -163,6 +167,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/queue/move", s.moveQueued)
 	mux.HandleFunc("POST /api/queue/drop", s.dropQueued)
 	mux.HandleFunc("POST /api/queue/clear", s.clearFinished)
+	mux.HandleFunc("POST /api/upload", s.uploadFile)
 	mux.HandleFunc("POST /api/remove", s.remove)
 	mux.HandleFunc("POST /api/removed/empty", s.emptyRemoved)
 	mux.HandleFunc("POST /api/cancel", s.cancel)

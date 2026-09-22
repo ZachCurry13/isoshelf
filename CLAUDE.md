@@ -7,11 +7,14 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/catalog`: catalog format and `default.toml`, the list of known images
 - `internal/{source,resolve,verify,fetch,update}`: latest version → exact file and checksum → download → place
 - `internal/{scan,sniff,state,inventory,check,identify}`: read a folder, keep its records, work out statuses
+- `internal/upload`: places a file dragged onto the page or picked from the user's own computer
 - `internal/web`: HTTP server and the embedded page. `static/index.html` loads
   one script per part of the page: `app.js` (state, asking, drawing, wiring),
   `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
-  `archive.js`, `settings.js`, plus `app.css`
+  `archive.js`, `settings.js`, `upload.js`, plus `app.css`
 - `internal/remote/remotetest/recorded`: recorded HTTP responses the tests replay
+- `internal/sampledrive`: real filenames used as test fixtures; its `mkdrive` command writes them to a real folder for trying the page against a full drive
+- `internal/docs`: no code, just the test that keeps this repository's own claims about itself true
 - `docs/design.md` (full rules and design), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/catalog-sources.md`
 
 ## Run and test
@@ -64,5 +67,20 @@ people have downloaded. Work never happens directly on it.
   a bug that needs reproducing from scratch, a batch of wording. Keep a small
   edit in hand.
 - Each batch of changes gets a version (0.0.1 steps) and a CHANGELOG.md section (the release build needs it). Catalog changes also raise its `revision` and get a dated CATALOG-CHANGES.md section.
+- **Nothing in the repository may say something that is no longer true, and
+  this is checked before every push, not later.** People read this repository
+  on GitHub without cloning it, so a stale sentence is the product as far as
+  they are concerned. Before pushing, re-read whatever the change affects -
+  README, `docs/*.md`, `CLAUDE.md`, issue templates, workflow text - and make
+  it agree with what the code now does: version numbers, counts (catalog
+  entries, sample-drive files, script names), file names, and anything
+  described as "next" or "not done yet". `CHANGELOG.md` and
+  `CATALOG-CHANGES.md` are the exception: they are a record of what each
+  release held, so old versions stay written there exactly as they were.
+- **Better still, don't write down anything that has to be maintained.** A
+  download is "the file ending in `-windows-amd64.exe`", never a file name
+  with a real version in it; an example version is written `vMAJOR.MINOR.PATCH`
+  or `vX.Y.Z`. A test (`internal/docs`) fails the build if a release file name
+  carrying a real version reappears outside the changelogs.
 - Commit and push after each step; keep README and docs current.
 - Never stop or restart the maintainer's preview (port 8765) without asking; test downloads in a scratch folder.

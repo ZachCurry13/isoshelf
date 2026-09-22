@@ -89,6 +89,29 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-21)
 
+- v0.3.5 adds a file from the user's own computer: dragged onto the page or
+  chosen, streamed straight to the folder through `internal/upload`. Image
+  files only, inside the chosen folder, and a name clash asks the same two
+  questions an update asks. It lands in `.isoshelf/incoming` and is renamed
+  into place only when all of it is there.
+- It uncovered an older bug, fixed with it: a file replaced by one of the
+  same name was moved aside correctly, but the next scan forgot the note
+  because that name was in the folder again, so it vanished from the archive
+  while still using room. The archive now lists what is really waiting in
+  `.isoshelf/removed`, and the archive/history split is about whether the
+  file is still there rather than whether it can go back right now.
+- Decided 2026-09-21: **nothing in the repository may say something that
+  isn't true, checked before every push.** The README named a download by its
+  versioned filename, which went stale every release. Names are now given by
+  the part that doesn't change, the rule is in CLAUDE.md, and `internal/docs`
+  fails the build if a versioned release filename reappears.
+- Decided 2026-09-21: **v0.4.0 includes redoing the page.** The maintainer's
+  words were "clean up the UI - make it look like something I could show an
+  investor", driven by the page not looking modern or polished rather than by
+  any particular screen, and starting fresh rather than from a list of
+  complaints. Not before the 0.3.x items, which stay the priority. Higher
+  contrast, larger text, less movement and the phone layout all have to
+  survive it.
 - v0.3.4 splits the one `s.run` slot a scan and a download shared into
   `s.scanning` and `s.downloading`, so a scan or Refresh is no longer refused
   while a queue runs and the page shows both at once. Switching folders and

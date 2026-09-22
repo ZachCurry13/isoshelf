@@ -15,6 +15,7 @@
 <script src="/static/folders.js" defer></script>
 <script src="/static/archive.js" defer></script>
 <script src="/static/settings.js" defer></script>
+<script src="/static/upload.js" defer></script>
 </head>
 <body>
 <header class="topbar">
@@ -172,6 +173,22 @@
     </details>
   </section>
 
+  <!-- A file the user already has, from their own computer. -->
+  <section class="card upload" id="upload">
+    <div class="upload-head">
+      <div class="upload-words">
+        <span class="more-title">Add a file from this computer</span>
+        <p class="muted">Drag an image anywhere onto this page, or choose one. It goes
+          straight into this folder, and isoshelf works out what it is afterwards.</p>
+      </div>
+      <button type="button" class="btn" id="upload-choose">Choose a file…</button>
+      <input type="file" id="upload-input" multiple hidden
+        accept=".iso,.wim,.img,.vhd,.vhdx,.efi,.xz,.gz,.zip"
+        aria-label="Choose an image file to add to this folder">
+    </div>
+    <ul class="upload-list" id="upload-list"></ul>
+  </section>
+
   <!-- Files isoshelf set aside: still on the drive, still using room. -->
   <section class="card more" id="archive" hidden>
     <div class="archive-head">
@@ -235,6 +252,11 @@
     <span class="muted" id="settings-where"></span>
   </footer>
 </aside>
+
+<!-- Shown only while a file is being dragged over the window. -->
+<div class="drop-overlay" id="drop-overlay" hidden aria-hidden="true">
+  <div class="drop-sign">Drop to add to this folder</div>
+</div>
 
 <dialog id="ask" class="ask" aria-labelledby="ask-title">
   <form method="dialog" class="ask-form">
