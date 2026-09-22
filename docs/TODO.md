@@ -127,11 +127,11 @@ rather than wait:
 
 ## Worth knowing before you start
 
-- **The page is eight scripts**, not one. `app.js` was 2,544 lines until
-  v0.3.3; it is now `app.js` (state, asking, drawing, wiring), `images.js`,
-  `details.js`, `downloads.js`, `actions.js`, `folders.js`, `archive.js` and
-  `settings.js`. Read the one you need. A new one goes in `index.html` and in
-  `scripts` in `internal/web/static_test.go`.
+- **The page is nine scripts**, not one. `app.js` was 2,544 lines until
+  v0.3.1; it is now `app.js` (state, asking, drawing, wiring), `images.js`,
+  `details.js`, `downloads.js`, `actions.js`, `folders.js`, `archive.js`,
+  `settings.js` and `upload.js`. Read the one you need. A new one goes in
+  `index.html` and in `scripts` in `internal/web/static_test.go`.
 - **`deadcode` comes back clean** and should stay that way:
   `GOTOOLCHAIN=go1.27.1 go run golang.org/x/tools/cmd/deadcode@latest -test ./...`.
   `staticcheck` is not clean and hasn't been: it flags

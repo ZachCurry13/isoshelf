@@ -147,12 +147,12 @@ It currently knows **86 images**, grouped by what they're for:
 
 - **Desktop:** Ubuntu, Kubuntu and Xubuntu, Linux Mint and LMDE, Debian and
   Debian Live, Fedora, Arch, Omarchy, EndeavourOS, openSUSE Tumbleweed,
-  NixOS, Zorin OS, Pop!_OS, CachyOS, MX, Manjaro, Q4OS, Tiny Core.
+  NixOS, Zorin OS, Pop!_OS, CachyOS, MX, Manjaro, Q4OS, Tiny Core, FydeOS.
 - **Gaming and handhelds:** Bazzite, Nobara (including its Steam Handheld
   edition), Batocera.
 - **Server and homelab:** Proxmox VE, Backup Server and Mail Gateway,
-  TrueNAS, Home Assistant OS, Rocky Linux, AlmaLinux, FreeBSD, pfSense,
-  Alpine, Ubuntu Core.
+  TrueNAS, Home Assistant OS, Rocky Linux, AlmaLinux, CentOS, FreeBSD,
+  pfSense, Alpine, Ubuntu Server and Ubuntu Core.
 - **Raspberry Pi and other boards:** Raspberry Pi OS (desktop and Lite), Home
   Assistant OS for the Pi 5, Ubuntu Core and Manjaro ARM.
 - **Security and privacy:** Kali, Parrot, Qubes, Tails.
@@ -218,7 +218,7 @@ for a day, and has one Refresh button. Both can be turned off in Settings.<br>
 inside the window, a download that would overwrite a file asks what to do
 instead of failing, American spelling, *Restore* in the archive, and the page
 says how much room the images use and how much the queue will download.<br>
-**v0.3.4: scanning while downloads run.** *2026-09-21:* a scan or *Refresh*
+**v0.3.4: scanning while downloads run.** *Released 2026-09-21:* a scan or *Refresh*
 is no longer refused while images download - the two run side by side, and
 the page shows both. A scan also stops being able to undo the record of a
 file a download had just placed.<br>

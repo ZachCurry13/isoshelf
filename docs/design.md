@@ -644,9 +644,10 @@ Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
   said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
   to-do cards, filters, rows), `details.js` (the panel and the checklist),
   `downloads.js` (the queue), `actions.js` (updating, removing, identifying),
-  `folders.js` (the chooser), `archive.js`, `settings.js`. They were one
-  2,544-line `app.js` until v0.3.1; the split is what keeps changing one
-  corner from meaning reading all of it.
+  `folders.js` (the chooser), `archive.js`, `settings.js` and `upload.js`
+  (dragging a file onto the page, or picking one). They were one 2,544-line
+  `app.js` until v0.3.1; the split is what keeps changing one corner from
+  meaning reading all of it.
 - Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
   with `go run ./internal/web/logos/fetch`. `/logo/{slug}` serves those, then
   ones fetched earlier from `<config>/logos`, then fetches from the CDN once
