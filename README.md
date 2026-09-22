@@ -302,6 +302,10 @@ pre-releases out.<br>
 notice for every isoshelf already installed, because those ask GitHub for its
 "latest release" and GitHub leaves pre-releases out of that. Only a `-rc` tag
 is a pre-release now.<br>
+**v0.4.12: sign out works.** *2026-09-22:* it answered "request refused" and
+left you signed in - a browser reports a plain form's sender as "null" when a
+page asks for no referrer, which isoshelf does, so its own check refused
+every sign-out.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

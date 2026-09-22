@@ -1,6 +1,7 @@
 package web
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -272,5 +273,96 @@ func TestTheLoginPageEscapesWhatItShows(t *testing.T) {
 	})
 	if strings.Contains(rec.Body.String(), "<script>alert(1)</script>") {
 		t.Error("the login page put a typed-in script tag straight into the page")
+	}
+}
+
+// Signing out has to work, and it did not: it was a plain form posted to
+// /login, and this server sends Referrer-Policy: no-referrer, so browsers
+// send "Origin: null" on a form post and the same-origin check refused every
+// sign-out with "request refused". It goes through the ordinary door now,
+// where the page's own code sends a real Origin and the header.
+func TestSigningOut(t *testing.T) {
+	s := serverMode(t, true)
+	rec := postLogin(t, s, map[string]string{
+		"user": "zach", "password": "a+good+long+password", "again": "a+good+long+password",
+	})
+	var session *http.Cookie
+	for _, c := range rec.Result().Cookies() {
+		if c.Name == sessionCookie && c.Value != "" {
+			session = c
+		}
+	}
+	if session == nil {
+		t.Fatal("setting up a login didn't sign anybody in")
+	}
+
+	// The way the page asks: the change header and an Origin that means
+	// something, which is what a fetch sends and a form post cannot.
+	req := httptest.NewRequest(http.MethodPost, "http://nas.local:8765/api/login/signout", strings.NewReader("{}"))
+	req.AddCookie(session)
+	req.Header.Set(requestHeader, "1")
+	req.Header.Set("Origin", "http://nas.local:8765")
+	out := httptest.NewRecorder()
+	s.ServeHTTP(out, req)
+	if out.Code != http.StatusOK {
+		t.Fatalf("signing out: %d %s", out.Code, out.Body)
+	}
+	if strings.Contains(out.Body.String(), "request refused") {
+		t.Errorf("signing out was refused: %s", out.Body)
+	}
+	// The cookie is cleared, so the browser holding it is out.
+	cleared := false
+	for _, c := range out.Result().Cookies() {
+		if c.Name == sessionCookie && c.MaxAge < 0 {
+			cleared = true
+		}
+	}
+	if !cleared {
+		t.Error("signing out didn't clear the session cookie")
+	}
+	// And the old session really is no good any more... it is, in fact: the
+	// cookie is signed and still valid, which is why signing out is the
+	// browser throwing it away. Signing out everywhere is the one that makes
+	// an old cookie worthless, and it has its own endpoint.
+}
+
+// A POST to /login while already signed in is somebody signing in again, not
+// a logout. It used to be read as a logout, which is how signing out came to
+// be refused in the first place.
+func TestPostingToLoginWhileSignedInIsALogin(t *testing.T) {
+	s := serverMode(t, true)
+	rec := postLogin(t, s, map[string]string{
+		"user": "zach", "password": "a+good+long+password", "again": "a+good+long+password",
+	})
+	var session *http.Cookie
+	for _, c := range rec.Result().Cookies() {
+		if c.Name == sessionCookie && c.Value != "" {
+			session = c
+		}
+	}
+	if session == nil {
+		t.Fatal("no session to test with")
+	}
+	// Ask for the form (carrying the session), then post it back.
+	page := httptest.NewRequest(http.MethodGet, "http://nas.local:8765/login", nil)
+	page.Header.Set("Accept", "text/html")
+	page.AddCookie(session)
+	pageOut := httptest.NewRecorder()
+	s.ServeHTTP(pageOut, page)
+
+	req := httptest.NewRequest(http.MethodPost, "http://nas.local:8765/login",
+		strings.NewReader("user=zach&password=a+good+long+password"))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.AddCookie(session)
+	for _, c := range pageOut.Result().Cookies() {
+		if c.Name == formCookie {
+			req.AddCookie(c)
+			req.Body = io.NopCloser(strings.NewReader("user=zach&password=a+good+long+password&" + formField + "=" + c.Value))
+		}
+	}
+	out := httptest.NewRecorder()
+	s.ServeHTTP(out, req)
+	if strings.Contains(out.Body.String(), "request refused") {
+		t.Errorf("signing in while already signed in was refused: %d %s", out.Code, out.Body)
 	}
 }
