@@ -145,8 +145,8 @@ record of where things stand and what was decided.
 - The v0.3.x branch is merged and released. [#13] went in as `9f609a6` and
   the release-workflow fix [#14] as `c49b13a`; `main` now carries everything
   through v0.3.3 and both branches are deleted. The release itself was
-  started by hand from the Actions tab, because the sandbox refuses `v*` tag
-  pushes with a 403, and it attached the five versioned files as intended.
+  started by hand from the Actions tab, and it attached the five versioned
+  files as intended.
 - Issue #10 (the phone layout) is closed; it had shipped in v0.3.0.
 - Next: v0.3.4, scanning while downloads run - splitting the single `s.run`
   slot the scan and the download share. `docs/TODO.md` has what it needs.

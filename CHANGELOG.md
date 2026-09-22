@@ -6,6 +6,19 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.3.7] - 2026-09-21
+
+### Changed
+- **When you keep both copies, it's the new download that carries the
+  version.** v0.3.6 did it the other way round: the file already on your
+  drive was renamed and the new one took the unchanging name. This is the
+  safer way round, and the maintainer's call - nothing already on the drive
+  is touched at all, so nothing pointing at a file by name can break, and the
+  new file says on its face which version it is. `netboot.xyz.iso` stays
+  exactly where it was, and the new one arrives as
+  `netboot.xyz-2.0.87.iso` (or with the date, when the project doesn't
+  publish a version).
+
 ## [v0.3.6] - 2026-09-22
 
 ### Added

@@ -38,6 +38,13 @@ people have downloaded. Work never happens directly on it.
   `CHANGELOG.md` section. No section, no release - the workflow stops.
 - The maintainer is new to Git, so say which of these you are doing and why,
   in plain words, rather than just running it.
+- **In the sandbox these sessions run in**, the git proxy refuses `v*` tag
+  pushes and branch deletions with a 403. So a release is started by hand
+  from the Actions tab with the version typed in, and a merged branch that
+  GitHub didn't delete itself has to be deleted on the website. The clone is
+  shallow with no tags fetched, so `git tag` prints nothing even when
+  releases exist - ask GitHub, not the clone. None of this is true of the
+  project itself, so it stays out of the documents people read.
 
 ## Hard rules (details in docs/design.md)
 - Only image files inside the folder the user picked; never partitions, bootloaders or `ventoy/`.

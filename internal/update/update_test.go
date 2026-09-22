@@ -288,9 +288,9 @@ func TestRunSameFilename(t *testing.T) {
 	}
 }
 
-// Keeping both copies of an image whose filename never changes: the old file
-// steps aside under a name of its own and the new one takes the name that
-// never changes, so whatever points at that name still works.
+// Keeping both copies of an image whose filename never changes: the new
+// download carries its version in its name, and the file already on the drive
+// is not touched at all.
 func TestRunKeepsBothWhenTheNameNeverChanges(t *testing.T) {
 	dir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(dir, "fixed.iso"), []byte("the old image"), 0o644); err != nil {
@@ -309,67 +309,49 @@ func TestRunKeepsBothWhenTheNameNeverChanges(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// The new one has the name that never changes.
-	if got, err := os.ReadFile(filepath.Join(dir, "fixed.iso")); err != nil || string(got) != newImage {
-		t.Fatalf("new file: %q, %v", got, err)
+	// The file that was already there is exactly as it was. Nothing on the
+	// drive was renamed, so nothing pointing at it by name can have broken.
+	if got, err := os.ReadFile(filepath.Join(dir, "fixed.iso")); err != nil || string(got) != "the old image" {
+		t.Fatalf("the old file changed: %q, %v", got, err)
 	}
-	// The old one is still here, under the version it was.
-	if res.Renamed != "fixed-1.2.3.iso" {
-		t.Fatalf("renamed = %q, want fixed-1.2.3.iso", res.Renamed)
-	}
-	if got, err := os.ReadFile(filepath.Join(dir, res.Renamed)); err != nil || string(got) != "the old image" {
-		t.Errorf("the old file: %q, %v", got, err)
-	}
-	if len(res.Removed) != 0 || !slices.Contains(res.Kept, res.Renamed) {
-		t.Errorf("removed %v, kept %v", res.Removed, res.Kept)
+	if !slices.Contains(res.Kept, "fixed.iso") || len(res.Removed) != 0 {
+		t.Errorf("kept %v, removed %v", res.Kept, res.Removed)
 	}
 
-	// Its record moved with it, and says what the image is - otherwise the
-	// next scan would call a file it has known for months an unknown file.
-	rec, ok := st.Files[res.Renamed]
-	if !ok || rec.Entry != "fixed" || !rec.Assigned {
-		t.Errorf("the renamed file's record: %+v (present %v)", rec, ok)
+	// The new one says which version it is, in its name.
+	if !strings.HasPrefix(res.File, "fixed-") || !strings.HasSuffix(res.File, ".iso") || res.File == "fixed.iso" {
+		t.Fatalf("the new file is called %q; it should carry its version", res.File)
 	}
-	if _, stale := st.Files["fixed.iso"]; stale && st.Files["fixed.iso"].Version == "1.2.3" {
-		t.Error("the old record still sits under the name the new file took")
+	if got, err := os.ReadFile(filepath.Join(dir, res.File)); err != nil || string(got) != newImage {
+		t.Errorf("the new file: %q, %v", got, err)
+	}
+
+	// And isoshelf knows what it is, though its name no longer matches the
+	// catalog's - otherwise the next scan would call it an unknown file.
+	rec, ok := st.Files[res.File]
+	if !ok || rec.Entry != "fixed" || !rec.Assigned {
+		t.Errorf("the new file's record: %+v (present %v)", rec, ok)
 	}
 }
 
-// Without a version to go on, the older copy is named by the day it arrived.
-func TestKeepBothFallsBackToTheDate(t *testing.T) {
+// Without a version to go on, the new file is named by the day it arrived,
+// and a second copy the same day doesn't land on the first.
+func TestKeepBothNameFallsBackToTheDate(t *testing.T) {
 	dir := t.TempDir()
-	if err := os.WriteFile(filepath.Join(dir, "fixed.iso"), []byte("old"), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	st := state.New(scan.Ventoy)
-	st.Files["fixed.iso"] = state.FileRecord{Entry: "fixed", PlacedAt: now}
-
-	aside, err := KeepBoth(dir, "fixed.iso", st, now)
-	if err != nil {
-		t.Fatal(err)
-	}
+	first := KeepBothName(dir, "fixed.iso", "", now)
 	want := "fixed-" + now.UTC().Format("2006-01-02") + ".iso"
-	if aside != want {
-		t.Errorf("aside = %q, want %q", aside, want)
+	if first != want {
+		t.Errorf("first = %q, want %q", first, want)
 	}
-	if _, err := os.Stat(filepath.Join(dir, want)); err != nil {
-		t.Errorf("the old file isn't there under its new name: %v", err)
-	}
-
-	// A second one the same day doesn't land on the first.
-	if err := os.WriteFile(filepath.Join(dir, "fixed.iso"), []byte("older still"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, first), []byte("x"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	st.Files["fixed.iso"] = state.FileRecord{Entry: "fixed", PlacedAt: now}
-	second, err := KeepBoth(dir, "fixed.iso", st, now)
-	if err != nil {
-		t.Fatal(err)
+	if second := KeepBothName(dir, "fixed.iso", "", now); second == first {
+		t.Errorf("the second copy took the first one's name: %q", second)
 	}
-	if second == aside {
-		t.Fatalf("the second copy took the first one's name: %q", second)
-	}
-	if got, _ := os.ReadFile(filepath.Join(dir, aside)); string(got) != "old" {
-		t.Errorf("the first copy was overwritten: %q", got)
+	// A version that couldn't be part of a filename doesn't become one.
+	if got := KeepBothName(dir, "fixed.iso", "../../etc", now); strings.ContainsAny(got, `/\`) {
+		t.Errorf("a version turned into a path: %q", got)
 	}
 }
 

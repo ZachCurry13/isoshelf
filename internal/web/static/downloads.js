@@ -324,11 +324,12 @@ function againButtons(job) {
   }
   // Three real answers now. Keeping both used to be refused for these
   // images, because the new file wanted a name the old one already had; the
-  // old one steps aside under a name of its own instead.
+  // new one carries its version in its name instead, and nothing already in
+  // the folder is touched.
   return el("div", { class: "conflict-choices" },
     el("button", {
       type: "button", class: "btn small",
-      title: "Download it and rename the old file, so both stay in the folder",
+      title: "Download it under a name with its version in it, and leave the file you have alone",
       onclick: () => queueDownload(job.entry, "keep"),
     }, "Keep both"),
     el("button", {

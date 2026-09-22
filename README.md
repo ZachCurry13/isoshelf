@@ -226,10 +226,12 @@ file a download had just placed.<br>
 the page, or choose one, and it lands in the folder - for the images no
 catalog knows. Nothing is written over without asking.<br>
 **v0.3.6: keeping both, and reporting problems.** *Released 2026-09-21:* images whose
-filename never changes can now be kept in both versions - the old copy is
-renamed and the new one takes the unchanging name. When something goes wrong,
-one button opens a bug report with the details filled in; isoshelf sends
-nothing itself. Plus a plainer set of words throughout.<br>
+filename never changes can now be kept in both versions. When something goes
+wrong, one button opens a bug report with the details filled in; isoshelf
+sends nothing itself. Plus a plainer set of words throughout.<br>
+**v0.3.7: the new file carries the version.** *2026-09-21:* when you keep
+both copies, it's the new download that gets `-2.0.87` in its name; the file
+already on your drive isn't touched at all.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.4:** [`isoshelf update` on the command

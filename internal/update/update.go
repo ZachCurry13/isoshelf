@@ -73,9 +73,6 @@ type Result struct {
 	Removed []string
 	// Kept lists old files left in place.
 	Kept []string
-	// Renamed is set when the old copy of a fixed-name image stepped aside
-	// under a new name so both could be kept. It is the name it now has.
-	Renamed string
 }
 
 // ErrNothingToDownload means the entry has no download information: it is
@@ -124,14 +121,21 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	// something has to happen to it first. It only happens once the new file
 	// is downloaded and verified.
 	//
-	// Keeping both is possible now: the old file steps aside under a name of
-	// its own (see keepboth.go) and the new one takes the unchanging name, so
-	// anything pointing at that name still works. Only an update with no
-	// answer at all is refused, because that is the page asking.
+	// Keeping both is possible now: the new download carries its version in
+	// its name (see keepboth.go) and the file already there isn't touched, so
+	// there is no clash left to resolve. Only an update with no answer at all
+	// is refused, because that is the page asking.
 	sameName := slices.Contains(opts.Old, artifact.Filename)
-	keepBoth := sameName && opts.Removal == Keep
 	if sameName && opts.Removal == "" {
 		return nil, fmt.Errorf("%w: %s always has the same filename, so the new file would land on top of the one you have", ErrSameName, artifact.Filename)
+	}
+	// placeAs is the name the new file actually gets, which is the usual one
+	// unless both copies are being kept.
+	placeAs := artifact.Filename
+	keepBoth := sameName && opts.Removal == Keep
+	if keepBoth {
+		placeAs = KeepBothName(opts.Target, artifact.Filename, rel.Version, opts.Now())
+		sameName = false
 	}
 	// A download nothing can check never replaces anything on its own: the old
 	// files stay until the user has looked at the new one. The built-in
@@ -141,14 +145,13 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	// it is, so it is archived, which can be undone, and never deleted.
 	unverified := artifact.Checksum == nil
 	beforeRemoval := opts.Removal
-	if unverified && !keepBoth {
-		// Keeping both already replaces nothing, so it needs no softening.
+	if unverified {
 		beforeRemoval = MoveAside
 	}
-	var replaced, keptAside string
+	var replaced string
 	request := fetch.Request{
 		URLs:     artifact.URLs,
-		Filename: artifact.Filename,
+		Filename: placeAs,
 		Dir:      opts.Target,
 		Size:     artifact.Size,
 		Checksum: artifact.Checksum,
@@ -158,14 +161,6 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		request.BeforePlace = func() error {
 			if missing(opts.Target, artifact.Filename) {
 				return nil // removed by hand while the new one downloaded
-			}
-			if keepBoth {
-				aside, err := KeepBoth(opts.Target, artifact.Filename, opts.State, opts.Now())
-				if err != nil {
-					return err
-				}
-				keptAside = aside
-				return nil
 			}
 			if err := removeFile(opts.Target, artifact.Filename, beforeRemoval, opts.State, opts.Now()); err != nil {
 				return err
@@ -185,19 +180,19 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		version = v
 	}
 	result := &Result{
-		File: artifact.Filename, Version: version, Size: downloaded.Size,
+		File: placeAs, Version: version, Size: downloaded.Size,
 		SHA256: downloaded.SHA256, Verified: downloaded.Verified, URL: downloaded.URL,
 	}
 	if replaced != "" {
 		result.Removed = append(result.Removed, replaced)
 	}
-	if keptAside != "" {
-		result.Kept = append(result.Kept, keptAside)
-		result.Renamed = keptAside
-	}
-	if err := opts.State.Placed(opts.Target, artifact.Filename, state.FileRecord{
-		Entry:     opts.Entry.ID,
-		Version:   version,
+	if err := opts.State.Placed(opts.Target, placeAs, state.FileRecord{
+		Entry:   opts.Entry.ID,
+		Version: version,
+		// A kept-both file carries its version in its name, so the catalog
+		// won't recognize it by name; say outright what it is, or the next
+		// scan would call the file it just downloaded an unknown one.
+		Assigned:  keepBoth,
 		SHA256:    downloaded.SHA256,
 		HashedAt:  opts.Now().UTC(),
 		SourceURL: downloaded.URL,
@@ -207,7 +202,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}
 
 	for _, old := range opts.Old {
-		if old == artifact.Filename {
+		if old == placeAs {
 			continue // the new file took its place
 		}
 		if missing(opts.Target, old) {
