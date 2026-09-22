@@ -366,7 +366,11 @@ document.addEventListener("DOMContentLoaded", () => {
   $("dock-clear").addEventListener("click", clearFinished);
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape" || document.querySelector("dialog[open]")) return;
-    if (settingsOpen) {
+    // A menu sits on top of everything else, so it goes first - otherwise
+    // Escape closed the panel underneath and left the menu hanging over it.
+    if (document.querySelector("details.menu[open]")) {
+      closeMenus();
+    } else if (settingsOpen) {
       closeSettings();
     } else if (detailsOpen) {
       closeDetails();

@@ -548,9 +548,17 @@ function placeMenu(menu) {
   const floor = innerHeight - ($("dock").hidden ? 8 : $("dock").offsetHeight + 8);
   items.classList.add("pinned");
   items.style.right = `${Math.max(8, innerWidth - anchor.right)}px`;
-  // Measure without the limit a previous opening may have left behind.
+  // On a phone a menu with a lot of filters in it is wider than the window.
+  // Only the right edge was ever held inside; the left one went off the side
+  // of the screen with the first filters out of reach.
+  items.style.maxWidth = `${innerWidth - 16}px`;
+  // Measure without the limits a previous opening may have left behind.
   items.style.maxHeight = "";
   const wanted = items.offsetHeight;
+  const spread = items.getBoundingClientRect();
+  if (spread.left < 8) {
+    items.style.right = `${Math.max(8, innerWidth - spread.width - 8)}px`;
+  }
   const below = anchor.bottom + 4;
   const roomBelow = floor - below;
   const roomAbove = anchor.top - 12;

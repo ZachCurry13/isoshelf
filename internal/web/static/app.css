@@ -869,3 +869,9 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
   border: 1px solid var(--border); border-radius: var(--radius);
   box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
 }
+
+/* What a bug report would say, shown before anything opens. */
+.report { display: grid; gap: 6px; margin: 10px 0; }
+.report-line { display: flex; gap: 10px; align-items: baseline; }
+.report-label { flex: none; width: 9rem; color: var(--muted); font-size: 0.8571rem; }
+.report-value { overflow-wrap: anywhere; }

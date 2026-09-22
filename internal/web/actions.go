@@ -121,9 +121,9 @@ func unverifiedNote(res *update.Result, err error) string {
 	case err != nil || res == nil || res.Verified:
 		return ""
 	case len(res.Kept) > 0:
-		return "The project publishes no checksum for this file, so isoshelf couldn't check it, and your old file was kept. Remove it yourself once you're happy with the new one."
+		return "This project publishes no checksum, so isoshelf couldn't verify the download. Your old file was kept - remove it once you're happy with the new one."
 	default:
-		return "The project publishes no checksum for this file, so isoshelf couldn't check it."
+		return "This project publishes no checksum, so isoshelf couldn't verify the download."
 	}
 }
 

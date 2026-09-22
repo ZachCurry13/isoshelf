@@ -117,13 +117,8 @@ more than one answer is good, rather than shown a finished redesign.
 was built, with seven such questions already worked out and a staged plan.
 Start there; it is a proposal, not a decision.
 
-It also turned up **two live bugs**, small enough to fix in a 0.3.x release
-rather than wait:
-
-- The Filter menu runs off the **left** edge at phone width (390px).
-  `placeMenu` clamps against the right edge only.
-- **Escape doesn't close the details panel's "…" menu.** Settings, the
-  details panel and the dock are wired to Escape; `details.menu` isn't.
+It also turned up two live bugs, ~~both fixed in v0.3.6~~: the Filter menu
+ran off the left edge at phone width, and Escape didn't close an open menu.
 
 ## Worth knowing before you start
 
@@ -154,11 +149,12 @@ rather than wait:
 
 ## Questions the maintainer still owes an answer to
 
-- The name-clash dialog offers *Archive the old one* and *Replace it*. The
-  review doc also asked for *Keep both*, which cannot work for these images
-  (the clash only happens when the filename never changes), and an explicit
-  *Cancel*, which is currently "do nothing" plus a message saying nothing has
-  changed. Add a real Cancel button that clears the row, or leave it?
+- ~~*Keep both* in the name-clash dialog~~ *(answered in v0.3.6, and the old
+  answer was wrong: it can work. The old file steps aside under a name of its
+  own and the new one takes the unchanging name, so a Proxmox VM pointing at
+  that name keeps working. See `internal/update/keepboth.go`.)* Still open:
+  an explicit *Cancel*, which is currently "do nothing" plus a message saying
+  nothing has changed. Add a real Cancel button that clears the row?
 - Anything from the review doc listed as done that doesn't feel done when
   used on a real drive.
 

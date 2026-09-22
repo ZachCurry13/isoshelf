@@ -152,7 +152,7 @@ function renderDock() {
         el("div", { class: "bar" }, dockCurrent.fill)),
       el("button", {
         type: "button", class: "btn small",
-        title: "Stop this one and go on to the next. The part-finished download is kept.",
+        title: "Stop this one and start the next. What downloaded so far is kept.",
         "aria-label": `Stop downloading ${d.current.name}`,
         onclick: () => dropJob(d.current),
       }, "Stop")));
@@ -290,7 +290,7 @@ function finishedItem(job) {
   }
   if (job.outcome === "failed") what = job.conflict ? job.message : `Didn't work: ${job.message}`;
   if (job.conflict) [mark, tone] = ["?", "s-update"];
-  if (job.outcome === "stopped") what = "Stopped. The part-finished download is kept, so trying again carries on from there.";
+  if (job.outcome === "stopped") what = "Stopped. What downloaded so far is kept, so Resume picks up from there.";
   // Only the latest try gets the button, and not once it is queued again.
   const again = job.outcome !== "done" && jobFor(job.entry).job.id === job.id;
   return el("li", { class: "dock-item finished" },
@@ -307,16 +307,33 @@ function finishedItem(job) {
 // always allowed: nothing has changed in the folder either way.
 function againButtons(job) {
   if (!job.conflict) {
-    return el("button", {
+    const again = el("button", {
       type: "button", class: "btn small",
-      title: "Add it to the queue again",
+      title: job.outcome === "stopped"
+        ? "Pick up where it stopped"
+        : "Put it back on the queue and try again",
       onclick: () => retryJob(job),
-    }, job.outcome === "stopped" ? "Carry on" : "Try again");
+    }, job.outcome === "stopped" ? "Resume" : "Try again");
+    if (job.outcome !== "failed") return again;
+    return el("div", { class: "conflict-choices" }, again,
+      el("button", {
+        type: "button", class: "btn small",
+        title: "Open a bug report with the details filled in",
+        onclick: () => reportProblem(`${job.name} wouldn't download`, job.message),
+      }, "Report this"));
   }
+  // Three real answers now. Keeping both used to be refused for these
+  // images, because the new file wanted a name the old one already had; the
+  // old one steps aside under a name of its own instead.
   return el("div", { class: "conflict-choices" },
     el("button", {
       type: "button", class: "btn small",
-      title: "Download it and put the old file in the archive, where you can restore it",
+      title: "Download it and rename the old file, so both stay in the folder",
+      onclick: () => queueDownload(job.entry, "keep"),
+    }, "Keep both"),
+    el("button", {
+      type: "button", class: "btn small",
+      title: "Download it and move the old file to the archive, where you can restore it",
       onclick: () => queueDownload(job.entry, "move-aside"),
     }, "Archive the old one"),
     el("button", {
@@ -421,7 +438,7 @@ async function stopDownloads() {
   const waiting = d.queued.length;
   const answer = await ask(
     "Stop all downloads?",
-    `The download running now stops${waiting ? `, and ${plural(waiting, "image")} waiting ${waiting === 1 ? "is" : "are"} taken off the queue` : ""}. A part-finished download is kept, so adding the image again carries on from there.`,
+    `Stops the download running now${waiting ? `, and takes ${plural(waiting, "image")} off the queue` : ""}. What downloaded so far is kept, so adding it again picks up from there.`,
     [{ label: "Stop them", value: "yes", primary: true }, { label: "Keep going", value: null }]);
   if (!answer) return;
   try {
@@ -469,7 +486,7 @@ function jobButton(entry, idle, fresh) {
       return idle;
     default:
       if (idle instanceof HTMLButtonElement && !idle.disabled) {
-        idle.textContent = at.where === "stopped" ? "Carry on" : "Try again";
+        idle.textContent = at.where === "stopped" ? "Resume" : "Try again";
         idle.title = at.job.message || idle.title;
       }
       return idle;
@@ -491,4 +508,11 @@ function showNotice(message, isError) {
   notice.textContent = message;
   notice.classList.toggle("error", isError);
   notice.hidden = false;
+  // Something went wrong is exactly the moment to offer a way to say so.
+  if (isError) {
+    notice.append(" ", el("button", {
+      type: "button", class: "linkish",
+      onclick: () => reportProblem("Something went wrong in isoshelf", message),
+    }, "Report this"));
+  }
 }
