@@ -675,8 +675,9 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
   to-do cards, filters, rows), `details.js` (the panel and the checklist),
   `downloads.js` (the queue), `actions.js` (updating, removing, identifying),
-  `folders.js` (the chooser), `archive.js`, `settings.js` and `upload.js`
-  (dragging a file onto the page, or picking one). They were one 2,544-line
+  `folders.js` (the chooser), `archive.js`, `settings.js`, `upload.js`
+  (dragging a file onto the page, or picking one) and `report.js` (the
+  prefilled bug report). They were one 2,544-line
   `app.js` until v0.3.1; the split is what keeps changing one corner from
   meaning reading all of it.
 - Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
