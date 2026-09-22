@@ -254,7 +254,7 @@ func TestHashing(t *testing.T) {
 
 	s := New(scan.Ventoy)
 	s.RecordScan(res, t0)
-	need := s.NeedsHash(res, cat)
+	need := s.NeedsHash(res, cat, false)
 	if got, want := len(need), 2; got != want {
 		t.Fatalf("NeedsHash returned %d files, want %d", got, want)
 	}
@@ -279,7 +279,7 @@ func TestHashing(t *testing.T) {
 	if progressed == 0 {
 		t.Error("progress was never reported")
 	}
-	for _, f := range s.NeedsHash(res, cat) {
+	for _, f := range s.NeedsHash(res, cat, false) {
 		if f.Path == netboot.Path {
 			t.Error("netboot.xyz should no longer need a hash")
 		}
@@ -329,5 +329,46 @@ func TestMirrors(t *testing.T) {
 	bad.TargetID = "../escape"
 	if err := bad.SaveMirror(config, "E:\\", t0); err == nil {
 		t.Error("SaveMirror with a bad target id: want an error")
+	}
+}
+
+// Sharing asks for files by hash, so when it is on every recognized image
+// gets one - not only those whose filename never changes. A file isoshelf
+// downloaded already has its hash; one copied in by hand has none, and
+// without this it could never be offered to another isoshelf.
+func TestHashingEverythingForSharing(t *testing.T) {
+	cat := defaultCatalog(t)
+	t0 := time.Now()
+	scannedFile := func(name, content string) scan.File {
+		dir := t.TempDir()
+		p := filepath.Join(dir, name)
+		if err := os.WriteFile(p, []byte(content), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		info, err := os.Stat(p)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return scanned(cat, name, info.Size(), info.ModTime())
+	}
+	res := &scan.Result{Files: []scan.File{
+		scannedFile("netboot.xyz.iso", "hello"),                  // fixed name
+		scannedFile("linuxmint-22.3-cinnamon-64bit.iso", "mint"), // versioned
+	}}
+	s := New(scan.Ventoy)
+	s.RecordScan(res, t0)
+
+	usual := s.NeedsHash(res, cat, false)
+	all := s.NeedsHash(res, cat, true)
+	if len(all) <= len(usual) {
+		t.Fatalf("hashing everything found %d files, the usual rule %d: sharing would "+
+			"have nothing extra to offer", len(all), len(usual))
+	}
+	// Every one of them is a file the catalog recognized: an unknown file
+	// isn't something another isoshelf could ask for by name anyway.
+	for _, f := range all {
+		if s.Files[f.Path].Entry == "" {
+			t.Errorf("%s isn't a recognized image, so hashing it helps nobody", f.Path)
+		}
 	}
 }

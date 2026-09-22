@@ -184,14 +184,23 @@ func (h Home) Save(s *State, target string) error {
 	return writeJSON(name, s)
 }
 
-// NeedsHash returns the scanned files that belong to a fixed-name entry and
-// have no hash for their current contents. For those images, a changed
-// published checksum is how updates show up. Call it after RecordScan.
-func (s *State) NeedsHash(res *scan.Result, cat *catalog.Catalog) []scan.File {
+// NeedsHash returns the scanned files that need hashing and have no hash for
+// their current contents. Normally that means images whose filename never
+// changes, where a changed published checksum is how an update shows up.
+// Call it after RecordScan.
+// all, when set, hashes every recognized file rather than only those. That
+// is what sharing needs: a file isoshelf downloaded has its hash from the
+// download, but one copied in by hand has none, and a hash is how another
+// isoshelf asks for a particular file rather than a name.
+func (s *State) NeedsHash(res *scan.Result, cat *catalog.Catalog, all bool) []scan.File {
 	var out []scan.File
 	for _, f := range res.Files {
 		rec, ok := s.Files[f.Path]
 		if !ok || !rec.current(f) || rec.SHA256 != "" {
+			continue
+		}
+		if all && rec.Entry != "" {
+			out = append(out, f)
 			continue
 		}
 		if e := cat.Entry(rec.Entry); e != nil && e.FixedName {

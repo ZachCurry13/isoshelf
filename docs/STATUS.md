@@ -96,6 +96,29 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-22)
 
+- v0.4.9 is the maintainer's feature request: one isoshelf copies an image
+  from another on the same network before going to the internet. The shape
+  that made it small is that `fetch.Request.URLs` was already "official site
+  first, then mirrors" - a peer is one more place, put at the front.
+- **The peer is reached, never trusted**, and that is the whole security
+  argument. The checksum still comes from the project's own HTTPS site, so a
+  copy that is stale, damaged or served by something pretending to be an
+  isoshelf fails the same check any download would. `fetch` had to learn to
+  fall through to the next place on a mismatch, or one bad copy would have
+  cost the whole download.
+- Files are asked for **by hash, not by name**: a name alone says yes to a
+  stale copy, which for a fixed-name image is exactly the file being
+  replaced. That meant sharing has to hash everything, not only fixed-name
+  images - so turning sharing on changes what a scan does, and says so.
+- The sharing machine records which drives took what, which the maintainer
+  asked for and which is most of what #11 (rebuild a lost drive) needs.
+- **Still to decide: finding the other isoshelf by itself.** Doing it
+  properly means mDNS, which means a second dependency or a good deal of
+  protocol code - a decision for the maintainer, not an omission. The
+  address is typed in until then.
+- Next, at the maintainer's pick: emptying the archive on a timer.
+
+
 - v0.4.8, both from the maintainer using it: Settings saved silently, and it
   was too wordy. A "Saved" mark now appears beside the setting that changed -
   each entry names the answer it owns, so the mark lands on the right row -

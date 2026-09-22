@@ -140,22 +140,64 @@ starts it thinking it is a form to fill in:
    page has been showing. What was learned: the settings file had one writer
    and now has two, so every change to it has to take a turn, or a switch
    somebody flicks can be quietly undone by the scheduler noting the time.)*
-9. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
+9. ~~**Copy from another isoshelf on the network**~~ *(done in v0.4.9, the
+   maintainer's feature request. `internal/peer` asks, `internal/web/share.go`
+   offers, `update.Options.Nearer` puts the answer at the front of the
+   download's list of places. What was learned: the peer is reached, never
+   trusted - the checksum still comes from the project's own site, and
+   `fetch` had to learn to fall through to the next place on a mismatch, or
+   one bad copy would cost the whole download. Files are asked for by hash
+   rather than name, so sharing makes scans hash everything. Still to decide:
+   finding the other isoshelf by itself, which means mDNS, which means a
+   second dependency or a lot of protocol code.)*
+10. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
    swaps its own program, restarts, page reconnects - and only installs a
    release carrying the project's signature, which needs the signing key set
    up once. Whatever downloads the new file must find its asset **by pattern**
    (the name contains `windows-amd64.exe`), never by an exact name: release
    files carry the version now, so an exact name goes stale every release.
-10. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
+11. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
    Same feature, two reasons for wanting it, both from real r/Ventoy posts
    where people lost a drive's worth of images. The list is already kept off
    the drive: `internal/state/mirror.go` copies each folder's state into the
    config folder, including the entry ids seen by each scan. What's missing is
    the verb, plus exporting the list to a file someone can keep elsewhere.
-11. **The rest of decision 15**: empty the archive after 7/30/90 days, a
-   download speed limit, hiding kinds and architectures you don't use.
-   Settings has a home for all of them now.
-12. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
+12. **Empty the archive after so many days** (decision 15, and the
+   maintainer picked this one next, 2026-09-22). 7 / 30 / 90 days or never,
+   in Settings. Care needed: the archive is the undo for every removal and
+   every replaced file, so emptying it on a timer is the one thing here that
+   throws away something somebody might still want. It has to say what it
+   will do before it does it, count from when each file was archived rather
+   than sweeping the lot, and never touch a file archived since the last
+   scan. The rest of decision 15 - a download speed limit, hiding kinds and
+   architectures you don't use - can follow.
+13. **From the maintainer's own use, 2026-09-22**
+   (`isoshelf_v0.4.9_tasks.md`; numbered v0.4.9 there, but that number went
+   to copying between isoshelfs, so these are next rather than done):
+   - **Hand-copied images are still called "to do by hand".** Copy an ISO
+     onto the drive yourself and isoshelf keeps saying an update is waiting.
+     Work out why the scan doesn't match it to the entry it plainly is -
+     start with `internal/identify` and the assignment path, and with what
+     `check.Manual` actually means today.
+   - **Say when a file arrived on the drive.** The record has `Added`, and
+     the page doesn't show it. "Added to drive: 22 Sep 2026" next to each
+     image.
+   - **Say when the new version came out.** An update says a newer version
+     exists but not its age, which is most of deciding whether to take it.
+     The release date is in what `source` already fetches for some sources;
+     check which, and show it where it is known.
+   - **The filter menu needs Apply and Clear all.** Filters take effect as
+     they are ticked, which leaves people unsure anything happened. Either
+     add the buttons or make "it already applied" obvious - worth deciding
+     rather than assuming, and it overlaps the redesign below.
+   - **Offer to send an unknown image to the catalog.** When somebody names
+     an image isoshelf doesn't recognize, offer to open a prefilled issue
+     with the filename pattern and hash - the same shape as the bug report
+     in `report.js`, pointed at the missing-image form. Nothing is sent
+     without them pressing submit.
+14. **The rest of decision 15**: a download speed limit, hiding kinds and
+   architectures you don't use.
+15. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
    an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
    once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
    drive ([#7]) - **and the redesign below**.

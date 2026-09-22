@@ -60,6 +60,10 @@ type Options struct {
 	// Records is where this folder's records are kept. The zero value is the
 	// default: inside the folder itself.
 	Records state.Home
+	// HashAll hashes every recognized image rather than only those whose
+	// filename never changes. Sharing needs it: another isoshelf asks for a
+	// file by its hash, so a file with no hash can't be offered.
+	HashAll bool
 	// Now defaults to time.Now.
 	Now func() time.Time
 	// Progress, if not nil, is called as the run moves along.
@@ -134,7 +138,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}
 
 	if !opts.NoHash {
-		files := st.NeedsHash(res, opts.Catalog)
+		files := st.NeedsHash(res, opts.Catalog, opts.HashAll)
 		for i := range files {
 			err := st.HashFiles(ctx, target, files[i:i+1], func(f scan.File, done int64) {
 				progress(Progress{

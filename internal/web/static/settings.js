@@ -137,9 +137,14 @@ function look() {
 }
 
 // switchRow is the control most settings use: a tick box that saves itself.
-function switchRow(label, on, change) {
+// Most save through /api/settings, which is what change describes; the few
+// with a request of their own pass instead, and change is then unused.
+function switchRow(label, on, change, instead) {
   return el("label", { class: "check" },
-    el("input", { type: "checkbox", checked: Boolean(on), onchange: (e) => saveSetting(change(e.target.checked)) }),
+    el("input", {
+      type: "checkbox", checked: Boolean(on),
+      onchange: (e) => (instead ? instead(e.target.checked) : saveSetting(change(e.target.checked))),
+    }),
     " ", label);
 }
 
@@ -299,6 +304,28 @@ const SETTING_GROUPS = [
           : "Nobody has set one yet, so anyone who can reach this address can use isoshelf.",
       },
       {
+        name: "Copy from another isoshelf first",
+        hint: "If the isoshelf on your NAS already has an image, take it from there " +
+          "instead of downloading it again over the internet.",
+        words: "local network nas peer server copy share fast lan source",
+        control: () => peerControl(),
+        note: () => peerNote(),
+      },
+      {
+        name: "Let other isoshelfs copy from this one",
+        fields: ["share"],
+        hint: "Offers the images in this folder to another isoshelf on your network that " +
+          "signs in. Off unless you turn it on.",
+        words: "share serve local network nas peer host offer",
+        control: () => switchRow("Let other isoshelfs copy from this one",
+          state && state.peer && state.peer.sharing, null, shareImages),
+        note: () => (state && state.peer && state.peer.sharing)
+          ? "Anyone who can sign in to this isoshelf can copy whole images from it. Scans " +
+            "also hash every image now, which the first one after turning this on will spend " +
+            "time doing - that hash is how another isoshelf asks for a particular file."
+          : "",
+      },
+      {
         name: "Where this folder's records are kept",
         hint: "What isoshelf has worked out about this folder: its history, the images " +
           "you starred, and what each file turned out to be. Normally kept in the folder " +
@@ -449,6 +476,82 @@ async function signOutEverywhere() {
   location.href = "/login";
 }
 
+// peerControl is the other isoshelf: its address, a way to change it, and a
+// switch to stop using it without forgetting where it was.
+function peerControl() {
+  const p = (state && state.peer) || {};
+  if (!p.address) {
+    return el("div", { class: "setting-controls" },
+      el("button", { type: "button", class: "btn small", onclick: choosePeer }, "Add an isoshelf"));
+  }
+  return el("div", { class: "setting-controls" },
+    switchRow("Use it", p.on, null, (on) => savePeer({ off: !on })),
+    el("button", { type: "button", class: "btn small", onclick: choosePeer }, "Change"),
+    el("button", { type: "button", class: "btn small", onclick: () => savePeer({ forget: true }) }, "Forget it"));
+}
+
+function peerNote() {
+  const p = (state && state.peer) || {};
+  if (!p.address) return "";
+  const who = p.user ? `${p.address}, signed in as ${p.user}` : p.address;
+  return p.on
+    ? `${who}. Anything it doesn't have still comes from the internet, and every file is ` +
+      "checked against the project's own checksum either way."
+    : `${who} - not being used at the moment.`;
+}
+
+// choosePeer asks for the address and the login for it.
+async function choosePeer() {
+  const p = (state && state.peer) || {};
+  const body = el("div", { class: "report" });
+  const field = (label, name, type, value, hint) => {
+    const input = el("input", { type, id: `peer-${name}`, class: "records-dir", value: value || "" });
+    body.append(el("div", {},
+      el("label", { for: `peer-${name}` }, label),
+      input,
+      hint ? el("div", { class: "muted setting-note" }, hint) : null));
+    return input;
+  };
+  const address = field("Address", "address", "text", p.address, "Like 10.0.0.5:8765.");
+  const user = field("Username there", "user", "text", p.user);
+  const password = field("Password there", "password", "password", "",
+    p.address ? "Leave empty to keep the one already saved." : "");
+  body.append(el("p", { class: "muted" },
+    "The password is kept on this computer in isoshelf's own folder, and travels over " +
+    "your network unencrypted - the same as opening that isoshelf in a browser. " +
+    "Sharing has to be turned on over there as well."));
+
+  const go = await ask("Another isoshelf on your network", "", [
+    { label: "Save", value: "go", primary: true },
+    { label: "Cancel", value: "" },
+  ], body);
+  if (!go) return;
+  await savePeer({ address: address.value, user: user.value, password: password.value });
+}
+
+async function savePeer(change) {
+  try {
+    state = await api("POST", "/api/peer", change);
+    render();
+    showNotice(change.forget ? "Forgotten." : "Saved.", false);
+  } catch (err) {
+    showNotice(err.message, true);
+  }
+}
+
+// shareImages turns this isoshelf's own sharing on or off. It has its own
+// request rather than going through /api/settings, because turning it on
+// changes what a scan does.
+async function shareImages(on) {
+  try {
+    state = await api("POST", "/api/share", { share: on });
+    saved(["share"]);
+    render();
+  } catch (err) {
+    showNotice(err.message, true);
+  }
+}
+
 // recordsControl is the three answers, plus the box for the third one. The
 // first two save themselves; the third waits until a folder has been typed,
 // because half a path is not a folder.
@@ -512,7 +615,7 @@ function settingsKey() {
   return JSON.stringify([
     state.appearance, state.old_files, state.target, state.version,
     state.auto_check, state.app_update_check, state.checked_at,
-    state.auto_update, state.auto_update_every,
+    state.auto_update, state.auto_update_every, state.peer,
     state.config_dir, state.catalog, state.records, recordsChoice, state.login,
     Boolean(state.app_update), $("settings-search").value,
     savedFields.join(","),

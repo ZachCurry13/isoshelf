@@ -20,6 +20,7 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/resolve"
 	"github.com/ZachCurry13/isoshelf/internal/source"
 	"github.com/ZachCurry13/isoshelf/internal/state"
+	"github.com/ZachCurry13/isoshelf/internal/verify"
 )
 
 // Removal says what happens to a file the user no longer wants, or to the old
@@ -57,6 +58,18 @@ type Options struct {
 	Version  string
 	Progress func(fetch.Progress)
 	Now      func() time.Time
+	// Nearer, when set, is asked whether somewhere closer than the internet
+	// already holds this exact file - another isoshelf on the same network,
+	// usually the one on the machine the images live on. Whatever it returns
+	// is tried before the project's own site.
+	//
+	// It is only ever asked when the project publishes a checksum, because
+	// that checksum is what makes a copy from anywhere else safe to try: the
+	// bytes are checked against it before they are placed, and a copy that
+	// doesn't match costs one fall back to the real source. Without a
+	// checksum there is nothing to check a stranger's bytes against, so the
+	// project's own site is the only place isoshelf will look.
+	Nearer func(filename, sha256 string) []string
 }
 
 // Result describes what an update did.
@@ -148,9 +161,18 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	if unverified {
 		beforeRemoval = MoveAside
 	}
+	// Somewhere closer than the internet, if there is one and if these bytes
+	// can be checked when they arrive.
+	urls := artifact.URLs
+	if opts.Nearer != nil && artifact.Checksum != nil && artifact.Checksum.Algorithm == verify.SHA256 {
+		if near := opts.Nearer(artifact.Filename, artifact.Checksum.Hex); len(near) > 0 {
+			urls = append(append([]string{}, near...), urls...)
+		}
+	}
+
 	var replaced string
 	request := fetch.Request{
-		URLs:     artifact.URLs,
+		URLs:     urls,
 		Filename: placeAs,
 		Dir:      opts.Target,
 		Size:     artifact.Size,

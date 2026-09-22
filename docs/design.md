@@ -567,6 +567,32 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   - The settings file now has two writers, so every change to it goes through
     one lock (`updateSettings`). Without that, a switch and the scheduler
     noting the time can land on each other and one change vanishes.
+- **Copying between isoshelfs** (v0.4.9, the maintainer's feature request).
+  One isoshelf offers the images in its folder (`internal/web/share.go`,
+  off by default); another asks it before the internet
+  (`internal/peer`, `internal/web/peer.go`).
+  - **The peer is reached, never trusted.** The checksum comes from the
+    project's own HTTPS site as always, and `update.Options.Nearer` is only
+    asked when there is one - without a checksum there is nothing to check a
+    stranger's bytes against, so the project's own site is the only place
+    isoshelf will look. `fetch` falls through to the next place on a
+    mismatch, so a wrong copy costs a fall back rather than the download.
+  - **Asked for by hash, not by name.** A name alone would say yes to a stale
+    copy, which for a fixed-name image is exactly the file being replaced.
+    So sharing needs hashes: with it on, scans hash every recognized image
+    (`NeedsHash(.., all)`) rather than only the fixed-name ones. Images
+    isoshelf downloaded already carry theirs from the download.
+  - **The name is never joined onto the folder.** `sharedFile` looks the name
+    up in the records and returns the path isoshelf wrote there, so a name
+    that isn't a record isn't a path - and the size and modification time
+    have to match the record, or the file has changed since anybody hashed it.
+  - **The sharer records which drives it served** (`internal/web/served.go`),
+    keyed by the asking folder's target id. That list is most of what #11
+    needs to rebuild a lost drive.
+  - **Not done:** finding the other isoshelf by itself. Doing that properly
+    means mDNS, which means a second dependency or a fair amount of protocol
+    code, and is a decision rather than an omission. Until then the address
+    is typed in.
 - **Not done:** a Proxmox LXC with the ISO storage bind-mounted, documented.
   An official TrueNAS store app, which is the 1.0 goal - `deploy/truenas/`
   has the start of one.

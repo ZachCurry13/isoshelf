@@ -230,6 +230,37 @@ It stops before filling the folder rather than using the last of it, and it
 leaves a folder alone while you are scanning or downloading into it yourself.
 It is off until you turn it on.
 
+## Letting your other machines copy from it
+
+The machine holding the images is the one worth copying from. Turn on
+**Settings → Let other isoshelfs copy from this one** here, and on your laptop
+turn on **Copy from another isoshelf first**, giving it this machine's address
+and the login for it.
+
+After that, an image this one already has arrives over your own network in a
+minute instead of over the internet in an hour. Anything it hasn't got is
+downloaded as before.
+
+**Every file is still checked against the project's own published checksum**,
+wherever the bytes came from. That is what makes the local copy safe to
+prefer rather than something to trust: a copy that is stale, damaged, or
+served by something pretending to be an isoshelf fails the same check any
+download would, and costs one fall back to the real source.
+
+Two things worth knowing:
+
+- **Sharing is off until you turn it on**, because it hands whole images to
+  anyone who can sign in - a different thing from letting them manage the
+  folder.
+- **The first scan after turning it on takes longer.** isoshelf hashes every
+  image rather than only the ones whose filename never changes, because a
+  hash is how another isoshelf asks for one particular file. Images this
+  isoshelf downloaded itself are already hashed.
+
+This machine also keeps a note of which drives have copied from it and what
+each one took — visible in Settings, and the beginning of being able to
+rebuild a drive that is lost.
+
 ## Updating it, without reinstalling
 
 Nothing in `/images` or `/config` is touched by an update: they are mounts
