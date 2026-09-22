@@ -8,9 +8,10 @@
 #
 # It listens on 0.0.0.0 inside the container, which is what "server mode"
 # means: the page may be opened by this machine's address rather than only by
-# localhost. The token is still what lets anyone in, so set ISOSHELF_TOKEN to
-# something long and private - otherwise isoshelf makes a new one at every
-# restart and your bookmark stops working.
+# localhost. The secret in the link is then the only thing keeping anyone out.
+# isoshelf makes that secret itself on first start and keeps it in /config, so
+# a restart doesn't change it and there is nothing to set up; it prints the
+# link in the log. Set ISOSHELF_TOKEN to choose the secret yourself.
 
 FROM golang:1.27.1-alpine AS build
 WORKDIR /src
