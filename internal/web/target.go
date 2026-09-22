@@ -51,7 +51,7 @@ func (s *Server) openTarget(path, profile string) error {
 	if info, err := os.Stat(abs); err != nil || !info.IsDir() {
 		return errors.New("That folder doesn't exist or can't be opened: " + abs)
 	}
-	st, err := state.Load(abs)
+	st, err := s.recordsFor(abs).Load(abs)
 	if err != nil {
 		return err
 	}

@@ -39,12 +39,82 @@ const (
 	// The drive then carries its own memory, so plugging it into another
 	// computer keeps everything isoshelf worked out.
 	InFolder = "folder"
-	// WithApp keeps it beside the isoshelf program instead, which suits a
-	// drive isoshelf shouldn't write to.
+	// WithApp keeps it in isoshelf's own folder instead - beside the program
+	// in portable mode, in the user's config folder otherwise - which suits a
+	// drive isoshelf shouldn't be writing to.
 	WithApp = "app"
 	// Elsewhere keeps it in a folder the user names.
 	Elsewhere = "custom"
 )
+
+// CleanRecordsLocation returns choice if it is one isoshelf knows, else "",
+// which means the default.
+func CleanRecordsLocation(choice string) string {
+	switch choice {
+	case InFolder, WithApp, Elsewhere:
+		return choice
+	}
+	return ""
+}
+
+// Records is one folder's answer to where its records are kept.
+type Records struct {
+	Location string `json:"location"`
+	// Dir is the folder for Elsewhere, and ignored otherwise.
+	Dir string `json:"dir,omitempty"`
+}
+
+// RecordsFor is the answer for folder: the one it was given, or the default.
+func (s Settings) RecordsFor(folder string) Records {
+	if r, ok := s.FolderRecords[key(folder)]; ok {
+		if CleanRecordsLocation(r.Location) != "" {
+			return r
+		}
+	}
+	return Records{Location: InFolder}
+}
+
+// SetRecordsFor records the answer for folder. The default is stored as an
+// absence, so the file doesn't fill up with folders that chose nothing.
+func (s *Settings) SetRecordsFor(folder string, r Records) {
+	if s.FolderRecords == nil {
+		s.FolderRecords = map[string]Records{}
+	}
+	if CleanRecordsLocation(r.Location) == "" || r.Location == InFolder {
+		delete(s.FolderRecords, key(folder))
+		return
+	}
+	s.FolderRecords[key(folder)] = r
+}
+
+// RecordsHome is the folder holding folder's records, or "" when the folder
+// keeps its own - which is the default, and what an unusable answer falls
+// back to. configDir is isoshelf's own folder. The result is a path for
+// state.Home: the state package doesn't read settings, and this one doesn't
+// read state.
+func (s Settings) RecordsHome(folder, configDir string) string {
+	r := s.RecordsFor(folder)
+	switch r.Location {
+	case WithApp:
+		return configDir
+	case Elsewhere:
+		if filepath.IsAbs(r.Dir) {
+			return r.Dir
+		}
+	}
+	return ""
+}
+
+// key is how a folder's path is written in the settings file: cleaned, so
+// that the same folder named two ways is one entry. Case is kept - two
+// folders differing only in case are the same on Windows and different on
+// Linux, and merging them would hand a folder another's records.
+func key(folder string) string {
+	if abs, err := filepath.Abs(folder); err == nil {
+		return abs
+	}
+	return filepath.Clean(folder)
+}
 
 // Settings is the file's contents. Every field is optional: a missing file
 // means the defaults.
@@ -54,10 +124,10 @@ type Settings struct {
 	CatalogAuto *bool `json:"catalog_auto,omitempty"`
 	// Bookmarks are folders pinned in the chooser.
 	Bookmarks []string `json:"bookmarks,omitempty"`
-	// StateLocation is InFolder, WithApp or Elsewhere. StateDir is the folder
-	// for Elsewhere.
-	StateLocation string `json:"state_location,omitempty"`
-	StateDir      string `json:"state_dir,omitempty"`
+	// FolderRecords is where each folder's records are kept, keyed by the
+	// folder's path, for the folders whose answer isn't the default. A folder
+	// that isn't listed keeps its own records, inside itself.
+	FolderRecords map[string]Records `json:"folder_records,omitempty"`
 	// OldFiles is what happens by default to the copy an update replaces:
 	// OldReplace, OldArchive or OldKeep. An image that has been given its own
 	// answer in its details panel wins over this one.
@@ -82,8 +152,7 @@ func (s Settings) Reset() Settings {
 	return Settings{
 		Target:        s.Target,
 		Bookmarks:     s.Bookmarks,
-		StateLocation: s.StateLocation,
-		StateDir:      s.StateDir,
+		FolderRecords: s.FolderRecords,
 	}
 }
 

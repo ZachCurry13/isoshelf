@@ -57,6 +57,9 @@ type Options struct {
 	// Dirs locate the app: its folder is never scanned, and outside portable
 	// mode the state mirror goes to its config folder.
 	Dirs appdir.Dirs
+	// Records is where this folder's records are kept. The zero value is the
+	// default: inside the folder itself.
+	Records state.Home
 	// Now defaults to time.Now.
 	Now func() time.Time
 	// Progress, if not nil, is called as the run moves along.
@@ -99,7 +102,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		return nil, err
 	}
 
-	st, err := state.Load(target)
+	st, err := opts.Records.Load(target)
 	if err != nil {
 		return nil, err
 	}
@@ -157,9 +160,13 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	progress(Progress{Stage: Saving})
 	// Only what this scan learned goes onto the records as they are now, so
 	// that a download which placed a file meanwhile keeps its own.
-	saved, err := st.SaveOnto(target, base)
+	saved, err := opts.Records.SaveOnto(st, target, base)
 	if err != nil {
-		out.Warnings = append(out.Warnings, fmt.Sprintf("couldn't save what was learned to %s: %v", filepath.Join(target, state.DirName), err))
+		where, dirErr := opts.Records.Dir(target)
+		if dirErr != nil {
+			where = string(opts.Records)
+		}
+		out.Warnings = append(out.Warnings, fmt.Sprintf("couldn't save what was learned to %s: %v", where, err))
 		saved = st
 	}
 	out.State = saved

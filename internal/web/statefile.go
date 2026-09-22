@@ -28,14 +28,22 @@ func (s *Server) scanningLocked() string {
 // before them, onto the folder's state as it is on disk now. s.mu must be
 // held.
 func (s *Server) saveStateLocked(base *state.State) error {
-	return saveMerged(s.target, base, s.st)
+	return s.saveMerged(s.target, base, s.st)
 }
 
 // saveMerged saves the changes made between base and changed onto the state
 // of target as it is on disk now.
-func saveMerged(target string, base, changed *state.State) error {
-	_, err := changed.SaveOnto(target, base)
+func (s *Server) saveMerged(target string, base, changed *state.State) error {
+	_, err := s.recordsFor(target).SaveOnto(changed, target, base)
 	return err
+}
+
+// recordsFor is where what isoshelf has learned about a folder is kept:
+// inside that folder by default, or somewhere the user chose for it instead.
+// The answer is read from the settings each time rather than remembered,
+// because the settings file is shared with the command line.
+func (s *Server) recordsFor(folder string) state.Home {
+	return state.Home(s.loadSettings().RecordsHome(folder, s.cfg.Dirs.Config))
 }
 
 // updatingLocked reports whether the download running now will replace path,

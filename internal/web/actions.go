@@ -75,7 +75,7 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 // runUpdate does the download itself, on a state loaded fresh from disk so
 // the page can keep reading the current one.
 func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
-	st, err := state.Load(j.target)
+	st, err := s.recordsFor(j.target).Load(j.target)
 	if err != nil {
 		return "", err
 	}
@@ -103,7 +103,7 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 	// files removed or identified, stars. Only this download's own changes
 	// go on top of them (see statefile.go).
 	s.mu.Lock()
-	saveErr := saveMerged(j.target, base, st)
+	saveErr := s.saveMerged(j.target, base, st)
 	if s.st != nil && s.target == j.target {
 		state.Merge(base, st, s.st)
 	}

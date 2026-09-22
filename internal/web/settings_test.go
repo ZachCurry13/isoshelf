@@ -39,8 +39,9 @@ func TestSettingsKeepEachOther(t *testing.T) {
 func TestSettingsKeepFieldsTheWebUIDoesNotShow(t *testing.T) {
 	dirs := testDirs(t)
 	if err := settings.Save(dirs.Config, settings.Settings{
-		StateLocation: settings.WithApp,
-		StateDir:      "/somewhere",
+		FolderRecords: map[string]settings.Records{
+			"/a/drive": {Location: settings.Elsewhere, Dir: "/somewhere"},
+		},
 	}); err != nil {
 		t.Fatal(err)
 	}
@@ -48,8 +49,8 @@ func TestSettingsKeepFieldsTheWebUIDoesNotShow(t *testing.T) {
 	request(t, s, http.MethodPost, "/api/settings", map[string]any{"theme": "light"})
 
 	saved := settings.Load(dirs.Config)
-	if saved.StateLocation != settings.WithApp || saved.StateDir != "/somewhere" {
-		t.Errorf("saving a theme lost where records are kept: %+v", saved)
+	if got := saved.RecordsFor("/a/drive"); got.Location != settings.Elsewhere || got.Dir != "/somewhere" {
+		t.Errorf("saving a theme lost where a folder's records are kept: %+v", saved)
 	}
 	if saved.Appearance.Theme != settings.ThemeLight {
 		t.Errorf("theme is %q, want light", saved.Appearance.Theme)

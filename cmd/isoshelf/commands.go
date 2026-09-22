@@ -22,6 +22,7 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/remote"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
 	"github.com/ZachCurry13/isoshelf/internal/settings"
+	"github.com/ZachCurry13/isoshelf/internal/state"
 	"github.com/ZachCurry13/isoshelf/internal/web"
 )
 
@@ -73,6 +74,10 @@ func inventory(ctx context.Context, e *env, opts options) error {
 	answers := lastcheck.Load(dirs.Config)
 	answers.Now = e.now
 
+	// The page and the command line share one settings file, so a folder
+	// whose records were moved on the page is read from the same place here.
+	records := state.Home(settings.Load(dirs.Config).RecordsHome(target, dirs.Config))
+
 	res, err := inv.Run(ctx, inv.Options{
 		Target:   target,
 		Profile:  scan.Profile(opts.profile),
@@ -82,6 +87,7 @@ func inventory(ctx context.Context, e *env, opts options) error {
 		NoHash:   opts.noHash,
 		Catalog:  cat,
 		Dirs:     dirs,
+		Records:  records,
 		Now:      e.now,
 		Progress: func(p inv.Progress) { progress(e, opts, p) },
 	})

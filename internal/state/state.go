@@ -127,10 +127,16 @@ func New(profile scan.Profile) *State {
 	}
 }
 
-// Load reads the state of target. A target without state gets a new one with
-// the suggested profile; nothing is written until Save.
-func Load(target string) (*State, error) {
-	name := filepath.Join(target, DirName, fileName)
+// Load reads the state of target from its own folder. A target without state
+// gets a new one with the suggested profile; nothing is written until Save.
+func Load(target string) (*State, error) { return Home("").Load(target) }
+
+// Load reads the state of target from wherever this Home keeps it.
+func (h Home) Load(target string) (*State, error) {
+	name, err := h.File(target)
+	if err != nil {
+		return nil, err
+	}
 	data, err := os.ReadFile(name)
 	if errors.Is(err, fs.ErrNotExist) {
 		return New(scan.SuggestProfile(target)), nil
@@ -164,12 +170,18 @@ func Load(target string) (*State, error) {
 
 // Save writes the state to <target>/.isoshelf/state.json. The old file is
 // only replaced once the new one is completely written.
-func (s *State) Save(target string) error {
-	dir := filepath.Join(target, DirName)
-	if err := os.MkdirAll(dir, 0o755); err != nil {
+func (s *State) Save(target string) error { return Home("").Save(s, target) }
+
+// Save writes the state to wherever this Home keeps target's records.
+func (h Home) Save(s *State, target string) error {
+	name, err := h.File(target)
+	if err != nil {
 		return err
 	}
-	return writeJSON(filepath.Join(dir, fileName), s)
+	if err := os.MkdirAll(filepath.Dir(name), 0o755); err != nil {
+		return err
+	}
+	return writeJSON(name, s)
 }
 
 // NeedsHash returns the scanned files that belong to a fixed-name entry and
@@ -265,12 +277,19 @@ func writeJSON(name string, v any) error {
 	if err != nil {
 		return err
 	}
+	return writeFileAtomic(name, append(data, '\n'))
+}
+
+// writeFileAtomic writes data through a temporary file in the same folder and
+// renames it into place, so the file at name is either the old one or the new
+// one and never half of either.
+func writeFileAtomic(name string, data []byte) error {
 	tmp, err := os.CreateTemp(filepath.Dir(name), filepath.Base(name)+".*.tmp")
 	if err != nil {
 		return err
 	}
 	defer os.Remove(tmp.Name()) // fails harmlessly after the rename
-	if _, err := tmp.Write(append(data, '\n')); err != nil {
+	if _, err := tmp.Write(data); err != nil {
 		tmp.Close()
 		return err
 	}
