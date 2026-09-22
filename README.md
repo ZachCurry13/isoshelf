@@ -75,7 +75,8 @@ isoshelf does that for you:
 - **Yours to set up.** One Settings panel with a search box: light, dark or
   whatever your computer is set to, higher contrast, larger text, less
   movement, what should happen to the files updates replace, whether isoshelf
-  checks for updates by itself, and where each folder's records are kept.
+  checks and updates by itself, where each folder's records are kept, and —
+  when it's running on your network — who can get in.
   Nothing there has to be touched — the defaults are the sensible ones — and
   "Reset to defaults" puts every switch back without forgetting your
   folders.
