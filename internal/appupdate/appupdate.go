@@ -85,7 +85,8 @@ func newer(a, b string) bool {
 }
 
 // Check returns a notice if a release newer than current exists, or nil. It
-// asks GitHub at most once a day and remembers the answer in configDir.
+// asks GitHub at most once an hour (checkInterval) and remembers the answer
+// in configDir, so a page opened ten times in a row asks once.
 // Development builds (version "dev") never check.
 func Check(ctx context.Context, client *remote.Client, configDir, current string, now time.Time) (*Notice, error) {
 	if current == "" || current == "dev" {
