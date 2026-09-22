@@ -96,6 +96,22 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-22)
 
+- **What the version number means, answered 2026-09-22.** The maintainer
+  asked about separating pre-release, beta and stable, and about whether
+  branches were the mechanism. They aren't: a branch is a workspace for
+  unfinished work, a tag is a published thing, and stable-vs-pre-release is
+  a label on a release. So v0.4.10 marks every release below 1.0 as a
+  pre-release automatically, which GitHub already has a badge for. Their
+  proposed "1.0-2.0 is beta" was talked out of rather than built: nobody
+  reads 1.x as unfinished, and it would delay being able to say "stable" by
+  a whole major version for no gain.
+- That change had a trap in it worth recording: GitHub's "latest release"
+  endpoint leaves pre-releases out, so marking them would have silently
+  stopped isoshelf telling anybody a new version existed. `appupdate` now
+  reads the list, and offers a pre-release only to somebody already running
+  one - below 1.0, everybody.
+
+
 - v0.4.9 is the maintainer's feature request: one isoshelf copies an image
   from another on the same network before going to the internet. The shape
   that made it small is that `fetch.Request.URLs` was already "official site

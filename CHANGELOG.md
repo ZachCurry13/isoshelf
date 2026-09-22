@@ -6,6 +6,20 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.10] - 2026-09-22
+
+### Changed
+- **Every release below 1.0 is now marked a pre-release**, which is what it
+  is. GitHub shows the badge and stops calling it the latest release. 1.0
+  will be the point at which isoshelf does what it says and won't change
+  under you; until then, saying so plainly is more use than a version number
+  that implies otherwise.
+- **isoshelf reads the list of releases rather than "the latest"**, because
+  GitHub's idea of the latest release leaves pre-releases out entirely -
+  which would have meant marking them quietly stopped anybody being told a
+  new isoshelf exists. A pre-release is only offered to somebody already
+  running one, which below 1.0 is everybody.
+
 ## [v0.4.9] - 2026-09-22
 
 ### Added
