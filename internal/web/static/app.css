@@ -825,6 +825,18 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
    on a phone rather than pushing the button off the edge. */
 .setting-controls .records-dir { flex: 1 1 min(320px, 100%); min-width: 0; }
 .setting-note { font-size: 0.8571rem; margin-top: 6px; }
+/* "Saved", beside the setting that just saved. Everything here saves itself
+   the moment it changes, which looks like nothing happening at all. */
+.saved-mark {
+  margin-left: 8px; font-size: 0.7857rem; font-weight: 600;
+  padding: 1px 7px; border-radius: 999px; vertical-align: 1px;
+  color: var(--ok-fg); background: var(--ok-bg);
+}
+.saved-mark::before { content: "✓ "; }
+@media (prefers-reduced-motion: no-preference) {
+  .saved-mark { animation: saved-in 140ms ease-out; }
+  @keyframes saved-in { from { opacity: 0; } to { opacity: 1; } }
+}
 
 /* The checklist, shared by "update all" and "review older versions". */
 .pick { width: min(620px, calc(100vw - 32px)); }
