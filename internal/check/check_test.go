@@ -126,7 +126,7 @@ func TestSampleDrive(t *testing.T) {
 		{Time: t0, Entries: []string{"linuxmint-cinnamon"}},
 	}
 	st.RecordScan(res, t0.Add(time.Hour))
-	if err := st.HashFiles(ctx, dir, st.NeedsHash(res, cat), nil); err != nil {
+	if err := st.HashFiles(ctx, dir, st.NeedsHash(res, cat, false), nil); err != nil {
 		t.Fatal(err)
 	}
 

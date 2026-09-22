@@ -56,6 +56,24 @@ func (s Settings) Every() time.Duration {
 	return 24 * time.Hour
 }
 
+// Peer is another isoshelf on the network worth asking before going to the
+// internet - usually the one on the machine the images already live on.
+type Peer struct {
+	// Address is host:port, without a scheme.
+	Address string `json:"address,omitempty"`
+	// User and Password sign in to it. They are kept here in the clear,
+	// which is why the page says so: this is a second copy of a password for
+	// a machine on the same network, and somebody who can read this file can
+	// read the login for this isoshelf too.
+	User     string `json:"user,omitempty"`
+	Password string `json:"password,omitempty"`
+	// Off turns the peer off without forgetting the address.
+	Off bool `json:"off,omitempty"`
+}
+
+// Use says whether to ask this peer before downloading.
+func (p Peer) Use() bool { return p.Address != "" && !p.Off }
+
 // Where isoshelf keeps what it has learned about a folder.
 const (
 	// InFolder is the default: a .isoshelf folder inside the images folder.
@@ -173,6 +191,14 @@ type Settings struct {
 	// AutoUpdateLast is when isoshelf last updated the images by itself, so
 	// a restart doesn't start another one straight away.
 	AutoUpdateLast time.Time `json:"auto_update_last,omitzero"`
+	// ShareImages lets another isoshelf on the network copy images from this
+	// one. Nil and false are both off: sharing hands whole images to whoever
+	// can sign in, which is a different thing from letting them manage the
+	// folder, and should be a decision rather than a default.
+	ShareImages *bool `json:"share_images,omitempty"`
+	// Peer is another isoshelf to look at before downloading from the
+	// internet: its address, and what to sign in with.
+	Peer Peer `json:"peer,omitzero"`
 	// AppUpdateCheck is whether to look for a newer isoshelf. Nil is on.
 	AppUpdateCheck *bool `json:"app_update_check,omitempty"`
 	// Appearance is how the page looks.

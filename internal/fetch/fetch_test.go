@@ -281,3 +281,77 @@ func TestRetryable(t *testing.T) {
 		}
 	}
 }
+
+// A place that gives the wrong bytes is not the end of the download: the next
+// one is tried, and what it gives is checked just as hard. This is what makes
+// pulling from another isoshelf on the network safe to try first - a copy
+// that turns out to be wrong costs a fall back to the project's own site,
+// not a failed update.
+func TestWrongBytesFallThroughToTheNextPlace(t *testing.T) {
+	const good = "the real image"
+	sum := sha256.Sum256([]byte(good))
+
+	var asked []string
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		asked = append(asked, r.URL.Path)
+		switch r.URL.Path {
+		case "/wrong.iso":
+			w.Write([]byte("something else entirely"))
+		default:
+			w.Write([]byte(good))
+		}
+	}))
+	defer srv.Close()
+
+	dir := t.TempDir()
+	c := New("test")
+	c.Retries = 0
+	got, err := c.Download(t.Context(), Request{
+		URLs:     []string{srv.URL + "/wrong.iso", srv.URL + "/right.iso"},
+		Filename: "image.iso",
+		Dir:      dir,
+		Checksum: &verify.Checksum{Name: "image.iso", Algorithm: verify.SHA256, Hex: hex.EncodeToString(sum[:])},
+	}, func(Progress) {})
+	if err != nil {
+		t.Fatalf("the download gave up instead of trying the next place: %v", err)
+	}
+	if !got.Verified {
+		t.Error("the file that was placed wasn't verified")
+	}
+	if len(asked) != 2 || asked[0] != "/wrong.iso" {
+		t.Errorf("places tried: %v, want the wrong one first then the right one", asked)
+	}
+	body, err := os.ReadFile(filepath.Join(dir, "image.iso"))
+	if err != nil || string(body) != good {
+		t.Errorf("the placed file holds %q, want the good bytes (%v)", body, err)
+	}
+	// Nothing of the bad download is left to be resumed into later.
+	for _, leftover := range []string{"image.iso.part", "image.iso.part.json"} {
+		if _, err := os.Stat(filepath.Join(dir, leftover)); err == nil {
+			t.Errorf("%s was left behind", leftover)
+		}
+	}
+}
+
+// When every place gives the wrong bytes, that is still a failure, and it
+// still says so - falling through must not turn a mismatch into silence.
+func TestWrongBytesEverywhereIsStillAMismatch(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("not what was asked for"))
+	}))
+	defer srv.Close()
+
+	sum := sha256.Sum256([]byte("the real image"))
+	_, err := New("test").Download(t.Context(), Request{
+		URLs:     []string{srv.URL + "/one.iso", srv.URL + "/two.iso"},
+		Filename: "image.iso",
+		Dir:      t.TempDir(),
+		Checksum: &verify.Checksum{Name: "image.iso", Algorithm: verify.SHA256, Hex: hex.EncodeToString(sum[:])},
+	}, func(Progress) {})
+	if err == nil {
+		t.Fatal("bytes that matched nothing were accepted")
+	}
+	if !errors.As(err, new(*verify.Mismatch)) {
+		t.Errorf("the failure doesn't say it was a mismatch: %v", err)
+	}
+}

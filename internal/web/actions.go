@@ -85,9 +85,22 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 	fetcher.HTTP = s.cfg.HTTP
 	fetcher.GitHubToken = s.cfg.GitHubToken
 
+	// Another isoshelf on the network, when one is set up: it may already
+	// hold this file, and a minute over the LAN beats an hour over the wire.
+	// The fetcher needs its session to fetch from it, and a cookie jar only
+	// gives cookies to the host they came from, so the project's own site
+	// never sees it.
+	near := s.peerFor(j.target)
+	if near != nil {
+		fetcher.HTTP = withJar(s.cfg.HTTP, near.HTTP.Jar)
+		fetcher.HostHeaders = map[string]map[string]string{near.Address: near.Headers()}
+	}
+
 	res, err := update.Run(ctx, update.Options{
 		Target: j.target, Entry: s.catalog().Entry(j.entry), Client: client, Fetcher: fetcher,
 		State: st, Old: j.old, Removal: j.removal, Now: s.cfg.Now,
+		// Somewhere closer than the internet, when one is set up.
+		Nearer: nearer(near, s.noteAboutPeer),
 		Progress: func(p fetch.Progress) {
 			s.mu.Lock()
 			if s.downloading != nil {

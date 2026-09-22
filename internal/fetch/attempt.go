@@ -67,6 +67,15 @@ func (c *Client) attempt(ctx context.Context, req Request, url, part string, att
 	if strings.HasSuffix(httpReq.URL.Host, "github.com") && c.GitHubToken != "" {
 		httpReq.Header.Set("Authorization", "Bearer "+c.GitHubToken)
 	}
+	// Headers for one particular host, set by whoever knows that host needs
+	// them - at present another isoshelf on the network, which likes to know
+	// which folder is asking. Never sent anywhere else: a header meant for
+	// the machine next door has no business going to a project's mirror.
+	if c.HostHeaders != nil {
+		for name, value := range c.HostHeaders[httpReq.URL.Host] {
+			httpReq.Header.Set(name, value)
+		}
+	}
 	if offset > 0 {
 		httpReq.Header.Set("Range", "bytes="+strconv.FormatInt(offset, 10)+"-")
 		if side.ETag != "" {

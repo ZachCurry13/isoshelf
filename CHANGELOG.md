@@ -6,6 +6,38 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.9] - 2026-09-22
+
+### Added
+- **Copy an image from another isoshelf on your network instead of the
+  internet.** If the isoshelf on your NAS already holds the file, the one on
+  your laptop takes it from there - a minute over your own network instead of
+  an hour over the wire. **Settings → Copy from another isoshelf first**: give
+  it the address and the login for it.
+  - **Nothing about verification changes, which is what makes it safe to
+    prefer.** The checksum still comes from the project's own HTTPS site,
+    never from the machine sending the bytes, and the bytes are still checked
+    against it before anything is placed. A copy that turns out to be wrong -
+    stale, damaged, or served by something pretending to be an isoshelf -
+    costs one fall back to the real source and nothing else.
+  - Anything the other isoshelf doesn't have comes from the internet as
+    before. A peer that is switched off, asleep or unreachable doesn't stop a
+    download; the page says so and it goes the long way round.
+- **Let other isoshelfs copy from this one** - the other half, for the machine
+  that has the images. Off unless you turn it on: sharing hands whole images
+  to anyone who can sign in, which is a different thing from letting them
+  manage the folder. With it on, scans hash every image rather than only those
+  whose filename never changes, because a hash is how another isoshelf asks
+  for one particular file rather than a name.
+- **It remembers which drives it has served**, and what each one took. Worth
+  having on its own, and it is most of what rebuilding a lost drive will need.
+
+### Fixed
+- **A download whose bytes don't match now tries the next place** rather than
+  giving up. Every place is still checked just as hard, and bytes that match
+  nothing anywhere still fail loudly - but a bad copy on one mirror no longer
+  costs you the download.
+
 ## [v0.4.8] - 2026-09-22
 
 ### Fixed

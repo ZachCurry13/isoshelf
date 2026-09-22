@@ -79,6 +79,9 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 		Catalog: s.catalog(),
 		Dirs:    s.cfg.Dirs,
 		Records: s.recordsFor(target),
+		// Sharing means other isoshelfs ask for files by hash, so every
+		// image needs one rather than only the fixed-name ones.
+		HashAll: s.sharing(),
 		Now:     s.cfg.Now,
 		// Show the folder's contents as soon as they're known. Hashing the
 		// images whose filename never changes comes next, and on a USB drive

@@ -49,6 +49,9 @@ type stateJSON struct {
 	ConfigDir string `json:"config_dir,omitempty"`
 	// Records is where this folder's records are kept.
 	Records recordsJSON `json:"records"`
+	// Peer is the other isoshelf this one looks at before the internet, and
+	// whether this one shares its own images.
+	Peer peerJSON `json:"peer"`
 	// Login is the username and password, for Settings to show and change.
 	Login     loginJSON         `json:"login"`
 	Removed   removedJSON       `json:"removed"`
@@ -206,6 +209,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		Appearance:      saved.Appearance,
 		ConfigDir:       s.cfg.Dirs.Config,
 		Records:         s.recordsLocked(saved),
+		Peer:            s.peerInfo(saved),
 		Removed:         s.removedInfo(s.target),
 		Catalog:         s.catalogStatusLocked(),
 		ReportURL:       "https://github.com/" + appupdate.Repo + "/issues/new",

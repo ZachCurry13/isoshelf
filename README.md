@@ -85,6 +85,11 @@ isoshelf does that for you:
   the project's published checksum and puts it in place — with each image
   following the answer it already carries about its old copy. It stops before
   filling the folder, and it's off unless you ask for it.
+- **Takes the short way round.** If another isoshelf on your network already
+  has an image — the one on your NAS, usually — yours copies it from there
+  instead of crossing the internet for it again. Every file is still checked
+  against the project's own published checksum, so a local copy that turns
+  out to be wrong costs one fall back and nothing else.
 - **Learns about new images on its own.** The list of images isoshelf knows is
   data, not code, so it refreshes itself from this repository — you get new
   distributions without installing a new isoshelf. It's a checkbox you can
@@ -284,6 +289,10 @@ the exact command to fix them.<br>
 whatever you just changed, and every setting's description cut to a sentence
 or two, with the small print moved under the control where it's read when it
 matters.<br>
+**v0.4.9: copy from your NAS, not the internet.** *2026-09-22:* if the
+isoshelf on another machine already has an image, take it from there over your
+own network - still checked against the project's own checksum, and still
+falling back to the internet for anything it hasn't got.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

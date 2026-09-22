@@ -90,6 +90,11 @@ type Client struct {
 	HTTP        *http.Client
 	UserAgent   string
 	GitHubToken string
+	// HostHeaders are extra headers to send to one host and no other, keyed
+	// by host:port. Another isoshelf on the network is the only user so far:
+	// it likes to know which folder is asking, and that is nobody else's
+	// business.
+	HostHeaders map[string]map[string]string
 	// Retries is how many more times to try after a network error or a
 	// server error. 4xx responses are never retried.
 	Retries int
@@ -109,9 +114,10 @@ func New(appVersion string) *Client {
 	}
 }
 
-// Download fetches req and places the finished file in req.Dir. Mirrors are
-// tried in turn when the official site fails. A checksum mismatch is never
-// placed.
+// Download fetches req and places the finished file in req.Dir. The places in
+// req.URLs are tried in turn, moving on when one fails to give the file or
+// gives bytes that don't match the published checksum. A checksum mismatch is
+// never placed, wherever it came from.
 func (c *Client) Download(ctx context.Context, req Request, progress func(Progress)) (*Result, error) {
 	if len(req.URLs) == 0 {
 		return nil, errors.New("fetch: no URLs")
@@ -141,7 +147,22 @@ func (c *Client) Download(ctx context.Context, req Request, progress func(Progre
 		}
 		result, err := c.download(ctx, req, url, part, progress)
 		if err == nil {
-			return c.place(ctx, req, part, final, url, result, progress)
+			placed, placeErr := c.place(ctx, req, part, final, url, result, progress)
+			if placeErr == nil {
+				return placed, nil
+			}
+			// Bytes that don't match the published checksum mean this copy is
+			// wrong, not that the file can't be had: the next place is worth
+			// trying, and whatever comes from it is checked just as hard.
+			// The part file has already been thrown away, so nothing resumes
+			// into the bad one. Any other failure here - a rename that won't
+			// work, an old file that can't be moved - is about this machine
+			// rather than the source, and trying elsewhere would only fail
+			// the same way.
+			if !errors.As(placeErr, new(*verify.Mismatch)) {
+				return nil, placeErr
+			}
+			err = placeErr
 		}
 		errs = append(errs, err)
 		if ctx.Err() != nil || errors.As(err, new(*remote.RateLimitError)) {
