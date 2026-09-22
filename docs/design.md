@@ -528,10 +528,20 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
     keeps everyone logged in, which matters because a NAS app restarts on
     every update, and isoshelf keeps no list of who is logged in. Signing out
     everywhere is throwing that key away.
-  - The **secret in the link still works**, and is the recovery path: asked
-    to change the password, isoshelf skips the old one when the browser
-    arrived by the link. It is no weaker than the password - both are in
-    reach of anyone who can read the log or the config folder.
+  - **The link's secret is replaced, not joined** (v0.4.7, the maintainer's
+    decision: "I want to get rid of tokens moving forward and only have a
+    login screen"). It works until a password is set, so a new install can be
+    opened at all, and stops the moment one exists - including a cookie
+    somebody already holds, with no restart needed. Two ways in is two ways
+    in, and the weaker one sat in a log.
+  - The way back from a forgotten password is therefore not the page:
+    `ISOSHELF_USERNAME`/`ISOSHELF_PASSWORD` at the next start, or
+    `isoshelf password` from a shell on the machine. Both need the machine,
+    which is the right bar, and neither is a second door on the network.
+    `isoshelf password` does not hide what is typed: that needs either a
+    second dependency or platform code for both systems, to guard against
+    somebody standing behind you at your own NAS. It says so, and points at
+    the environment variables.
   - The login form **cannot use the Origin check** every other change uses.
     isoshelf sends `Referrer-Policy: no-referrer`, and browsers then send
     `Origin: null` on a plain form post. So the form carries a random value

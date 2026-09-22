@@ -249,9 +249,10 @@ const SETTING_GROUPS = [
       },
       {
         name: "Who can get in",
-        hint: "A username and password, for isoshelf running on your network. " +
-          "The link isoshelf prints when it starts still works as well - it's the way " +
-          "back in if you forget the password.",
+        hint: "A username and password, for isoshelf running on your network. Once one " +
+          "is set it is the only way in: the link isoshelf prints when it starts stops " +
+          "working. Forgotten it? Set ISOSHELF_USERNAME and ISOSHELF_PASSWORD where " +
+          "isoshelf starts, or run \u201cisoshelf password\u201d on the machine it runs on.",
         words: "login password username sign in out account security who access",
         available: () => state && state.login && state.login.can_set,
         control: () => loginControl(),
@@ -349,13 +350,9 @@ async function changeLogin() {
   };
 
   let current = null;
-  if (login.user && !login.via_link) {
+  if (login.user) {
     current = field("Your password now", "current", "password");
     current.autocomplete = "current-password";
-  } else if (login.user) {
-    body.append(el("p", { class: "muted" },
-      "You got in with the link rather than a password, so isoshelf isn't asking " +
-      "for the old one. That's what the link is for."));
   }
   const user = field("Username", "user", "text");
   user.value = login.user || "";

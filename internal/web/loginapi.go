@@ -13,9 +13,10 @@ import (
 // has to be checked is that they know the current password - a browser left
 // open on somebody's desk should not be enough to change it.
 //
-// The one exception is somebody who got in with the secret in the link. That
-// is the way back for a person who has forgotten their password, and asking
-// them for the password they have forgotten would make it no way back at all.
+// Somebody who has forgotten it doesn't come through here at all: the way
+// back is ISOSHELF_USERNAME and ISOSHELF_PASSWORD at the next start, or
+// "isoshelf password" on the machine itself. Both need the machine, which is
+// the right bar, and neither is a second door standing open on the network.
 
 // loginJSON is what Settings shows about the login.
 type loginJSON struct {
@@ -24,17 +25,13 @@ type loginJSON struct {
 	// CanSet says whether this isoshelf offers a login at all: a desktop
 	// that only answers to itself has nothing to protect with one.
 	CanSet bool `json:"can_set"`
-	// ViaLink says this browser got in with the link rather than a password,
-	// which is why it isn't being asked for the old one.
-	ViaLink bool `json:"via_link,omitempty"`
 }
 
-func (s *Server) loginInfo(r *http.Request) loginJSON {
+func (s *Server) loginInfo() loginJSON {
 	out := loginJSON{CanSet: s.cfg.AnyHost}
 	if a := s.account(); a != nil {
 		out.User, out.CanSet = a.User, true
 	}
-	out.ViaLink = !s.signedIn(r)
 	return out
 }
 
@@ -51,10 +48,9 @@ func (s *Server) setLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	have := s.account()
-	// Somebody who signed in with a password proves they still know it.
-	// Somebody who used the link has already proved as much as the link can
-	// prove, and is the person this door is here for.
-	if have != nil && s.signedIn(r) && !have.Matches(have.User, req.Current) {
+	// Changing it means proving you still know it. A browser somebody left
+	// open should not be enough.
+	if have != nil && !have.Matches(have.User, req.Current) {
 		writeError(w, http.StatusForbidden, "That isn't the current password.")
 		return
 	}

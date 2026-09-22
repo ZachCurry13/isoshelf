@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+
+	"github.com/ZachCurry13/isoshelf/internal/state"
 )
 
 // A folder isoshelf can read but not write is the commonest thing to go wrong
@@ -33,17 +35,51 @@ func checkWritable(w io.Writer, config, folder string) {
 			sayHowToFix(w, config)
 		}
 	}
-	if folder != "" {
-		if info, err := os.Stat(folder); err != nil || !info.IsDir() {
-			return // already complained about separately
-		}
-		if err := canWrite(folder); err != nil {
-			fmt.Fprintf(w, "isoshelf: can't write to %s, the folder of images: %v\n", folder, err)
-			fmt.Fprintln(w, "isoshelf:   isoshelf will still list what's in it and check it for updates. It won't be")
-			fmt.Fprintln(w, "isoshelf:   able to download anything into it, archive anything, or remember what it found.")
-			sayHowToFix(w, folder)
+	if folder == "" {
+		return
+	}
+	if info, err := os.Stat(folder); err != nil || !info.IsDir() {
+		return // already complained about separately
+	}
+	if err := canWrite(folder); err != nil {
+		fmt.Fprintf(w, "isoshelf: can't write to %s, the folder of images: %v\n", folder, err)
+		fmt.Fprintln(w, "isoshelf:   isoshelf will still list what's in it and check it for updates. It won't be")
+		fmt.Fprintln(w, "isoshelf:   able to download anything into it, archive anything, or remember what it found.")
+		sayHowToFix(w, folder)
+		return // the folder itself is the problem; what's inside it can wait
+	}
+	// The folder can be written to, which is not the same as isoshelf's own
+	// folder inside it being writable. That one is often older than the
+	// current arrangement - made on an earlier run, by whichever user
+	// isoshelf was then - and it is where every download is staged, so a
+	// folder that looks fine can still fail at the first download with
+	// nothing having warned about it. Which is exactly what happened.
+	inside := filepath.Join(folder, state.DirName)
+	if info, err := os.Stat(inside); err == nil && info.IsDir() {
+		if err := canWrite(inside); err != nil {
+			fmt.Fprintf(w, "isoshelf: can't write to %s: %v\n", inside, err)
+			fmt.Fprintln(w, "isoshelf:   That folder is isoshelf's own, inside your images folder: downloads are")
+			fmt.Fprintln(w, "isoshelf:   staged there, the archive lives there, and what isoshelf has learned about")
+			fmt.Fprintln(w, "isoshelf:   the folder is kept there. Every download will fail with \"permission denied\"")
+			fmt.Fprintln(w, "isoshelf:   until this is fixed, even though the images folder around it is fine.")
+			sayWhoMadeIt(w, inside)
+			sayHowToFixTheInnerFolder(w, inside)
 		}
 	}
+}
+
+// sayWhoMadeIt names the user that owns the folder, because the whole story
+// is in the difference between that number and the one isoshelf runs as - and
+// because it says how it happened: the folder was made on an earlier run, by
+// whoever isoshelf was then, and the app's user has changed since.
+func sayWhoMadeIt(w io.Writer, dir string) {
+	owner, ok := ownerOf(dir)
+	if !ok {
+		return
+	}
+	fmt.Fprintf(w, "isoshelf:   It belongs to user %d, group %d - isoshelf made it on an earlier run, as\n", owner.uid, owner.gid)
+	fmt.Fprintln(w, "isoshelf:   whichever user it was then. Changing the app's user afterwards leaves this")
+	fmt.Fprintln(w, "isoshelf:   folder behind, owned by the old one.")
 }
 
 // sayHowToFix names the user isoshelf is actually running as, because that is
@@ -75,6 +111,37 @@ func nearest(dir string) string {
 		}
 		dir = parent
 	}
+}
+
+// sayHowToFixTheInnerFolder is different advice from sayHowToFix, and the
+// difference matters. There the mount itself is wrong, so changing the app's
+// user is one of the two answers. Here the mount is fine and one folder
+// inside it is stale, so changing the app's user would only break the folder
+// that currently works. The answer is to hand this one folder over.
+func sayHowToFixTheInnerFolder(w io.Writer, dir string) {
+	fmt.Fprintf(w, "isoshelf:   To fix it, give that one folder to the user isoshelf runs as%s. Do NOT\n", runningAs())
+	fmt.Fprintln(w, "isoshelf:   change the app's user to match it instead: the images folder around it is")
+	fmt.Fprintln(w, "isoshelf:   already right, and changing the user would break that one too.")
+	fmt.Fprintf(w, "isoshelf:     On TrueNAS: open a shell on the host and run  chown -R %s %s\n", chownArgs(), hostPathHint(dir))
+	fmt.Fprintln(w, "isoshelf:     - using the path on the host, which is the dataset you mounted, not the")
+	fmt.Fprintln(w, "isoshelf:     path above. If the folder holds nothing you want, deleting it works too:")
+	fmt.Fprintln(w, "isoshelf:     isoshelf makes a new one, owned by the right user, at the next scan.")
+	fmt.Fprintln(w, "isoshelf:     What is in it: the archive of removed images, part-finished downloads,")
+	fmt.Fprintln(w, "isoshelf:     and what isoshelf has worked out about this folder.")
+}
+
+// chownArgs is "568:568", the pair to hand a folder to.
+func chownArgs() string {
+	if runtime.GOOS == "windows" {
+		return "<user>:<group>"
+	}
+	return fmt.Sprintf("%d:%d", os.Getuid(), os.Getgid())
+}
+
+// hostPathHint keeps the folder's own name on the end, since that part is the
+// same on both sides of a mount and makes the command easier to finish.
+func hostPathHint(dir string) string {
+	return "<the dataset you mounted>/" + filepath.Base(dir)
 }
 
 // runningAs is " (user 568, group 568)" on Unix, and nothing on Windows,

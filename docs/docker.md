@@ -41,24 +41,29 @@ Two things worth knowing:
 Settings → *Who can get in* changes the username or password later, signs
 this browser out, or signs every browser out at once.
 
-### The link, which still works
+### There is no token once you have a password
 
-isoshelf also prints a link with a secret on the end, in the container's log:
+Before anyone has set one, isoshelf prints a link with a secret on the end in
+the container's log, so a brand-new install can be reached at all. **That link
+stops working the moment a password is set** — a login replaces it rather than
+sitting beside it, because two ways in is two ways in, and the weaker of the
+two was sitting in a log.
 
-```sh
-docker logs isoshelf
-```
+### If you forget the password
 
-That link gets you in without the password, and it is **the way back in if
-you forget it** — so keep the log reachable. It is no weaker than the
-password: both are in reach of anyone who can read the container's log or its
-config folder. isoshelf makes the secret itself on first start and keeps it
-in `/config`, so it doesn't change when the app restarts. Set `ISOSHELF_TOKEN`
-to choose it yourself; sixteen characters is the minimum.
+Neither way back goes through the page, and both need the machine itself,
+which is the point:
 
-Once you're in, Settings → *Who can get in* → *Change username or password*
-doesn't ask for the old one if you arrived by the link — which is the whole
-point of it.
+- **Set `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD`** in the app's environment
+  variables and restart it. Those overwrite whatever was there.
+- **Or run it from a shell on the machine:**
+
+  ```sh
+  docker exec -it isoshelf isoshelf password
+  ```
+
+  It asks for a new password, keeping the username you already have. What you
+  type shows on the screen — use the environment variables if that matters.
 
 ## What this is and isn't
 
@@ -129,9 +134,37 @@ don't.
    `http://your-truenas:8765/` and choose a username and password. (If you
    set them in step 4, sign in with those instead.)
 
-The app's **Logs** also hold a link with a secret on the end. You don't need
-it to get in, but it is the way back if you forget the password, so it is
-worth knowing it is there.
+Until you set that password, the app's **Logs** hold a link with a secret on
+the end, which is how a fresh install can be opened at all. It stops working
+as soon as a password exists.
+
+### If downloads fail with "permission denied"
+
+A folder isoshelf can list but not write to looks completely fine until the
+first download, which fails with something like:
+
+```
+open /images/.isoshelf/partial/whatever.iso.part: permission denied
+```
+
+`.isoshelf` is isoshelf's own folder inside your images folder: downloads are
+staged there, the archive lives there, and what isoshelf has learned about
+the folder is kept there. If it was made on an earlier run — by whichever
+user the app ran as then — and you have since changed the app's **User and
+Group ID**, that folder is still owned by the old user while everything
+around it is fine.
+
+isoshelf says so at startup now, in the **Logs**, and names the user that owns
+it. The fix is to hand that one folder over, on the host:
+
+```sh
+chown -R 568:568 /mnt/tank/your-images-dataset/.isoshelf
+```
+
+**Don't change the app's user to match it instead** — the folder around it is
+already right, and that would break the part that works. If the folder holds
+nothing you want, deleting it works too: isoshelf makes a new one, owned by
+the right user, at the next scan.
 
 ### If it starts but can't write
 

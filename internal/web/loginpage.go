@@ -32,6 +32,7 @@ main { width: min(380px, 100%); background: var(--card); padding: 24px;
 h1 { margin: 0 0 4px; font-size: 1.35rem; }
 p { margin: 0 0 18px; color: var(--muted); font-size: 0.9rem; }
 label { display: block; margin: 0 0 4px; font-size: 0.9rem; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95em; }
 input { width: 100%; font: inherit; padding: 9px 11px; margin: 0 0 14px;
   color: var(--text); background: var(--bg);
   border: 1px solid var(--line); border-radius: 8px; }
@@ -85,8 +86,9 @@ var loginPage = template.Must(template.New("login").Parse(`<!doctype html>
   scrambled form of it, never the password itself.</p>
 {{else}}
   <button type="submit">Sign in</button>
-  <p class="note">Forgotten it? The link isoshelf prints in its log still
-  works, and Settings can change the password once you're in.</p>
+  <p class="note">Forgotten it? Set ISOSHELF_USERNAME and ISOSHELF_PASSWORD
+  where isoshelf starts and restart it, or run <code>isoshelf password</code>
+  on the machine it runs on.</p>
 {{end}}
 </main>
 </body></html>

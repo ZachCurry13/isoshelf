@@ -96,7 +96,7 @@ func (s *Server) getState(w http.ResponseWriter, r *http.Request) {
 	changed := s.folderChanged()
 	// Who can get in is read from disk too, and depends on this request:
 	// whether this browser came in with a password or with the link.
-	login := s.loginInfo(r)
+	login := s.loginInfo()
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	out := s.stateLocked(recent, room)

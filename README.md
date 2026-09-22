@@ -130,10 +130,10 @@ isoshelf manages files you care about, so it is deliberately cautious:
 On your PC, isoshelf opens in your web browser and only your own computer can
 reach it. In a container it has to answer to the machine's address instead, so
 there it asks you to choose a username and password the first time you open
-it — one login, not user accounts. It also prints a link with a secret on the
-end, which gets in without the password and is the way back if you forget it.
-Keep it on a network you trust. [docs/docker.md](docs/docker.md) is the
-walkthrough.
+it — one login, not user accounts. Until you set one it prints a link with a
+secret on the end, so a fresh install can be opened at all; that link stops
+working as soon as a password exists. Keep it on a network you trust.
+[docs/docker.md](docs/docker.md) is the walkthrough.
 
 > **New to all this?** [Ventoy](https://www.ventoy.net) turns one USB stick
 > into a boot menu of every ISO you drop on it, and isoshelf keeps those ISOs
@@ -275,6 +275,11 @@ if you forget. Nothing changes on your own computer.<br>
 every day or every week, downloads every update it finds, verifies it and puts
 it in place - each image following the answer it already carries about its old
 copy. Off unless you ask for it.<br>
+**v0.4.7: the password replaces the link.** *2026-09-22:* once you set a
+username and password, the link with the secret stops working - `isoshelf
+password` or the environment variables are the way back if you forget. Plus:
+downloads failing with "permission denied" are now explained at startup, with
+the exact command to fix them.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

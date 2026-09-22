@@ -101,3 +101,43 @@ func TestAMissingImagesFolderIsNotWarnedAboutTwice(t *testing.T) {
 		t.Errorf("a missing folder was complained about again:\n%s", out.String())
 	}
 }
+
+// isoshelf's own folder inside the images folder is checked separately,
+// because it is often older than the current arrangement: made on an earlier
+// run by whichever user isoshelf was then. The folder around it can be
+// perfectly writable while that one isn't, and every download is staged
+// there - which is how a folder that looks fine fails at the first download
+// with nothing having warned about it.
+func TestTheFolderInsideIsCheckedToo(t *testing.T) {
+	images := t.TempDir()
+	inside := filepath.Join(images, ".isoshelf")
+	if err := os.Mkdir(inside, 0o555); err != nil {
+		t.Fatal(err)
+	}
+	if err := canWrite(inside); err == nil {
+		t.Skip("this user can write to a 0555 folder, so there is nothing to warn about")
+	}
+
+	var out bytes.Buffer
+	checkWritable(&out, "", images)
+	got := out.String()
+	if got == "" {
+		t.Fatal("a folder whose .isoshelf can't be written to said nothing at all")
+	}
+	for _, want := range []string{
+		inside,
+		"downloads are",
+		"permission denied",
+		"give that one folder to the user isoshelf runs as",
+		"chown -R",
+	} {
+		if !strings.Contains(got, want) {
+			t.Errorf("the complaint doesn't mention %q:\n%s", want, got)
+		}
+	}
+	// The advice for this case is the opposite of the advice for the mount
+	// itself, and saying the wrong one would break the folder that works.
+	if !strings.Contains(got, "Do NOT") {
+		t.Errorf("it doesn't warn against changing the app's user instead:\n%s", got)
+	}
+}

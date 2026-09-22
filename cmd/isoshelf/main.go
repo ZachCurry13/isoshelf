@@ -25,6 +25,7 @@ Usage:
   isoshelf [ui] [flags] [folder]    open isoshelf in your web browser
   isoshelf scan  [flags] [folder]   list the images in a folder (offline)
   isoshelf check [flags] [folder]   list them and check for updates online
+  isoshelf password [username]      set the username and password for the page
   isoshelf version                  print the version
 
 The folder can be a Ventoy drive (like E:\ or /media/you/Ventoy), any folder
@@ -43,9 +44,9 @@ Flags for scan and check:
 Flags for ui:
   --port N                  listen on this port (default: any free port)
   --listen ADDRESS          listen on this address instead of localhost, so
-                            the page can be opened from another machine. Then
-                            the token in the link is the only thing keeping
-                            anyone out: use it on a network you trust.
+                            the page can be opened from another machine. It
+                            then asks for a username and password the first
+                            time it is opened. Use it on a network you trust.
   --no-browser              don't open the browser; just print the link
   --catalog FILE            use this catalog instead of the built-in one
 
@@ -101,6 +102,12 @@ func run(ctx context.Context, args []string, e *env) int {
 		switch args[0] {
 		case "ui", "scan", "check":
 			cmd, args = args[0], args[1:]
+		case "password":
+			if err := setPassword(e, os.Stdin, args[1:]); err != nil {
+				fmt.Fprintln(e.stderr, "isoshelf:", err)
+				return 1
+			}
+			return 0
 		case "version", "--version", "-version":
 			fmt.Fprintln(e.stdout, "isoshelf", version)
 			return 0
