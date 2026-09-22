@@ -81,16 +81,18 @@ record of where things stand and what was decided.
 
 1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout
    (#10). *Done.* v0.3.1: the Settings panel (9). *Done.*
-2. v0.3.x: automatic remembered checks (3). *Done in v0.3.2.* Next: records
-   location and remembered folders (10; `internal/settings` holds the fields
-   already);
+2. v0.3.x: automatic remembered checks (3). *Done in v0.3.2.* Where a folder's
+   records live (the first half of 10). *Done in v0.4.2.* Next: the
+   remembered-folders list with last used, size and Forget (the rest of 10);
    the rest of decision 15 (empty the archive after so many days, a download
    speed limit, hiding kinds and architectures) now that Settings has a home
    for them; one-click self-update with signed releases (13, 14).
-3. v0.5.0: `isoshelf update` (#1), older versions with a hold (#2), Make
-   bootable (#3), signatures on images (#5), two downloads at once (#4),
-   portable test (#7).
-4. Later: server mode in Docker (16).
+3. Server mode in Docker (16). *Done in v0.4.0.* What is left of it is a
+   scheduler that checks by itself, and the official TrueNAS store app that
+   is the 1.0 goal.
+4. v0.5.0: the page redone, plus `isoshelf update` (#1), older versions with a
+   hold (#2), Make bootable (#3), signatures on images (#5), two downloads at
+   once (#4), portable test (#7).
 
 ## Latest change (2026-09-22)
 
@@ -108,8 +110,21 @@ record of where things stand and what was decided.
 - `deploy/truenas/` names the version it packages in two files; a test now
   fails the build when either falls behind the newest `CHANGELOG.md` section,
   because that is exactly the kind of thing nobody remembers at release time.
-- Next: release v0.4.1 and rebuild the image, then decision 10 - where each
-  folder's records live.
+- v0.4.1 is released and the image is rebuilt and anonymously pullable, both
+  architectures, `latest` and the version tag.
+- v0.4.2 is the first half of decision 10: where a folder's records live, per
+  folder, with the answer in Settings under *Where things are*. `state.Home`
+  resolves it and `state.Move` moves what isoshelf knows when the answer
+  changes - a folder that came back forgotten would be worse than not
+  offering the choice. Two things fell out of building it: a records file
+  kept away from its folder must be named from the folder's path, because the
+  target id lives inside the file you are looking for; and only the records
+  may move, since archiving is a rename and a rename across disks copies
+  every byte.
+- design.md's server-mode section said "later, not started". It shipped in
+  v0.4.0; it now says what is done and what isn't.
+- Next: the rest of decision 10 - the remembered-folders list with last used,
+  size and Forget.
 
 ## Earlier (2026-09-21)
 

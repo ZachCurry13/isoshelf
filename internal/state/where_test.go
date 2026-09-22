@@ -179,3 +179,39 @@ func TestCleanHome(t *testing.T) {
 		t.Errorf("CleanHome(%q) = %q, %v", abs, got, err)
 	}
 }
+
+// Taking the records out leaves isoshelf's folder empty on a drive somebody
+// has just asked it to stop writing to, so it goes - unless the archive or a
+// part-finished download is still in there, which are the user's files.
+func TestMovingRecordsOutTidiesUpAfterItself(t *testing.T) {
+	target, home := t.TempDir(), Home(t.TempDir())
+	if err := New("folder").Save(target); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Move("", home, target); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := os.Stat(filepath.Join(target, DirName)); err == nil {
+		t.Error("an empty .isoshelf folder was left on a drive isoshelf was asked not to write to")
+	}
+
+	// Again, with something of the user's in there - and somewhere new to
+	// move to, since the first home now holds this folder's records.
+	if err := New("folder").Save(target); err != nil {
+		t.Fatal(err)
+	}
+	kept := filepath.Join(target, DirName, "removed")
+	if err := os.MkdirAll(kept, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	moved, err := Move("", Home(t.TempDir()), target)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !moved.Moved {
+		t.Fatal("the records didn't move the second time, so this proves nothing")
+	}
+	if _, err := os.Stat(kept); err != nil {
+		t.Errorf("the archive was taken away with the records: %v", err)
+	}
+}

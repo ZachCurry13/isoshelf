@@ -798,6 +798,9 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
 .setting-control { display: grid; gap: 6px; }
 .setting-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .setting-controls .file { flex: 1; min-width: 0; }
+/* A path needs room, but not more than the panel has: min() lets it give way
+   on a phone rather than pushing the button off the edge. */
+.setting-controls .records-dir { flex: 1 1 min(320px, 100%); min-width: 0; }
 .setting-note { font-size: 0.8571rem; margin-top: 6px; }
 
 /* The checklist, shared by "update all" and "review older versions". */

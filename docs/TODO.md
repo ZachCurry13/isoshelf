@@ -118,28 +118,35 @@ starts it thinking it is a form to fill in:
    `XDG_CONFIG_HOME`, so the container needed no code change to keep its
    files on a mount; and the same-origin check hardcoded `http://`, which a
    reverse proxy in front of a NAS would have broken.)*
-6. **Where each folder's records live** (decision 10 in STATUS.md). The
-   fields are already in `internal/settings` (`StateLocation`, `StateDir`,
-   `InFolder`/`WithApp`/`Elsewhere`); nothing reads them yet, and the method
-   that used to turn them into a path was removed as dead code - write it
-   again when you build this. Plus the remembered-folders list with last
-   used, size and Forget.
-6. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
+6. ~~**Where each folder's records live**~~ *(done in v0.4.2. `state.Home`
+   resolves it, `state.Move` moves them when the answer changes, and the
+   answer is per folder, in the settings file under `folder_records`. What
+   was learned: a records file kept away from its folder has to be named from
+   the folder's path, because the target id lives inside the file you are
+   trying to find; and only the records may move - archiving is a rename, and
+   a rename across disks is a copy of every byte.)*
+7. **The remembered-folders list** - the rest of decision 10: the folders
+   isoshelf has looked after, with when each was last used, how much it
+   holds, and Forget. Most of it is already on disk: `<config>/targets/` has
+   a mirror per folder with its path and when it was saved, and the page
+   already carries a `recent_targets` list. What is missing is the size, the
+   verb, and somewhere on the page to put it.
+8. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
    swaps its own program, restarts, page reconnects - and only installs a
    release carrying the project's signature, which needs the signing key set
    up once. Whatever downloads the new file must find its asset **by pattern**
    (the name contains `windows-amd64.exe`), never by an exact name: release
    files carry the version now, so an exact name goes stale every release.
-7. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
+9. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
    Same feature, two reasons for wanting it, both from real r/Ventoy posts
    where people lost a drive's worth of images. The list is already kept off
    the drive: `internal/state/mirror.go` copies each folder's state into the
    config folder, including the entry ids seen by each scan. What's missing is
    the verb, plus exporting the list to a file someone can keep elsewhere.
-8. **The rest of decision 15**: empty the archive after 7/30/90 days, a
+10. **The rest of decision 15**: empty the archive after 7/30/90 days, a
    download speed limit, hiding kinds and architectures you don't use.
    Settings has a home for all of them now.
-9. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
+11. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
    an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
    once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
    drive ([#7]) - **and the redesign below**.

@@ -140,5 +140,13 @@ func Move(from, to Home, target string) (Moved, error) {
 		return out, err
 	}
 	out.Moved = true
+	// Taking the records out of a folder can leave isoshelf's folder there
+	// with nothing in it, on a drive somebody has just asked isoshelf to stop
+	// writing to. Remove it if it is empty - which os.Remove does for us: it
+	// refuses a folder that still holds the archive or a part-finished
+	// download, and those are the user's files, not isoshelf's housekeeping.
+	if from == "" {
+		os.Remove(filepath.Dir(src))
+	}
 	return out, nil
 }
