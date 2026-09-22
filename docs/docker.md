@@ -109,6 +109,12 @@ don't.
 8. Install it and wait for it to go green. Then open its **Logs**: isoshelf
    prints the link with its secret on the end. Open that, and bookmark it.
 
+**Typing the address on its own won't work**, and that is deliberate: the
+secret in the link is what keeps everyone else on your network out. You will
+get a page telling you the link is in the log. Once you have opened the real
+link once, the address alone works from then on, because your browser keeps
+the secret in a cookie.
+
 ### If it starts but can't write
 
 This is a permissions problem rather than an isoshelf one: the user the

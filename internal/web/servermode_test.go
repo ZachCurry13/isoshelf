@@ -137,3 +137,30 @@ func TestHealthNeedsNoToken(t *testing.T) {
 		}
 	}
 }
+
+// Someone who opens the bare address gets told where to find the link - and
+// on a server that is the container's log, not an "isoshelf window" that
+// doesn't exist there.
+func TestForbiddenPageSaysWhereTheLinkIs(t *testing.T) {
+	desktop := serverMode(t, false).forbiddenPage()
+	if !strings.Contains(desktop, "isoshelf window") {
+		t.Errorf("on a desktop it should point at the window: %q", desktop)
+	}
+	if strings.Contains(desktop, "docker logs") {
+		t.Error("a desktop was told to look in a container log")
+	}
+
+	server := serverMode(t, true).forbiddenPage()
+	for _, want := range []string{"log", "docker logs isoshelf", "?token=", "TrueNAS"} {
+		if !strings.Contains(server, want) {
+			t.Errorf("a server's page doesn't mention %q: %q", want, server)
+		}
+	}
+	if strings.Contains(server, "isoshelf window") {
+		t.Error("a container user was sent looking for a window that doesn't exist")
+	}
+	// It must never be the place the secret leaks.
+	if strings.Contains(server, testToken) {
+		t.Error("the refusal page contains the token")
+	}
+}

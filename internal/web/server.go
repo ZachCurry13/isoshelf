@@ -235,7 +235,7 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		if c, err := r.Cookie(cookieName); err != nil || !s.validToken(c.Value) {
 			h.Set("Content-Type", "text/html; charset=utf-8")
 			w.WriteHeader(http.StatusForbidden)
-			w.Write([]byte(forbiddenPage))
+			w.Write([]byte(s.forbiddenPage()))
 			return
 		}
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
@@ -249,11 +249,29 @@ func (s *Server) guard(next http.Handler) http.Handler {
 	})
 }
 
-const forbiddenPage = `<!doctype html><meta charset="utf-8"><title>isoshelf</title>
-<body>
+// forbiddenPage is what someone sees who opened the address without the
+// secret on the end - which, on a server, is what typing the address into the
+// bar does. Where to find that link depends entirely on how isoshelf is
+// running, and telling a container user to "go back to the isoshelf window"
+// sends them looking for something that doesn't exist.
+func (s *Server) forbiddenPage() string {
+	where := `<p>For your safety, isoshelf only opens from the link it shows when it
+starts. Go back to the isoshelf window and open that link, or start isoshelf
+again.</p>`
+	if s.cfg.AnyHost {
+		where = `<p>isoshelf only opens from the link it prints when it starts, which has a
+secret on the end of it. This address on its own isn't enough - that is what
+keeps everyone else on the network out.</p>
+<p><b>The link is in this container's log.</b> On TrueNAS: Apps, then isoshelf,
+then its Logs. With Docker: <code>docker logs isoshelf</code>. Look for a line
+beginning <code>http://</code> with <code>?token=</code> in it, and open the
+whole thing. Once you have, this address will work on its own.</p>`
+	}
+	return `<!doctype html><meta charset="utf-8"><title>isoshelf</title>
+<body style="font-family:system-ui,sans-serif;max-width:34rem;margin:3rem auto;padding:0 1rem;line-height:1.5">
 <h1>Open isoshelf from its link</h1>
-<p>For your safety, isoshelf only opens from the link it shows when it starts.
-Go back to the isoshelf window and open that link, or start isoshelf again.</p>`
+` + where
+}
 
 func (s *Server) validToken(t string) bool {
 	return s.cfg.Token != "" && subtle.ConstantTimeCompare([]byte(t), []byte(s.cfg.Token)) == 1

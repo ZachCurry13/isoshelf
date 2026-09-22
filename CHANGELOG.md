@@ -6,6 +6,16 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.1] - 2026-09-22
+
+### Fixed
+- **Opening a server's address without the link now says where the link is.**
+  It said "go back to the isoshelf window and open that link" - which is right
+  on your own computer and useless in a container, where there is no window
+  and the link is in the app's log. It now says exactly that, and where to
+  look on TrueNAS and with Docker. Found the first time someone typed the
+  address in.
+
 ## [v0.4.0] - 2026-09-21
 
 isoshelf can live on the machine your images already live on.
