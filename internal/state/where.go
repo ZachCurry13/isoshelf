@@ -71,14 +71,14 @@ func nameFor(abs string) string {
 func CleanHome(dir string) (Home, error) {
 	dir = strings.TrimSpace(dir)
 	if dir == "" {
-		return "", errors.New("name a folder to keep the records in")
+		return "", errors.New("Name a folder to keep the records in.")
 	}
 	abs, err := filepath.Abs(dir)
 	if err != nil {
 		return "", err
 	}
 	if !filepath.IsAbs(dir) {
-		return "", errors.New("give the whole path to the folder, starting from the top")
+		return "", errors.New("Give the whole path to the folder, starting from the top.")
 	}
 	return Home(abs), nil
 }
