@@ -26,7 +26,7 @@ type stateJSON struct {
 	Report    *check.ReportJSON      `json:"report,omitempty"`
 	Tracks    map[string]state.Track `json:"tracks"`
 	UsualSet  []string               `json:"usual_set"`
-	Recent    []string               `json:"recent_targets"`
+	Recent    []rememberedJSON       `json:"recent_targets"`
 	Bookmarks []string               `json:"bookmarks"`
 	// OldFiles is what happens to the copy an update replaces, for images
 	// that haven't been given their own answer.
@@ -155,8 +155,19 @@ func (s *Server) removedInfo(target string) removedJSON {
 	return removedJSON{Files: len(files), Bytes: bytes}
 }
 
+// rememberedJSON is one folder isoshelf remembers: where it is, when it was last
+// looked at, and what it held then. The numbers are what the last scan saw,
+// not what is there now - the drive may not even be plugged in.
+type rememberedJSON struct {
+	Path     string    `json:"path"`
+	ID       string    `json:"id"`
+	LastUsed time.Time `json:"last_used,omitzero"`
+	Files    int       `json:"files,omitempty"`
+	Bytes    int64     `json:"bytes,omitempty"`
+}
+
 // stateLocked builds the page state; s.mu must be held.
-func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
+func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSON {
 	saved := s.loadSettings()
 	out := stateJSON{
 		Version:        s.cfg.Version,

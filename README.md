@@ -246,6 +246,10 @@ window that only exists on a desktop.<br>
 worked out about a folder can be kept in isoshelf's own folder, or one you
 pick, instead of inside the folder itself - for a drive it shouldn't be
 writing to. Changing the answer moves it; nothing is forgotten.<br>
+**v0.4.3: the folders isoshelf remembers.** *2026-09-22:* the folder chooser
+now says when you last looked at each one, how many images it held and how
+much room they took - and *Forget* takes one off the list without touching
+anything in it.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

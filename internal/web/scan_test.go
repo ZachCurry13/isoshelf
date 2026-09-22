@@ -86,8 +86,14 @@ func TestScanCheckAndSettings(t *testing.T) {
 	if st := decode[stateJSON](t, request(t, again, http.MethodGet, "/api/state", nil)); st.Target != drive {
 		t.Errorf("remembered target = %q, want %q", st.Target, drive)
 	}
-	if st := decode[stateJSON](t, request(t, again, http.MethodGet, "/api/state", nil)); len(st.Recent) == 0 || st.Recent[0] != drive {
-		t.Errorf("recent targets = %v", st.Recent)
+	remembered := decode[stateJSON](t, request(t, again, http.MethodGet, "/api/state", nil))
+	if len(remembered.Recent) == 0 || remembered.Recent[0].Path != drive {
+		t.Fatalf("recent targets = %v", remembered.Recent)
+	}
+	// The list says what each folder held, so it can be read without going
+	// near a drive that may not be plugged in.
+	if got := remembered.Recent[0]; got.Files == 0 || got.Bytes == 0 || got.LastUsed.IsZero() || got.ID == "" {
+		t.Errorf("the remembered folder says nothing about itself: %+v", got)
 	}
 }
 
