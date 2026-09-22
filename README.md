@@ -333,9 +333,12 @@ Adjust the first path to wherever your drive is mounted.
 
 ## Getting it
 
-Download it from the [latest
-release](https://github.com/ZachCurry13/isoshelf/releases/latest). There's no
-installer and nothing to set up — it's one file.
+Download it from the [releases
+page](https://github.com/ZachCurry13/isoshelf/releases) — the newest one at
+the top. There's no installer and nothing to set up: it's one file.
+
+(The releases page, not "the latest release": until 1.0 every release is
+marked a *pre-release*, and GitHub's idea of "latest" skips those.)
 
 Every file on that page starts with the version, like
 `isoshelf-vX.Y.Z-…`, so pick the one whose name ends the way your row says.

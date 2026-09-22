@@ -256,6 +256,11 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   the network, not a bug. The recorded responses in the tests are the way to
   check that path without going online.
 - **Don't touch port 8765**: the maintainer's own preview runs there.
+- **`releases/latest` is not the newest release here.** Since v0.4.10 every
+  release below 1.0 is marked a pre-release, and GitHub's "latest release"
+  skips those - so a link to `/releases/latest` points at the last release
+  made before that change, and will keep pointing there until 1.0. Link to
+  `/releases` instead. The README does.
 - **Release files carry the version** since v0.3.3, so a link straight to
   `releases/latest/download/isoshelf-windows-amd64.exe` no longer works.
   Nothing in this repository used one and the published downloads had been
