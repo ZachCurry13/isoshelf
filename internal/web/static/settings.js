@@ -228,6 +228,18 @@ const SETTING_GROUPS = [
           el("button", { type: "button", class: "btn small", onclick: openPicker }, "Choose folder…")),
       },
       {
+        name: "Who can get in",
+        hint: "A username and password, for isoshelf running on your network. " +
+          "The link isoshelf prints when it starts still works as well - it's the way " +
+          "back in if you forget the password.",
+        words: "login password username sign in out account security who access",
+        available: () => state && state.login && state.login.can_set,
+        control: () => loginControl(),
+        note: () => (state && state.login && state.login.user)
+          ? `Signed in as ${state.login.user}.`
+          : "Nobody has set one yet: anyone who can reach this address can use isoshelf.",
+      },
+      {
         name: "Where this folder's records are kept",
         hint: "What isoshelf has worked out about this folder: its history, the images " +
           "you starred, and what each file turned out to be. Normally they live in the " +
@@ -281,6 +293,99 @@ const SETTING_GROUPS = [
     ],
   },
 ];
+
+// loginControl is the username and password: a button that opens the form,
+// and the two ways out. Changing it is rare enough that it does not need to
+// sit open in the panel taking up room.
+function loginControl() {
+  const login = (state && state.login) || {};
+  const buttons = [
+    el("button", { type: "button", class: "btn small", onclick: changeLogin },
+      login.user ? "Change username or password" : "Set a username and password"),
+  ];
+  if (login.user) {
+    buttons.push(
+      el("a", { class: "btn small", href: "/login", onclick: signOut }, "Sign out"),
+      el("button", { type: "button", class: "btn small", onclick: signOutEverywhere },
+        "Sign out everywhere"));
+  }
+  return el("div", { class: "setting-controls" }, buttons);
+}
+
+// changeLogin asks for the new username and password, and the old one unless
+// this browser got in with the link - in which case the old password is the
+// thing that has been forgotten.
+async function changeLogin() {
+  const login = (state && state.login) || {};
+  const body = el("div", { class: "report" });
+  const field = (label, name, type, hint) => {
+    const input = el("input", { type, id: `login-${name}`, class: "records-dir",
+      autocomplete: type === "password" ? "new-password" : "username" });
+    body.append(el("div", {},
+      el("label", { for: `login-${name}` }, label),
+      input,
+      hint ? el("div", { class: "muted setting-note" }, hint) : null));
+    return input;
+  };
+
+  let current = null;
+  if (login.user && !login.via_link) {
+    current = field("Your password now", "current", "password");
+    current.autocomplete = "current-password";
+  } else if (login.user) {
+    body.append(el("p", { class: "muted" },
+      "You got in with the link rather than a password, so isoshelf isn't asking " +
+      "for the old one. That's what the link is for."));
+  }
+  const user = field("Username", "user", "text");
+  user.value = login.user || "";
+  const password = field("Password", "password", "password");
+  const again = field("Password again", "again", "password");
+  body.append(el("p", { class: "muted" },
+    "Every other browser is signed out when this changes, so a changed password " +
+    "means a changed password everywhere."));
+
+  const go = await ask(login.user ? "Change the login" : "Set a username and password", "", [
+    { label: "Save", value: "go", primary: true },
+    { label: "Cancel", value: "" },
+  ], body);
+  if (!go) return;
+  try {
+    state = await api("POST", "/api/login", {
+      user: user.value,
+      current: current ? current.value : "",
+      password: password.value,
+      again: again.value,
+    });
+    render();
+    showNotice("Saved. Everywhere else has been signed out.", false);
+  } catch (err) {
+    showNotice(err.message, true);
+  }
+}
+
+// signOut ends this browser's session. It is a plain link to the login page,
+// which posts to sign out - so it works even if this script never ran.
+function signOut(e) {
+  e.preventDefault();
+  const form = el("form", { method: "post", action: "/login" });
+  document.body.append(form);
+  form.submit();
+}
+
+async function signOutEverywhere() {
+  const yes = await ask("Sign out everywhere?",
+    "Every browser signed in to this isoshelf, including this one, has to sign in " +
+    "again. The username and password don't change.",
+    [{ label: "Sign out everywhere", value: "yes", primary: true }, { label: "Cancel", value: null }]);
+  if (!yes) return;
+  try {
+    await api("POST", "/api/login/everywhere", {});
+  } catch {
+    // Signing out and then being refused is the point; either way, reload.
+  }
+  location.href = "/login";
+}
 
 // recordsControl is the three answers, plus the box for the third one. The
 // first two save themselves; the third waits until a folder has been typed,
@@ -345,7 +450,7 @@ function settingsKey() {
   return JSON.stringify([
     state.appearance, state.old_files, state.target, state.version,
     state.auto_check, state.app_update_check, state.checked_at,
-    state.config_dir, state.catalog, state.records, recordsChoice,
+    state.config_dir, state.catalog, state.records, recordsChoice, state.login,
     Boolean(state.app_update), $("settings-search").value,
   ]);
 }

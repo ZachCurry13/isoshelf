@@ -24,6 +24,7 @@ import (
 
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
 	"github.com/ZachCurry13/isoshelf/internal/appupdate"
+	"github.com/ZachCurry13/isoshelf/internal/auth"
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/check"
 	"github.com/ZachCurry13/isoshelf/internal/inventory"
@@ -73,6 +74,10 @@ type Config struct {
 type Server struct {
 	cfg     Config
 	handler http.Handler
+	// sessions signs the cookie a browser holds after someone logs in, and
+	// logins is how a wrong password slows the next guess down.
+	sessions auth.Key
+	logins   *attempts
 
 	mu     sync.Mutex
 	target string
@@ -135,7 +140,10 @@ func New(cfg Config) *Server {
 	if cfg.Now == nil {
 		cfg.Now = time.Now
 	}
-	s := &Server{cfg: cfg, cat: cfg.Catalog, catSource: cfg.CatalogSource}
+	s := &Server{cfg: cfg, cat: cfg.Catalog, catSource: cfg.CatalogSource, logins: newAttempts()}
+	// A key isoshelf can't save still works; it just means everyone has to
+	// log in again after a restart, which is better than refusing to start.
+	s.sessions, _ = auth.LoadKey(cfg.Dirs.Config)
 	// What each project said last time. Opening the page then costs nothing
 	// for the images already asked about today.
 	s.memory = lastcheck.Load(cfg.Dirs.Config)
@@ -187,6 +195,8 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/settings", s.setSettings)
 	mux.HandleFunc("POST /api/records", s.setRecords)
 	mux.HandleFunc("POST /api/folders/forget", s.forgetFolder)
+	mux.HandleFunc("POST /api/login", s.setLogin)
+	mux.HandleFunc("POST /api/login/everywhere", s.signOutEverywhere)
 	mux.HandleFunc("POST /api/catalog/mine", s.addMyImage)
 	mux.HandleFunc("POST /api/bookmark", s.setBookmark)
 	s.handler = s.guard(mux)
@@ -203,6 +213,10 @@ func New(cfg Config) *Server {
 // and shouldn't need one - and it says nothing at all: not which folder is
 // open, not what is in it, not even the version.
 const healthPath = "/healthz"
+
+// loginPath is the username-and-password door. It is outside the guard by
+// necessity: somebody who has to log in has not got through it yet.
+const loginPath = "/login"
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == healthPath {
@@ -234,10 +248,40 @@ func (s *Server) guard(next http.Handler) http.Handler {
 				return
 			}
 		}
-		if c, err := r.Cookie(cookieName); err != nil || !s.validToken(c.Value) {
+		// Three ways in, and they are the same door: the secret in the link,
+		// the cookie that link left behind, or a username and password.
+		hasToken := false
+		if c, err := r.Cookie(cookieName); err == nil && s.validToken(c.Value) {
+			hasToken = true
+		}
+		if !hasToken && !s.signedIn(r) {
+			// The login page is the one thing served to somebody who is not
+			// through yet, so it serves itself: no token, no session.
+			if r.URL.Path == loginPath && s.canLogIn() {
+				s.handleLogin(w, r)
+				return
+			}
+			// A browser asking for a page is sent to the login form. A
+			// request from the page's own code is not: it would follow the
+			// redirect and get a login page where it expected an answer, so
+			// it is refused in the usual way and the page says so.
+			if s.canLogIn() && r.Method == http.MethodGet && wantsHTML(r) {
+				http.Redirect(w, r, loginPath, http.StatusSeeOther)
+				return
+			}
 			h.Set("Content-Type", "text/html; charset=utf-8")
 			w.WriteHeader(http.StatusForbidden)
 			w.Write([]byte(s.forbiddenPage()))
+			return
+		}
+		// Already in. The login page has nothing left to say, and signing out
+		// is the only thing under it that still means anything.
+		if r.URL.Path == loginPath {
+			if r.Method == http.MethodPost {
+				s.handleLogout(w, r)
+				return
+			}
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
@@ -249,6 +293,12 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+// wantsHTML says whether this is a browser asking for a page, rather than
+// the page's own code asking for an answer.
+func wantsHTML(r *http.Request) bool {
+	return strings.Contains(r.Header.Get("Accept"), "text/html")
 }
 
 // forbiddenPage is what someone sees who opened the address without the

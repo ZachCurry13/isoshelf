@@ -190,6 +190,14 @@ func serveUI(ctx context.Context, e *env, opts options) error {
 	// from whichever part of isoshelf happened to write first.
 	checkWritable(e.stderr, dirs.Config, opts.folder)
 	url := fmt.Sprintf("http://%s/?token=%s", listener.Addr(), token)
+	// The username and password, if there is one or the environment gives
+	// one. Before the server starts, so the log reads in the order things
+	// happen and nobody can reach the setup form ahead of this being said.
+	plainAddress := ""
+	if anyHost {
+		plainAddress = fmt.Sprintf("http://<this-machine>:%d/", listener.Addr().(*net.TCPAddr).Port)
+	}
+	setUpLogin(e, dirs, anyHost, plainAddress)
 
 	server := &http.Server{
 		Handler: web.New(web.Config{
@@ -212,8 +220,8 @@ func serveUI(ctx context.Context, e *env, opts options) error {
 	if anyHost {
 		// The address it bound to is rarely the address anyone types, so say
 		// what to do rather than printing 0.0.0.0 and hoping.
-		fmt.Fprintf(e.stdout, "isoshelf is listening on %s.\n\nOpen it from this machine's own address, with the token on the end:\n\n  http://<this-machine>:%d/?token=%s\n\nAnyone who has that link can change the images in the folder, so keep it\non a network you trust and don't paste it where others can read it.\n",
-			listener.Addr(), listener.Addr().(*net.TCPAddr).Port, token)
+		fmt.Fprintf(e.stdout, "isoshelf is listening on %s.\n\nOpen it from this machine's own address:\n\n  http://<this-machine>:%d/\n\nIf you haven't set a username and password, it asks you to choose one.\nThis link gets you in without them, and is the way back if you forget:\n\n  http://<this-machine>:%d/?token=%s\n\nAnyone who has that link can change the images in the folder, so keep it\non a network you trust and don't paste it where others can read it.\n",
+			listener.Addr(), listener.Addr().(*net.TCPAddr).Port, listener.Addr().(*net.TCPAddr).Port, token)
 	} else {
 		fmt.Fprintf(e.stdout, "isoshelf is running at:\n\n  %s\n\nKeep this window open while you use it. Press Ctrl+C to stop.\n", url)
 	}

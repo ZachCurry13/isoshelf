@@ -49,15 +49,21 @@ somebody's files on the network:
   for isoshelf's own files. Neither has a sensible default, and the second
   one is the one people forget — without it, settings and the secret for the
   link are lost every time the app updates.
+- **Offer the username and password, and say they are optional.** Since
+  v0.4.5 isoshelf asks for them the first time the page is opened, so the
+  form needs nothing. `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` set them
+  ahead of time and close the window where whoever arrives first chooses, so
+  they belong on the form - as two ordinary fields, with the password one
+  marked `private: true`.
 - **Do not ask for a token.** isoshelf makes one on first start and keeps it
   in its config folder. A box on an install form marked "token" gets
-  `password` typed into it, and that box is the only thing standing between
-  a stranger on the network and somebody's images. `ISOSHELF_TOKEN` exists
-  for people who want to choose, and can be an advanced option at most.
-- **Say where the link is.** The first thing someone needs after installing
-  is the link with the secret on it, and it is printed in the app's log. The
-  app's description should say so outright, because nobody thinks to look
-  there.
+  `password` typed into it. `ISOSHELF_TOKEN` exists for people who want to
+  choose, and is an advanced option at most.
+- **Say that the first thing to do is open it.** The description should say
+  that opening the address asks for a username and password, and that the
+  app's log also holds a link that gets in without one - because nobody
+  thinks to look there, and that link is the way back from a forgotten
+  password.
 - **Say that the folder is the container's, not the host's.** In the folder
   chooser, the dataset mounted at `/images` appears as `/images`. That is
   the one thing about running in a container that surprises people.

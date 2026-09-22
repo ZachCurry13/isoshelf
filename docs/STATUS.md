@@ -106,10 +106,18 @@ record of where things stand and what was decided.
   a fallback for plain http where the browser's clipboard doesn't exist. And
   the question dialog had no height limit, so on a phone its buttons were
   below the bottom edge with no way to scroll to them.
-- Still open, both waiting on the maintainer: whether the link's token should
-  be replaced by a username and password (their ask - "this is on my private
-  network"), and what "update ISOs automatically" should mean, which is the
-  scheduler in design.md's server-mode section.
+- Both questions answered by the maintainer, 2026-09-22. **A username and
+  password**, over keeping the token alone or an off switch - shipped as
+  v0.4.5. And **updating ISOs fully automatically**, end to end: check,
+  download, verify and put in place, each image following the answer it
+  already carries (replace / archive / keep both). That is next.
+- v0.4.5 notes worth keeping: the login form cannot use the Origin check the
+  rest of the page uses, because isoshelf sends Referrer-Policy: no-referrer
+  and browsers then send "Origin: null" on a plain form post - it carries a
+  SameSite=Strict cookie and a matching hidden field instead. Sessions are
+  signed rather than remembered, so a NAS app update doesn't sign anyone out.
+  And the login page's inline stylesheet needs its own hash in the content
+  policy, or it arrives as unstyled HTML.
 
 
 - **isoshelf is running on the maintainer's NAS**, installed as a TrueNAS
