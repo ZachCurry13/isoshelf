@@ -9,21 +9,30 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**v0.3.5 is in flight** on `upload-from-browser`. `main` carries everything
-through v0.3.4.
+**Nothing is in flight.** Everything below the next heading has shipped.
 
-**v0.3.4 is the latest release.** Releases go back to v0.2.0, the first one.
-There is no v0.3.1 or v0.3.2 release: both have their own `CHANGELOG.md`
-section but went out inside v0.3.3, because a release happens when a `v*` tag
-is pushed and those two were never tagged. Note for anyone checking this the
-way it was got wrong once: this is a shallow clone with no tags fetched, so
-`git tag` prints nothing even though releases exist. Ask GitHub, not the
-clone.
+**Which version is the latest is not written down here, on purpose.** It went
+stale three times in one evening. Ask GitHub: the releases page, or
+`gh release list`. This is a shallow clone with no tags fetched, so `git tag`
+prints nothing even though releases exist - that has caught two sessions out
+now, so ask GitHub rather than the clone.
 
-**How a release happens here:** merge the branch's pull request into `main`,
-then start the `release` workflow from the Actions tab with the version typed
-in. Pushing a `v*` tag is the normal way and does the same thing, but this
-sandbox's git proxy refuses tag pushes with a 403.
+Worth knowing about the numbering: there is no v0.3.1 or v0.3.2 release.
+Both have their own `CHANGELOG.md` section but went out inside v0.3.3,
+because a release happens when a `v*` tag is pushed and those two were never
+tagged. Don't let it happen again - one version, one tag, one release.
+
+**How a release happens here:**
+
+1. Merge the branch's pull request into `main`.
+2. Start the `release` workflow from the Actions tab with the version typed
+   in. Pushing a `v*` tag is the normal way and does the same thing, but this
+   sandbox's git proxy refuses tag pushes with a 403. It refuses branch
+   deletions too, so a merged branch that GitHub didn't delete itself has to
+   be deleted by hand on the website.
+3. Check the release: three binaries, the portable zip and `SHA256SUMS`, all
+   carrying the version, and the notes taken from that version's
+   `CHANGELOG.md` section. No section, no release - the workflow stops.
 
 ## ~~v0.3.4: scanning while downloads run~~ *(done)*
 
