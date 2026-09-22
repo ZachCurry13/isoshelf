@@ -222,10 +222,10 @@ says how much room the images use and how much the queue will download.<br>
 is no longer refused while images download - the two run side by side, and
 the page shows both. A scan also stops being able to undo the record of a
 file a download had just placed.<br>
-**v0.3.5: add a file from your computer.** *2026-09-21:* drag an image onto
+**v0.3.5: add a file from your computer.** *Released 2026-09-21:* drag an image onto
 the page, or choose one, and it lands in the folder - for the images no
 catalog knows. Nothing is written over without asking.<br>
-**v0.3.6: keeping both, and reporting problems.** *2026-09-22:* images whose
+**v0.3.6: keeping both, and reporting problems.** *Released 2026-09-21:* images whose
 filename never changes can now be kept in both versions - the old copy is
 renamed and the new one takes the unchanging name. When something goes wrong,
 one button opens a bug report with the details filled in; isoshelf sends
