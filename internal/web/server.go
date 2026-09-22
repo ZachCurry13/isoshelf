@@ -185,6 +185,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/identify", s.identifyFile)
 	mux.HandleFunc("POST /api/catalog/refresh", s.updateCatalog)
 	mux.HandleFunc("POST /api/settings", s.setSettings)
+	mux.HandleFunc("POST /api/records", s.setRecords)
 	mux.HandleFunc("POST /api/catalog/mine", s.addMyImage)
 	mux.HandleFunc("POST /api/bookmark", s.setBookmark)
 	s.handler = s.guard(mux)

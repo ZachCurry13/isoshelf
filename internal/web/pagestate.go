@@ -42,7 +42,9 @@ type stateJSON struct {
 	Appearance settings.Appearance `json:"appearance"`
 	// ConfigDir is where isoshelf keeps its own files. Settings shows it so
 	// nobody has to hunt for it.
-	ConfigDir string            `json:"config_dir,omitempty"`
+	ConfigDir string `json:"config_dir,omitempty"`
+	// Records is where this folder's records are kept.
+	Records   recordsJSON       `json:"records"`
 	Removed   removedJSON       `json:"removed"`
 	Catalog   catalogStatusJSON `json:"catalog"`
 	AppUpdate *appupdate.Notice `json:"app_update,omitempty"`
@@ -171,6 +173,7 @@ func (s *Server) stateLocked(recent []string, room space.Usage) stateJSON {
 		AppUpdateCheck: settings.On(saved.AppUpdateCheck),
 		Appearance:     saved.Appearance,
 		ConfigDir:      s.cfg.Dirs.Config,
+		Records:        s.recordsLocked(saved),
 		Removed:        s.removedInfo(s.target),
 		Catalog:        s.catalogStatusLocked(),
 		ReportURL:      "https://github.com/" + appupdate.Repo + "/issues/new",

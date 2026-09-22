@@ -242,6 +242,10 @@ custom app.<br>
 longer scrolls sideways on a phone, and typing a server's address without the
 link now says where the link is - in the app's log - instead of pointing at a
 window that only exists on a desktop.<br>
+**v0.4.2: records where you want them.** *2026-09-22:* what isoshelf has
+worked out about a folder can be kept in isoshelf's own folder, or one you
+pick, instead of inside the folder itself - for a drive it shouldn't be
+writing to. Changing the answer moves it; nothing is forgotten.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

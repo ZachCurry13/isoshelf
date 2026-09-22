@@ -38,7 +38,7 @@ func (s *Server) uploadFile(w http.ResponseWriter, r *http.Request) {
 		s.mu.Unlock()
 	}()
 
-	st, err := state.Load(target)
+	st, err := s.recordsFor(target).Load(target)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -63,7 +63,7 @@ func (s *Server) uploadFile(w http.ResponseWriter, r *http.Request) {
 	// The file is in place. Save this upload's own change onto the records as
 	// they are now, and let the page's copy know too.
 	s.mu.Lock()
-	saveErr := saveMerged(target, base, st)
+	saveErr := s.saveMerged(target, base, st)
 	if s.st != nil && s.target == target {
 		state.Merge(base, st, s.st)
 	}

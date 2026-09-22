@@ -6,6 +6,22 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.2] - 2026-09-22
+
+### Added
+- **Choose where a folder's records live.** What isoshelf has worked out about
+  a folder - its history, the images you starred, what each file turned out to
+  be - normally lives in a `.isoshelf` folder inside it, so the drive carries
+  that to whatever computer you plug it into next. In Settings, under *Where
+  things are*, you can now keep it in isoshelf's own folder or one you pick
+  instead, for a drive isoshelf shouldn't be writing to. Each folder answers
+  for itself.
+  - Changing the answer **moves** what isoshelf knows; the folder doesn't come
+    back forgotten. Your images are never moved, and neither is the archive.
+  - The one thing to know: kept away from the folder, the records are found by
+    the folder's path, so the same drive at a different letter or mount point
+    starts with nothing.
+
 ## [v0.4.1] - 2026-09-22
 
 ### Fixed

@@ -88,7 +88,12 @@ func mergeMap[V comparable](base, changed, onto map[string]V) map[string]V {
 // It is how a writer saves while others may be writing too: whatever they
 // changed meanwhile is kept, and only this writer's own changes go on top.
 func (s *State) SaveOnto(target string, base *State) (*State, error) {
-	disk, err := Load(target)
+	return Home("").SaveOnto(s, target, base)
+}
+
+// SaveOnto is SaveOnto, for records kept wherever this Home keeps them.
+func (h Home) SaveOnto(s *State, target string, base *State) (*State, error) {
+	disk, err := h.Load(target)
 	if err != nil {
 		return nil, err
 	}
@@ -100,5 +105,5 @@ func (s *State) SaveOnto(target string, base *State) (*State, error) {
 		disk = base.Clone()
 	}
 	Merge(base, s, disk)
-	return disk, disk.Save(target)
+	return disk, h.Save(disk, target)
 }

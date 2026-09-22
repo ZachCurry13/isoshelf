@@ -136,6 +136,15 @@ On TrueNAS both are usually `568` (`apps`). The `/config` mount has to be
 writable too, not just `/images` — that is where isoshelf keeps its settings
 and the secret for your link.
 
+### If the images folder is read-only
+
+Mount it read-only if you like - isoshelf will scan it and tell you what is
+out of date, it just can't change anything. One thing needs moving first:
+what it works out about the folder normally goes in a `.isoshelf` folder
+inside it. In **Settings → Where things are → Where this folder's records
+are kept**, choose *In isoshelf's own folder*, and it keeps them in `/config`
+with everything else of its own.
+
 ### Checking it is alive
 
 `http://your-truenas:8765/healthz` answers `ok` and needs no token. It says

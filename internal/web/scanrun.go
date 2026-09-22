@@ -78,6 +78,7 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 		Client:  client,
 		Catalog: s.catalog(),
 		Dirs:    s.cfg.Dirs,
+		Records: s.recordsFor(target),
 		Now:     s.cfg.Now,
 		// Show the folder's contents as soon as they're known. Hashing the
 		// images whose filename never changes comes next, and on a USB drive

@@ -1,0 +1,166 @@
+package web
+
+import (
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+
+	"github.com/ZachCurry13/isoshelf/internal/settings"
+	"github.com/ZachCurry13/isoshelf/internal/state"
+)
+
+// Moving a folder's records takes what isoshelf has learned with them. A
+// folder that came back forgotten would be worse than not offering this at
+// all.
+func TestMovingRecordsKeepsWhatWasLearned(t *testing.T) {
+	dirs, target := testDirs(t), sampleDrive(t)
+	elsewhere := t.TempDir()
+	s := newServer(t, dirs, target)
+
+	// Two scans, then a star: a history, a usual set (which takes two scans
+	// to have anything in it) and a choice, all of which have to survive.
+	for range 2 {
+		request(t, s, http.MethodPost, "/api/scan", nil)
+		waitIdle(t, s)
+	}
+	if rec := request(t, s, http.MethodPost, "/api/track", map[string]any{"entry": "netbootxyz", "starred": true}); rec.Code != http.StatusOK {
+		t.Fatalf("starring: %d %s", rec.Code, rec.Body)
+	}
+
+	before := decode[stateJSON](t, request(t, s, http.MethodGet, "/api/state", nil))
+	if before.Records.Location != settings.InFolder {
+		t.Fatalf("records start at %q, want in the folder", before.Records.Location)
+	}
+	if len(before.UsualSet) == 0 {
+		t.Fatal("the scan left no usual set, so this test can't tell whether it survived")
+	}
+
+	rec := request(t, s, http.MethodPost, "/api/records", map[string]any{
+		"location": settings.Elsewhere, "dir": elsewhere,
+	})
+	if rec.Code != http.StatusOK {
+		t.Fatalf("moving the records: %d %s", rec.Code, rec.Body)
+	}
+	after := decode[stateJSON](t, rec)
+	if after.Records.Location != settings.Elsewhere || after.Records.Dir != elsewhere {
+		t.Errorf("records are at %+v, want %q", after.Records, elsewhere)
+	}
+	if !strings.HasPrefix(after.Records.File, elsewhere) {
+		t.Errorf("the records file is %q, want it under %q", after.Records.File, elsewhere)
+	}
+	if _, err := os.Stat(after.Records.File); err != nil {
+		t.Errorf("no records file where it says they are: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(target, state.DirName, "state.json")); err == nil {
+		t.Error("the records were copied, not moved: the folder still has its own")
+	}
+	if len(after.UsualSet) != len(before.UsualSet) || !after.Tracks["netbootxyz"].Starred {
+		t.Errorf("the move lost what was learned: %d in the usual set, starred=%v",
+			len(after.UsualSet), after.Tracks["netbootxyz"].Starred)
+	}
+
+	// And a new scan writes to the new place, not the old one.
+	request(t, s, http.MethodPost, "/api/scan", nil)
+	waitIdle(t, s)
+	if _, err := os.Stat(filepath.Join(target, state.DirName, "state.json")); err == nil {
+		t.Error("a scan after the move wrote records back into the folder")
+	}
+	if !decode[stateJSON](t, request(t, s, http.MethodGet, "/api/state", nil)).Tracks["netbootxyz"].Starred {
+		t.Error("a scan after the move lost the star")
+	}
+}
+
+// Back again: the answer is a choice, not a one-way door.
+func TestMovingRecordsBackIntoTheFolder(t *testing.T) {
+	dirs, target := testDirs(t), sampleDrive(t)
+	s := newServer(t, dirs, target)
+	request(t, s, http.MethodPost, "/api/scan", nil)
+	waitIdle(t, s)
+	if rec := request(t, s, http.MethodPost, "/api/track", map[string]any{"entry": "netbootxyz", "starred": true}); rec.Code != http.StatusOK {
+		t.Fatalf("starring: %d %s", rec.Code, rec.Body)
+	}
+
+	request(t, s, http.MethodPost, "/api/records", map[string]any{
+		"location": settings.Elsewhere, "dir": t.TempDir(),
+	})
+	rec := request(t, s, http.MethodPost, "/api/records", map[string]any{"location": settings.InFolder})
+	if rec.Code != http.StatusOK {
+		t.Fatalf("moving them back: %d %s", rec.Code, rec.Body)
+	}
+	got := decode[stateJSON](t, rec)
+	if got.Records.Location != settings.InFolder {
+		t.Errorf("records are at %q, want in the folder", got.Records.Location)
+	}
+	if !got.Tracks["netbootxyz"].Starred {
+		t.Error("moving back lost the star")
+	}
+	if _, err := os.Stat(filepath.Join(target, state.DirName, "state.json")); err != nil {
+		t.Errorf("the folder has no records after moving them back: %v", err)
+	}
+}
+
+// isoshelf's own folder is one of the three answers, and needs no path typed.
+func TestRecordsCanGoInIsoshelfsOwnFolder(t *testing.T) {
+	dirs, target := testDirs(t), sampleDrive(t)
+	s := newServer(t, dirs, target)
+
+	rec := request(t, s, http.MethodPost, "/api/records", map[string]any{"location": settings.WithApp})
+	if rec.Code != http.StatusOK {
+		t.Fatalf("%d %s", rec.Code, rec.Body)
+	}
+	got := decode[stateJSON](t, rec)
+	if !strings.HasPrefix(got.Records.File, dirs.Config) {
+		t.Errorf("records file is %q, want it under %q", got.Records.File, dirs.Config)
+	}
+}
+
+// Each folder answers for itself, which is the point: one drive isoshelf
+// shouldn't write to doesn't change where a NAS share keeps its records.
+func TestEachFolderAnswersForItself(t *testing.T) {
+	dirs, one, two := testDirs(t), sampleDrive(t), sampleDrive(t)
+	s := newServer(t, dirs, one)
+	elsewhere := t.TempDir()
+
+	request(t, s, http.MethodPost, "/api/records", map[string]any{
+		"location": settings.Elsewhere, "dir": elsewhere,
+	})
+	rec := request(t, s, http.MethodPost, "/api/target", map[string]any{"path": two})
+	if rec.Code != http.StatusOK {
+		t.Fatalf("opening the second folder: %d %s", rec.Code, rec.Body)
+	}
+	if got := decode[stateJSON](t, rec).Records; got.Location != settings.InFolder {
+		t.Errorf("the second folder was given the first one's answer: %+v", got)
+	}
+	// And the first folder still has its own.
+	rec = request(t, s, http.MethodPost, "/api/target", map[string]any{"path": one})
+	if got := decode[stateJSON](t, rec).Records; got.Location != settings.Elsewhere || got.Dir != elsewhere {
+		t.Errorf("the first folder forgot its answer: %+v", got)
+	}
+}
+
+// The complaints, in the words the page shows.
+func TestRecordsRefusesWhatCannotWork(t *testing.T) {
+	dirs, target := testDirs(t), sampleDrive(t)
+	s := newServer(t, dirs, target)
+
+	for _, c := range []struct {
+		why  string
+		body map[string]any
+		want string
+	}{
+		{"a choice isoshelf doesn't know", map[string]any{"location": "the moon"}, "Choose where"},
+		{"nowhere named", map[string]any{"location": settings.Elsewhere, "dir": "  "}, "Name a folder"},
+		{"a relative path", map[string]any{"location": settings.Elsewhere, "dir": "records"}, "whole path"},
+		{"inside the folder itself", map[string]any{"location": settings.Elsewhere, "dir": filepath.Join(target, "records")}, "same drive"},
+	} {
+		rec := request(t, s, http.MethodPost, "/api/records", c.body)
+		if rec.Code != http.StatusBadRequest {
+			t.Errorf("%s: %d, want 400", c.why, rec.Code)
+		}
+		if !strings.Contains(rec.Body.String(), c.want) {
+			t.Errorf("%s: %s, want it to mention %q", c.why, rec.Body, c.want)
+		}
+	}
+}

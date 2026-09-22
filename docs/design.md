@@ -175,6 +175,26 @@ alone is not an update.
   (last 100 scans). A random `target_id` tells targets apart when drive letters
   change. File records stay valid while size and modification time are
   unchanged; a changed file loses its hash and assignment.
+- **Where a folder's records live is the folder's own answer** (decision 10),
+  kept in the settings file under `folder_records`, keyed by the folder's path.
+  `state.Home` resolves it: the empty Home is the default and the one to
+  prefer, since a drive that carries its own records arrives at another
+  computer knowing itself. A Home that names a folder holds every folder's
+  records together in `<home>/records/<hash of the folder's path>.json` - a
+  path can't be a file name, and a hash is a fixed length whatever the path.
+  The cost is that they are then found by that path, so the same drive at a
+  different letter starts with nothing.
+  - Changing the answer **moves** the records (`state.Move`). Anything else
+    looks like isoshelf forgot the folder. Records already at the destination
+    win and the old ones are left alone; nothing isoshelf wrote is deleted
+    without the user choosing it. Taking the last file out of `.isoshelf`
+    removes that folder if it is then empty, and never if the archive or a
+    part-finished download is still in it.
+  - Only the records move. The archive and staged downloads stay in the
+    folder: archiving is a rename, and a rename across disks is a copy of
+    every byte.
+  - Nothing may be running while they move, or a scan that saved afterwards
+    would save to the old place.
 - History and the usual set are mirrored to `<config>/targets/<target_id>.json`
   so they survive a dead drive (not in portable mode; offer "Export usual set" there instead).
 - Usual set = starred entries + entries seen in at least 2 of the last 10
@@ -479,18 +499,23 @@ For when a new release breaks something and the user needs the previous one.
 - The repo must be public by the first release, or both the check and
   downloads fail for users.
 
-### Server mode (later, not started)
+### Server mode
 
-Run isoshelf unattended on a NAS or hypervisor and manage it from a browser.
+Run isoshelf on the machine the images already live on and manage it from a
+browser. Shipped in v0.4.0; see `docs/docker.md`.
 
-- `isoshelf serve`: the same binary and web UI as the desktop. Ship a Docker
-  image (static binary + CA certificates). That also covers TrueNAS apps, which
-  are Docker-based. Also document a Proxmox LXC with the ISO storage
-  bind-mounted.
-- UI: browse the catalog and add tracks not on the shelf, update, the per-track
-  keep/replace checkbox, history.
-- Scheduler: check daily by default and download verified updates, replacing
-  old files where the checkbox says so. Unverified updates wait for the user.
+- **Done:** `isoshelf ui --listen ADDRESS` - the same binary and page as the
+  desktop, answering to the machine's own address instead of only localhost.
+  A Docker image (static binary plus CA certificates), built for amd64 and
+  arm64 and published to ghcr.io, which is also what a TrueNAS app is. The
+  secret in the link makes itself on first start and is kept in the config
+  folder, so a restart doesn't break a bookmark. `/healthz` is the one path
+  outside the guard. The rest of the page - browsing the catalog, updating,
+  the per-image answer, history - was already there and needed nothing.
+- **Not done:** a scheduler that checks daily by itself and downloads verified
+  updates, with unverified ones waiting for the user. A Proxmox LXC with the
+  ISO storage bind-mounted, documented. An official TrueNAS store app, which
+  is the 1.0 goal - `deploy/truenas/` has the start of one.
 
 ### CLI (`cmd/isoshelf`)
 
