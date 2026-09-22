@@ -11,6 +11,47 @@ published, and isoshelf has been installed on a TrueNAS box as a custom app
 - but these catalog files have never been rendered or installed from. Read
 the next section before treating them as finished.
 
+## What the catalog actually requires
+
+Read from `CONTRIBUTIONS.md` in `truenas/apps` on 2026-09-22, rather than
+assumed. Re-read it before submitting: it is their repository and it moves.
+
+- **New contributions go in the `community` train**, and only there. The
+  others are iXsystems'. `app.yaml` already says `train: community`.
+- **Six files are required**, and this folder has three:
+  | File | Here? |
+  |---|---|
+  | `app.yaml` | yes |
+  | `ix_values.yaml` | yes |
+  | `README.md` | yes |
+  | `questions.yaml` | **no** |
+  | `templates/docker-compose.yaml` | **no** |
+  | `templates/test_values/basic-values.yaml` | **no** |
+- **Image tags must be pinned**, never `latest`. `ix_values.yaml` pins the
+  version, and `internal/docs` fails the build if it falls behind the
+  changelog - so that stays true without anybody remembering.
+- **ghcr is preferred over docker.io.** isoshelf publishes to ghcr already.
+- **Nothing in their rules requires the app to have reached 1.0.** Being
+  before 1.0 is not a reason the catalog would refuse isoshelf. Whether it
+  is a good idea is a different question, and the answer is below.
+
+## Should a pre-1.0 isoshelf go in the catalog?
+
+Their rules allow it. The argument against doing it yet is not about rules:
+
+- **The catalog is where strangers find it.** They will not read this
+  repository, the changelog, or the pre-release badge on GitHub. They will
+  install it from a list and expect it to behave.
+- **Being before 1.0 means things can still change under people.** That is
+  exactly what the pre-release label warns about, and catalog users never see
+  that label.
+- **Once it is listed, the image has to keep working.** A tag that moves or
+  breaks breaks it for everyone who installed it, and that doesn't end when
+  the pull request is merged.
+
+The custom-app route in `docs/docker.md` already works and asks nothing of
+anybody else. The sensible order is: finish what 1.0 means, then submit.
+
 ## What is real and what isn't
 
 **Taken from a real community app in `truenas/apps`, so the shape is right:**
@@ -28,6 +69,8 @@ the next section before treating them as finished.
 - `templates/docker-compose.yaml` — what those answers turn into. TrueNAS
   apps don't write plain compose: they call a shared template library, and
   which helpers exist depends on the `lib_version` pinned in `app.yaml`.
+- `templates/test_values/basic-values.yaml` — the values their tests render
+  the template with.
 
 Both of those have to be written against the library version current in
 `truenas/apps` at the time, by someone who can read one of their templates
