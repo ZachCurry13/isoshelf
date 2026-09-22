@@ -197,6 +197,12 @@ alone is not an update.
     would save to the old place.
 - History and the usual set are mirrored to `<config>/targets/<target_id>.json`
   so they survive a dead drive (not in portable mode; offer "Export usual set" there instead).
+  Since v0.4.3 a mirror also holds how many files the folder had and how many
+  bytes they took, which is what the **folders isoshelf remembers** list in
+  the folder chooser shows, along with when each was last saved. That list is
+  read only from these copies, never from the drives: a folder on it may be a
+  NAS that is asleep or a stick in a drawer. **Forget** deletes that one
+  mirror and the folder's records answer, and nothing on the drive at all.
 - Usual set = starred entries + entries seen in at least 2 of the last 10
   scans. "Missing" means
   missing from the usual set, not from the whole catalog. Rebuild offers the

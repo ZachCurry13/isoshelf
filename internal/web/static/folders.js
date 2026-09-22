@@ -48,11 +48,11 @@ async function browse(path) {
       roots.append(el("button", { type: "button", title: target, onclick: () => browse(target) }, target));
     }
   }
-  if (state && state.recent_targets.length) {
-    roots.append(el("h3", {}, "Recent"));
-    for (const target of state.recent_targets) {
-      if (bookmarks.includes(target)) continue;
-      roots.append(el("button", { type: "button", title: target, onclick: () => browse(target) }, target));
+  const remembered = (state && state.recent_targets) || [];
+  if (remembered.length) {
+    roots.append(el("h3", {}, "Folders isoshelf remembers"));
+    for (const folder of remembered) {
+      roots.append(rememberedRow(folder, bookmarks.includes(folder.path)));
     }
   }
   roots.append(el("h3", {}, "Places"));
@@ -113,4 +113,62 @@ async function toggleBookmark(path, pinned) {
     return;
   }
   await browse(pickerPath);
+}
+
+// shortPath is the end of a path rather than the start, because the start is
+// what every folder on one machine has in common: /mnt/tank/isos and
+// /mnt/tank/proxmox/template/iso both read as "/mnt/tank/…" in a narrow
+// column, and the ends are what tell them apart. The whole path is still the
+// button's tooltip.
+function shortPath(path) {
+  const parts = path.split(/[\\/]+/).filter(Boolean);
+  if (parts.length <= 2) return path;
+  return `…/${parts.slice(-2).join("/")}`;
+}
+
+// rememberedRow is one folder isoshelf remembers: where it is, and under it
+// when it was last looked at and what it held then. Those numbers are the
+// last scan's, not what is there now - the drive may be in a drawer, and
+// opening this list must never go looking for it.
+function rememberedRow(folder, bookmarked) {
+  const detail = [
+    folder.last_used ? timeAgo(folder.last_used) : null,
+    folder.files ? plural(folder.files, "image") : null,
+    folder.bytes ? formatBytes(folder.bytes) : null,
+  ].filter(Boolean).join(" · ");
+  return el("div", { class: "remembered" },
+    el("div", { class: "remembered-row" },
+      el("button", {
+        type: "button", class: "remembered-open", title: folder.path,
+        onclick: () => browse(folder.path),
+      }, bookmarked ? `★ ${shortPath(folder.path)}` : shortPath(folder.path)),
+      el("button", {
+        type: "button", class: "remembered-forget",
+        "aria-label": `Forget ${folder.path}`,
+        title: "Take this folder off the list. Nothing in it is touched.",
+        onclick: () => forgetFolder(folder),
+      }, "✕")),
+    detail ? el("div", { class: "remembered-detail" }, detail) : null);
+}
+
+// forgetFolder takes a folder off the list. It is worth asking first, because
+// the word sounds bigger than it is - so the question says exactly what goes.
+async function forgetFolder(folder) {
+  const yes = await ask(
+    `Forget ${folder.path}?`,
+    "This takes it off the list and throws away isoshelf's copy of what it found there. " +
+    "The folder, the images in it, its archive and its own records are not touched — " +
+    "open it again and isoshelf reads them back.",
+    [
+      { label: "Forget it", value: "yes", primary: true },
+      { label: "Cancel", value: null },
+    ]);
+  if (!yes) return;
+  try {
+    state = await api("POST", "/api/folders/forget", { path: folder.path, id: folder.id });
+    render();
+    await browse(pickerPath);
+  } catch (err) {
+    showPickerError(err.message);
+  }
 }

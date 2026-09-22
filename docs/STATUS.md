@@ -81,12 +81,12 @@ record of where things stand and what was decided.
 
 1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout
    (#10). *Done.* v0.3.1: the Settings panel (9). *Done.*
-2. v0.3.x: automatic remembered checks (3). *Done in v0.3.2.* Where a folder's
-   records live (the first half of 10). *Done in v0.4.2.* Next: the
-   remembered-folders list with last used, size and Forget (the rest of 10);
-   the rest of decision 15 (empty the archive after so many days, a download
-   speed limit, hiding kinds and architectures) now that Settings has a home
-   for them; one-click self-update with signed releases (13, 14).
+2. v0.3.x: automatic remembered checks (3). *Done in v0.3.2.* Decision 10 in
+   full: where a folder's records live (v0.4.2) and the remembered-folders
+   list (v0.4.3). Next: the rest of decision 15 (empty the archive after so
+   many days, a download speed limit, hiding kinds and architectures) now
+   that Settings has a home for them; one-click self-update with signed
+   releases (13, 14).
 3. Server mode in Docker (16). *Done in v0.4.0.* What is left of it is a
    scheduler that checks by itself, and the official TrueNAS store app that
    is the 1.0 goal.
@@ -123,8 +123,17 @@ record of where things stand and what was decided.
   every byte.
 - design.md's server-mode section said "later, not started". It shipped in
   v0.4.0; it now says what is done and what isn't.
-- Next: the rest of decision 10 - the remembered-folders list with last used,
-  size and Forget.
+- v0.4.3 finishes decision 10: the folder chooser lists the folders isoshelf
+  remembers with when each was last used, what it held and Forget. All of it
+  comes from the copies in isoshelf's own folder - a folder on that list may
+  be a NAS that is asleep, and opening the chooser must not go looking for
+  it. Forgetting removes that copy and the folder's records answer, and
+  nothing else.
+- Next: decision 15's leftovers (empty the archive after so many days, a
+  download speed limit, hiding kinds and architectures), or the v0.5.0 page
+  redesign, which is the maintainer's own ask - "something I could show an
+  investor" - and wants their answers to the seven questions in
+  `docs/design-audit.md` before it starts.
 
 ## Earlier (2026-09-21)
 

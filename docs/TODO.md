@@ -125,12 +125,14 @@ starts it thinking it is a form to fill in:
    the folder's path, because the target id lives inside the file you are
    trying to find; and only the records may move - archiving is a rename, and
    a rename across disks is a copy of every byte.)*
-7. **The remembered-folders list** - the rest of decision 10: the folders
-   isoshelf has looked after, with when each was last used, how much it
-   holds, and Forget. Most of it is already on disk: `<config>/targets/` has
-   a mirror per folder with its path and when it was saved, and the page
-   already carries a `recent_targets` list. What is missing is the size, the
-   verb, and somewhere on the page to put it.
+7. ~~**The remembered-folders list**~~ *(done in v0.4.3, which finishes
+   decision 10. The mirrors in `<config>/targets/` gained `files` and `bytes`
+   - written from the state at save time, absent in older mirrors and then
+   simply not shown - and `state.Forget` removes one. The list lives in the
+   folder chooser, where you are already deciding which folder to open. What
+   was learned: a narrow column of full paths is useless, because the start
+   is what every folder on one machine has in common; the end is what tells
+   them apart.)*
 8. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
    swaps its own program, restarts, page reconnects - and only installs a
    release carrying the project's signature, which needs the signing key set

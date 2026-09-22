@@ -6,6 +6,19 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.3] - 2026-09-22
+
+### Added
+- **The folders isoshelf remembers, in the folder chooser.** Each one now says
+  when you last looked at it, how many images it held and how much room they
+  took, and the end of its path rather than the start - `…/tank/isos` and
+  `…/template/iso` tell each other apart in a way `/mnt/tank/…` twice over
+  does not. **Forget** takes one off the list; it throws away isoshelf's copy
+  of what it found there and nothing else, so opening the folder again reads
+  everything back from the folder itself.
+  - None of it goes near a drive. A folder on that list may be a NAS that is
+    asleep or a stick in a drawer, and opening the chooser must not go looking.
+
 ## [v0.4.2] - 2026-09-22
 
 ### Added

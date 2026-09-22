@@ -28,6 +28,12 @@ type Mirror struct {
 	Tracks  map[string]Track `json:"tracks"`
 	History []ScanRecord     `json:"history"`
 	SavedAt time.Time        `json:"saved_at"`
+	// Files and Bytes are what the folder held when the mirror was saved, so
+	// the list of folders isoshelf remembers can say how big each one is
+	// without going near a drive that may not be plugged in. Both are absent
+	// in mirrors written before v0.4.3, and then they are simply not shown.
+	Files int   `json:"files,omitempty"`
+	Bytes int64 `json:"bytes,omitempty"`
 }
 
 // UsualSet returns the usual set as of the last time the mirror was saved.
@@ -48,6 +54,10 @@ func (s *State) SaveMirror(configDir, target string, now time.Time) error {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
+	var bytes int64
+	for _, f := range s.Files {
+		bytes += f.Size
+	}
 	return writeJSON(filepath.Join(dir, s.TargetID+".json"), Mirror{
 		TargetID: s.TargetID,
 		Path:     abs,
@@ -55,7 +65,23 @@ func (s *State) SaveMirror(configDir, target string, now time.Time) error {
 		Tracks:   s.Tracks,
 		History:  s.History,
 		SavedAt:  now.UTC(),
+		Files:    len(s.Files),
+		Bytes:    bytes,
 	})
+}
+
+// Forget removes the mirror for id. It is the copy in isoshelf's own folder
+// and nothing else: the folder keeps its own records, its archive and every
+// image in it, so forgetting a folder here is forgetting a row in a list.
+func Forget(configDir, id string) error {
+	if !targetIDPattern.MatchString(id) {
+		return fmt.Errorf("invalid target id %q", id)
+	}
+	err := os.Remove(filepath.Join(configDir, mirrorDir, id+".json"))
+	if errors.Is(err, fs.ErrNotExist) {
+		return nil // already gone, which is what was wanted
+	}
+	return err
 }
 
 // LoadMirrors reads every mirror in configDir, most recently saved first.

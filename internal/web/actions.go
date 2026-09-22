@@ -209,6 +209,6 @@ func (s *Server) emptyRemoved(w http.ResponseWriter, r *http.Request) {
 
 // recentTargetsLocked is recentTargets for callers that already hold the lock;
 // it only reads the config folder.
-func (s *Server) recentTargetsLocked() []string {
+func (s *Server) recentTargetsLocked() []rememberedJSON {
 	return s.recentTargets()
 }

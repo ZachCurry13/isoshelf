@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"slices"
 	"strings"
 	"time"
 
@@ -85,10 +84,15 @@ func (s *Server) checkAppUpdate() {
 	s.mu.Unlock()
 }
 
-// recentTargets lists folders checked before, newest first. Portable mode
-// keeps no history on the computer.
-func (s *Server) recentTargets() []string {
-	out := []string{}
+// recentTargets lists the folders isoshelf remembers, newest first: where
+// each one is, when it was last looked at and what it held then. Portable
+// mode keeps no history on the computer, so the list is empty there.
+//
+// All of it comes from the copies in isoshelf's own folder, never from the
+// drives themselves: a folder in this list may be a NAS that is asleep or a
+// stick in a drawer, and opening the page should not go looking for them.
+func (s *Server) recentTargets() []rememberedJSON {
+	out := []rememberedJSON{}
 	if s.cfg.Dirs.Portable || s.cfg.Dirs.Config == "" {
 		return out
 	}
@@ -96,10 +100,16 @@ func (s *Server) recentTargets() []string {
 	if err != nil {
 		return out
 	}
+	seen := map[string]bool{}
 	for _, m := range mirrors {
-		if m.Path != "" && !slices.Contains(out, m.Path) {
-			out = append(out, m.Path)
+		if m.Path == "" || seen[m.Path] {
+			continue
 		}
+		seen[m.Path] = true
+		out = append(out, rememberedJSON{
+			Path: m.Path, ID: m.TargetID, LastUsed: m.SavedAt,
+			Files: m.Files, Bytes: m.Bytes,
+		})
 	}
 	return out
 }

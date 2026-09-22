@@ -164,3 +164,84 @@ func TestRecordsRefusesWhatCannotWork(t *testing.T) {
 		}
 	}
 }
+
+// The list of folders isoshelf remembers, and taking one off it.
+func TestForgettingAFolder(t *testing.T) {
+	dirs, one, two := testDirs(t), sampleDrive(t), sampleDrive(t)
+	s := newServer(t, dirs, one)
+
+	// Two folders, each scanned once so each is remembered.
+	request(t, s, http.MethodPost, "/api/scan", nil)
+	waitIdle(t, s)
+	request(t, s, http.MethodPost, "/api/target", map[string]any{"path": two})
+	request(t, s, http.MethodPost, "/api/scan", nil)
+	got := waitIdle(t, s)
+	if len(got.Recent) != 2 {
+		t.Fatalf("remembered %d folders, want 2: %+v", len(got.Recent), got.Recent)
+	}
+
+	// The open one can't be forgotten out from under the page.
+	var open, other rememberedJSON
+	for _, f := range got.Recent {
+		if f.Path == two {
+			open = f
+		} else {
+			other = f
+		}
+	}
+	rec := request(t, s, http.MethodPost, "/api/folders/forget", map[string]any{"path": open.Path, "id": open.ID})
+	if rec.Code != http.StatusConflict {
+		t.Errorf("forgetting the open folder: %d, want 409", rec.Code)
+	}
+
+	rec = request(t, s, http.MethodPost, "/api/folders/forget", map[string]any{"path": other.Path, "id": other.ID})
+	if rec.Code != http.StatusOK {
+		t.Fatalf("forgetting the other folder: %d %s", rec.Code, rec.Body)
+	}
+	after := decode[stateJSON](t, rec)
+	if len(after.Recent) != 1 || after.Recent[0].Path != two {
+		t.Errorf("after forgetting: %+v, want only the open folder", after.Recent)
+	}
+
+	// And nothing in the folder was touched: its own records are still there,
+	// so opening it again finds everything.
+	if _, err := os.Stat(filepath.Join(one, state.DirName, "state.json")); err != nil {
+		t.Errorf("forgetting a folder deleted its own records: %v", err)
+	}
+	names, err := os.ReadDir(one)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(names) < 2 {
+		t.Errorf("forgetting a folder emptied it: %d left", len(names))
+	}
+}
+
+// Forgetting also drops the answer that folder was given about where its
+// records live, so it doesn't linger in the settings file for a folder
+// nobody has any more.
+func TestForgettingDropsTheRecordsAnswerToo(t *testing.T) {
+	dirs, one, two := testDirs(t), sampleDrive(t), sampleDrive(t)
+	s := newServer(t, dirs, one)
+	request(t, s, http.MethodPost, "/api/records", map[string]any{
+		"location": settings.Elsewhere, "dir": t.TempDir(),
+	})
+	request(t, s, http.MethodPost, "/api/scan", nil)
+	waitIdle(t, s)
+	request(t, s, http.MethodPost, "/api/target", map[string]any{"path": two})
+
+	var gone rememberedJSON
+	for _, f := range decode[stateJSON](t, request(t, s, http.MethodGet, "/api/state", nil)).Recent {
+		if f.Path == one {
+			gone = f
+		}
+	}
+	if gone.ID == "" {
+		t.Fatal("the first folder isn't in the list, so there is nothing to forget")
+	}
+	request(t, s, http.MethodPost, "/api/folders/forget", map[string]any{"path": gone.Path, "id": gone.ID})
+
+	if got := settings.Load(dirs.Config).RecordsFor(one); got.Location != settings.InFolder {
+		t.Errorf("the forgotten folder kept its answer: %+v", got)
+	}
+}
