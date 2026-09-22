@@ -42,11 +42,17 @@ Flags for scan and check:
 
 Flags for ui:
   --port N                  listen on this port (default: any free port)
+  --listen ADDRESS          listen on this address instead of localhost, so
+                            the page can be opened from another machine. Then
+                            the token in the link is the only thing keeping
+                            anyone out: use it on a network you trust.
   --no-browser              don't open the browser; just print the link
   --catalog FILE            use this catalog instead of the built-in one
 
 isoshelf only writes to the .isoshelf folder inside the folder you give it,
-and to its own settings folder. Set GITHUB_TOKEN to raise GitHub's rate limit.
+and to its own settings folder. Set GITHUB_TOKEN to raise GitHub's rate limit,
+and ISOSHELF_TOKEN to fix the secret in the link instead of making a new one
+each time isoshelf starts.
 `
 
 func main() {

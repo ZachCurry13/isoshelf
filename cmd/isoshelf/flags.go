@@ -19,6 +19,10 @@ type options struct {
 	noUpdateCheck bool
 	port          int
 	noBrowser     bool
+	// listen is the address the web UI binds to. Empty means 127.0.0.1: the
+	// page is for the person at the keyboard. Anything else is server mode,
+	// which is a deliberate choice and changes what the server accepts.
+	listen string
 }
 
 // parseFlags reads flags and the folder, in any order.
@@ -30,6 +34,7 @@ func parseFlags(cmd string, args []string, stderr io.Writer) (options, error) {
 	if cmd == "ui" {
 		fs.IntVar(&opts.port, "port", 0, "")
 		fs.BoolVar(&opts.noBrowser, "no-browser", false, "")
+		fs.StringVar(&opts.listen, "listen", "", "")
 	} else {
 		fs.StringVar(&opts.profile, "profile", "", "")
 		fs.BoolVar(&opts.json, "json", false, "")

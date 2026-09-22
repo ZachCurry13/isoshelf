@@ -18,11 +18,19 @@ import (
 // own copy in the config folder, else the copy isoshelf has downloaded, else
 // the built-in one. It also reports which of those it used, because isoshelf
 // only ever replaces its own copy.
-func loadCatalog(dirs appdir.Dirs, flagPath string) (*catalog.Catalog, string, error) {
+func loadCatalog(dirs appdir.Dirs, flagPath string, warn io.Writer) (*catalog.Catalog, string, error) {
 	name := flagPath
 	if name == "" {
 		name = filepath.Join(dirs.Config, "catalog.toml")
-		if _, err := os.Stat(name); errors.Is(err, fs.ErrNotExist) {
+		if _, err := os.Stat(name); err != nil {
+			if !errors.Is(err, fs.ErrNotExist) {
+				// Something other than "it isn't there" - a config folder
+				// belonging to somebody else, most likely, which is the usual
+				// way this goes wrong on a NAS. Worth saying out loud, and no
+				// reason at all to refuse to start: the built-in list of
+				// images always works.
+				fmt.Fprintf(warn, "isoshelf: can't read %s, so the built-in list of images is being used: %v\n", name, err)
+			}
 			built, err := catalog.Default()
 			// A downloaded catalog that no longer loads is skipped rather
 			// than fatal: the built-in one always works. One downloaded

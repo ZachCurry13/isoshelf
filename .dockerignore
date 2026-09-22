@@ -1,0 +1,11 @@
+# Everything the build doesn't need. Keeps the image small and the build fast,
+# and keeps local files out of a published image.
+.git
+.github
+.claude
+docs
+*.md
+!go.mod
+!go.sum
+isoshelf
+isoshelf.exe

@@ -1,0 +1,78 @@
+# Publishes the container image people run on a NAS.
+#
+# Tagged releases get their version and "latest". A run started by hand gets
+# "edge", for trying something before it is released.
+name: container image
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Version to publish, written as vMAJOR.MINOR.PATCH. Leave empty to publish 'edge' from main."
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Started by hand with a version, build that version's tag rather
+          # than whatever main happens to be.
+          ref: ${{ inputs.tag || github.ref }}
+
+      - name: version and image name
+        id: version
+        run: |
+          set -eu
+          # A tag push names itself. Started by hand, whatever was typed wins
+          # - which is the normal way here, because a tag made by a workflow
+          # deliberately doesn't set other workflows off, so the release
+          # workflow's tag can never trigger this one.
+          typed="${{ inputs.tag }}"
+          if [ -n "$typed" ]; then
+            case "$typed" in
+              v[0-9]*.[0-9]*.[0-9]*) ;;
+              *) echo "\"$typed\" is not a version like vMAJOR.MINOR.PATCH." >&2; exit 1 ;;
+            esac
+            echo "tag=$typed" >> "$GITHUB_OUTPUT"
+            echo "release=yes" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "release=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=edge" >> "$GITHUB_OUTPUT"
+            echo "release=no" >> "$GITHUB_OUTPUT"
+          fi
+          # Container registries take lowercase names only, and the owner of
+          # this repository has capitals in it.
+          echo "image=ghcr.io/$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')/isoshelf" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # A NAS is as likely to be arm64 as amd64, so build both.
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          build-args: VERSION=${{ steps.version.outputs.tag }}
+          tags: |
+            ${{ steps.version.outputs.image }}:${{ steps.version.outputs.tag }}
+            ${{ steps.version.outputs.release == 'yes' && format('{0}:latest', steps.version.outputs.image) || '' }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
