@@ -1,14 +1,19 @@
 # Status
 
-## Where things stand (2026-09-18)
+## Where things stand
 
-- **Released:** v0.3.3 (fixes and tidying; v0.3.2 checking by itself, v0.3.1
-  Settings, v0.3.0 the redesign). Scans a folder, works out each image, checks for
-  updates online, downloads and verifies (resumable, queued one at a time,
-  reorderable), replaces or archives old files, identifies unknown files, and
-  keeps a catalog that updates itself from this repository. While downloads
-  run, removing, archiving and identifying still work (the state file is
-  merged, never overwritten). Web page and CLI; Windows and Linux builds.
+Which version is the newest is deliberately not written here - it went stale
+four times in one evening. The releases page on GitHub is the answer, and
+`CHANGELOG.md` says what each one held.
+
+- **What it does:** scans a folder, works out each image, checks for updates
+  online, downloads and verifies (resumable, queued one at a time,
+  reorderable), replaces or archives old files, and identifies unknown ones.
+  Images can be added from the user's own computer as well as downloaded. A
+  scan and a download run side by side, and every writer merges its own
+  change onto the folder's records rather than saving over them. Keeps a
+  catalog that updates itself from this repository. Web page and CLI;
+  Windows and Linux builds.
 - **Catalog:** 86 entries (60 downloadable, 9 update-check only, 17 link only),
   revision `2026091804`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
