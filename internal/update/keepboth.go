@@ -7,8 +7,6 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-
-	"github.com/ZachCurry13/isoshelf/internal/state"
 )
 
 // Keeping both copies of an image whose filename never changes.
@@ -17,67 +15,28 @@ import (
 // rest of the fixed-name images. Updating one used to mean choosing between
 // the old file and the new: there was nowhere for the second one to go.
 //
-// There is: the old file steps aside under a name of its own, and the new
-// download takes the name it has always had. That way round on purpose.
-// Anything pointing at the unchanging name - a Proxmox VM, a script, a
-// shortcut - keeps working and quietly gets the newer image, which is what
-// it wanted. On a Ventoy drive both simply appear in the boot menu, which is
-// the whole point of keeping both.
+// There is: the new download carries its version in its name
+// (netboot.xyz-2.0.87.iso), and the file already on the drive is not touched
+// at all. That is the point of doing it this way round. Nothing that exists
+// is renamed, so nothing that points at a file by name can break - and the
+// new file says on its face which version it is, which is the question
+// someone with two copies is actually asking.
 //
-// The renamed file no longer matches the catalog by name, so its record is
-// marked as one the user assigned. Without that the next scan would call a
-// file it has known for months an unknown file.
+// The new file's name no longer matches the catalog's, so its record is
+// marked as one the user assigned, with the entry and version already known
+// from the download. Without that the next scan would call it unknown.
 
-// KeepBoth moves the file already in the folder out of the way of a new one
-// of the same name and returns the name it now has. The new file is not
-// written here: fetch places it once this returns, so a failure leaves the
-// folder as it was.
-func KeepBoth(target, rel string, st *state.State, now time.Time) (string, error) {
-	full, err := insideTarget(target, rel)
-	if err != nil {
-		return "", err
-	}
-	var rec state.FileRecord
-	if st != nil {
-		rec = st.Files[rel]
-	}
-	aside := asideName(target, rel, rec, now)
-	if err := os.Rename(full, filepath.Join(target, filepath.FromSlash(aside))); err != nil {
-		return "", fmt.Errorf("couldn't move %s aside to keep both copies: %w", rel, err)
-	}
-	if st != nil {
-		// Same image, new name. Assigned keeps the next scan from deciding it
-		// has never seen this file before.
-		if rec.Entry != "" {
-			rec.Assigned = true
-		}
-		st.Files[aside] = rec
-		delete(st.Files, rel)
-	}
-	return aside, nil
-}
-
-// asideName is what the older copy is called: its version when isoshelf knows
-// it, and otherwise the day it arrived, which is the question someone is
-// actually asking when they look at two of the same image.
-func asideName(target, rel string, rec state.FileRecord, now time.Time) string {
-	dir, base := path.Split(filepath.ToSlash(rel))
+// KeepBothName is the name the new download takes so that both copies can
+// live in the folder: the image's usual name with its version worked in, or
+// the day it arrived when the project doesn't say what the version is.
+func KeepBothName(target, filename, version string, now time.Time) string {
+	dir, base := path.Split(filepath.ToSlash(filename))
 	ext := path.Ext(base)
 	stem := strings.TrimSuffix(base, ext)
 
-	label := safeLabel(rec.Version)
+	label := safeLabel(version)
 	if label == "" {
-		when := rec.PlacedAt
-		if when.IsZero() {
-			when = rec.FirstSeen
-		}
-		if when.IsZero() {
-			when = rec.ModTime
-		}
-		if when.IsZero() {
-			when = now
-		}
-		label = when.UTC().Format("2006-01-02")
+		label = now.UTC().Format("2006-01-02")
 	}
 
 	candidate := dir + stem + "-" + label + ext

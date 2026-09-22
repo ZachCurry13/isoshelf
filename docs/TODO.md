@@ -22,17 +22,11 @@ Both have their own `CHANGELOG.md` section but went out inside v0.3.3,
 because a release happens when a `v*` tag is pushed and those two were never
 tagged. Don't let it happen again - one version, one tag, one release.
 
-**How a release happens here:**
-
-1. Merge the branch's pull request into `main`.
-2. Start the `release` workflow from the Actions tab with the version typed
-   in. Pushing a `v*` tag is the normal way and does the same thing, but this
-   sandbox's git proxy refuses tag pushes with a 403. It refuses branch
-   deletions too, so a merged branch that GitHub didn't delete itself has to
-   be deleted by hand on the website.
-3. Check the release: three binaries, the portable zip and `SHA256SUMS`, all
-   carrying the version, and the notes taken from that version's
-   `CHANGELOG.md` section. No section, no release - the workflow stops.
+**How a release happens:** merge the pull request into `main`, then push a
+`v*` tag (or start the `release` workflow from the Actions tab with the
+version typed in). Either way the workflow builds three binaries and the
+portable zip, names them with the version, attaches `SHA256SUMS`, and takes
+the notes from that version's `CHANGELOG.md` section. No section, no release.
 
 ## ~~v0.3.4: scanning while downloads run~~ *(done)*
 
@@ -146,9 +140,9 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   filenames in `internal/sampledrive` (93 of them) before judging the page:
   `go run ./internal/sampledrive/mkdrive <folder>` writes them all as
   stand-ins. That is how the filter menu bug was found.
-- **The sandbox can't reach the image projects' sites**, so a preview here
-  shows "Couldn't check" on every row. That is the sandbox, not a bug. The
-  recorded responses in tests are the way to check that path.
+- **A machine with no internet shows "Couldn't check" on every row.** That is
+  the network, not a bug. The recorded responses in the tests are the way to
+  check that path without going online.
 - **Don't touch port 8765**: the maintainer's own preview runs there.
 - **Release files carry the version** since v0.3.3, so a link straight to
   `releases/latest/download/isoshelf-windows-amd64.exe` no longer works.
@@ -159,9 +153,11 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 ## Questions the maintainer still owes an answer to
 
 - ~~*Keep both* in the name-clash dialog~~ *(answered in v0.3.6, and the old
-  answer was wrong: it can work. The old file steps aside under a name of its
-  own and the new one takes the unchanging name, so a Proxmox VM pointing at
-  that name keeps working. See `internal/update/keepboth.go`.)* Still open:
+  answer was wrong: it can work. The new download carries its version in its
+  name and the file already on the drive is not touched - the maintainer
+  chose that direction in v0.3.7, over renaming the old file, because then
+  nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
+  Still open:
   an explicit *Cancel*, which is currently "do nothing" plus a message saying
   nothing has changed. Add a real Cancel button that clears the row?
 - Anything from the review doc listed as done that doesn't feel done when
