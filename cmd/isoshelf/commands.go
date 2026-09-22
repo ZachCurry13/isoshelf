@@ -225,8 +225,13 @@ func serveUI(ctx context.Context, e *env, opts options) error {
 	if anyHost {
 		// The address it bound to is rarely the address anyone types, so say
 		// what to do rather than printing 0.0.0.0 and hoping.
-		fmt.Fprintf(e.stdout, "isoshelf is listening on %s.\n\nOpen it from this machine's own address:\n\n  http://<this-machine>:%d/\n\nIf you haven't set a username and password, it asks you to choose one.\nThis link gets you in without them, and is the way back if you forget:\n\n  http://<this-machine>:%d/?token=%s\n\nAnyone who has that link can change the images in the folder, so keep it\non a network you trust and don't paste it where others can read it.\n",
-			listener.Addr(), listener.Addr().(*net.TCPAddr).Port, listener.Addr().(*net.TCPAddr).Port, token)
+		port := listener.Addr().(*net.TCPAddr).Port
+		fmt.Fprintf(e.stdout, "isoshelf is listening on %s.\n\nOpen it from this machine's own address:\n\n  http://<this-machine>:%d/\n\n", listener.Addr(), port)
+		if haveLogin(dirs) {
+			fmt.Fprintf(e.stdout, "Sign in with the username and password you set. Forgotten them? Set\nISOSHELF_USERNAME and ISOSHELF_PASSWORD and restart, or run\n\"isoshelf password\" on this machine.\n")
+		} else {
+			fmt.Fprintf(e.stdout, "The first thing it asks is to choose a username and password. Until\nsomebody does, this link gets in without one:\n\n  http://<this-machine>:%d/?token=%s\n\nIt stops working the moment a password is set.\n", port, token)
+		}
 	} else {
 		fmt.Fprintf(e.stdout, "isoshelf is running at:\n\n  %s\n\nKeep this window open while you use it. Press Ctrl+C to stop.\n", url)
 	}

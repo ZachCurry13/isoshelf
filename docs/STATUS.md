@@ -96,6 +96,26 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-22)
 
+- v0.4.7, both halves from the maintainer's own install. **The link's secret
+  now stops working once a password is set** - their ask, outright: "I want
+  to get rid of tokens moving forward and only have a login screen." It still
+  works before one is set, or a fresh install couldn't be opened; after that
+  it is nothing, cookie included, with no restart needed. The way back from a
+  forgotten password is `isoshelf password` from a shell or the two
+  environment variables - both need the machine itself, neither is a second
+  door on the network.
+- **And the permission check had a hole their bug reports found.** Three
+  reports, all "open /images/.isoshelf/partial/...: permission denied". The
+  startup check tested the images folder and not isoshelf's own folder inside
+  it - which is older than the current arrangement, made by whichever user
+  isoshelf ran as before, and left behind when the app's user changed. So the
+  folder tested fine and every download failed. Reproduced as uid 568 against
+  a folder owned 568 with a .isoshelf owned 1000; the warning now names the
+  folder, its owner, how it got that way, and the chown - including that
+  changing the app's user instead is the wrong answer, because it would break
+  the folder that works.
+
+
 - The maintainer's own install turned up three things, all shipped as v0.4.4.
   A folder isoshelf can't write to produced a wall of "permission denied"
   from whichever part wrote first and said nothing about what to do; it now

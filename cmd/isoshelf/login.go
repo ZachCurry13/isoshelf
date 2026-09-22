@@ -67,3 +67,10 @@ func sayNobodyHasSetOneYet(w io.Writer, address string) {
 	fmt.Fprintf(w, "isoshelf:   do it now rather than later. Setting %s and %s before\n", userEnv, passwordEnv)
 	fmt.Fprintln(w, "isoshelf:   isoshelf starts skips this entirely.")
 }
+
+// haveLogin says whether a username and password are set, for the startup
+// message: a link that no longer works is worse than no link at all.
+func haveLogin(dirs appdir.Dirs) bool {
+	a, err := auth.Load(dirs.Config)
+	return err == nil && a != nil
+}

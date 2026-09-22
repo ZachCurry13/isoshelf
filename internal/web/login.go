@@ -132,6 +132,24 @@ func (s *Server) account() *auth.Account {
 	return a
 }
 
+// loginInstead says the link's secret no longer works, because a username and
+// password have taken its place.
+//
+// The maintainer asked for this outright: "I want to get rid of tokens moving
+// forward and only have a login screen." Two ways in is two ways to get in,
+// and the weaker one was the one printed in a log that anybody with access to
+// the machine can read. So the link is how isoshelf opens on a desktop, and
+// how a server is reached until somebody sets a password - and after that it
+// is nothing.
+//
+// Forgetting the password is therefore not a lock-out but it is not the page
+// either: ISOSHELF_USERNAME and ISOSHELF_PASSWORD set a new one at the next
+// start, and "isoshelf password" sets one from a shell. Both need the machine
+// itself, which is the right bar for getting back in.
+func (s *Server) loginInstead() bool {
+	return s.account() != nil
+}
+
 // canLogIn says whether the username-and-password door is open at all: once
 // somebody has set a login, and on a server that hasn't got one yet, where
 // the first person to arrive is the one who sets it.

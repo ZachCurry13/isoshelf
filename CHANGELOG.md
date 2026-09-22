@@ -6,6 +6,39 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.7] - 2026-09-22
+
+### Changed
+- **The link's secret stops working once you set a password.** A login now
+  replaces it rather than sitting beside it: two ways in is two ways in, and
+  the weaker of the two was the one printed in a log. Before anyone has set a
+  password the link still works, because otherwise a new install couldn't be
+  opened at all; after that it is nothing, and isoshelf stops printing it.
+  - **Forgotten it?** Set `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` and
+    restart, or run **`isoshelf password`** on the machine isoshelf runs on -
+    in a container, `docker exec -it isoshelf isoshelf password`. Both need
+    the machine itself, which is the right bar for getting back in, and
+    neither is a second door standing open on the network.
+  - Nothing changes on your own computer, where there is no login and the
+    link is how isoshelf opens itself.
+
+### Added
+- **`isoshelf password`** sets the username and password from a shell,
+  keeping the username you already have.
+
+### Fixed
+- **Downloads failing with "permission denied" are now explained at startup,
+  instead of one image at a time.** `.isoshelf` - isoshelf's own folder inside
+  your images folder, where downloads are staged - is often older than the
+  current arrangement: made on an earlier run by whichever user isoshelf was
+  then. Change the app's user afterwards and that one folder is left behind,
+  owned by the old one, while everything around it is fine. isoshelf checked
+  the images folder and not that folder inside it, so nothing warned about it
+  and every download failed.
+  - It now says which folder, **who owns it**, how it got that way, and the
+    exact `chown` to fix it - including that changing the app's user to match
+    is the wrong answer here, because it would break the folder that works.
+
 ## [v0.4.6] - 2026-09-22
 
 ### Added

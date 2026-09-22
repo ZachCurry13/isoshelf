@@ -162,16 +162,35 @@ func TestALoginFormFromSomewhereElseIsRefused(t *testing.T) {
 	}
 }
 
-// The secret in the link keeps working after a password is set. It is the
-// way back in for somebody who has forgotten theirs.
-func TestTheLinkStillWorksAfterALoginIsSet(t *testing.T) {
+// The secret in the link stops working once there is a password. Two ways in
+// is two ways to get in, and the weaker of the two was printed in a log.
+func TestTheLinkStopsWorkingOnceThereIsALogin(t *testing.T) {
 	s := serverMode(t, true)
+	// Before: the link is how a server is reached.
+	if rec := get(t, s, "http://nas.local:8765/api/state", &http.Cookie{Name: cookieName, Value: testToken}); rec.Code != http.StatusOK {
+		t.Fatalf("with no login set, the token gave %d, want 200", rec.Code)
+	}
+
 	if err := auth.Set(s.cfg.Dirs.Config, "zach", "a good long password"); err != nil {
 		t.Fatal(err)
 	}
-	rec := get(t, s, "http://nas.local:8765/api/state", &http.Cookie{Name: cookieName, Value: testToken})
-	if rec.Code != http.StatusOK {
-		t.Errorf("with the token: %d, want 200", rec.Code)
+
+	// After: it is nothing. Not as a cookie somebody still has...
+	if rec := get(t, s, "http://nas.local:8765/api/state", &http.Cookie{Name: cookieName, Value: testToken}); rec.Code == http.StatusOK {
+		t.Error("a token cookie still got in after a password was set")
+	}
+	// ...and not in a link, which is the copy that sits in a log forever.
+	rec := get(t, s, "http://nas.local:8765/?token="+testToken)
+	if rec.Code == http.StatusOK {
+		t.Error("the token link still got in after a password was set")
+	}
+	if rec.Code == http.StatusSeeOther && rec.Header().Get("Location") != loginPath {
+		t.Errorf("the token link went to %q, want the login page", rec.Header().Get("Location"))
+	}
+	for _, c := range rec.Result().Cookies() {
+		if c.Name == cookieName && c.Value == testToken {
+			t.Error("the token link was still handed a cookie")
+		}
 	}
 }
 

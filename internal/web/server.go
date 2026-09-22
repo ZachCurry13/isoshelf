@@ -255,7 +255,12 @@ func (s *Server) guard(next http.Handler) http.Handler {
 			http.Error(w, "isoshelf only answers on localhost", http.StatusForbidden)
 			return
 		}
-		if token := r.URL.Query().Get("token"); token != "" && r.Method == http.MethodGet && r.URL.Path == "/" {
+		// A login replaces the link's secret rather than sitting beside it.
+		// Once somebody has set a username and password, that is the way in,
+		// and the old link stops working - otherwise the thing it was meant
+		// to replace is still there, still in a log, still enough.
+		tokenWorks := !s.loginInstead()
+		if token := r.URL.Query().Get("token"); tokenWorks && token != "" && r.Method == http.MethodGet && r.URL.Path == "/" {
 			if s.validToken(token) {
 				http.SetCookie(w, &http.Cookie{Name: cookieName, Value: token, Path: "/", HttpOnly: true, SameSite: http.SameSiteStrictMode})
 				http.Redirect(w, r, "/", http.StatusSeeOther)
@@ -265,7 +270,7 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		// Three ways in, and they are the same door: the secret in the link,
 		// the cookie that link left behind, or a username and password.
 		hasToken := false
-		if c, err := r.Cookie(cookieName); err == nil && s.validToken(c.Value) {
+		if c, err := r.Cookie(cookieName); tokenWorks && err == nil && s.validToken(c.Value) {
 			hasToken = true
 		}
 		if !hasToken && !s.signedIn(r) {
