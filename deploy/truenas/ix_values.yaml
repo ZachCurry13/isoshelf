@@ -1,7 +1,11 @@
+# A store entry names the exact image it packages, so this tag and
+# app.yaml's app_version are the version of isoshelf this entry is for, and
+# both move at every release. internal/docs fails the build if either falls
+# behind the newest CHANGELOG.md section, so neither can quietly go stale.
 images:
   image:
     repository: ghcr.io/zachcurry13/isoshelf
-    tag: v0.4.0
+    tag: v0.4.1
 consts:
   isoshelf_container_name: isoshelf
   # Where the two mounts land inside the container. The entrypoint opens

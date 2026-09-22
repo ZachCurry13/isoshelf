@@ -64,12 +64,12 @@ refused for as long as a queue takes. What was learned doing it:
 1. **Numbering:** the container work is **v0.4.0**, the redesign moves to
    **v0.5.0**. Running on a NAS is a new ability, and the project's own rule
    gives those the middle number.
-2. **The unbuilt image:** go ahead and let the first tag push be the first
-   real build. The Go half is proven; the Dockerfile's base images are not.
-   If the workflow fails, that is where to look first.
-3. **ghcr.io starts private** - the maintainer asked to be reminded in the
-   morning, so remind them: after the first push, the package's settings on
-   GitHub still say private and nobody can pull it until that is changed.
+2. ~~**The unbuilt image:**~~ *settled:* the first `container image` run
+   built it for both architectures and pushed it, and the Dockerfile needed
+   no fixing.
+3. ~~**ghcr.io starts private**~~ *settled:* the maintainer made the package
+   public, and an anonymous pull of both architectures and both tags was
+   checked rather than assumed.
 4. **An official TrueNAS app is a 1.0 goal.** See below.
 
 ## 1.0: in the TrueNAS store
@@ -112,7 +112,7 @@ starts it thinking it is a form to fill in:
    than itself - a file replaced by one of the same name disappeared from the
    archive at the next scan while still using room - fixed in the same
    release.)*
-5. ~~**Run isoshelf on a NAS**~~ *(done in v0.3.8: `Dockerfile`,
+5. ~~**Run isoshelf on a NAS**~~ *(done in v0.4.0: `Dockerfile`,
    `docker-compose.yml`, `docs/docker.md`, and `--listen` with the guard
    changes behind it. What was learned: `os.UserConfigDir` honours
    `XDG_CONFIG_HOME`, so the container needed no code change to keep its

@@ -92,7 +92,7 @@ don't.
 1. **Apps → Discover Apps → Custom App.**
 2. **Name** it `isoshelf`.
 3. **Image**: repository `ghcr.io/zachcurry13/isoshelf`, tag `latest`. You can
-   pin a version instead — `v0.4.0` — if you would rather decide when it
+   pin a version instead — `vX.Y.Z`, whichever is current — if you would rather decide when it
    changes.
 4. **Environment variables**: none needed. isoshelf makes its own secret and
    keeps it in `/config`. (Set `ISOSHELF_TOKEN` if you would rather choose

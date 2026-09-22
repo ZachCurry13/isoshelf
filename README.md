@@ -238,6 +238,10 @@ already on your drive isn't touched at all.<br>
 **v0.4.0: run it on your NAS.** *2026-09-21:* a container image for amd64 and
 arm64, a compose file, and a walkthrough for adding it to TrueNAS SCALE as a
 custom app.<br>
+**v0.4.1: what the first real install found.** *2026-09-22:* the page no
+longer scrolls sideways on a phone, and typing a server's address without the
+link now says where the link is - in the app's log - instead of pointing at a
+window that only exists on a desktop.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command
