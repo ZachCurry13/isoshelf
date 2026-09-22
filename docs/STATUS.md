@@ -17,7 +17,8 @@
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; issues #1-#7 roadmap, #10 phone layout; Discussions on.
+- **GitHub:** public; issues #1-#7 roadmap (#10, the phone layout, is
+  closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
 
@@ -88,6 +89,25 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-21)
 
+- v0.3.4 splits the one `s.run` slot a scan and a download shared into
+  `s.scanning` and `s.downloading`, so a scan or Refresh is no longer refused
+  while a queue runs and the page shows both at once. Switching folders and
+  emptying the archive still wait for downloads; scans wait only for scans.
+- Underneath it was a second, worse bug: a scan loaded the folder's records
+  at the start and saved them wholesale at the end, so a file a download
+  placed meanwhile lost its record and could be listed as an image that had
+  left. `state.SaveOnto` gives a scan the merge every other writer already
+  used. It was reachable before the slot was split.
+- Next: where each folder's records live and the remembered-folders list
+  (decision 10), then isoshelf updating itself (13, 14).
+- The v0.3.x branch is merged and released. [#13] went in as `9f609a6` and
+  the release-workflow fix [#14] as `c49b13a`; `main` now carries everything
+  through v0.3.3 and both branches are deleted. The release itself was
+  started by hand from the Actions tab, because the sandbox refuses `v*` tag
+  pushes with a 403, and it attached the five versioned files as intended.
+- Issue #10 (the phone layout) is closed; it had shipped in v0.3.0.
+- Next: v0.3.4, scanning while downloads run - splitting the single `s.run`
+  slot the scan and the download share. `docs/TODO.md` has what it needs.
 - v0.3.3 worked through the maintainer's own review of the page on a full
   drive (`isoshelf_v0.3.1_tasks.md`): the Filter menu now stays inside the
   window and its tick boxes line up (it was the one menu never wired to
@@ -96,9 +116,9 @@ record of where things stand and what was decided.
   "Restore" in place of "Put back"; tidier Archive and History cards with no
   redundant "Download again"; and two numbers people kept asking for - what
   the images use, and how much the queue still has to download.
-- Released so far: v0.2.1 through v0.3.0, eleven of them. v0.3.1, v0.3.2 and
-  v0.3.3 are pushed to the branch but unreleased until it is merged and
-  tagged.
+- Released so far: v0.2.0 through v0.3.3, twelve of them. v0.3.1 and v0.3.2
+  have their own changelog sections but were never tagged, so they went out
+  inside the v0.3.3 release.
 - Release files now carry the version; the copies inside the portable zip
   keep the plain name, since that is the one run from the drive and the one
   self-update will replace in place. Anything that downloads an update must
@@ -163,3 +183,6 @@ record of where things stand and what was decided.
   the answer remembered for a day and written down so a restart keeps it, one
   Refresh button, and the switch for it in Settings, which is now there to
   put it in.
+
+[#13]: https://github.com/ZachCurry13/isoshelf/pull/13
+[#14]: https://github.com/ZachCurry13/isoshelf/pull/14

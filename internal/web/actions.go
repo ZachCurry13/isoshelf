@@ -90,8 +90,8 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 		State: st, Old: j.old, Removal: j.removal, Now: s.cfg.Now,
 		Progress: func(p fetch.Progress) {
 			s.mu.Lock()
-			if s.run != nil {
-				s.run.progress = inventory.Progress{
+			if s.downloading != nil {
+				s.downloading.progress = inventory.Progress{
 					Stage: inventory.Stage(p.Stage), File: p.Filename, Done: p.Done, Total: p.Total,
 				}
 			}

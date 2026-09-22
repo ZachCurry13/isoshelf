@@ -85,7 +85,11 @@ type Server struct {
 	room   space.Usage
 	roomAt time.Time
 	roomOf string
-	run    *run
+	// A scan and a download run side by side, so they have a slot each: the
+	// page is never locked for the length of a queue. Only one scan runs at
+	// a time, and only one download.
+	scanning    *run
+	downloading *run
 	// queue holds the downloads waiting their turn, in order; finished the
 	// ones that ended, newest first. placed says a download has put a file in
 	// the folder since the last scan.
@@ -106,7 +110,8 @@ type Server struct {
 // run is a scan, check or download in progress.
 type run struct {
 	kind string
-	// job is the download, when it is one.
+	// job is the download, when it is one: a run in s.downloading always has
+	// one, a run in s.scanning never does.
 	job      *job
 	started  time.Time
 	progress inventory.Progress

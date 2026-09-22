@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ZachCurry13/isoshelf/internal/inventory"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 )
 
@@ -23,6 +24,15 @@ type fakeDownloads struct {
 func useFakeDownloads(s *Server) *fakeDownloads {
 	f := &fakeDownloads{finish: map[string]chan error{}}
 	s.runJob = func(ctx context.Context, j *job) (string, error) {
+		// The real download reports progress as it goes, and the dock draws
+		// from it now that the scan's card is no longer shared.
+		s.mu.Lock()
+		if s.downloading != nil {
+			s.downloading.progress = inventory.Progress{
+				Stage: inventory.Stage("downloading"), File: j.name, Done: j.size / 4, Total: j.size,
+			}
+		}
+		s.mu.Unlock()
 		select {
 		case err := <-f.channel(j.entry, true):
 			return "", err
@@ -108,12 +118,21 @@ func TestDownloadQueue(t *testing.T) {
 	add(t, s, "ubuntu-desktop-lts")
 	arch := add(t, s, "archlinux")
 	gparted := add(t, s, "gparted-live")
-	st := waitDownloads(t, s, func(st stateJSON) bool { return current(st.Downloads) == "ubuntu-desktop-lts" })
+	st := waitDownloads(t, s, func(st stateJSON) bool {
+		// Its progress too: the slot is filled a moment before the download
+		// itself starts reporting.
+		return current(st.Downloads) == "ubuntu-desktop-lts" && st.Downloads.Current.Stage != ""
+	})
 	if got := queued(st.Downloads); got != "archlinux gparted-live" {
 		t.Fatalf("waiting: %q", got)
 	}
-	if st.Run == nil || st.Run.Kind != "update" {
-		t.Errorf("run: %+v", st.Run)
+	// The download's progress rides with the download; the scan's card stays
+	// empty, so the page can show a scan beside it.
+	if st.Run != nil {
+		t.Errorf("a download filled the scan's card: %+v", st.Run)
+	}
+	if st.Downloads.Current.Total == 0 {
+		t.Errorf("the dock has no progress to draw: %+v", st.Downloads.Current)
 	}
 
 	// Asking twice for the same image is refused, running or waiting.
@@ -140,12 +159,8 @@ func TestDownloadQueue(t *testing.T) {
 		t.Errorf("moving a dropped download: %d, want 400", rec.Code)
 	}
 
-	// A scan waits for the downloads; removing files and stars don't, and
-	// both reach the folder's state on disk.
-	rec := request(t, s, http.MethodPost, "/api/scan", nil)
-	if rec.Code != http.StatusConflict || !strings.Contains(rec.Body.String(), "downloads") {
-		t.Errorf("scan during downloads: %d %s", rec.Code, rec.Body)
-	}
+	// Removing files and stars don't wait for downloads, and both reach the
+	// folder's state on disk.
 	if rec := request(t, s, http.MethodPost, "/api/remove", map[string]any{"paths": []string{"Windows.iso"}, "how": "move-aside"}); rec.Code != http.StatusOK {
 		t.Errorf("remove during downloads: %d %s", rec.Code, rec.Body)
 	}
@@ -158,6 +173,27 @@ func TestDownloadQueue(t *testing.T) {
 	}
 	if _, ok := disk.Files["Windows.iso"]; ok || len(disk.Past) == 0 || disk.Past[0].Path != "Windows.iso" {
 		t.Errorf("the removal didn't reach the folder's state: past %+v", disk.Past)
+	}
+
+	// A scan no longer waits for the downloads: it has its own slot, so the
+	// page isn't locked for as long as a queue takes.
+	if rec := request(t, s, http.MethodPost, "/api/scan", nil); rec.Code != http.StatusAccepted {
+		t.Fatalf("scan during downloads: %d %s", rec.Code, rec.Body)
+	}
+	st = waitDownloads(t, s, func(st stateJSON) bool { return st.Run == nil })
+	if current(st.Downloads) != "ubuntu-desktop-lts" {
+		t.Errorf("the download didn't survive the scan beside it: %q", current(st.Downloads))
+	}
+	// What the scan saved went onto the records as they were, so the star it
+	// was never told about is still there.
+	if disk, err := state.Load(dir); err != nil || !disk.Track("netbootxyz").Starred {
+		t.Errorf("the scan saved over the star: %v", err)
+	}
+
+	// Switching folders and emptying the archive do still wait.
+	rec := request(t, s, http.MethodPost, "/api/removed/empty", nil)
+	if rec.Code != http.StatusConflict || !strings.Contains(rec.Body.String(), "downloads") {
+		t.Errorf("emptying the archive during downloads: %d %s", rec.Code, rec.Body)
 	}
 
 	// Each one that ends makes way for the next; a failure is recorded and

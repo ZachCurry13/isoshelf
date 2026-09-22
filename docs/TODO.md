@@ -9,67 +9,51 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**Branch:** `claude/next-version-37h9uj`. `main` is still at v0.3.0 and seven
-commits sit ahead of it.
+**Nothing is in flight.** `main` is at `c49b13a`. v0.3.4 is written and
+pushed but unreleased: release it the way v0.3.3 was released (the workflow
+started by hand from the Actions tab with the version typed in, since the
+sandbox refuses `v*` tag pushes with a 403).
 
-**v0.3.0 is the latest release** (published 2026-09-21), and there are eleven
-releases going back to v0.2.1. v0.3.1, v0.3.2 and v0.3.3 are written and
-pushed but unreleased, because a release happens when a `v*` tag is pushed
-and the branch hasn't been merged yet. Note for anyone checking this the way
+**v0.3.3 is the latest release** (published 2026-09-21), and there are twelve
+releases going back to v0.2.0, the first one. There is no v0.3.1 or v0.3.2
+release: both versions have their own `CHANGELOG.md` section, but they went
+out inside the v0.3.3 release, because a release happens when a `v*` tag is
+pushed and those two were never tagged. Note for anyone checking this the way
 it was got wrong once: this is a shallow clone with no tags fetched, so
 `git tag` prints nothing even though releases exist. Ask GitHub, not the
 clone.
 
-1. **Merge [#13]**, the pull request holding all of it: v0.3.1 (Settings),
-   the dead-code clear-out and the `app.js` split, the documentation pass,
-   v0.3.2 (checking by itself), v0.3.3 (fixes and tidying), the versioned
-   release filenames, and the agents. Delete the branch afterwards; from here
-   on a branch is named after its work (see CLAUDE.md).
+1. ~~Merge [#13]~~ *(done: merged as `9f609a6`, with the release-workflow fix
+   [#14] as `c49b13a`; both branches are deleted)*.
 2. ~~Close issue #10~~ *(done: it shipped in v0.3.0 and was left open)*.
-3. **Release v0.3.3.** Pushing a `v*` tag is the normal way; where that is
-   not possible (the sandbox this was built in blocks tag pushes with a 403,
-   though branch pushes work), the release workflow can be started by hand
-   from the Actions tab with the version typed in, which creates the tag and
-   the release itself. The workflow has run fine eleven times,
-   but this is the first release with versioned asset names
-   (`isoshelf-v0.3.3-windows-amd64.exe`), so check what it attaches: three
-   binaries, the portable zip and `SHA256SUMS`, all carrying the version,
-   with the plain names still inside the zip, and release notes taken from
-   that version's `CHANGELOG.md` section.
+3. ~~Release v0.3.3~~ *(done: the five versioned files came out right, with
+   the plain names still inside the portable zip)*.
 
-   That rename is a real break for anyone using a
-   `releases/latest/download/isoshelf-windows-amd64.exe` link. Nothing in
-   this repository used one and the published downloads have been taken a
-   handful of times at most, so now is the cheapest possible moment - but it
-   is a break, not a free change, and it shouldn't happen twice.
+## ~~v0.3.4: scanning while downloads run~~ *(done)*
 
-## v0.3.4: scanning while downloads run
+A scan and a download had one `s.run` slot between them; they have one each
+now (`s.scanning`, `s.downloading`), so a scan or Refresh is no longer
+refused for as long as a queue takes. What was learned doing it:
 
-The last real bug from the maintainer's review. Today a scan or Refresh is
-refused while anything is downloading (`busyLocked` in
-`internal/web/queue.go`), which locks the page for as long as a queue takes.
-
-What it needs, and why it isn't a five-minute change:
-
-- The server has **one** `s.run` slot that a scan and a download share, and a
-  download is "a run whose `job` is set". Two things at once means two slots.
-- The page reads the running download's progress from `state.run`
-  (`downloadProgress()` in `static/downloads.js`), so splitting the slot
-  changes the JSON the page reads. The scan's own progress card (`#run`) and
-  the downloads dock are already separate on screen, so the page can show
-  both - `downloadsJSON.Current` needs the progress fields the dock uses.
-- A scan finishing mid-download replaces `s.report`, `s.st` and `s.scan`
-  wholesale (`execute` in `scanrun.go`). A file placed while the scan ran
-  would be missing from that copy until the next scan. The scan that already
-  runs when the queue drains (`startNextLocked`) heals it, but check that.
-- The state **file** is already safe: each writer keeps the copy from before
-  its change and `state.Merge` carries only that change onto what is on disk
-  (`saveStateLocked`). Don't undo that.
-- Switching folders should still wait for downloads. That part of the lock is
-  right, and the maintainer agrees.
-
-Keep this one in hand rather than delegating it: it is architecture, and it
-sits next to the state file.
+- **There was a second bug underneath, and it was the worse one.** A scan
+  loads the folder's records when it starts and saved them again wholesale at
+  the end, so a download that placed a file in between lost that file's
+  record and could be listed as an image that had left. `state.SaveOnto`
+  (merge.go) now does for a scan what `saveMerged` already did for everyone
+  else. This was reachable before the slot was split, whenever a scan
+  followed a download closely enough, so it is a fix, not fallout.
+- **Both directions are allowed**, not just the one the bug report named: a
+  download can also start while a scan runs. Blocking that would have taken
+  an extra guard, and the merge makes it safe either way.
+- **A download reports its own progress now** (`downloads.current` carries
+  `stage`, `done`, `total`), because `state.run` is the scan's card alone.
+  `drawnKey` in `app.js` has to strip those three fields, or the whole page
+  redraws twice a second and open menus close - the very thing that key is
+  for.
+- **Switching folders and emptying the archive still wait** for downloads
+  (`busyLocked`); scans wait only for another scan (`scanBusyLocked`).
+- `waitIdle` in the tests now waits for both slots; `state.run` going nil no
+  longer means the queue is done.
 
 ## Then, in order
 
@@ -111,16 +95,25 @@ sits next to the state file.
   `details.js`, `downloads.js`, `actions.js`, `folders.js`, `archive.js` and
   `settings.js`. Read the one you need. A new one goes in `index.html` and in
   `scripts` in `internal/web/static_test.go`.
-- **Two dead-code checkers come back clean** and should stay that way:
-  `GOTOOLCHAIN=go1.27.1 go run golang.org/x/tools/cmd/deadcode@latest -test ./...`
-  and `staticcheck`.
+- **`deadcode` comes back clean** and should stay that way:
+  `GOTOOLCHAIN=go1.27.1 go run golang.org/x/tools/cmd/deadcode@latest -test ./...`.
+  `staticcheck` is not clean and hasn't been: it flags
+  `internal/web/target.go:45` for a capitalized error ending in a full stop
+  (ST1005). That one is deliberate - the string is shown to the user as a
+  sentence - so the finding stays. Check new findings against that.
 - **A full drive shows bugs a small folder hides.** Build one from the
-  filenames in `internal/sampledrive` (93 of them) before judging the page.
-  That is how the filter menu bug was found.
+  filenames in `internal/sampledrive` (93 of them) before judging the page:
+  `go run ./internal/sampledrive/mkdrive <folder>` writes them all as
+  stand-ins. That is how the filter menu bug was found.
 - **The sandbox can't reach the image projects' sites**, so a preview here
   shows "Couldn't check" on every row. That is the sandbox, not a bug. The
   recorded responses in tests are the way to check that path.
 - **Don't touch port 8765**: the maintainer's own preview runs there.
+- **Release files carry the version** since v0.3.3, so a link straight to
+  `releases/latest/download/isoshelf-windows-amd64.exe` no longer works.
+  Nothing in this repository used one and the published downloads had been
+  taken a handful of times at most, so it was the cheapest possible moment
+  - but it was a break, not a free change, and it shouldn't happen twice.
 
 ## Questions the maintainer still owes an answer to
 
@@ -133,6 +126,7 @@ sits next to the state file.
   used on a real drive.
 
 [#13]: https://github.com/ZachCurry13/isoshelf/pull/13
+[#14]: https://github.com/ZachCurry13/isoshelf/pull/14
 [#1]: https://github.com/ZachCurry13/isoshelf/issues/1
 [#2]: https://github.com/ZachCurry13/isoshelf/issues/2
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

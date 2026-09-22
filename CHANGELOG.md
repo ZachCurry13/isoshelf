@@ -6,6 +6,24 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.3.4] - 2026-09-21
+
+### Fixed
+- **The page no longer locks up while images download.** A scan or *Refresh*
+  was refused for as long as a queue took - which on a drive's worth of
+  images is most of an evening - because a scan and a download shared one
+  slot. They have a slot each now, and the page shows both at once: the scan
+  card at the top, the downloads bar at the bottom. Switching folders and
+  emptying the archive still wait for the downloads, because both pull the
+  ground out from under one.
+- **A scan can no longer undo what a download just wrote.** A scan reads the
+  folder's records when it starts and saves them again at the end, which
+  meant a file that landed in between lost its record - what it is, where it
+  came from, when it arrived - and could be listed as an image that had left.
+  A scan now saves the way every other writer already did: only what it
+  learned goes onto the records as they are at that moment. This was reachable
+  before this release too, when a scan followed a download closely enough.
+
 ## [v0.3.3] - 2026-09-21
 
 Fixes and tidying from a run through the whole page on a full drive.

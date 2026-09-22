@@ -16,7 +16,7 @@ async function renderArchive() {
   $("archive-count").textContent = here.length
     ? `${plural(here.length, "file")} · ${formatBytes(here.reduce((sum, i) => sum + (i.size || 0), 0))}`
     : "";
-  $("archive-empty").disabled = Boolean(state.run);
+  $("archive-empty").disabled = scanning() || downloading();
   $("archive-list").replaceChildren(...here.map((item) => pastItem(item, true)));
 }
 
