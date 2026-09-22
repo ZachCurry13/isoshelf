@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"path/filepath"
+	"strings"
 
 	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/state"
@@ -121,15 +122,12 @@ func (s *Server) setRecords(w http.ResponseWriter, r *http.Request) {
 	s.getState(w, r)
 }
 
-// isUnder reports whether dir is inside parent, or is parent.
+// isUnder reports whether dir is inside parent, or is parent itself. Rel
+// gives an error for two different drives, which is a plain no.
 func isUnder(parent, dir string) (bool, error) {
 	rel, err := filepath.Rel(parent, dir)
 	if err != nil {
 		return false, err
 	}
-	return rel == "." || (rel != ".." && !hasDotDotPrefix(rel)), nil
-}
-
-func hasDotDotPrefix(rel string) bool {
-	return len(rel) >= 3 && rel[:2] == ".." && (rel[2] == filepath.Separator || rel[2] == '/')
+	return rel == "." || (rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator))), nil
 }

@@ -37,23 +37,25 @@ func TestSettingsKeepEachOther(t *testing.T) {
 // the page. Both read and write the same file, so both must keep every field
 // in it.
 func TestSettingsKeepFieldsTheWebUIDoesNotShow(t *testing.T) {
-	dirs := testDirs(t)
-	if err := settings.Save(dirs.Config, settings.Settings{
-		FolderRecords: map[string]settings.Records{
-			"/a/drive": {Location: settings.Elsewhere, Dir: "/somewhere"},
-		},
-	}); err != nil {
+	dirs, drive, elsewhere := testDirs(t), t.TempDir(), t.TempDir()
+	// Written the way isoshelf writes it. How a folder's path is spelled as a
+	// key is that method's business, not this test's: a key written out by
+	// hand passed on Linux and failed on Windows, where "/a/drive" is not yet
+	// an absolute path.
+	var before settings.Settings
+	before.SetRecordsFor(drive, settings.Records{Location: settings.Elsewhere, Dir: elsewhere})
+	if err := settings.Save(dirs.Config, before); err != nil {
 		t.Fatal(err)
 	}
 	s := newServer(t, dirs, "")
 	request(t, s, http.MethodPost, "/api/settings", map[string]any{"theme": "light"})
 
-	saved := settings.Load(dirs.Config)
-	if got := saved.RecordsFor("/a/drive"); got.Location != settings.Elsewhere || got.Dir != "/somewhere" {
-		t.Errorf("saving a theme lost where a folder's records are kept: %+v", saved)
+	after := settings.Load(dirs.Config)
+	if got := after.RecordsFor(drive); got.Location != settings.Elsewhere || got.Dir != elsewhere {
+		t.Errorf("saving a theme lost where a folder's records are kept: %+v", after)
 	}
-	if saved.Appearance.Theme != settings.ThemeLight {
-		t.Errorf("theme is %q, want light", saved.Appearance.Theme)
+	if after.Appearance.Theme != settings.ThemeLight {
+		t.Errorf("theme is %q, want light", after.Appearance.Theme)
 	}
 }
 
