@@ -4,6 +4,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -70,8 +71,13 @@ func TestLinkTokenSurvivesAServerRestart(t *testing.T) {
 	if err != nil {
 		t.Fatalf("no token file: %v", err)
 	}
-	if perm := info.Mode().Perm(); perm != 0o600 {
-		t.Errorf("the token file is %v; it is a password, so it should be 0600", perm)
+	// Windows has no Unix permission bits: Go reports 0666 for any regular
+	// file there, whatever mode it was written with. The mode still matters
+	// everywhere isoshelf runs as a server, and a container is Linux.
+	if runtime.GOOS != "windows" {
+		if perm := info.Mode().Perm(); perm != 0o600 {
+			t.Errorf("the token file is %v; it is a password, so it should be 0600", perm)
+		}
 	}
 	saved, err := os.ReadFile(path)
 	if err != nil || strings.TrimSpace(string(saved)) != first {
