@@ -79,6 +79,11 @@ isoshelf does that for you:
   Nothing there has to be touched — the defaults are the sensible ones — and
   "Reset to defaults" puts every switch back without forgetting your
   folders.
+- **Keeps them up to date on its own, if you want.** Turn it on and isoshelf
+  checks on a schedule, downloads every update it finds, verifies it against
+  the project's published checksum and puts it in place — with each image
+  following the answer it already carries about its old copy. It stops before
+  filling the folder, and it's off unless you ask for it.
 - **Learns about new images on its own.** The list of images isoshelf knows is
   data, not code, so it refreshes itself from this repository — you get new
   distributions without installing a new isoshelf. It's a checkbox you can
@@ -265,6 +270,10 @@ phone screen.<br>
 you to choose one the first time you open it, and every device signs in with
 them after that. The link with the secret still works, and is the way back in
 if you forget. Nothing changes on your own computer.<br>
+**v0.4.6: updating by itself.** *2026-09-22:* turn it on and isoshelf checks
+every day or every week, downloads every update it finds, verifies it and puts
+it in place - each image following the answer it already carries about its old
+copy. Off unless you ask for it.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

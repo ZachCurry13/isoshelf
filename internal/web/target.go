@@ -12,6 +12,7 @@ import (
 
 	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
+	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 )
 
@@ -65,9 +66,7 @@ func (s *Server) openTarget(path, profile string) error {
 	s.mu.Lock()
 	s.target, s.st, s.report, s.scan, s.lastErr, s.warnings = abs, st, nil, nil, "", nil
 	s.mu.Unlock()
-	saved := s.loadSettings()
-	saved.Target = abs
-	s.saveSettings(saved)
+	s.updateSettings(func(c *settings.Settings) { c.Target = abs })
 	return nil
 }
 

@@ -168,6 +168,26 @@ const SETTING_GROUPS = [
           : "",
       },
       {
+        name: "Update the images by itself",
+        hint: "isoshelf checks on its own, downloads every update it finds, verifies it " +
+          "against the project's published checksum, and puts it in place - with no " +
+          "button pressed. Each image still follows the answer it already carries about " +
+          "its old copy, so nothing happens that the page hasn't been telling you it " +
+          "would. It stops before filling the folder, and a checksum that doesn't match " +
+          "still blocks the file.",
+        words: "automatic update download schedule unattended by itself daily weekly",
+        control: () => el("div", { class: "setting-controls" },
+          switchRow("Update the images by itself", state && state.auto_update,
+            (on) => ({ auto_update: on })),
+          (state && state.auto_update)
+            ? choiceRow("How often", [["day", "Every day"], ["week", "Every week"]],
+              (state && state.auto_update_every) || "day", (every) => ({ auto_update_every: every }))
+            : null),
+        note: () => (state && state.auto_update)
+          ? "This changes your folder while you aren't watching. Nothing is deleted that you didn't already choose to lose."
+          : "",
+      },
+      {
         name: "Tell me when a new isoshelf is out",
         hint: "Asks GitHub once an hour for the newest release. Nothing is installed " +
           "and nothing about you is sent; it's a link in the top bar.",
@@ -450,6 +470,7 @@ function settingsKey() {
   return JSON.stringify([
     state.appearance, state.old_files, state.target, state.version,
     state.auto_check, state.app_update_check, state.checked_at,
+    state.auto_update, state.auto_update_every,
     state.config_dir, state.catalog, state.records, recordsChoice, state.login,
     Boolean(state.app_update), $("settings-search").value,
   ]);

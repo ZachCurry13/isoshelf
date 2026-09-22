@@ -161,9 +161,9 @@ func (s *Server) forgetFolder(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "Couldn't forget that folder: "+err.Error())
 		return
 	}
-	saved := s.loadSettings()
-	saved.SetRecordsFor(req.Path, settings.Records{Location: settings.InFolder})
-	s.saveSettings(saved)
+	s.updateSettings(func(c *settings.Settings) {
+		c.SetRecordsFor(req.Path, settings.Records{Location: settings.InFolder})
+	})
 	s.getState(w, r)
 }
 

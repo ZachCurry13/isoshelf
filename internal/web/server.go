@@ -78,6 +78,15 @@ type Server struct {
 	// logins is how a wrong password slows the next guess down.
 	sessions auth.Key
 	logins   *attempts
+	// background counts the work isoshelf starts for itself - a scheduled
+	// update, so far. Counting it means a test can wait for it instead of
+	// racing its own cleanup, and means there is something to wait on the
+	// day this needs a tidy shutdown.
+	background sync.WaitGroup
+	// settingsMu holds the settings file still for a read-modify-write.
+	// Kept apart from mu, which guards the folder and the queue: a settings
+	// write reads a disk, and nothing about the page should wait for it.
+	settingsMu sync.Mutex
 
 	mu     sync.Mutex
 	target string
@@ -103,6 +112,11 @@ type Server struct {
 	// a time, and only one download.
 	scanning    *run
 	downloading *run
+	// autoQueue marks the scan that the scheduler started, so that when it
+	// finishes its findings go straight into the download queue. autoNote is
+	// the line the page shows about what it did.
+	autoQueue bool
+	autoNote  string
 	// queue holds the downloads waiting their turn, in order; finished the
 	// ones that ended, newest first. placed says a download has put a file in
 	// the folder since the last scan.

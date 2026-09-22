@@ -106,6 +106,13 @@ record of where things stand and what was decided.
   a fallback for plain http where the browser's clipboard doesn't exist. And
   the question dialog had no height limit, so on a phone its buttons were
   below the bottom edge with no way to scroll to them.
+- v0.4.6 is updating by itself, the second of the two. On a schedule it
+  checks and puts everything it finds through the same queue the Update
+  button uses. Off unless turned on, and it will stay that way - it is the
+  one thing isoshelf does that changes a drive unattended. Building it turned
+  up a real bug of its own: the settings file had one writer and now has two,
+  so a switch and the scheduler noting the time could land on each other and
+  lose one of the changes. Every write to that file now takes a turn.
 - Both questions answered by the maintainer, 2026-09-22. **A username and
   password**, over keeping the token alone or an off switch - shipped as
   v0.4.5. And **updating ISOs fully automatically**, end to end: check,

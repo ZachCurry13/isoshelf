@@ -6,6 +6,35 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.6] - 2026-09-22
+
+### Added
+- **isoshelf can update the images by itself.** Turn it on in Settings, under
+  *Checking for updates*, and every day - or every week - it checks, downloads
+  every update it finds, verifies it against the project's published checksum,
+  and puts it in place. Nothing is pressed.
+  - **Each image still follows the answer it already carries** about its old
+    copy: replace, archive, or keep both. What happens while you aren't
+    watching is exactly what the page has been telling you would happen.
+  - **It stops before filling the folder**, leaving room to spare, rather than
+    updating a drive until nothing else fits on it.
+  - Every rule that held before still holds: a checksum that doesn't match
+    blocks the file, an unverified download never replaces anything, and
+    nothing is deleted that you didn't already choose to lose.
+  - A folder that is already being scanned or downloaded into is left alone
+    until next time, and the page says when isoshelf started downloads by
+    itself, so finding four of them underway is never a mystery.
+  - **It is off unless you turn it on, and always will be.** This is the one
+    thing isoshelf does that changes a drive while its owner isn't looking.
+  - On a NAS it runs whenever the container is up. On your own computer it
+    runs while isoshelf is open, and not when it's closed.
+
+### Fixed
+- **Two things saving settings at once could lose one of them.** Now that
+  isoshelf writes to that file on a schedule as well as when you press
+  something, every change to it takes a turn - so a switch you flick can't be
+  quietly undone by isoshelf noting the time.
+
 ## [v0.4.5] - 2026-09-22
 
 ### Added

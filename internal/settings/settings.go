@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 // FileName is the settings file inside the config folder.
@@ -31,6 +32,28 @@ func CleanOldFiles(choice string) string {
 		return choice
 	}
 	return ""
+}
+
+// How often isoshelf updates the images by itself.
+const (
+	EveryDay  = "day"
+	EveryWeek = "week"
+)
+
+// CleanEvery returns how often, or EveryDay for anything it doesn't know.
+func CleanEvery(choice string) string {
+	if choice == EveryWeek {
+		return EveryWeek
+	}
+	return EveryDay
+}
+
+// Every is how long between runs.
+func (s Settings) Every() time.Duration {
+	if CleanEvery(s.AutoUpdateEvery) == EveryWeek {
+		return 7 * 24 * time.Hour
+	}
+	return 24 * time.Hour
 }
 
 // Where isoshelf keeps what it has learned about a folder.
@@ -138,6 +161,18 @@ type Settings struct {
 	// AutoCheck is nil until the user says either way; the default is on.
 	// When it is off, isoshelf only goes online when asked to.
 	AutoCheck *bool `json:"auto_check,omitempty"`
+	// AutoUpdate is whether isoshelf updates the images by itself: on a
+	// schedule it checks, downloads, verifies and puts the new file in place,
+	// each image following the answer it already carries about its old copy.
+	// Nil and false are both off - this one is never on by default, because
+	// it changes somebody's drive while they aren't looking.
+	AutoUpdate *bool `json:"auto_update,omitempty"`
+	// AutoUpdateEvery is how often: EveryDay or EveryWeek. Anything else
+	// means EveryDay.
+	AutoUpdateEvery string `json:"auto_update_every,omitempty"`
+	// AutoUpdateLast is when isoshelf last updated the images by itself, so
+	// a restart doesn't start another one straight away.
+	AutoUpdateLast time.Time `json:"auto_update_last,omitzero"`
 	// AppUpdateCheck is whether to look for a newer isoshelf. Nil is on.
 	AppUpdateCheck *bool `json:"app_update_check,omitempty"`
 	// Appearance is how the page looks.
