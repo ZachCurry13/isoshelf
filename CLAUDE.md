@@ -36,14 +36,15 @@ people have downloaded. Work never happens directly on it.
   three binaries and the portable zip, names them with the version, attaches
   `SHA256SUMS`, and takes the release notes from that version's
   `CHANGELOG.md` section. No section, no release - the workflow stops.
-- **Before 1.0 every release is marked a pre-release**, automatically: the
-  workflow adds `--prerelease` for any `v0.*` tag or any tag with a suffix
-  (`-rc1`). 1.0 is the promise that isoshelf does what it says and won't
-  change under somebody. Because of that, `internal/appupdate` reads the
-  *list* of releases rather than GitHub's "latest release", which leaves
-  pre-releases out - otherwise marking them would quietly stop anybody being
-  told a new isoshelf exists. A pre-release is only offered to somebody
-  already running one, which below 1.0 is everybody.
+- **Only a tag with a suffix is a pre-release** (`v1.0.0-rc1`). Marking every
+  `v0.*` as one was tried in v0.4.10 and taken back out in v0.4.11: every
+  isoshelf already installed asks GitHub for `/releases/latest`, which skips
+  pre-releases, so marking them stopped anybody being told a new version
+  existed - and the fix shipped in the release they would first have had to
+  be told about. **Before changing what a release is labelled, work out what
+  the copies already installed will ask for.** `internal/appupdate` reads the
+  list rather than "the latest", which is the more robust thing anyway and is
+  what makes a real `-rc` release work later.
 - The maintainer is new to Git, so say which of these you are doing and why,
   in plain words, rather than just running it.
 - **In the sandbox these sessions run in**, the git proxy refuses `v*` tag
