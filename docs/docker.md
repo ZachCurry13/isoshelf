@@ -121,20 +121,35 @@ This is a permissions problem rather than an isoshelf one: the user the
 container runs as doesn't own the datasets you mounted, so isoshelf can see
 your images but can't write to the folder.
 
-isoshelf says so rather than failing silently. Open the app's **Logs** and you
-will see lines naming the exact path and the exact problem — it carries on
-with the built-in list of images rather than refusing to start, so a
-permissions mistake never looks like a crash.
+isoshelf checks both folders when it starts and says so in the **Logs**,
+before anything has gone wrong. It names the folder that is in the way, the
+user it is running as, and what stops working until it is fixed:
+
+```
+isoshelf: can't write to /config, which is where isoshelf keeps its own files: ...
+isoshelf:   Until that is fixed: the link's secret changes every restart, settings aren't
+isoshelf:   remembered, and the copy of each folder's history isn't kept.
+isoshelf:   To fix it, /config has to belong to the user isoshelf runs as (user 568, group 568).
+```
+
+It carries on either way — a folder it can only read is still listed and
+still checked for updates — so a permissions mistake never looks like a
+crash.
 
 To fix it, make the two match:
 
 - **Find the dataset's owner** (Datasets → your dataset → Permissions).
 - **Put that UID and GID into the app's user and group fields**, or change the
-  dataset's ownership to the user the app runs as.
+  dataset's ownership to the user isoshelf names in the log.
 
-On TrueNAS both are usually `568` (`apps`). The `/config` mount has to be
-writable too, not just `/images` — that is where isoshelf keeps its settings
-and the secret for your link.
+On TrueNAS both are usually `568` (`apps`). Change it on the TrueNAS side,
+not inside the container: those folders are mounts, and their permissions
+come from the dataset.
+
+**The `/config` mount has to be writable too, not just `/images`.** That is
+where isoshelf keeps its settings and the secret for your link — if it can't
+write there, the link changes every time the app restarts, which is the one
+symptom people notice first.
 
 ### If the images folder is read-only
 

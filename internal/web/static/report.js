@@ -30,31 +30,48 @@ async function reportProblem(what, detail) {
   // Built fresh each time rather than living in the page: it only exists
   // while the dialog is open.
   const body = el("div", { class: "report" });
+
+  // One box holding exactly what would be sent. It is what the Copy button
+  // copies and what you would paste, so there is nothing shown here that
+  // isn't in it and nothing in it that isn't shown.
+  const box = el("textarea", {
+    class: "report-text", readonly: true, rows: 10, spellcheck: "false",
+    "aria-label": "The details of this report",
+  });
+  const fill = () => { box.value = reportText(what, detail); };
+  fill();
+
+  const said = el("div", { class: "report-said muted" });
+  const copy = el("button", {
+    type: "button", class: "btn small",
+    onclick: async () => {
+      said.textContent = (await copyText(box))
+        ? "Copied. Paste it into the box on GitHub."
+        : "Couldn't copy it here. Select the text above and copy it yourself.";
+    },
+  }, "Copy the details");
+
+  const toggle = el("label", { class: "check" },
+    el("input", {
+      type: "checkbox", checked: includeSystem,
+      onchange: (e) => { includeSystem = e.target.checked; fill(); },
+    }),
+    " Include which system I'm on");
+
   body.append(
     el("p", { class: "muted" },
       "This opens GitHub's bug form in a new tab with the boxes below already " +
       "filled in. Nothing is sent until you press submit there, and you can " +
       "change or delete any of it first."),
-    reportLine("What happened", what || "(describe it in your own words)"),
-    detail ? reportLine("What isoshelf said", detail) : null,
-    reportLine("isoshelf", reportFacts.version || "unknown"),
-    reportLine("Kind of folder", reportFacts.folder || "(none open)"),
-  );
-
-  const systemLine = reportLine("System", reportFacts.system);
-  const toggle = el("label", { class: "check" },
-    el("input", {
-      type: "checkbox", checked: includeSystem,
-      onchange: (e) => {
-        includeSystem = e.target.checked;
-        systemLine.hidden = !includeSystem;
-      },
-    }),
-    " Include which system I'm on");
-  body.append(toggle, systemLine);
-  systemLine.hidden = !includeSystem;
-  body.append(el("p", { class: "muted" },
-    "Your folder's location and the names of your files are never included."));
+    box,
+    el("div", { class: "setting-controls" }, copy, toggle),
+    said,
+    el("p", { class: "muted" },
+      "If the form opens empty - GitHub's phone app does that, because it " +
+      "ignores anything filled in from a link - copy the details first and " +
+      "paste them in."),
+    el("p", { class: "muted" },
+      "Your folder's location and the names of your files are never included."));
 
   const go = await ask(
     "Report a problem",
@@ -67,10 +84,39 @@ async function reportProblem(what, detail) {
   if (go) window.open(reportURL(what, detail), "_blank", "noopener,noreferrer");
 }
 
-function reportLine(label, value) {
-  return el("div", { class: "report-line" },
-    el("span", { class: "report-label" }, label),
-    el("span", { class: "report-value" }, value));
+// reportText is the whole report as plain words: what goes in the box, on
+// the clipboard, and into GitHub's form. One thing to keep true instead of
+// three that drift apart.
+function reportText(what, detail) {
+  const lines = [`What happened: ${what || "(describe it in your own words)"}`];
+  if (detail) lines.push("", "What isoshelf said:", detail);
+  lines.push("", `isoshelf: ${reportFacts.version || "unknown"}`);
+  if (reportFacts.folder) lines.push(`Kind of folder: ${reportFacts.folder}`);
+  if (includeSystem && reportFacts.system) lines.push(`System: ${reportFacts.system}`);
+  return lines.join("\n");
+}
+
+// copyText copies the box's contents. navigator.clipboard only exists on
+// https and on localhost, and isoshelf on a NAS is neither - so the old way
+// of doing it is the one that works there, and is tried second rather than
+// not at all.
+async function copyText(box) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(box.value);
+      return true;
+    }
+  } catch {
+    // Refused, or no permission. Fall through and try the other way.
+  }
+  try {
+    box.focus();
+    box.select();
+    box.setSelectionRange(0, box.value.length);
+    return document.execCommand("copy");
+  } catch {
+    return false;
+  }
 }
 
 // reportURL fills GitHub's bug form by its own field names. The form is

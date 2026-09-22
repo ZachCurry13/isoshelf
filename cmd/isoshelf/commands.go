@@ -185,6 +185,10 @@ func serveUI(ctx context.Context, e *env, opts options) error {
 			}
 		}
 	}
+	// A folder isoshelf can read but not write is the other half of the same
+	// mistake, and on its own it only shows up later as "permission denied"
+	// from whichever part of isoshelf happened to write first.
+	checkWritable(e.stderr, dirs.Config, opts.folder)
 	url := fmt.Sprintf("http://%s/?token=%s", listener.Addr(), token)
 
 	server := &http.Server{

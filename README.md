@@ -254,6 +254,11 @@ writing to. Changing the answer moves it; nothing is forgotten.<br>
 now says when you last looked at each one, how many images it held and how
 much room they took - and *Forget* takes one off the list without touching
 anything in it.<br>
+**v0.4.4: saying what to do about it.** *2026-09-22:* a folder isoshelf can't
+write to says which folder, which user it's running as and how to fix it,
+instead of a wall of "permission denied" later on. Reporting a problem gives
+you the details to copy, for when GitHub's form opens empty. Dialogs fit on a
+phone screen.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command

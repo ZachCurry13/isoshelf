@@ -443,6 +443,10 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 .ask {
   width: min(460px, calc(100vw - 32px));
+  /* Capped and scrollable, the same shape as the folder chooser above. A
+     dialog taller than the screen puts its buttons past the bottom edge with
+     no way to reach them, which on a phone is a dialog you can't answer. */
+  max-height: min(640px, calc(100vh - 32px));
   padding: 0;
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -451,10 +455,11 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 .ask::backdrop { background: rgba(10, 14, 22, 0.45); }
-.ask-form { padding: 20px; }
+.ask-form { display: flex; flex-direction: column; max-height: inherit; padding: 20px; }
+.ask-body { overflow-y: auto; min-height: 0; }
 .ask h2 { margin: 0 0 6px; font-size: 1.2143rem; }
 .ask p { margin: 0 0 16px; color: var(--muted); overflow-wrap: anywhere; }
-.ask-buttons { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.ask-buttons { display: flex; flex: none; gap: 8px; flex-wrap: wrap; justify-content: flex-end; padding-top: 16px; }
 
 /* Logos, links menu and the filter bar */
 
@@ -902,7 +907,14 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
 }
 
 /* What a bug report would say, shown before anything opens. */
-.report { display: grid; gap: 6px; margin: 10px 0; }
-.report-line { display: flex; gap: 10px; align-items: baseline; }
-.report-label { flex: none; width: 9rem; color: var(--muted); font-size: 0.8571rem; }
-.report-value { overflow-wrap: anywhere; }
+.report { display: grid; gap: 10px; margin: 10px 0; }
+/* The report itself, exactly as it would be pasted. Selectable rather than
+   pretty: on a phone, long-pressing this is how the text gets copied when
+   the clipboard button can't do it. */
+.report-text {
+  font: inherit; font-size: 0.8571rem; width: 100%; box-sizing: border-box;
+  color: var(--text); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px;
+  resize: vertical; white-space: pre; overflow-wrap: normal;
+}
+.report-said { font-size: 0.8571rem; min-height: 1.2em; }

@@ -96,6 +96,22 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-22)
 
+- The maintainer's own install turned up three things, all shipped as v0.4.4.
+  A folder isoshelf can't write to produced a wall of "permission denied"
+  from whichever part wrote first and said nothing about what to do; it now
+  checks both folders at startup and names the folder, the user it runs as
+  and the two ways to fix it on TrueNAS. Reporting a problem opened an empty
+  GitHub form, because GitHub's phone app ignores anything filled in from a
+  link; the dialog now shows the report as one block with a Copy button, with
+  a fallback for plain http where the browser's clipboard doesn't exist. And
+  the question dialog had no height limit, so on a phone its buttons were
+  below the bottom edge with no way to scroll to them.
+- Still open, both waiting on the maintainer: whether the link's token should
+  be replaced by a username and password (their ask - "this is on my private
+  network"), and what "update ISOs automatically" should mean, which is the
+  scheduler in design.md's server-mode section.
+
+
 - **isoshelf is running on the maintainer's NAS**, installed as a TrueNAS
   custom app from the published image. The two things that first install
   found are v0.4.1: the page scrolled sideways on a phone, and the refusal
