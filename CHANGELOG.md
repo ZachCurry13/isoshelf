@@ -6,6 +6,18 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.12] - 2026-09-22
+
+### Fixed
+- **Sign out works.** It answered `{"error": "request refused"}` and left you
+  signed in. Signing out was a plain form posted to the login address, and
+  isoshelf sends a header that makes browsers report the sender of a plain
+  form as "null" - so isoshelf's own check for "did this come from me?"
+  refused every sign-out there has ever been. It goes through the same door
+  as every other button now.
+  - The login form itself was never affected: it has its own way round that,
+    because it has to work before you're signed in.
+
 ## [v0.4.11] - 2026-09-22
 
 ### Fixed

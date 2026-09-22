@@ -211,6 +211,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/folders/forget", s.forgetFolder)
 	mux.HandleFunc("POST /api/login", s.setLogin)
 	mux.HandleFunc("POST /api/login/everywhere", s.signOutEverywhere)
+	mux.HandleFunc("POST /api/login/signout", s.signOut)
 	mux.HandleFunc("POST /api/peer", s.setPeer)
 	mux.HandleFunc("POST /api/share", s.setSharing)
 	mux.HandleFunc("GET /api/share/have", s.shareHave)
@@ -297,11 +298,14 @@ func (s *Server) guard(next http.Handler) http.Handler {
 			w.Write([]byte(s.forbiddenPage()))
 			return
 		}
-		// Already in. The login page has nothing left to say, and signing out
-		// is the only thing under it that still means anything.
+		// Already in, so the login page has nothing to say: back to the page.
+		// A POST here is somebody signing in again - harmless, and it keeps
+		// the meaning of this address to one thing. Signing out is not here:
+		// it goes through the ordinary door, where the page's own code can
+		// send the header and an Origin that means something.
 		if r.URL.Path == loginPath {
 			if r.Method == http.MethodPost {
-				s.handleLogout(w, r)
+				s.handleLogin(w, r)
 				return
 			}
 			http.Redirect(w, r, "/", http.StatusSeeOther)

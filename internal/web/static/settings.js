@@ -453,13 +453,16 @@ async function changeLogin() {
   }
 }
 
-// signOut ends this browser's session. It is a plain link to the login page,
-// which posts to sign out - so it works even if this script never ran.
-function signOut(e) {
+// signOut ends this browser's session, then goes to the login page.
+async function signOut(e) {
   e.preventDefault();
-  const form = el("form", { method: "post", action: "/login" });
-  document.body.append(form);
-  form.submit();
+  try {
+    await api("POST", "/api/login/signout", {});
+  } catch (err) {
+    showNotice(err.message, true);
+    return;
+  }
+  location.href = "/login";
 }
 
 async function signOutEverywhere() {

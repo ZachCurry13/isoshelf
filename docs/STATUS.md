@@ -96,6 +96,21 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-22)
 
+- **v0.4.12: sign out never worked, and the reason was already written down
+  three inches away.** It was a plain form posted to /login, and this server
+  sends Referrer-Policy: no-referrer, so browsers send "Origin: null" on a
+  form post - the exact fact that has a paragraph about it in login.go,
+  written when the login form hit it. The login form got a form-token to
+  work round it; sign-out, sitting next to it, kept the same-origin check and
+  was refused every single time with "request refused".
+  - The lesson is not about Origin. It is that a fix written for one caller
+    of a rule should be followed by looking for the other callers of the
+    same rule, and I wrote the paragraph and didn't.
+  - Sign-out is an ordinary endpoint behind the guard now, where a fetch
+    sends a real Origin. A POST to /login is a sign-in, never a sign-out,
+    which is what made it possible to confuse the two in the first place.
+
+
 - **v0.4.11 takes v0.4.10 straight back out, and it is worth remembering
   why.** Marking every release below 1.0 as a pre-release broke the update
   notice for every isoshelf already installed: they ask GitHub for

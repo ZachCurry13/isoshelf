@@ -270,15 +270,19 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-// handleLogout ends this browser's session. Everyone else stays logged in;
+// signOut ends this browser's session. Everyone else stays signed in;
 // signing out everywhere is in Settings, and throws the signing key away.
-func (s *Server) handleLogout(w http.ResponseWriter, r *http.Request) {
-	if !sameOrigin(r.Header.Get("Origin"), r.Host) {
-		writeError(w, http.StatusForbidden, "request refused")
-		return
-	}
+//
+// It is an ordinary endpoint behind the guard, which is the whole point. It
+// used to be a plain form posted to /login, and that could never work: this
+// server sends Referrer-Policy: no-referrer, so browsers send "Origin: null"
+// on a form post, and the guard's same-origin check refused every sign-out
+// with "request refused". The login form has its own way round that because
+// it must work with no JavaScript; nothing inside the page does, so this
+// goes through the same door as every other change and the Origin is real.
+func (s *Server) signOut(w http.ResponseWriter, r *http.Request) {
 	s.setSession(w, "")
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
+	writeJSON(w, http.StatusOK, map[string]any{"status": "signed out"})
 }
 
 // plainDuration is "20 seconds" or "3 minutes", for somebody to read.
