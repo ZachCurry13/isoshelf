@@ -184,6 +184,19 @@ with everything else of its own.
 nothing else — not which folder is open, not what is in it — so it is safe to
 point a monitor at. The container's own health check uses it.
 
+## Keeping the images up to date without doing anything
+
+A container is the one place isoshelf can do this properly, because it is
+always on. **Settings → Checking for updates → Update the images by itself**:
+every day or every week it checks, downloads what it finds, verifies it
+against the project's published checksum and puts it in place. Each image
+follows the answer it already carries about its old copy — replace, archive
+or keep both — so nothing happens that the page hasn't been saying it would.
+
+It stops before filling the folder rather than using the last of it, and it
+leaves a folder alone while you are scanning or downloading into it yourself.
+It is off until you turn it on.
+
 ## Updating it, without reinstalling
 
 Nothing in `/images` or `/config` is touched by an update: they are mounts

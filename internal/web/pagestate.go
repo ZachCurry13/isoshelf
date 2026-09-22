@@ -35,6 +35,10 @@ type stateJSON struct {
 	// AppUpdateCheck whether it looks for a newer isoshelf.
 	AutoCheck      bool `json:"auto_check"`
 	AppUpdateCheck bool `json:"app_update_check"`
+	// AutoUpdate is whether isoshelf updates the images by itself, and
+	// AutoUpdateEvery how often.
+	AutoUpdate      bool   `json:"auto_update"`
+	AutoUpdateEvery string `json:"auto_update_every"`
 	// CheckedAt is when the oldest answer the report rests on was given, so
 	// the page can say how fresh it really is rather than when it last drew.
 	CheckedAt *time.Time `json:"checked_at,omitempty"`
@@ -172,30 +176,41 @@ type rememberedJSON struct {
 	Bytes    int64     `json:"bytes,omitempty"`
 }
 
+// warningsLocked is what the page should say, including the one line about a
+// download isoshelf started by itself. s.mu must be held.
+func (s *Server) warningsLocked() []string {
+	if s.autoNote == "" {
+		return s.warnings
+	}
+	return append([]string{s.autoNote}, s.warnings...)
+}
+
 // stateLocked builds the page state; s.mu must be held.
 func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSON {
 	saved := s.loadSettings()
 	out := stateJSON{
-		Version:        s.cfg.Version,
-		Portable:       s.cfg.Dirs.Portable,
-		Target:         s.target,
-		Error:          s.lastErr,
-		Warnings:       nonNil(s.warnings),
-		Tracks:         map[string]state.Track{},
-		UsualSet:       []string{},
-		Recent:         recent,
-		Bookmarks:      nonNil(saved.Bookmarks),
-		OldFiles:       saved.OldFiles,
-		AutoCheck:      settings.On(saved.AutoCheck),
-		AppUpdateCheck: settings.On(saved.AppUpdateCheck),
-		Appearance:     saved.Appearance,
-		ConfigDir:      s.cfg.Dirs.Config,
-		Records:        s.recordsLocked(saved),
-		Removed:        s.removedInfo(s.target),
-		Catalog:        s.catalogStatusLocked(),
-		ReportURL:      "https://github.com/" + appupdate.Repo + "/issues/new",
-		AppUpdate:      s.notice,
-		Downloads:      s.downloadsLocked(),
+		Version:         s.cfg.Version,
+		Portable:        s.cfg.Dirs.Portable,
+		Target:          s.target,
+		Error:           s.lastErr,
+		Warnings:        nonNil(s.warningsLocked()),
+		Tracks:          map[string]state.Track{},
+		UsualSet:        []string{},
+		Recent:          recent,
+		Bookmarks:       nonNil(saved.Bookmarks),
+		OldFiles:        saved.OldFiles,
+		AutoCheck:       settings.On(saved.AutoCheck),
+		AppUpdateCheck:  settings.On(saved.AppUpdateCheck),
+		AutoUpdate:      saved.AutoUpdate != nil && *saved.AutoUpdate,
+		AutoUpdateEvery: settings.CleanEvery(saved.AutoUpdateEvery),
+		Appearance:      saved.Appearance,
+		ConfigDir:       s.cfg.Dirs.Config,
+		Records:         s.recordsLocked(saved),
+		Removed:         s.removedInfo(s.target),
+		Catalog:         s.catalogStatusLocked(),
+		ReportURL:       "https://github.com/" + appupdate.Repo + "/issues/new",
+		AppUpdate:       s.notice,
+		Downloads:       s.downloadsLocked(),
 	}
 	if room.Known() {
 		out.Space = &spaceJSON{Free: room.Free, Total: room.Total}

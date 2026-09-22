@@ -199,19 +199,24 @@ func serveUI(ctx context.Context, e *env, opts options) error {
 	}
 	setUpLogin(e, dirs, anyHost, plainAddress)
 
+	ui := web.New(web.Config{
+		Dirs:          dirs,
+		Catalog:       cat,
+		CatalogSource: catSource,
+		HTTP:          e.http,
+		GitHubToken:   e.getenv("GITHUB_TOKEN"),
+		Version:       version,
+		Token:         token,
+		AnyHost:       anyHost,
+		Target:        opts.folder,
+		Now:           e.now,
+	})
+	// Whatever isoshelf does while nobody is asking - updating the images on
+	// a schedule, when that is turned on - runs alongside the server and
+	// stops with it.
+	go ui.Run(ctx)
 	server := &http.Server{
-		Handler: web.New(web.Config{
-			Dirs:          dirs,
-			Catalog:       cat,
-			CatalogSource: catSource,
-			HTTP:          e.http,
-			GitHubToken:   e.getenv("GITHUB_TOKEN"),
-			Version:       version,
-			Token:         token,
-			AnyHost:       anyHost,
-			Target:        opts.folder,
-			Now:           e.now,
-		}),
+		Handler:           ui,
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 	serveErr := make(chan error, 1)

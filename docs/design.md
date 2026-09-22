@@ -540,10 +540,26 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   - The page's inline stylesheet needs its **own hash in the content policy**,
     derived from the same constant so it cannot drift. Without it the login
     page still works and arrives unstyled.
-- **Not done:** a scheduler that checks daily by itself and downloads verified
-  updates, with unverified ones waiting for the user. A Proxmox LXC with the
-  ISO storage bind-mounted, documented. An official TrueNAS store app, which
-  is the 1.0 goal - `deploy/truenas/` has the start of one.
+- **Updating by itself** (v0.4.6, the maintainer's decision: fully automatic,
+  end to end, over downloading-but-not-placing or checking only). On a
+  schedule - daily or weekly - a check runs, and what it finds goes into the
+  same download queue the Update button uses, with the same verification and
+  the same per-image answer about the old copy. `internal/web/autoupdate.go`.
+  - **Off unless turned on, and always will be.** It is the one thing
+    isoshelf does that changes a drive while its owner isn't looking.
+  - `removalFor` works out each image's answer, and has to agree exactly with
+    `choiceFor` in `details.js`: what happens unattended must be what the
+    page has been showing all along.
+  - It leaves room to spare (`roomToSpare`) rather than filling the folder,
+    skips a folder that is already busy, and records when it last ran in the
+    settings file - so a restart, which on a NAS is every app update, doesn't
+    start another run straight away.
+  - The settings file now has two writers, so every change to it goes through
+    one lock (`updateSettings`). Without that, a switch and the scheduler
+    noting the time can land on each other and one change vanishes.
+- **Not done:** a Proxmox LXC with the ISO storage bind-mounted, documented.
+  An official TrueNAS store app, which is the 1.0 goal - `deploy/truenas/`
+  has the start of one.
 
 ### CLI (`cmd/isoshelf`)
 

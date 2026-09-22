@@ -133,15 +133,13 @@ starts it thinking it is a form to fill in:
    was learned: a narrow column of full paths is useless, because the start
    is what every folder on one machine has in common; the end is what tells
    them apart.)*
-8. **Update the images by itself** (decided 2026-09-22, the maintainer's
-   ask). Fully automatic, end to end: on a schedule, check, download, verify
-   and put in place, with each image following the answer it already carries
-   about its old copy. What this needs that isn't there: a schedule in
-   Settings, something to run it while nobody is watching, and care about the
-   two ways it can go wrong unattended - a folder filling up, and a download
-   that fails over and over. Every existing rule still holds: a checksum
-   mismatch blocks the file, an unverified download never replaces anything,
-   and nothing is deleted that the user didn't choose to lose.
+8. ~~**Update the images by itself**~~ *(done in v0.4.6.
+   `internal/web/autoupdate.go`: a schedule, the same download queue the
+   Update button uses, and `removalFor`, which has to agree exactly with
+   `choiceFor` in `details.js` - what happens unattended must be what the
+   page has been showing. What was learned: the settings file had one writer
+   and now has two, so every change to it has to take a turn, or a switch
+   somebody flicks can be quietly undone by the scheduler noting the time.)*
 9. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
    swaps its own program, restarts, page reconnects - and only installs a
    release carrying the project's signature, which needs the signing key set

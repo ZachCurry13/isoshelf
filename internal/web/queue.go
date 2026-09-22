@@ -34,6 +34,9 @@ type job struct {
 	// old holds the entry's files at the time it was queued, replaced once
 	// the new one is in place. Empty when the image is being added.
 	old []string
+	// automatic marks a download isoshelf started by itself, so the page can
+	// say so rather than leaving somebody wondering what they pressed.
+	automatic bool
 }
 
 // finishedJob is a download that ended, and how.

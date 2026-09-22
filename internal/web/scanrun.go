@@ -106,6 +106,10 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 		s.memory.Save() // best effort: the worst case is asking again
 	}
 
+	// The room left, before the lock: it asks a disk, and a NAS that has
+	// gone to sleep must not hold the page up.
+	room := s.targetSpace()
+
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.scanning = nil
@@ -117,6 +121,17 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 		s.lastErr = "Stopped. Showing what was found so far."
 	case err != nil:
 		s.lastErr = err.Error()
+	}
+	// A scan the scheduler started ends by queueing what it found. Only if
+	// it actually finished: a cancelled scan has seen part of the folder,
+	// and acting on half a look is how a folder gets surprised.
+	if s.autoQueue {
+		s.autoQueue = false
+		if err == nil && s.target == target {
+			if added, stopped := s.queueUpdatesLocked(room); added > 0 {
+				s.autoNote = autoNote(added, stopped, s.cfg.Now())
+			}
+		}
 	}
 	// A download that placed a file while this scan ran left s.placed set and
 	// no scan able to start; this is where that scan goes.
