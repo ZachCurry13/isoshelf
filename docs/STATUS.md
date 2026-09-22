@@ -96,6 +96,22 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-22)
 
+- **v0.4.11 takes v0.4.10 straight back out, and it is worth remembering
+  why.** Marking every release below 1.0 as a pre-release broke the update
+  notice for every isoshelf already installed: they ask GitHub for
+  `/releases/latest`, which skips pre-releases, so that call returned the
+  last unmarked release forever and nobody was told a new one existed. The
+  fix - reading the list instead - shipped in the release they would first
+  have had to be told about.
+  - The trap was spotted for the code being written and missed completely
+    for the copies already running. **Changing what a published thing is
+    labelled is a change to every client that already asks about it**, and
+    that is the question to ask first.
+  - Only a `-rc` tag is a pre-release now. The list-reading in `appupdate`
+    stays: it is more robust anyway, and it is what makes a real `-rc`
+    release work when there is one.
+
+
 - **What the version number means, answered 2026-09-22.** The maintainer
   asked about separating pre-release, beta and stable, and about whether
   branches were the mechanism. They aren't: a branch is a workspace for

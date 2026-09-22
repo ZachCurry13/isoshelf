@@ -6,6 +6,23 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.11] - 2026-09-22
+
+### Fixed
+- **Updates work again.** v0.4.10 marked every release below 1.0 as a
+  pre-release. Every isoshelf already installed asks GitHub for its *latest
+  release*, and GitHub leaves pre-releases out of that - so once the newest
+  release was marked, that question kept returning the last unmarked one and
+  no isoshelf was ever told a new version existed. The fix for it shipped in
+  the very release nobody could be told about.
+  - Only a tag with a suffix - `v1.0.0-rc1` - is a pre-release now. Before
+    1.0 the newest release **is** the release, and it has to be findable by
+    the thing every installed copy asks.
+  - What being before 1.0 means is said in the README and in the release
+    notes instead, where it reaches people and breaks nothing.
+  - Sorry. That one was avoidable: the trap was spotted for new code and
+    missed entirely for the copies already out there.
+
 ## [v0.4.10] - 2026-09-22
 
 ### Changed

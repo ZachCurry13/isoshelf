@@ -12,13 +12,11 @@
 </div>
 
 > [!WARNING]
-> **isoshelf is before 1.0, and every release says so.** It works — it lists
-> the images in a folder, checks them for updates, and downloads and verifies
-> new ones, from a web page in your browser or the command line — but things
-> can still change between versions. Releases are marked *pre-release* on
-> GitHub until 1.0, which is the point at which it does what it says and
-> won't change under you. See the [roadmap](#roadmap) for what's still
-> missing.
+> **isoshelf is before 1.0.** It works — it lists the images in a folder,
+> checks them for updates, and downloads and verifies new ones, from a web
+> page in your browser or the command line — but things can still change
+> between versions. 1.0 is the point at which it does what it says and won't
+> change under you. See the [roadmap](#roadmap) for what's still missing.
 
 ## Why
 
@@ -300,6 +298,10 @@ falling back to the internet for anything it hasn't got.<br>
 marked a pre-release, and isoshelf still tells you about them - which needed
 it to stop asking GitHub for "the latest release", since that leaves
 pre-releases out.<br>
+**v0.4.11: and back out again.** *2026-09-22:* marking them broke the update
+notice for every isoshelf already installed, because those ask GitHub for its
+"latest release" and GitHub leaves pre-releases out of that. Only a `-rc` tag
+is a pre-release now.<br>
 **Next:** where each folder's records live, and isoshelf updating itself with
 one click.<br>
 **v0.5:** [`isoshelf update` on the command
@@ -337,8 +339,8 @@ Download it from the [releases
 page](https://github.com/ZachCurry13/isoshelf/releases) — the newest one at
 the top. There's no installer and nothing to set up: it's one file.
 
-(The releases page, not "the latest release": until 1.0 every release is
-marked a *pre-release*, and GitHub's idea of "latest" skips those.)
+(The releases page rather than "the latest release", so that a future
+`-rc` build never hides the newest finished one.)
 
 Every file on that page starts with the version, like
 `isoshelf-vX.Y.Z-…`, so pick the one whose name ends the way your row says.

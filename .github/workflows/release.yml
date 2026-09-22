@@ -110,17 +110,23 @@ jobs:
           TAG: ${{ steps.version.outputs.tag }}
         run: |
           set -eu
-          # Anything below 1.0 is a pre-release, and says so: GitHub shows
-          # the badge and stops calling it the latest release. 1.0 is the
-          # promise that it does what it says and won't change under
-          # somebody; until then, saying so is honest.
+          # Only a tag with a suffix - v1.0.0-rc1 - is a pre-release.
           #
-          # isoshelf's own update check reads the list of releases rather
-          # than "the latest", precisely so that marking these doesn't stop
-          # anybody hearing about a new one. See internal/appupdate.
-          PRERELEASE=""
+          # Marking every v0.* as one was tried in v0.4.10 and taken straight
+          # back out, because it broke updates for every isoshelf already
+          # installed. Those ask GitHub for /releases/latest, which skips
+          # pre-releases; with every new release marked, that call returned
+          # the last unmarked one forever, so nobody was ever told a new
+          # isoshelf existed. The fix for that shipped in the same release
+          # somebody would first have to be told about - which they couldn't
+          # be. Before 1.0 the newest release IS the release, and it has to
+          # be findable by the thing every deployed copy asks.
+          #
+          # What being before 1.0 means is said in the README and in the
+          # release notes, where it reaches people and breaks nothing.
+          PRERELEASE="--prerelease=false"
           case "$TAG" in
-            v0.*|*-*) PRERELEASE="--prerelease" ;;
+            *-*) PRERELEASE="--prerelease=true" ;;
           esac
 
           if gh release view "$TAG" >/dev/null 2>&1; then
