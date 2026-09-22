@@ -9,25 +9,21 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**Nothing is in flight.** `main` is at `c49b13a`. v0.3.4 is written and
-pushed but unreleased: release it the way v0.3.3 was released (the workflow
-started by hand from the Actions tab with the version typed in, since the
-sandbox refuses `v*` tag pushes with a 403).
+**v0.3.5 is in flight** on `upload-from-browser`. `main` carries everything
+through v0.3.4.
 
-**v0.3.3 is the latest release** (published 2026-09-21), and there are twelve
-releases going back to v0.2.0, the first one. There is no v0.3.1 or v0.3.2
-release: both versions have their own `CHANGELOG.md` section, but they went
-out inside the v0.3.3 release, because a release happens when a `v*` tag is
-pushed and those two were never tagged. Note for anyone checking this the way
-it was got wrong once: this is a shallow clone with no tags fetched, so
+**v0.3.4 is the latest release.** Releases go back to v0.2.0, the first one.
+There is no v0.3.1 or v0.3.2 release: both have their own `CHANGELOG.md`
+section but went out inside v0.3.3, because a release happens when a `v*` tag
+is pushed and those two were never tagged. Note for anyone checking this the
+way it was got wrong once: this is a shallow clone with no tags fetched, so
 `git tag` prints nothing even though releases exist. Ask GitHub, not the
 clone.
 
-1. ~~Merge [#13]~~ *(done: merged as `9f609a6`, with the release-workflow fix
-   [#14] as `c49b13a`; both branches are deleted)*.
-2. ~~Close issue #10~~ *(done: it shipped in v0.3.0 and was left open)*.
-3. ~~Release v0.3.3~~ *(done: the five versioned files came out right, with
-   the plain names still inside the portable zip)*.
+**How a release happens here:** merge the branch's pull request into `main`,
+then start the `release` workflow from the Actions tab with the version typed
+in. Pushing a `v*` tag is the normal way and does the same thing, but this
+sandbox's git proxy refuses tag pushes with a 403.
 
 ## ~~v0.3.4: scanning while downloads run~~ *(done)*
 
