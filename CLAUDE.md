@@ -11,7 +11,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/web`: HTTP server and the embedded page. `static/index.html` loads
   one script per part of the page: `app.js` (state, asking, drawing, wiring),
   `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
-  `archive.js`, `settings.js`, `upload.js`, plus `app.css`
+  `archive.js`, `settings.js`, `upload.js`, `report.js`, plus `app.css`
 - `internal/remote/remotetest/recorded`: recorded HTTP responses the tests replay
 - `internal/sampledrive`: real filenames used as test fixtures; its `mkdrive` command writes them to a real folder for trying the page against a full drive
 - `internal/docs`: no code, just the test that keeps this repository's own claims about itself true

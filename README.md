@@ -74,9 +74,11 @@ isoshelf does that for you:
   failing half way through.
 - **Yours to set up.** One Settings panel with a search box: light, dark or
   whatever your computer is set to, higher contrast, larger text, less
-  movement, and what should happen to the files updates replace. Nothing
-  there has to be touched — the defaults are the sensible ones — and "Reset
-  to defaults" puts every switch back without forgetting your folders.
+  movement, what should happen to the files updates replace, whether isoshelf
+  checks for updates by itself, and where each folder's records are kept.
+  Nothing there has to be touched — the defaults are the sensible ones — and
+  "Reset to defaults" puts every switch back without forgetting your
+  folders.
 - **Learns about new images on its own.** The list of images isoshelf knows is
   data, not code, so it refreshes itself from this repository — you get new
   distributions without installing a new isoshelf. It's a checkbox you can
@@ -92,12 +94,14 @@ isoshelf manages files you care about, so it is deliberately cautious:
 - **Nothing is deleted unless you choose it.** Every removal asks first, and
   offers archiving, which keeps the file in the folder until you empty the
   archive, so it can be restored until then.
-- **You decide what happens to old versions.** Each image has a *replace old
-  file* switch, on by default; turn it off to keep old versions side by side.
+- **You decide what happens to old versions.** Each image chooses for itself
+  between *Replace the old file*, *Archive the old file* (undo any time) and
+  *Keep both*, and Settings sets what the ones you haven't answered for do.
   A replacement is downloaded, verified and renamed into place before the old
-  file is removed. Images whose filename never changes (like
-  `netboot.xyz.iso`) can't sit beside their old copy, so for those you choose
-  between archiving and replacing.
+  file is touched. Images whose filename never changes (like
+  `netboot.xyz.iso`) can still be kept in both versions: the **new** download
+  gets the version in its name, and the file already on your drive isn't
+  renamed at all.
 - **A checksum mismatch always blocks the file.** If a project publishes no
   checksum, the file is still allowed but marked *unverified*, and it never
   replaces anything: your old file stays until you remove it yourself (or, if
