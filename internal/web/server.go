@@ -78,6 +78,10 @@ type Server struct {
 	// logins is how a wrong password slows the next guess down.
 	sessions auth.Key
 	logins   *attempts
+	// keyIsSaved is false when the signing key exists only in memory, because
+	// isoshelf could not write it to its own folder. Everyone is then signed
+	// out at every restart, and the page has to say so - see sessionKeyNote.
+	keyIsSaved bool
 	// background counts the work isoshelf starts for itself - a scheduled
 	// update, so far. Counting it means a test can wait for it instead of
 	// racing its own cleanup, and means there is something to wait on the
@@ -161,7 +165,11 @@ func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, cat: cfg.Catalog, catSource: cfg.CatalogSource, logins: newAttempts()}
 	// A key isoshelf can't save still works; it just means everyone has to
 	// log in again after a restart, which is better than refusing to start.
-	s.sessions, _ = auth.LoadKey(cfg.Dirs.Config)
+	// Whether it saved is remembered, because a person who has to log in
+	// every time deserves to be told why rather than left guessing.
+	var savedKey bool
+	s.sessions, savedKey, _ = auth.LoadKey(cfg.Dirs.Config)
+	s.keyIsSaved = savedKey
 	// What each project said last time. Opening the page then costs nothing
 	// for the images already asked about today.
 	s.memory = lastcheck.Load(cfg.Dirs.Config)

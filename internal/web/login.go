@@ -5,6 +5,7 @@ import (
 	"crypto/subtle"
 	"net"
 	"net/http"
+	"path/filepath"
 	"strconv"
 	"sync"
 	"time"
@@ -298,4 +299,37 @@ func plural(n int, word string) string {
 		return "1 " + word
 	}
 	return strconv.Itoa(n) + " " + word + "s"
+}
+
+// sessionKeyNote warns that logins won't survive a restart, and says how to
+// fix it.
+//
+// Sessions are signed with a key kept in isoshelf's own folder. When that
+// folder can't be written the key lives only in memory, so every restart
+// throws away every session - on a NAS that is every app update and every
+// reboot. Reported by the maintainer as "it would be awesome if I didn't have
+// to log in every time", which is the right complaint about a thing isoshelf
+// knew and never said: the write error was discarded, the caller discarded it
+// again, and the only hint was a line on stderr that nobody reads on a NAS.
+//
+// Empty when the key is safely on disk, which is the ordinary case.
+func (s *Server) sessionKeyNote() string {
+	if s.keyIsSaved || !s.canLogIn() {
+		// Nowhere a login is in play means nobody is being signed out of
+		// anything, and the warning would be noise on a desktop that opens
+		// itself with a link.
+		return ""
+	}
+	// Name the file, not the folder. Both shapes end up here - a folder
+	// isoshelf can't write, and a key file left behind by a run under another
+	// user that it can't read - and only the second is common on a NAS, where
+	// the app's user changes between versions. The file is what to look at
+	// either way.
+	note := "isoshelf can't use the key it signs logins with"
+	if dir := s.cfg.Dirs.Config; dir != "" {
+		note += " (" + filepath.Join(dir, auth.KeyFileName) + ")"
+	}
+	return note + ", so everyone is signed out whenever isoshelf restarts - " +
+		"on a NAS that means every update and every reboot. Make sure that file " +
+		"and the folder holding it belong to the user isoshelf runs as."
 }
