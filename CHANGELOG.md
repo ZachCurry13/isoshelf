@@ -6,6 +6,19 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.5.2] - 2026-09-23
+
+### Added
+- **The other tools worth having, named on the page and in the README.** One
+  that boots many images from one stick, and three that write a single image
+  to a stick or a card. Plain text and a link each, no logos, no versions and
+  no downloads: the moment isoshelf tracks a tool's version it owns that
+  tool's release notes forever. On the page it is a folded section low down,
+  so it costs nothing until it is opened.
+  - Written twice, which this repository normally refuses to do - so a test
+    in `internal/docs` checks the two lists name the same tools at the same
+    addresses, and that neither has grown a version or a download.
+
 ## [v0.5.1] - 2026-09-23
 
 ### Fixed

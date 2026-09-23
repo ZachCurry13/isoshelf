@@ -325,7 +325,12 @@ starts it thinking it is a form to fill in:
    an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
    once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
    drive ([#7]) - **and the redesign below**.
-16. **The tools that go with the images** (the maintainer, 2026-09-22:
+16. ~~**The tools that go with the images**~~ *(done in v0.5.2. Ventoy,
+   Rufus, balenaEtcher and Raspberry Pi Imager, in a folded section above the
+   footer and under `### Tools that go with these` in README.md.
+   `internal/docs/tools_test.go` checks the two name the same tools at the
+   same addresses, and that neither has grown a version or a download.)*
+   (the maintainer, 2026-09-22:
    "whatever happened to the author's suggested tools - Ventoy, balenaEtcher,
    Rufus. I really like those tools and people who have isoshelf would too").
    It was talked about and never written down anywhere, which is why it went
