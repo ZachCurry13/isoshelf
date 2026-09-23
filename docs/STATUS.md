@@ -119,6 +119,29 @@ record of where things stand and what was decided.
 
 ## Latest change (2026-09-23)
 
+- **v0.4.15: messages shown while a dialog was open were drawn behind it.**
+  The maintainer: "I clicked That's it and nothing happened." Reproduced in a
+  browser, and that is exactly what it looked like - the message was there,
+  underneath. A dialog opened with `showModal()` is drawn in the browser's
+  top layer, above the whole page, and `showNotice` wrote into the page.
+- Every refusal raised from inside a dialog was invisible: the identify
+  dialog, the checklist, the folder chooser. The one that matters most is
+  "a scan is running", because a NAS that checks by itself is running one
+  often - so the button really did nothing, repeatably, with no way to find
+  out why.
+- `showNotice` now writes into the open dialog as well, and that copy is
+  removed when the dialog closes so it can never come back stale. The page's
+  own notice is still set, so the message survives the dialog going away.
+- **The lesson worth keeping:** a page that tells people things has to know
+  where the person is looking. The top layer is not a detail of styling; it
+  decides whether anything said gets read at all. Anything new that reports
+  through `showNotice` should be tried once with a dialog open.
+- Also, from the same report: confirming the identity a file already had said
+  "is now treated as" and started an online check that could only give the
+  same answer. It says it was already that, and asks nobody.
+
+## v0.4.14 (2026-09-23)
+
 - **v0.4.14: downloads say where they come from.** The maintainer, watching
   one run: "it would be nice to know if it was from the internet or from the
   local server". Copying from another isoshelf shipped in v0.4.9 and was
@@ -193,7 +216,6 @@ record of where things stand and what was decided.
     sends a real Origin. A POST to /login is a sign-in, never a sign-out,
     which is what made it possible to confuse the two in the first place.
 
-
 - **v0.4.11 takes v0.4.10 straight back out, and it is worth remembering
   why.** Marking every release below 1.0 as a pre-release broke the update
   notice for every isoshelf already installed: they ask GitHub for
@@ -209,7 +231,6 @@ record of where things stand and what was decided.
     stays: it is more robust anyway, and it is what makes a real `-rc`
     release work when there is one.
 
-
 - **What the version number means, answered 2026-09-22.** The maintainer
   asked about separating pre-release, beta and stable, and about whether
   branches were the mechanism. They aren't: a branch is a workspace for
@@ -224,7 +245,6 @@ record of where things stand and what was decided.
   stopped isoshelf telling anybody a new version existed. `appupdate` now
   reads the list, and offers a pre-release only to somebody already running
   one - below 1.0, everybody.
-
 
 - v0.4.9 is the maintainer's feature request: one isoshelf copies an image
   from another on the same network before going to the internet. The shape
@@ -248,7 +268,6 @@ record of where things stand and what was decided.
   address is typed in until then.
 - Next, at the maintainer's pick: emptying the archive on a timer.
 
-
 - v0.4.8, both from the maintainer using it: Settings saved silently, and it
   was too wordy. A "Saved" mark now appears beside the setting that changed -
   each entry names the answer it owns, so the mark lands on the right row -
@@ -256,7 +275,6 @@ record of where things stand and what was decided.
   the note under the control. Two tests hold both: one fails if a setting
   saves an answer no entry claims, the other if a hint goes over 210
   characters. The longest was 463.
-
 
 - v0.4.7, both halves from the maintainer's own install. **The link's secret
   now stops working once a password is set** - their ask, outright: "I want
@@ -276,7 +294,6 @@ record of where things stand and what was decided.
   folder, its owner, how it got that way, and the chown - including that
   changing the app's user instead is the wrong answer, because it would break
   the folder that works.
-
 
 - The maintainer's own install turned up three things, all shipped as v0.4.4.
   A folder isoshelf can't write to produced a wall of "permission denied"
@@ -307,7 +324,6 @@ record of where things stand and what was decided.
   signed rather than remembered, so a NAS app update doesn't sign anyone out.
   And the login page's inline stylesheet needs its own hash in the content
   policy, or it arrives as unstyled HTML.
-
 
 - **isoshelf is running on the maintainer's NAS**, installed as a TrueNAS
   custom app from the published image. The two things that first install
