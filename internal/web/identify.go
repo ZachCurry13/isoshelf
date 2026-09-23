@@ -89,6 +89,13 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Choosing the answer a file already has is not a mistake - it is what
+	// pressing the same guess twice does, and what confirming an identity
+	// isoshelf had already worked out does. Saying "is now treated as" for it
+	// is how a no-op comes to read as something having happened.
+	was, known := s.st.Files[req.Path]
+	unchanged := known && was.Assigned && was.Entry == req.Entry && was.Version == req.Version
+
 	base := s.st.Clone()
 	var message string
 	if req.Entry == "" {
@@ -108,6 +115,9 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		message = fmt.Sprintf("%s is now treated as %s.", path.Base(req.Path), entry.Name)
+		if unchanged {
+			message = fmt.Sprintf("%s was already treated as %s, so nothing changed.", path.Base(req.Path), entry.Name)
+		}
 	}
 
 	if err := s.saveStateLocked(base); err != nil {
@@ -120,5 +130,9 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 	wasChecked := s.report != nil && s.report.Checked
 	s.report = check.Offline(s.scan, s.st, s.cat)
 	s.updatedAt = s.cfg.Now()
-	writeJSON(w, http.StatusOK, map[string]any{"status": "saved", "message": message, "recheck": wasChecked})
+	// Nothing changed, so there is nothing to ask the projects about again.
+	// A check that costs seconds and can only give the same answer is worse
+	// than no check: it looks like work being done about the press.
+	writeJSON(w, http.StatusOK, map[string]any{
+		"status": "saved", "message": message, "recheck": wasChecked && !unchanged})
 }

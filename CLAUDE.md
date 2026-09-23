@@ -47,6 +47,18 @@ people have downloaded. Work never happens directly on it.
   what makes a real `-rc` release work later.
 - The maintainer is new to Git, so say which of these you are doing and why,
   in plain words, rather than just running it.
+- **In the sandbox these sessions run in, the catalog cannot be worked on.**
+  The egress proxy answers 403 to CONNECT for almost every host the catalog
+  depends on - `endoflife.date`, `cdimage.debian.org`, and every wish-list
+  project's own site that was tried - and `api.github.com` is scoped to the
+  repositories attached to the session, so a `type = "github"` source is
+  refused whatever token is set. `releases.ubuntu.com` answers, so it is an
+  allowlist rather than a blanket block. This is why the weekly catalog
+  routine produces nothing: it fires, runs, and has no way to reach the
+  projects it is meant to ask. **The live check belongs in GitHub Actions**
+  (`.github/workflows/catalog-check.yml`, `workflow_dispatch`), which has
+  real network and a real token; read its result and write the catalog from
+  that, rather than trying to fetch anything here.
 - **In the sandbox these sessions run in**, the git proxy refuses `v*` tag
   pushes and branch deletions with a 403. So a release is started by hand
   from the Actions tab with the version typed in, and a merged branch that

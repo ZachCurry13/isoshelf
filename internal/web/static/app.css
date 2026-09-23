@@ -220,6 +220,11 @@ input[type="search"], input[type="text"], select {
 }
 .notice.error { background: var(--bad-bg); color: var(--bad-fg); border-color: color-mix(in srgb, var(--bad-fg), transparent 70%); }
 
+/* The same message, inside a dialog. A modal is drawn above the whole page,
+   so a notice left behind it cannot be seen at all. */
+.dialog-notice { margin: 0 20px 12px; flex: none; }
+.picker-head + .dialog-notice, .ask-form > .dialog-notice { margin-top: 12px; }
+
 /* Summary chips */
 
 .summary { display: flex; gap: 8px; flex-wrap: wrap; }
