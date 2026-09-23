@@ -215,18 +215,27 @@ starts it thinking it is a form to fill in:
      next to it. No downloads, no versions, no update checks: the moment
      isoshelf tracks a tool's version it owns that tool's release notes
      forever, and this is meant to be four sentences that never go stale.
-   - Where: its own small section, not a card in the way of the list. Decide
-     whether it sits on the page or only in the README.
-17. **Point it at an isoshelf, not at a share** (the maintainer, 2026-09-22:
-   "on the non-server version it says the folder isoshelf is watching - I'd
-   rather have it ask for the server address rather than the shared folder").
-   Today a desktop pointed at a NAS means mounting the share and picking a
-   path; the address of the isoshelf already running there is the thing the
-   person actually knows. **Needs a decision before any code** - see the
-   question in STATUS.md - because "connect to that isoshelf" can mean the
-   desktop managing the NAS's folder over HTTP, or just the folder chooser
-   offering the isoshelfs it can see. The second is close to what
-   `internal/peer` already does; the first is a new way for isoshelf to work.
+   - **Decided 2026-09-22** (the maintainer left it to me): both the README
+     and the page. The README is where somebody deciding whether to use
+     isoshelf reads; the page is where the people who already have it are,
+     and they are the ones the maintainer meant. On the page it is a folded
+     section low down, beside Archive and History, so it costs nothing until
+     it is opened. Two copies would normally break the "don't write down
+     anything that has to be maintained" rule - so a test in `internal/docs`
+     checks the two name the same tools, and no version or download is
+     tracked for any of them.
+17. **Say where a download is coming from** (the maintainer, 2026-09-22:
+   "when it is downloading, it would be nice to know if it was from the
+   internet or from the local server"). Copying from another isoshelf
+   (v0.4.9) is invisible while it happens: the dock says "Downloading 40%"
+   whether the bytes are crossing the room or the Atlantic, and the whole
+   point of the feature is that one of those is much faster. `fetch.Progress`
+   already carries `URL` and `fetch.Result` records which URL won, so this is
+   showing what is already known, not finding anything out.
+   - Name the isoshelf, not the URL: "from nas.local", "from the internet".
+     The peer's own name is in `internal/peer` (`FolderName`).
+   - It also tells somebody their peer setting is doing nothing, which is the
+     only way to find that out today short of watching a router.
 
 ## v0.5.0: the page, redone
 
