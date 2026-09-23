@@ -191,6 +191,16 @@ type Settings struct {
 	// AutoUpdateLast is when isoshelf last updated the images by itself, so
 	// a restart doesn't start another one straight away.
 	AutoUpdateLast time.Time `json:"auto_update_last,omitzero"`
+	// ArchiveAfter is how many days a file waits in the archive before
+	// isoshelf deletes it: 7, 30, 90, or 0 for never.
+	//
+	// Zero is the default and has to be, because this is the one setting
+	// that throws away something somebody might still want. The archive is
+	// the undo for every removal and every replaced file, so a timer that
+	// started deleting the moment isoshelf was upgraded would break the rule
+	// the whole program rests on: nothing is deleted unless the user chose
+	// it. Choosing a number here is that choice, made once, in advance.
+	ArchiveAfter int `json:"archive_after,omitempty"`
 	// ShareImages lets another isoshelf on the network copy images from this
 	// one. Nil and false are both off: sharing hands whole images to whoever
 	// can sign in, which is a different thing from letting them manage the

@@ -44,6 +44,14 @@ type stateJSON struct {
 	// AutoUpdateEvery how often.
 	AutoUpdate      bool   `json:"auto_update"`
 	AutoUpdateEvery string `json:"auto_update_every"`
+
+	// ArchiveAfter is how many days a file waits in the archive before
+	// isoshelf deletes it, 0 for never, and ArchiveDue is what the next
+	// sweep would take at that setting - so Settings can say what will
+	// happen before it happens.
+	ArchiveAfter    int   `json:"archive_after"`
+	ArchiveDue      int   `json:"archive_due"`
+	ArchiveDueBytes int64 `json:"archive_due_bytes"`
 	// CheckedAt is when the oldest answer the report rests on was given, so
 	// the page can say how fresh it really is rather than when it last drew.
 	CheckedAt *time.Time `json:"checked_at,omitempty"`
@@ -212,6 +220,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		AppUpdateCheck:  settings.On(saved.AppUpdateCheck),
 		AutoUpdate:      saved.AutoUpdate != nil && *saved.AutoUpdate,
 		AutoUpdateEvery: settings.CleanEvery(saved.AutoUpdateEvery),
+		ArchiveAfter:    cleanArchiveAfter(saved.ArchiveAfter),
 		Appearance:      saved.Appearance,
 		ConfigDir:       s.cfg.Dirs.Config,
 		Records:         s.recordsLocked(saved),
@@ -252,6 +261,12 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 			Item:  s.scanning.progress.Item,
 			Items: s.scanning.progress.Items,
 		}
+	}
+	// What the archive timer would take on its next sweep, so Settings can
+	// say what will happen before it happens rather than afterwards.
+	if out.ArchiveAfter > 0 {
+		names, bytes := staleArchived(s.target, s.st, out.ArchiveAfter, s.cfg.Now())
+		out.ArchiveDue, out.ArchiveDueBytes = len(names), bytes
 	}
 	return out
 }

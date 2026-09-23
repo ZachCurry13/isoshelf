@@ -6,6 +6,28 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.16] - 2026-09-23
+
+### Added
+- **The archive can empty itself after 7, 30 or 90 days.** Settings →
+  *Updates and old files* → **Empty the archive by itself**. Off unless you
+  choose a number, and it stays off through an upgrade: the archive is how
+  every removal and every replaced file is undone, so a timer that started
+  deleting on its own would break the rule isoshelf rests on - nothing is
+  deleted unless you chose it.
+  - **Each file is judged by its own age**, counted from when it was
+    archived. A sweep that clears something from three months ago leaves this
+    morning's alone.
+  - **It says what it will take before it takes it.** With a number chosen,
+    Settings reads "2 files in the archive have waited longer than 30 days
+    and will be deleted, freeing 4.1 GB. Restore anything you want to keep
+    first." Afterwards it says what went, because it happened while nobody
+    was watching.
+  - **A file isoshelf has no archive record for is never touched**, however
+    long it has sat there. Without a record there is no date to judge it by,
+    and something in `.isoshelf/removed` that isoshelf didn't put there is
+    not isoshelf's to delete on a timer.
+
 ## [v0.4.15] - 2026-09-23
 
 ### Fixed

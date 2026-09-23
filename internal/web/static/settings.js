@@ -254,6 +254,32 @@ const SETTING_GROUPS = [
           ["keep", "Keep both"],
         ], (state && state.old_files) || "replace", (old_files) => ({ old_files })),
       },
+      {
+        name: "Empty the archive by itself",
+        fields: ["archive_after"],
+        hint: "Delete archived files once they have waited this long. Off unless " +
+          "you choose a number: the archive is how a removal is undone.",
+        words: "archive empty delete timer days automatic old removed space free",
+        control: () => choiceRow("Empty the archive by itself", [
+          [0, "Never"],
+          [7, "After 7 days"],
+          [30, "After 30 days"],
+          [90, "After 90 days"],
+        ], (state && state.archive_after) || 0,
+          (archive_after) => ({ archive_after: Number(archive_after) })),
+        // Said before it happens, not after: this is the one thing isoshelf
+        // does by itself that throws something away.
+        note: () => {
+          if (!state || !state.archive_after) return "";
+          if (!state.archive_due) {
+            return `Nothing in the archive has waited ${state.archive_after} days yet.`;
+          }
+          return `${plural(state.archive_due, "file")} in the archive ` +
+            `${state.archive_due === 1 ? "has" : "have"} waited longer than ` +
+            `${state.archive_after} days and will be deleted, freeing ` +
+            `${formatBytes(state.archive_due_bytes)}. Restore anything you want to keep first.`;
+        },
+      },
     ],
   },
   {
