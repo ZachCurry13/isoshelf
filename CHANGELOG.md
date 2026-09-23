@@ -6,6 +6,47 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.5.0] - 2026-09-23
+
+### Changed
+- **The page, redone.** The brief was "restrained palette, technical density -
+  not warm, not airy", and explicitly not a copy of anyone else's design. What
+  changed:
+  - **A status is a coloured mark beside plain words, not a filled chip.** Ten
+    filled chips in one column competed with each other and with the names
+    beside them, and none of them won. *Checksum mismatch* and *Update
+    available* keep their tint, because those two should interrupt you.
+  - **Denser rows.** Eight images visible where seven fitted before, at the
+    same window height, and it keeps scaling on a taller screen.
+  - **Flat surfaces.** No drop shadows, 6px corners, one hairline border.
+    Depth comes from the step between the page and its cards, which is the
+    only kind of depth a dark page can actually show.
+  - **A table that reads as a table**: uppercase micro-labels on a tinted
+    strip, hairline rules between rows, a highlight on the row under the
+    pointer, and versions in a monospace face so the digits line up.
+  - **One accent, neutral greys.** The accent is isoshelf's own blue - the one
+    in its logo since v0.3.0 - one step calmer, and the logo's two paler blues
+    are now that same colour thinned, so the mark follows the palette.
+
+### Fixed
+- **A 32-bit image no longer says "x86".** The badge on each row showed the
+  catalog's own word for the architecture, and "x86" reads to most people as
+  the ordinary kind, which is to say 64-bit. The badge now says the bit width
+  - *32-bit*, *64-bit*, *ARM64*, *ARM32* - with the full name in its tooltip.
+  The catalog was never wrong about this: all ten of its 32-bit entries say
+  so in their names. The badge was.
+- **Larger text no longer cuts off the sort control.** Its width was capped at
+  190 pixels, which is a cap that setting cannot reach, so "Needs attention
+  first" was clipped for exactly the people who had asked for bigger words. It
+  is measured in em now.
+
+### Kept
+- **Higher contrast puts every filled chip back**, because that setting is for
+  people who need the difference to shout, and a dot is the wrong answer for
+  them. Larger text, less movement and the phone's card layout are all
+  unchanged, and a test now fails if a later restyle quietly costs either of
+  the first two.
+
 ## [v0.4.16] - 2026-09-23
 
 ### Added

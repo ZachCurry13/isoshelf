@@ -117,7 +117,36 @@ record of where things stand and what was decided.
   checklist is on the issue; steps 5, 6 and 9 are the ones most likely to
   fail.
 
-## Latest change: v0.4.16 (2026-09-23)
+## Latest change: v0.5.0 (2026-09-23)
+
+- **v0.5.0: the page redone.** The maintainer approved the direction from
+  screenshots of the real page with a candidate stylesheet layered over it -
+  which is the way to ask this question, because it costs nothing to say no.
+- The brief was "restrained palette, technical density - not warm, not airy",
+  and, said plainly afterwards, **not a copy of anyone else's design**. So the
+  accent is isoshelf's own blue one step calmer, the greys are neutral rather
+  than tinted, and the logo's two paler blues became that same colour thinned.
+  What makes it read as a tool is the density and the restraint, not the
+  colour.
+- The change that carries it: **a status is a coloured mark beside plain
+  words, not a filled chip**. Ten filled chips in one column competed with
+  each other and with the names beside them. Only the two that should
+  interrupt you keep a tint.
+- **It is one stylesheet and no markup**, which is the good news about how
+  v0.3.0 left the structure: the bones were right, only the surface needed
+  work.
+- Two promises are now tests rather than intentions: higher contrast puts
+  every filled chip back, and the sort control is capped in em so Larger text
+  can reach it. Both were checked by breaking them first.
+- Also: **a 32-bit image no longer says "x86" on its badge**. The maintainer
+  reported it as the catalog needing cleaning up; checking all 86 entries
+  found zero disagreements between name and `arch`, so the data was right and
+  the badge was wrong - it drew the catalog's own word, and "x86" reads as
+  the ordinary kind. It says the bit width now, with the full name in the
+  tooltip, and a test stops anything drawing the raw value as a badge again.
+- Next: the tools list (TODO 16) and [#6].
+
+## v0.4.16 (2026-09-23)
 
 - **v0.4.16: the archive empties itself after 7, 30 or 90 days**, the item the
   maintainer picked out of decision 15. It rides the auto-update tick, because

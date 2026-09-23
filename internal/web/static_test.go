@@ -178,3 +178,67 @@ func TestSettingHintsStayShort(t *testing.T) {
 		t.Fatalf("only found %d hints; this test has lost track of how they are written", found)
 	}
 }
+
+// The look redone in v0.5.0 shows most statuses as a coloured dot beside plain
+// words rather than as a filled chip, which is right for somebody reading a
+// long list and wrong for somebody who turned Higher contrast on. That setting
+// exists for people who need the difference to shout, so under it every status
+// goes back to being a filled chip.
+//
+// This is the kind of promise a later restyle breaks without noticing: the
+// dots are a default, not the only way the page can say what a status is.
+func TestHigherContrastStillFillsEveryStatusChip(t *testing.T) {
+	css := readStatic(t, "app.css")
+
+	rule := regexp.MustCompile(`:root\[data-contrast="high"\] \.pill \{([^}]*)\}`)
+	m := rule.FindStringSubmatch(css)
+	if m == nil {
+		t.Fatal(`nothing styles .pill under [data-contrast="high"]. ` +
+			"Higher contrast has to put the filled chips back; see the note beside .pill.")
+	}
+	if !strings.Contains(m[1], "background:") {
+		t.Errorf("higher contrast doesn't give a status its background back:\n %s", m[1])
+	}
+	if !strings.Contains(m[1], "color: var(--fg)") {
+		t.Errorf("higher contrast doesn't give a status its own color back:\n %s", m[1])
+	}
+}
+
+// Larger text raises one number on :root and everything else is measured in
+// rem, so a width in pixels is a width that setting can't reach. The sort
+// control had one, and it cut "Needs attention first" off for exactly the
+// people who had asked for bigger words.
+func TestTheSortControlCanGrowWithLargerText(t *testing.T) {
+	css := readStatic(t, "app.css")
+	rule := regexp.MustCompile(`\.toolbar select \{([^}]*)\}`)
+	m := rule.FindStringSubmatch(css)
+	if m == nil {
+		t.Skip("the sort control no longer has a width of its own")
+	}
+	if regexp.MustCompile(`max-width:\s*\d+px`).MatchString(m[1]) {
+		t.Errorf("the sort control is capped in pixels, so Larger text clips it:\n %s\n"+
+			"Measure it in em instead.", m[1])
+	}
+}
+
+// The badge on each row used to show the catalog's own word for an
+// architecture, which for 32-bit images is "x86" - and "x86" reads to most
+// people as the ordinary kind, which is to say 64-bit. Reported by the
+// maintainer as the catalog needing cleaning up; the catalog was right (all
+// ten x86 entries say "(32-bit)" in their names) and the badge was wrong.
+func TestTheArchitectureBadgeSaysTheBitWidth(t *testing.T) {
+	js := readStatic(t, "images.js")
+
+	for _, want := range []string{`"x86": "32-bit"`, `"x86_64": "64-bit"`} {
+		if !strings.Contains(js, want) {
+			t.Errorf("ARCH_BADGE doesn't map %s; a badge reading \"x86\" is read as 64-bit", want)
+		}
+	}
+	// Nothing may draw the raw catalog value as a badge again.
+	raw := regexp.MustCompile(`class: "arch" \}, [a-z]+\.arch`)
+	for _, name := range []string{"images.js", "actions.js"} {
+		if m := raw.FindString(readStatic(t, name)); m != "" {
+			t.Errorf("%s draws the raw architecture as a badge (%s); use archBadge()", name, m)
+		}
+	}
+}

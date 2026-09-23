@@ -2,17 +2,27 @@
    used follows color-scheme below, so "Dark" in Settings is one line, not a
    second copy of the whole palette. */
 :root {
-  --bg: light-dark(#f4f6f9, #0f131a);
-  --surface: light-dark(#ffffff, #171c25);
-  --surface-2: light-dark(#f8f9fb, #1c222d);
-  --text: light-dark(#1b2230, #e4e8ef);
-  --muted: light-dark(#5f6878, #97a1b1);
-  --border: light-dark(#e2e6ec, #2a313d);
-  --accent: light-dark(#2f6fed, #5b8cf5);
-  --accent-hover: light-dark(#2459c9, #7aa2f7);
+  /* Neutral greys and one accent. The dark values are designed first and the
+     light ones follow from them, because this page is read in the dark more
+     often than in the light: a NAS is somewhere else in the house.
+
+     The accent is isoshelf's own blue - the one in its logo since v0.3.0 -
+     one step calmer. The greys are neutral rather than tinted, so nothing
+     here reads as borrowed from another product. What makes the page look
+     like a tool is the density and the restraint, not the colour. */
+  --bg: light-dark(#f3f4f6, #0d0f12);
+  --surface: light-dark(#ffffff, #14171c);
+  --surface-2: light-dark(#f7f8fa, #191d23);
+  --text: light-dark(#14171c, #e1e4e9);
+  --muted: light-dark(#646a73, #8e949d);
+  --border: light-dark(#e0e2e6, #262a31);
+  --accent: light-dark(#2c62d6, #5b8cf5);
+  --accent-hover: light-dark(#2350b4, #7aa2f7);
   --accent-text: light-dark(#ffffff, #0b1020);
   --focus: light-dark(#93b4fb, #3e63b8);
-  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.05);
+  /* Flat: depth comes from the step between --bg and --surface, which is the
+     only kind of depth a dark page can actually show. */
+  --shadow: none;
 
   --ok-fg: light-dark(#17803d, #6fd48f);      --ok-bg: light-dark(#dcf5e3, #16311f);
   --update-fg: light-dark(#9a5b00, #f2c15a);  --update-bg: light-dark(#fff0cc, #3a2c0c);
@@ -23,7 +33,7 @@
   --manual-fg: light-dark(#45566b, #a9b6c8);  --manual-bg: light-dark(#e6ebf1, #232b36);
   --muted-fg: light-dark(#626b79, #9aa3b1);   --muted-bg: light-dark(#eceff3, #242a33);
 
-  --radius: 10px;
+  --radius: 6px;
   --mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
   /* No theme chosen: follow whatever this computer is set to. */
   color-scheme: light dark;
@@ -34,13 +44,6 @@
 /* The theme, from Settings. Nothing set means the two lines above. */
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"] { color-scheme: dark; }
-
-/* A shadow is not a color, so it needs saying twice: once for a dark
-   computer with no theme chosen, once for Dark chosen outright. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --shadow: none; }
-}
-:root[data-theme="dark"] { --shadow: none; }
 
 /* Larger text, from Settings: everything on the page is measured in rem, so
    raising this one number raises all of it. */
@@ -87,8 +90,8 @@ a:hover { text-decoration: underline; }
   /* Wraps rather than pushing Settings off the edge on the narrowest
      screens - a folded phone is about 280px across. */
   flex-wrap: wrap;
-  gap: 16px 12px;
-  padding: 12px 24px;
+  gap: 12px;
+  padding: 8px 20px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -97,29 +100,31 @@ a:hover { text-decoration: underline; }
 }
 
 .brand { display: flex; align-items: center; gap: 10px; }
-.logo { width: 24px; height: 24px; }
+.logo { width: 20px; height: 20px; }
 .logo rect:nth-child(1) { fill: var(--accent); }
-.logo rect:nth-child(2) { fill: #60a5fa; }
-.logo rect:nth-child(3) { fill: #93c5fd; }
-.brand-name { font-size: 1.2143rem; font-weight: 650; letter-spacing: -0.01em; }
-.version { color: var(--muted); font-size: 0.8571rem; padding: 1px 6px; border: 1px solid var(--border); border-radius: 99px; }
+/* The two paler blues are the accent thinned, so the mark follows the
+   palette rather than carrying colours of its own. */
+.logo rect:nth-child(2) { fill: color-mix(in srgb, var(--accent), transparent 35%); }
+.logo rect:nth-child(3) { fill: color-mix(in srgb, var(--accent), transparent 65%); }
+.brand-name { font-size: 1.0714rem; font-weight: 600; letter-spacing: 0; }
+.version { color: var(--muted); font-size: 0.8571rem; padding: 1px 6px; border: 1px solid var(--border); border-radius: 4px; }
 
 .app-update {
   margin-left: auto;
   background: var(--update-bg);
   color: var(--update-fg);
-  padding: 5px 12px;
-  border-radius: 99px;
-  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 500;
   font-size: 0.9286rem;
 }
 
 main {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 20px 24px 40px;
+  padding: 14px 20px 40px;
   display: grid;
-  gap: 16px;
+  gap: 12px;
 }
 /* A grid item won't shrink below its own content unless it is told it may.
    Without this one line, anything inside a card that refuses to get narrower
@@ -138,12 +143,12 @@ main > * { min-width: 0; }
 
 .btn {
   font: inherit;
-  font-weight: 550;
+  font-weight: 500;
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 7px 14px;
+  border-radius: 5px;
+  padding: 5px 12px;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -151,7 +156,7 @@ main > * { min-width: 0; }
 .btn:disabled { opacity: 0.5; cursor: default; }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
 .btn.primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
-.btn.small { padding: 4px 10px; font-size: 0.9286rem; }
+.btn.small { padding: 3px 9px; font-size: 0.9286rem; }
 
 button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible {
   outline: 3px solid var(--focus);
@@ -163,8 +168,8 @@ input[type="search"], input[type="text"], select {
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 6px 10px;
+  border-radius: 5px;
+  padding: 5px 9px;
 }
 
 .inline-select { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); }
@@ -175,13 +180,13 @@ input[type="search"], input[type="text"], select {
 .target {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 16px 20px;
+  gap: 16px;
+  padding: 12px 16px;
   flex-wrap: wrap;
 }
 .target-info { flex: 1 1 360px; min-width: 0; }
-.eyebrow { font-size: 0.7857rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.target-path { font-family: var(--mono); font-size: 1.0714rem; margin: 2px 0 8px; overflow-wrap: anywhere; }
+.eyebrow { font-size: 0.7143rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.target-path { font-family: var(--mono); font-size: 0.9286rem; margin: 2px 0 6px; overflow-wrap: anywhere; }
 .target-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .target-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -233,8 +238,8 @@ input[type="search"], input[type="text"], select {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px;
-  border-radius: 99px;
+  padding: 5px 11px;
+  border-radius: 5px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
@@ -254,30 +259,74 @@ input[type="search"], input[type="text"], select {
 .s-manual { --fg: var(--manual-fg); --bgc: var(--manual-bg); }
 .s-muted { --fg: var(--muted-fg); --bgc: var(--muted-bg); }
 
+/* A status is a coloured mark beside plain words, not a filled chip.
+   Ten filled chips in one column compete with each other and with the names
+   beside them, and nothing wins; a dot says the same thing and lets the word
+   be read. The two that must interrupt you keep their tint - see below. */
 .pill {
   display: inline-block;
-  padding: 2px 9px;
-  border-radius: 99px;
-  font-size: 0.8571rem;
-  font-weight: 650;
+  position: relative;
+  padding: 0 0 0 14px;
+  font-size: 0.9286rem;
+  font-weight: 500;
   white-space: nowrap;
+  color: var(--text);
+  background: none;
+}
+.pill::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 7px;
+  height: 7px;
+  border-radius: 99px;
+  background: var(--fg);
+}
+
+/* The two worth interrupting for: a file that doesn't match its checksum, and
+   an update waiting to be taken. */
+.pill.s-bad, .pill.s-update {
+  padding: 1px 8px 1px 20px;
+  border-radius: 4px;
+  font-weight: 600;
   color: var(--fg);
   background: var(--bgc);
 }
-.pill + .pill { margin-left: 4px; }
+.pill.s-bad::before, .pill.s-update::before { left: 8px; top: 0.55em; }
+.pill + .pill { margin-left: 8px; }
+
+/* Higher contrast is the setting for somebody who needs the difference to
+   shout. There a dot is the wrong answer, so every status goes back to being
+   a filled chip - which is what that switch is for. */
+:root[data-contrast="high"] .pill {
+  padding: 2px 9px 2px 20px;
+  border-radius: 4px;
+  font-weight: 650;
+  color: var(--fg);
+  background: var(--bgc);
+}
+:root[data-contrast="high"] .pill::before { left: 8px; top: 0.55em; }
 
 /* Table */
 
 .images { overflow: hidden; }
-.toolbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
 .toolbar input { flex: 0 1 320px; }
 
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
-th, td { padding: 9px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+th, td { padding: 5px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+/* Hairlines between rows, a full rule under the heading: the eye should be
+   able to run along a row without being cut into boxes. */
+tbody td { border-bottom: 1px solid color-mix(in srgb, var(--border), transparent 45%); }
+tbody tr:hover { background: color-mix(in srgb, var(--accent), transparent 94%); }
+/* A heading that reads as a heading rather than as a first row. */
 th {
-  font-size: 0.8571rem;
-  font-weight: 650;
+  font-size: 0.7143rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
   color: var(--muted);
   background: var(--surface-2);
   position: sticky;
@@ -290,14 +339,14 @@ tbody tr:last-child td { border-bottom: none; }
 .col-star { width: 36px; padding-right: 0; }
 td.replace { text-align: center; }
 
-.name { font-weight: 600; }
+.name { font-weight: 550; }
 .name a { color: inherit; }
 .name a:hover { color: var(--accent); }
 .arch { margin-left: 6px; font-size: 0.7857rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; font-weight: 500; }
-td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.version-cell { font-family: var(--mono); font-size: 0.8571rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .latest-new { font-weight: 650; color: var(--update-fg); }
-.file { font-family: var(--mono); font-size: 0.8929rem; overflow-wrap: break-word; min-width: 170px; }
-.size { color: var(--muted); font-size: 0.8571rem; }
+.file { font-family: var(--mono); font-size: 0.8214rem; overflow-wrap: break-word; min-width: 170px; }
+.size { color: var(--muted); font-size: 0.7857rem; }
 .note { color: var(--muted); font-size: 0.8929rem; margin-top: 3px; max-width: 520px; overflow-wrap: anywhere; }
 
 .star {
@@ -344,12 +393,12 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .more { padding: 0; }
 .more summary {
   display: flex; align-items: center; gap: 10px;
-  padding: 14px 20px; cursor: pointer; list-style: none;
+  padding: 9px 16px; cursor: pointer; list-style: none;
 }
 .more summary::-webkit-details-marker { display: none; }
 .more summary::before { content: "▸"; color: var(--muted); transition: transform 0.15s; }
 .more details[open] summary::before { transform: rotate(90deg); }
-.more-title { font-weight: 650; }
+.more-title { font-weight: 600; }
 .more-hint { margin: 0 20px 10px; }
 #more-search { margin: 0 20px 12px; width: calc(100% - 40px); max-width: 320px; }
 
@@ -362,9 +411,9 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
 }
 .catalog li {
   display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px;
+  padding: 7px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 5px;
   background: var(--surface-2);
 }
 .catalog .info { flex: 1; min-width: 0; }
@@ -474,7 +523,10 @@ td.added-cell { color: var(--muted); font-variant-numeric: tabular-nums; }
 /* Logos, links menu and the filter bar */
 
 .toolbar { flex-wrap: wrap; }
-.toolbar select { max-width: 190px; }
+/* Measured in em, not pixels, so the cap grows with Larger text. At a fixed
+   190px the longest sort ("Needs attention first") was cut off for exactly
+   the people who turned that setting on. */
+.toolbar select { max-width: 14em; }
 .check { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); white-space: nowrap; }
 .check input[type="checkbox"], .check input[type="radio"] { flex: none; width: auto; margin: 0; }
 
@@ -715,26 +767,27 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
   color: var(--muted); font-size: 0.9286rem; font-weight: 600; text-decoration: none;
 }
 .jump a:hover { background: var(--surface-2); color: var(--text); }
+.jump a { border-radius: 5px; }
 
 /* One card per thing that wants doing. */
 .todo {
-  display: grid; gap: 10px;
-  grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
+  display: grid; gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
 }
 .todo-card { max-width: 340px; }
 .todo:empty { display: none; }
 .todo-card {
-  display: flex; flex-direction: column; gap: 4px;
-  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 9px 12px;
   background: var(--surface); border: 1px solid var(--border);
-  border-left: 3px solid var(--fg, var(--accent));
+  border-left: 2px solid var(--fg, var(--accent));
   border-radius: var(--radius); box-shadow: var(--shadow);
 }
 .todo-card.s-update { --fg: var(--update-fg); }
 .todo-card.s-warn { --fg: var(--warn-fg); }
 .todo-card.s-missing { --fg: var(--missing-fg); }
-.todo-title { font-weight: 700; }
-.todo-detail { font-size: 0.9286rem; color: var(--muted); }
+.todo-title { font-weight: 600; font-size: 0.9643rem; }
+.todo-detail { font-size: 0.8571rem; color: var(--muted); }
 .todo-note { font-size: 0.8571rem; color: var(--muted); }
 .todo-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
 
@@ -756,7 +809,7 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px; align-items: center; }
 .chip-off {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 3px 8px; border-radius: 99px; cursor: pointer;
+  padding: 3px 8px; border-radius: 5px; cursor: pointer;
   border: 1px solid color-mix(in srgb, var(--accent), transparent 60%);
   background: color-mix(in srgb, var(--accent), transparent 90%);
   color: var(--text); font: inherit; font-size: 0.8571rem;

@@ -325,7 +325,7 @@ starts it thinking it is a form to fill in:
    - It also tells somebody their peer setting is doing nothing, which is the
      only way to find that out today short of watching a router.
 
-## v0.5.0: the page, redone
+## ~~v0.5.0: the page, redone~~ *(the look shipped in v0.5.0)*
 
 The maintainer's brief, given 2026-09-21: **"clean up the UI - make it look
 like something I could show an investor."** It was v0.4.0 when that was
