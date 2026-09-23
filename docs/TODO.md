@@ -180,9 +180,19 @@ starts it thinking it is a form to fill in:
      Work out why the scan doesn't match it to the entry it plainly is -
      start with `internal/identify` and the assignment path, and with what
      `check.Manual` actually means today.
-   - **Say when a file arrived on the drive.** The record has `Added`, and
-     the page doesn't show it. "Added to drive: 22 Sep 2026" next to each
-     image.
+   - ~~**Say when a file arrived on the drive.**~~ *(done in v0.4.14: an
+     Added column in the list, sortable, and still under the name on a
+     phone. The date was already drawn under each name - what was missing
+     was being able to sort by it.)*
+     - **What is still missing is the date itself, on Linux.** `Added` is
+       `scan.File.Created`, then `PlacedAt`, then `FirstSeen`, and on Linux
+       `created()` always returns zero (`internal/scan/created_other.go`):
+       birthtime needs `statx`, which is not in the `syscall` package and
+       would otherwise mean a second dependency. So a file that was on the
+       drive before isoshelf first scanned it reads "-" forever. Worth doing
+       with a hand-rolled `statx` call if it can be done without the
+       dependency and without per-architecture syscall numbers going stale;
+       not worth guessing a date for.
    - **Say when the new version came out.** An update says a newer version
      exists but not its age, which is most of deciding whether to take it.
      The release date is in what `source` already fetches for some sources;

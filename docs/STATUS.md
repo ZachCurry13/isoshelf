@@ -110,6 +110,20 @@ record of where things stand and what was decided.
 - It answers a question that had no answer before: whether a peer somebody
   set up is being used at all. Short of watching a router, there was no way
   to find that out.
+- The words name isoshelf, not the box: "from your isoshelf server", at the
+  maintainer's asking. The folder's own name said where the bytes were
+  without saying what served them, and only one peer is ever set up, so
+  nothing is ambiguous for want of the address.
+- **Also in v0.4.14: an Added column**, sortable like the others. The date was
+  already drawn under each name; what was missing was sorting by it. On a
+  phone it stays under the name, since there are no columns there.
+  - It reads "-" more often than it should on Linux: `Added` falls back
+    through `scan.File.Created`, `PlacedAt`, `FirstSeen`, and `created()` on
+    Linux always returns zero because birthtime needs `statx`, which is not
+    in `syscall` and would otherwise be a second dependency. Recorded in
+    TODO item 13. A file isoshelf downloaded, or one that appeared after the
+    first scan, has a date; one that was there before isoshelf ever ran does
+    not.
 - Next: the look half of v0.5.0, and the tools list (TODO item 16).
 
 ## Latest change (2026-09-22)

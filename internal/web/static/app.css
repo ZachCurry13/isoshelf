@@ -436,6 +436,11 @@ td.version-cell { font-variant-numeric: tabular-nums; white-space: nowrap; }
 /* Row actions and dialogs */
 
 .col-actions { width: 1%; }
+/* When the file arrived. The same fact appears under the name on a phone,
+   where there are no columns, so exactly one of the two is ever showing. */
+.col-added { width: 1%; white-space: nowrap; }
+td.added-cell { color: var(--muted); font-variant-numeric: tabular-nums; }
+.added-inline { display: none; }
 .row-actions { white-space: nowrap; text-align: right; }
 .row-actions .btn + .btn { margin-left: 6px; }
 
@@ -878,6 +883,8 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
   #table td { border: 0; padding: 2px 0; }
   #table td.col-star { position: absolute; top: 10px; right: 10px; padding: 0; }
   #table .version-cell { font-size: 0.9286rem; color: var(--muted); }
+  #table .col-added { display: none; }
+  .added-inline { display: inline; }
   .row-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .image-cell { padding-right: 28px; }
 }

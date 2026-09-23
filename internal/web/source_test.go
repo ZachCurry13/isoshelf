@@ -20,8 +20,8 @@ func TestWhereADownloadIsComingFrom(t *testing.T) {
 		near *peer.Client
 		want string
 	}{
-		{"the peer, by the name it gave", "http://nas.local:8765/api/share/file?name=x.iso", near, "the NAS"},
-		{"the peer, whatever case the host is written in", "http://NAS.local:8765/x.iso", near, "the NAS"},
+		{"the peer, named as an isoshelf rather than as a machine", "http://nas.local:8765/api/share/file?name=x.iso", near, "your isoshelf server"},
+		{"the peer, whatever case the host is written in", "http://NAS.local:8765/x.iso", near, "your isoshelf server"},
 		{"anywhere else, with a peer set up", "https://releases.ubuntu.com/x.iso", near, "the internet"},
 		{"anywhere else, with no peer at all", "https://releases.ubuntu.com/x.iso", nil, "the internet"},
 		{"the same host on another port is not the peer", "http://nas.local:9000/x.iso", near, "the internet"},
@@ -33,10 +33,10 @@ func TestWhereADownloadIsComingFrom(t *testing.T) {
 		}
 	}
 
-	// A peer that never said what its folder is called still has an address,
-	// and an address nobody recognizes beats no answer at all.
+	// A peer that never said what its folder is called reads the same: what
+	// matters is that another isoshelf served it, not what that box is named.
 	nameless := &peer.Client{Address: "http://192.168.1.9:8765"}
-	if got, want := sourceName("http://192.168.1.9:8765/x.iso", nameless), "192.168.1.9:8765"; got != want {
+	if got, want := sourceName("http://192.168.1.9:8765/x.iso", nameless), "your isoshelf server"; got != want {
 		t.Errorf("a peer with no name is %q, want %q", got, want)
 	}
 }
@@ -47,19 +47,19 @@ func TestThePageIsToldWhereADownloadCameFrom(t *testing.T) {
 	s := serverMode(t, false)
 
 	s.mu.Lock()
-	s.downloading = &run{kind: "update", job: &job{id: 1, name: "Ubuntu"}, from: "the NAS"}
+	s.downloading = &run{kind: "update", job: &job{id: 1, name: "Ubuntu"}, from: "your isoshelf server"}
 	current := s.downloadsLocked().Current
 	s.mu.Unlock()
-	if current == nil || current.From != "the NAS" {
-		t.Errorf("the running download tells the page %+v, want From \"the NAS\"", current)
+	if current == nil || current.From != "your isoshelf server" {
+		t.Errorf("the running download tells the page %+v, want From \"your isoshelf server\"", current)
 	}
 
 	s.mu.Lock()
 	s.downloading = nil
-	s.finished = []finishedJob{{job: job{id: 1, name: "Ubuntu"}, outcome: "done", from: "the NAS"}}
+	s.finished = []finishedJob{{job: job{id: 1, name: "Ubuntu"}, outcome: "done", from: "your isoshelf server"}}
 	finished := s.downloadsLocked().Finished
 	s.mu.Unlock()
-	if len(finished) != 1 || finished[0].From != "the NAS" {
-		t.Errorf("the finished download tells the page %+v, want From \"the NAS\"", finished)
+	if len(finished) != 1 || finished[0].From != "your isoshelf server" {
+		t.Errorf("the finished download tells the page %+v, want From \"your isoshelf server\"", finished)
 	}
 }

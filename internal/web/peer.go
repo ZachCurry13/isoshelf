@@ -189,9 +189,11 @@ func withJar(base *http.Client, jar http.CookieJar) *http.Client {
 // also means somebody can see that their peer setting is doing nothing, which
 // short of watching a router was not findable at all.
 //
-// The name is the peer's own, which is what the person typed or what that
-// isoshelf calls its folder; its host is the fallback, because an address
-// nobody recognizes is still better than no answer.
+// It names isoshelf rather than the machine, at the maintainer's asking: the
+// folder's own name ("the NAS") said where the bytes were without saying what
+// was serving them, and the thing worth knowing is that the other isoshelf
+// answered at all. There is only ever one peer set up, so nothing is
+// ambiguous for want of the address.
 func sourceName(rawURL string, near *peer.Client) string {
 	if rawURL == "" {
 		return ""
@@ -201,10 +203,7 @@ func sourceName(rawURL string, near *peer.Client) string {
 		return ""
 	}
 	if near != nil && sameHost(u, near.Address) {
-		if near.FolderName != "" {
-			return near.FolderName
-		}
-		return u.Host
+		return "your isoshelf server"
 	}
 	return "the internet"
 }

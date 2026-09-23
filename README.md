@@ -309,9 +309,10 @@ every sign-out.<br>
 **v0.4.13: the words on the page.** *2026-09-22:* a pass over every label,
 status and hint for the ordinary word rather than a homemade one, and a fix
 for a greyed-out button that was really a label.<br>
-**v0.4.14: downloads say where they come from.** *2026-09-23:* "from the
-NAS" or "from the internet" while a download runs and after it finishes, so
-copying from another isoshelf on your network is visible while it happens.<br>
+**v0.4.14: where a download came from, and when a file arrived.** *2026-09-23:*
+"from your isoshelf server" or "from the internet" while a download runs and
+after it finishes, so copying from another isoshelf on your network is visible
+while it happens; and an Added column in the list, sortable like the rest.<br>
 **Next (v0.5.0): the page, redone.** A restrained palette and a denser
 layout, keeping the sortable table on a desktop and cards on a phone. The
 wording half of it went out in v0.4.13; the look is what is left. Alongside
