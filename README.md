@@ -319,10 +319,14 @@ like a button that did nothing.<br>
 **v0.4.16: the archive can empty itself.** *2026-09-23:* after 7, 30 or 90
 days, off unless you choose a number, judging each file by its own age and
 saying what it will take before it takes it.<br>
-**Next (v0.5.0): the page, redone.** A restrained palette and a denser
-layout, keeping the sortable table on a desktop and cards on a phone. The
-wording half of it went out in v0.4.13; the look is what is left. Alongside
-it: emptying the archive on a timer.<br>
+**v0.5.0: the page, redone.** *2026-09-23:* a restrained palette and a denser
+layout - a status is a coloured mark beside plain words rather than one of ten
+filled chips, surfaces are flat, and the list reads as a proper table. The
+sortable table stays on a desktop, cards on a phone, and higher contrast puts
+every filled chip back.<br>
+**Next:** a short list of the other tools worth having beside a shelf of
+images, and [the Fedora entries that pin a release
+number](https://github.com/ZachCurry13/isoshelf/issues/6).<br>
 **Also in v0.5:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
@@ -334,8 +338,7 @@ a custom app.<br>
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and
 [requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
-**Later:** rebuild a drive from your usual set; a short list of the other
-tools worth having beside a shelf of images; pointing a desktop at an
+**Later:** rebuild a drive from your usual set; pointing a desktop at an
 isoshelf on the network instead of at a mounted share; a Proxmox LXC with the
 ISO storage bind-mounted, written down; a macOS build.
 

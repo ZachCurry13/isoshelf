@@ -178,3 +178,45 @@ func TestSettingHintsStayShort(t *testing.T) {
 		t.Fatalf("only found %d hints; this test has lost track of how they are written", found)
 	}
 }
+
+// The look redone in v0.5.0 shows most statuses as a coloured dot beside plain
+// words rather than as a filled chip, which is right for somebody reading a
+// long list and wrong for somebody who turned Higher contrast on. That setting
+// exists for people who need the difference to shout, so under it every status
+// goes back to being a filled chip.
+//
+// This is the kind of promise a later restyle breaks without noticing: the
+// dots are a default, not the only way the page can say what a status is.
+func TestHigherContrastStillFillsEveryStatusChip(t *testing.T) {
+	css := readStatic(t, "app.css")
+
+	rule := regexp.MustCompile(`:root\[data-contrast="high"\] \.pill \{([^}]*)\}`)
+	m := rule.FindStringSubmatch(css)
+	if m == nil {
+		t.Fatal(`nothing styles .pill under [data-contrast="high"]. ` +
+			"Higher contrast has to put the filled chips back; see the note beside .pill.")
+	}
+	if !strings.Contains(m[1], "background:") {
+		t.Errorf("higher contrast doesn't give a status its background back:\n %s", m[1])
+	}
+	if !strings.Contains(m[1], "color: var(--fg)") {
+		t.Errorf("higher contrast doesn't give a status its own color back:\n %s", m[1])
+	}
+}
+
+// Larger text raises one number on :root and everything else is measured in
+// rem, so a width in pixels is a width that setting can't reach. The sort
+// control had one, and it cut "Needs attention first" off for exactly the
+// people who had asked for bigger words.
+func TestTheSortControlCanGrowWithLargerText(t *testing.T) {
+	css := readStatic(t, "app.css")
+	rule := regexp.MustCompile(`\.toolbar select \{([^}]*)\}`)
+	m := rule.FindStringSubmatch(css)
+	if m == nil {
+		t.Skip("the sort control no longer has a width of its own")
+	}
+	if regexp.MustCompile(`max-width:\s*\d+px`).MatchString(m[1]) {
+		t.Errorf("the sort control is capped in pixels, so Larger text clips it:\n %s\n"+
+			"Measure it in em instead.", m[1])
+	}
+}
