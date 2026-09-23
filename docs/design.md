@@ -187,7 +187,15 @@ alone is not an update.
   - Changing the answer **moves** the records (`state.Move`). Anything else
     looks like isoshelf forgot the folder. Records already at the destination
     win and the old ones are left alone; nothing isoshelf wrote is deleted
-    without the user choosing it. Taking the last file out of `.isoshelf`
+    without the user choosing it.
+  - It **asks first** (since v0.5.3). `POST /api/records/plan` runs
+    `state.Plan`, which works out what `Move` would do and does none of it;
+    `Move` is built on `Plan`, so the question and the move can't disagree.
+    The page names both files and what stays behind, or - when records are
+    already waiting where these would go - which set wins and when each was
+    last saved. A folder nothing has been saved about yet has nothing to ask
+    about. The answer to the move carries `records.moved` once, and the note
+    under the setting says what happened. Taking the last file out of `.isoshelf`
     removes that folder if it is then empty, and never if the archive or a
     part-finished download is still in it.
   - Only the records move. The archive and staged downloads stay in the
@@ -706,7 +714,10 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   "clear older versions" share one checklist dialog (`pickFiles`).
 - The list filters by kind, architecture, updates, favorites, older
   versions and the caution mark through one Filter menu; everything switched
-  on shows as a chip above the list. Sorting is a menu and the three column
+  on shows as a chip above the list. Ticking filters at once; the menu's
+  footer has Clear all and Done, and its list scrolls above them. A card's
+  "Show them" clears every other filter first, so it shows exactly what the
+  card counted. Sorting is a menu and the three column
   headings (empty cells last).
   The choices live in the browser's localStorage. When a filter hides
   everything, the empty message names the filters and offers to clear them.

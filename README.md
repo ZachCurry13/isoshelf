@@ -215,7 +215,7 @@ STATUS                  TRACK                                VERSION   LATEST   
 update available        Pop!_OS 22.04 (Intel/AMD)            56        58        pop-os_22.04_amd64_intel_56.iso
 update available (EOL)  MX Linux Xfce (64-bit)               21.3      25.2      MX-21.3_x64.iso
 EOL                     CentOS 7 Minimal (32-bit, archival)  2009      2009      CentOS-7-i386-Minimal-2009.iso
-not bootable            FydeOS for PC (Intel Iris)           22.0-SP1  -         FydeOS_for_PC_iris_v22.0-SP1-io.bin  ... Make bootable can fix this
+not bootable            FydeOS for PC (Intel Iris)           22.0-SP1  -         FydeOS_for_PC_iris_v22.0-SP1-io.bin  ... Rename it to end in .img and it will boot.
 unrecognized            -                                    -         -         Windows.iso
 manual                  Hiren's BootCD PE                    -         -         HBCD_PE_x64.iso
 up to date              Linux Mint Cinnamon                  22.3      22.3      linuxmint-22.3-cinnamon-64bit.iso
@@ -352,6 +352,11 @@ file.<br>
 **v0.5.2: the tools that go with these.** *2026-09-23:* a short, folded list
 low down the page, and the same one here - what each tool is for and a link
 to it, nothing tracked and nothing to go stale.<br>
+**v0.5.3: asking first, and what the maintainer found.** *2026-09-23:*
+moving a folder's records says what will move, from where to where, before it
+does, and what happened after. The Filter menu gets Done and Clear all, "Show
+them" shows exactly what its card counted, a stray "null" is gone, and a file
+that won't boot is told how to fix it by hand.<br>
 **Next:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6).<br>
 **Also in v0.5:** [`isoshelf update` on the command

@@ -5,7 +5,7 @@
 images:
   image:
     repository: ghcr.io/zachcurry13/isoshelf
-    tag: v0.5.2
+    tag: v0.5.3
 consts:
   isoshelf_container_name: isoshelf
   # Where the two mounts land inside the container. The entrypoint opens
