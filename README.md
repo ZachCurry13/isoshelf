@@ -146,6 +146,27 @@ working as soon as a password exists. Keep it on a network you trust.
 > current. They work well together, but neither needs the other, and isoshelf
 > isn't affiliated with Ventoy.
 
+### Tools that go with these
+
+isoshelf keeps the images current. Writing one to a drive is somebody else's
+job, and these are the ones worth having. Independent projects, none
+affiliated with isoshelf; no versions or downloads are tracked here, only
+what each one is for.
+
+- **[Ventoy](https://www.ventoy.net)** - turns one USB stick into a boot menu
+  of every image you drop on it, so adding an image is a file copy rather
+  than a rewrite. The reason a folder of ISOs is worth keeping current.
+- **[Rufus](https://rufus.ie)** - writes one image to a USB stick on Windows,
+  and is the usual answer when a stick has to boot something awkward.
+- **[balenaEtcher](https://etcher.balena.io)** - writes one image to a USB
+  stick or SD card, on Windows, macOS and Linux, and checks what it wrote
+  afterwards.
+- **[Raspberry Pi Imager](https://www.raspberrypi.com/software/)** - writes
+  card images for a Pi and the other small boards, and sets up the first boot
+  before it does.
+
+The same tools are listed on the page, under *Tools that go with these*.
+
 ## How it works
 
 ```mermaid
@@ -328,8 +349,10 @@ every filled chip back.<br>
 isoshelf couldn't read or write meant everyone was signed out at every
 restart, and nothing on the page said why. It says so now, and names the
 file.<br>
-**Next:** a short list of the other tools worth having beside a shelf of
-images, and [the Fedora entries that pin a release
+**v0.5.2: the tools that go with these.** *2026-09-23:* a short, folded list
+low down the page, and the same one here - what each tool is for and a link
+to it, nothing tracked and nothing to go stale.<br>
+**Next:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6).<br>
 **Also in v0.5:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
@@ -342,9 +365,10 @@ a custom app.<br>
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and
 [requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
-**Later:** rebuild a drive from your usual set; pointing a desktop at an
-isoshelf on the network instead of at a mounted share; a Proxmox LXC with the
-ISO storage bind-mounted, written down; a macOS build.
+**Later:** rebuild a drive from your usual set; managing a NAS's folder from
+a desktop isoshelf, without mounting the share (copying an image from another
+isoshelf already works; this is the folder itself); a Proxmox LXC with the ISO
+storage bind-mounted, written down; a macOS build.
 
 ## Running from a USB drive on Linux
 

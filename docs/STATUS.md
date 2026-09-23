@@ -131,7 +131,25 @@ record of where things stand and what was decided.
   was read from and the page shows it. Shape and reasoning in TODO item 19;
   the weekly catalog job is where it gets filled.
 
-## Latest change: v0.5.1 (2026-09-23)
+## Latest change: v0.5.2 (2026-09-23)
+
+- **The tools that go with the images** (TODO 16): Ventoy for booting many
+  images from one stick, Rufus, balenaEtcher and Raspberry Pi Imager for
+  writing one. A folded section above the footer, and the same four in the
+  README under *Tools that go with these*.
+- Plain text and a link each. No logos, no versions, no downloads: tracking a
+  version would mean owning that tool's release notes forever.
+- Two copies is what this repository normally refuses, so
+  `internal/docs/tools_test.go` compares them by name and address and fails on
+  a version or a download in either. It caught a real mismatch on its first
+  run, and was checked by breaking a link on purpose.
+- Two of the four addresses could not be reached from the sandbox (every one
+  of the hosts is refused by the proxy); `ventoy.net` and
+  `raspberrypi.com/software` are corroborated by text already in the repo.
+- **Next:** [#6], the Fedora entries that pin a release number - it needs the
+  network, so Actions or the policy change.
+
+## v0.5.1 (2026-09-23)
 
 - **"It would be awesome if I didn't have to log in every time."** Sessions
   already last 30 days; what was broken is that the key they are signed with

@@ -419,6 +419,12 @@ td.version-cell { font-family: var(--mono); font-size: 0.8571rem; font-variant-n
 .catalog .info { flex: 1; min-width: 0; }
 .catalog .kind { font-size: 0.8571rem; color: var(--muted); }
 
+/* The tools that go with the images: a short read, not a catalog. */
+.tools { list-style: none; margin: 0 20px 12px; padding: 0; display: grid; gap: 10px; }
+.tools li { display: grid; gap: 1px; }
+.tools li a { font-weight: 550; justify-self: start; }
+.tools .muted { font-size: 0.8929rem; }
+
 .footer { color: var(--muted); font-size: 0.9286rem; display: grid; gap: 4px; }
 
 /* Folder picker */
