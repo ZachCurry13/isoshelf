@@ -743,7 +743,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
     morning's answers says this morning.
 - **Settings** (v0.3.1) is one panel, opened from the top bar and closed with
   Escape, holding everything isoshelf lets a person change. Each setting is
-  one entry in `SETTING_GROUPS` (`internal/web/static/settings.js`): its name,
+  one entry in `SETTING_GROUPS` (`internal/web/static/settinglist.js`): its name,
   a line saying what it does, the words a search should find it by, and the
   control. The search box matches all of those, so nothing has to be listed
   twice. Settings and the details panel share a place on the screen, so
@@ -781,7 +781,9 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
   to-do cards, filters, rows), `details.js` (the panel and the checklist),
   `downloads.js` (the queue), `actions.js` (updating, removing, identifying),
-  `folders.js` (the chooser), `archive.js`, `settings.js`, `upload.js`
+  `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
+  panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
+  sharing), `records.js` (where a folder's records live), `upload.js`
   (dragging a file onto the page, or picking one) and `report.js` (the
   prefilled bug report). They were one 2,544-line
   `app.js` until v0.3.1; the split is what keeps changing one corner from

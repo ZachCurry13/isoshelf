@@ -422,7 +422,8 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
   `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
-  `archive.js`, `settings.js`, `upload.js` and `report.js`. Read the one you
+  `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
+  `upload.js` and `report.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
   `internal/web/static_test.go`, and in every list of them - which
   `internal/docs` checks, because this list was stale for four releases.
