@@ -83,6 +83,12 @@ people have downloaded. Work never happens directly on it.
   a bug that needs reproducing from scratch, a batch of wording. Keep a small
   edit in hand.
 - Each batch of changes gets a version (0.0.1 steps) and a CHANGELOG.md section (the release build needs it). Catalog changes also raise its `revision` and get a dated CATALOG-CHANGES.md section.
+- **The README's Roadmap block is the thing that rots.** "Next", "Also in
+  v0.5" and "Later" are checked by nobody and by no test: a feature named
+  there stays named after it ships. It went eleven releases listing work that
+  was already done (server mode, where records live), and the maintainer found
+  it, not me. Re-read those four lines at every release, whether or not the
+  release touched anything they mention.
 - **Nothing in the repository may say something that is no longer true, and
   this is checked before every push, not later.** People read this repository
   on GitHub without cloning it, so a stale sentence is the product as far as

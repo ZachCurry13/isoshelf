@@ -79,9 +79,9 @@ function downloadProgress() {
   if (run.stage === "downloading") return { text: "Downloading…", fraction: null, short: "Downloading…" };
   if (run.stage === "verifying") {
     return {
-      text: "Checking it against the published checksum…",
+      text: "Verifying it against the published checksum…",
       fraction: run.total > 0 ? run.done / run.total : null,
-      short: "Checking…",
+      short: "Verifying…",
     };
   }
   if (run.stage === "placing") return { text: "Putting it in place…", fraction: 1, short: "Almost done" };
@@ -152,7 +152,7 @@ function renderDock() {
         el("div", { class: "bar" }, dockCurrent.fill)),
       el("button", {
         type: "button", class: "btn small",
-        title: "Stop this one and start the next. What downloaded so far is kept.",
+        title: "Stop this one and start the next. What has downloaded so far is kept.",
         "aria-label": `Stop downloading ${d.current.name}`,
         onclick: () => dropJob(d.current),
       }, "Stop")));
@@ -288,9 +288,9 @@ function finishedItem(job) {
     [mark, tone] = ["!", "s-warn"];
     what += `. ${job.message}`;
   }
-  if (job.outcome === "failed") what = job.conflict ? job.message : `Didn't work: ${job.message}`;
+  if (job.outcome === "failed") what = job.conflict ? job.message : `Failed: ${job.message}`;
   if (job.conflict) [mark, tone] = ["?", "s-update"];
-  if (job.outcome === "stopped") what = "Stopped. What downloaded so far is kept, so Resume picks up from there.";
+  if (job.outcome === "stopped") what = "Stopped. What has downloaded so far is kept, so Resume continues from there.";
   // Only the latest try gets the button, and not once it is queued again.
   const again = job.outcome !== "done" && jobFor(job.entry).job.id === job.id;
   return el("li", { class: "dock-item finished" },
@@ -310,7 +310,7 @@ function againButtons(job) {
     const again = el("button", {
       type: "button", class: "btn small",
       title: job.outcome === "stopped"
-        ? "Pick up where it stopped"
+        ? "Continue from where it stopped"
         : "Put it back on the queue and try again",
       onclick: () => retryJob(job),
     }, job.outcome === "stopped" ? "Resume" : "Try again");
@@ -329,7 +329,7 @@ function againButtons(job) {
   return el("div", { class: "conflict-choices" },
     el("button", {
       type: "button", class: "btn small",
-      title: "Download it under a name with its version in it, and leave the file you have alone",
+      title: "Download it under a name with its version in it, and leave your existing file alone",
       onclick: () => queueDownload(job.entry, "keep"),
     }, "Keep both"),
     el("button", {
@@ -439,7 +439,7 @@ async function stopDownloads() {
   const waiting = d.queued.length;
   const answer = await ask(
     "Stop all downloads?",
-    `Stops the download running now${waiting ? `, and takes ${plural(waiting, "image")} off the queue` : ""}. What downloaded so far is kept, so adding it again picks up from there.`,
+    `Stops the download running now${waiting ? `, and takes ${plural(waiting, "image")} off the queue` : ""}. What has downloaded so far is kept, so adding it again continues from there.`,
     [{ label: "Stop them", value: "yes", primary: true }, { label: "Keep going", value: null }]);
   if (!answer) return;
   try {

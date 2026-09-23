@@ -42,7 +42,7 @@ var (
 	// hasn't said what should happen to it.
 	ErrExists = errors.New("a file of that name is already here")
 	// ErrNoRoom means the folder hasn't the space for it.
-	ErrNoRoom = errors.New("there isn't room for it")
+	ErrNoRoom = errors.New("there isn't enough space for it")
 )
 
 // Options describe one upload.
@@ -99,7 +99,7 @@ func Place(ctx context.Context, src io.Reader, opts Options) (*Result, error) {
 		return nil, fmt.Errorf("%w: %s", ErrNotAnImage, name)
 	}
 	if !opts.Room.Fits(opts.Size) {
-		return nil, fmt.Errorf("%w: %s needs more room than this folder has left", ErrNoRoom, name)
+		return nil, fmt.Errorf("%w: %s needs more space than this folder has left", ErrNoRoom, name)
 	}
 
 	final := filepath.Join(opts.Target, name)

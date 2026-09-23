@@ -174,21 +174,21 @@ const SETTING_GROUPS = [
       {
         name: "Higher contrast",
         fields: ["high_contrast"],
-        hint: "Stronger words and firmer edges, for a bright room or tired eyes.",
+        hint: "Bolder text and stronger borders, for a bright room or tired eyes.",
         words: "accessibility contrast readable bold",
         control: () => switchRow("Higher contrast", look().high_contrast, (on) => ({ high_contrast: on })),
       },
       {
         name: "Larger text",
         fields: ["larger_text"],
-        hint: "Everything on the page a size bigger, without the browser's zoom.",
+        hint: "Everything on the page one size bigger, without using the browser's zoom.",
         words: "accessibility big font size zoom text",
         control: () => switchRow("Larger text", look().larger_text, (on) => ({ larger_text: on })),
       },
       {
         name: "Less movement",
         fields: ["reduce_motion"],
-        hint: "Stops the spinners and bars from moving while isoshelf works.",
+        hint: "Stops spinners and progress bars from animating while isoshelf works.",
         words: "accessibility animation motion spinner still",
         control: () => switchRow("Less movement", look().reduce_motion, (on) => ({ reduce_motion: on })),
       },
@@ -198,25 +198,25 @@ const SETTING_GROUPS = [
     title: "Checking for updates",
     settings: [
       {
-        name: "Check for updates by itself",
+        name: "Check for updates automatically",
         fields: ["auto_check"],
         hint: "Asks each project for its newest version when the page opens, and " +
           "remembers the answer for a day.",
         words: "automatic online check updates network offline internet",
-        control: () => switchRow("Check for updates by itself", state && state.auto_check,
+        control: () => switchRow("Check for updates automatically", state && state.auto_check,
           (on) => ({ auto_check: on })),
         note: () => (state && state.checked_at)
           ? `Last asked ${timeAgo(state.checked_at)}.`
           : "",
       },
       {
-        name: "Update the images by itself",
+        name: "Update images automatically",
         fields: ["auto_update", "auto_update_every"],
         hint: "Downloads and installs updates on a schedule, with nothing to press. " +
           "Verified the same way as when you press Update yourself.",
-        words: "automatic update download schedule unattended by itself daily weekly",
+        words: "automatic update download schedule unattended daily weekly",
         control: () => el("div", { class: "setting-controls" },
-          switchRow("Update the images by itself", state && state.auto_update,
+          switchRow("Update images automatically", state && state.auto_update,
             (on) => ({ auto_update: on })),
           (state && state.auto_update)
             ? choiceRow("How often", [["day", "Every day"], ["week", "Every week"]],
@@ -229,12 +229,12 @@ const SETTING_GROUPS = [
           : "",
       },
       {
-        name: "Tell me when a new isoshelf is out",
+        name: "Tell me about new isoshelf versions",
         fields: ["app_update_check"],
         hint: "Checks GitHub for a newer isoshelf. Nothing is installed and nothing " +
           "about you is sent - it's a link in the top bar.",
         words: "isoshelf version update release new notify github",
-        control: () => switchRow("Tell me when a new isoshelf is out", state && state.app_update_check,
+        control: () => switchRow("Tell me about new isoshelf versions", state && state.app_update_check,
           (on) => ({ app_update_check: on })),
       },
     ],
@@ -292,8 +292,8 @@ const SETTING_GROUPS = [
           el("button", { type: "button", class: "btn small", onclick: openPicker }, "Choose folder…")),
       },
       {
-        name: "Who can get in",
-        hint: "One username and password for this isoshelf. Once set, it's the only " +
+        name: "Sign-in",
+        hint: "One username and password for this isoshelf. Once set, it is the only " +
           "way in - the link isoshelf prints when it starts stops working.",
         words: "login password username sign in out account security who access",
         available: () => state && state.login && state.login.can_set,
@@ -312,12 +312,12 @@ const SETTING_GROUPS = [
         note: () => peerNote(),
       },
       {
-        name: "Let other isoshelfs copy from this one",
+        name: "Share this folder with other isoshelfs",
         fields: ["share"],
         hint: "Offers the images in this folder to another isoshelf on your network that " +
           "signs in. Off unless you turn it on.",
         words: "share serve local network nas peer host offer",
-        control: () => switchRow("Let other isoshelfs copy from this one",
+        control: () => switchRow("Share this folder with other isoshelfs",
           state && state.peer && state.peer.sharing, null, shareImages),
         note: () => (state && state.peer && state.peer.sharing)
           ? "Anyone who can sign in to this isoshelf can copy whole images from it. Scans " +
@@ -360,8 +360,8 @@ const SETTING_GROUPS = [
     title: "Help",
     settings: [
       {
-        name: "This isoshelf",
-        hint: "The version you're running.",
+        name: "Version",
+        hint: "The version of isoshelf you are running.",
         words: "version about update release",
         control: () => el("div", { class: "setting-controls" },
           el("div", {}, (state && state.version) || "unknown"),

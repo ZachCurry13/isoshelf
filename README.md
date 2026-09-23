@@ -56,13 +56,13 @@ isoshelf does that for you:
   files your boot menu won't list, and files it doesn't recognize, and puts a
   ⚠ on images worth knowing about, such as releases that no longer get
   security fixes.
-- **Says what wants doing.** Cards at the top of the page: updates ready,
+- **Says what wants doing.** Cards at the top of the page: updates available,
   older versions you could clear, what's in the archive, files that won't
   boot, and anything it doesn't recognize. Each says how much space is
   involved and carries the button for it.
-- **Plain words, explained.** Statuses read *Update ready*, *Old release*,
-  *Check by hand* or *Won't boot here*, and each explains itself when you
-  hover over it.
+- **Plain words, explained.** Statuses read *Update available*, *End of
+  life*, *Download manually* or *Won't boot from here*, and each explains
+  itself when you hover over it.
 - **Finds things fast.** Search, one Filter menu (updates, favorites, older
   versions, kinds, architectures) showing a chip for everything switched on,
   and sorting by name, size, version or age. Click any image for a panel with
@@ -306,22 +306,28 @@ is a pre-release now.<br>
 left you signed in - a browser reports a plain form's sender as "null" when a
 page asks for no referrer, which isoshelf does, so its own check refused
 every sign-out.<br>
-**Next:** where each folder's records live, and isoshelf updating itself with
-one click.<br>
-**v0.5:** [`isoshelf update` on the command
+**v0.4.13: the words on the page.** *2026-09-22:* a pass over every label,
+status and hint for the ordinary word rather than a homemade one, and a fix
+for a greyed-out button that was really a label.<br>
+**Next (v0.5.0): the page, redone.** A restrained palette and a denser
+layout, keeping the sortable table on a desktop and cards on a phone. The
+wording half of it went out in v0.4.13; the look is what is left. Alongside
+it: emptying the archive on a timer.<br>
+**Also in v0.5:** [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
 version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
 [two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
-and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5),
-along with a redesign of the page.<br>
+and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
 **1.0:** an official TrueNAS app, so it installs from the store rather than as
 a custom app.<br>
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and
 [requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
-**Later:** rebuild a drive from your usual set; server mode (Docker, TrueNAS, Proxmox
-LXC); a macOS build.
+**Later:** rebuild a drive from your usual set; a short list of the other
+tools worth having beside a shelf of images; pointing a desktop at an
+isoshelf on the network instead of at a mounted share; a Proxmox LXC with the
+ISO storage bind-mounted, written down; a macOS build.
 
 ## Running from a USB drive on Linux
 

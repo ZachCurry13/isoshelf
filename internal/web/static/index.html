@@ -180,7 +180,7 @@
       <div class="upload-words">
         <span class="more-title">Add a file from this computer</span>
         <p class="muted">Drag an image anywhere onto this page, or choose one. It goes
-          straight into this folder, and isoshelf works out what it is afterwards.</p>
+          straight into this folder, and isoshelf identifies it afterwards.</p>
       </div>
       <button type="button" class="btn" id="upload-choose">Choose a file…</button>
       <input type="file" id="upload-input" multiple hidden
@@ -190,7 +190,7 @@
     <ul class="upload-list" id="upload-list"></ul>
   </section>
 
-  <!-- Files isoshelf set aside: still on the drive, still using room. -->
+  <!-- Files isoshelf set aside: still on the drive, still using space. -->
   <section class="card more" id="archive" hidden>
     <div class="archive-head">
       <div>
@@ -199,7 +199,7 @@
       </div>
       <button type="button" class="btn small" id="archive-empty">Empty archive</button>
     </div>
-    <p class="muted more-hint">Files isoshelf set aside instead of deleting. They still use room in this folder until you empty the archive, and you can restore any of them.</p>
+    <p class="muted more-hint">Files isoshelf set aside instead of deleting. They still use space in this folder until you empty the archive, and you can restore any of them.</p>
     <ul class="catalog" id="archive-list"></ul>
   </section>
 
@@ -239,7 +239,7 @@
     <div class="details-title">
       <div>
         <h2 id="settings-title">Settings</h2>
-        <div class="muted">Sensible defaults, all of them yours to change</div>
+        <div class="muted">Every setting here has a sensible default</div>
       </div>
     </div>
     <button type="button" class="btn small icon" id="settings-close" aria-label="Close">✕</button>
@@ -297,23 +297,23 @@
     <div class="identify-body">
       <div id="identify-guesses"></div>
       <details id="identify-all">
-        <summary>Pick it from the catalog myself</summary>
+        <summary>Choose it from the catalog</summary>
         <input type="search" id="identify-search" placeholder="Search the catalog…" aria-label="Search the catalog">
         <ul class="catalog" id="identify-list"></ul>
       </details>
       <details id="identify-mine">
-        <summary>It's none of these — let me name it</summary>
+        <summary>Name it myself</summary>
         <p class="muted more-hint">For images no list will ever know: one you built, one you customized, or a
-          distribution isoshelf hasn't been told about. It's kept in your own file, and isoshelf will
-          recognize this filename from now on. It can't check it for updates: that needs somewhere
-          official to read checksums from.</p>
+          distribution isoshelf hasn't been told about. It is saved to your own catalog file, and isoshelf
+          will recognize this filename from now on. It can't be checked for updates: that needs an
+          official place to read checksums from.</p>
         <div class="mine-form">
-          <label>Call it
+          <label>Name
             <input type="text" id="mine-name" maxlength="80" spellcheck="false" placeholder="Windows Server 2022">
           </label>
           <label>Kind
             <select id="mine-category">
-              <option value="other">Something else</option>
+              <option value="other">Other</option>
               <option value="desktop">Desktop</option>
               <option value="gaming">Gaming and handhelds</option>
               <option value="server">Server and homelab</option>
@@ -335,7 +335,7 @@
           <label>Where it came from <span class="muted">(optional)</span>
             <input type="url" id="mine-page" spellcheck="false" placeholder="https://">
           </label>
-          <button type="button" class="btn primary" id="mine-save">Save this name</button>
+          <button type="button" class="btn primary" id="mine-save">Save</button>
         </div>
       </details>
       <p class="muted more-hint" id="identify-report"></p>

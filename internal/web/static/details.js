@@ -96,9 +96,9 @@ function renderDetails() {
   if (item.path && item.assigned) {
     buttons.push(el("button", {
       type: "button", class: "btn", disabled: scanning(),
-      title: "You told isoshelf what this file is. Change that.",
+      title: "You told isoshelf what this file is. Change that answer.",
       onclick: () => openIdentify(item),
-    }, "Not right?"));
+    }, "Change this"));
   }
   if (item.path) {
     buttons.push(el("button", {
@@ -142,7 +142,7 @@ function versionField(item) {
         await refresh();
       },
     }, "Save"),
-    el("div", { class: "muted" }, "isoshelf can't tell which version this file is. If you know, say so here."));
+    el("div", { class: "muted" }, "isoshelf can't tell which version this file is. If you know, enter it here."));
 }
 
 // sameName is true for images whose filename never changes, where the new
@@ -161,7 +161,7 @@ function choiceFor(item) {
 
 const CHOICES = [
   ["replace", "Replace the old file"],
-  ["archive", "Archive the old file (undo any time)"],
+  ["archive", "Archive the old file (you can restore it)"],
   ["keep", "Keep both"],
 ];
 
@@ -253,8 +253,8 @@ async function reviewOlder(older) {
     if (item.entry && !item.older && item.path) newest[item.entry] = item.path.split("/").pop();
   }
   const answer = await pickFiles({
-    title: "Older versions you could clear",
-    text: "You have a newer version of each of these. Untick anything you want to keep.",
+    title: "Older versions",
+    text: "You already have a newer version of each of these. Untick anything you want to keep.",
     sizeLabel: "freeing",
     rows: older.map((item) => ({
       id: item.path,

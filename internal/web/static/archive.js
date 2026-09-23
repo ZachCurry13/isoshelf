@@ -51,14 +51,14 @@ function pastItem(item, onDisk) {
   if (onDisk && !item.restorable) {
     // It's here and it's using room, but its name is taken by the file that
     // replaced it, so there is nowhere to put it back to yet.
-    parts.push("a newer file has its name — remove that one to put this back");
+    parts.push("another file has its name now — remove that one to restore this");
   }
   const detail = parts.filter(Boolean).join(" · ");
   const buttons = [];
   if (onDisk && item.restorable) {
     buttons.push(el("button", {
       type: "button", class: "btn small primary", disabled: scanning(),
-      title: "Move it back into the folder",
+      title: "Move it back into this folder",
       onclick: () => restore(item),
     }, "Restore"));
   }

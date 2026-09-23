@@ -10,18 +10,18 @@
 // own words for the command line and for scripts; only the page speaks
 // plainly, and every status explains itself when you hover or tap it.
 const STATUS_WORDS = {
-  "update available": ["Update ready", "A newer version is published. isoshelf can download it, check it, and put it in place."],
+  "update available": ["Update available", "A newer version is published. isoshelf can download it, verify it, and put it in place."],
   "up to date": ["Up to date", "This is the newest version the project publishes."],
-  "EOL": ["Old release", "This release no longer gets security fixes. Fine to keep for a virtual machine, an old PC or tinkering."],
-  "not bootable": ["Won't boot here", "An image, but not in a shape this folder's boot menu can use."],
-  "manual": ["Check by hand", "The project publishes nothing isoshelf can check against, so updates are up to you. Its download page is one click away."],
+  "EOL": ["End of life", "This release stopped getting security fixes. Fine to keep for a virtual machine, an old PC, or tinkering."],
+  "not bootable": ["Won't boot from here", "An image, but not in a format this folder's boot menu can use."],
+  "manual": ["Download manually", "This project publishes no checksum, so isoshelf can't verify a download of it. Get this one from its download page, which is one click away."],
   "missing": ["Missing", "You usually keep this image here, but the file isn't in the folder."],
-  "unrecognized": ["Unknown file", "isoshelf doesn't know what this file is. It can work it out, or you can name it yourself."],
-  "checksum mismatch": ["Doesn't match", "The file doesn't match the checksum the project publishes: a broken download, or a changed file."],
-  "unverified": ["Not checked", "The project publishes no checksum for this file, so nothing can prove it arrived intact."],
-  "check failed": ["Couldn't check", "isoshelf couldn't reach the project this time. The note says what went wrong."],
-  "unknown": ["Not sure yet", "isoshelf hasn't worked out enough about this file to say."],
-  "not checked": ["Not checked yet", "Press Check for updates and isoshelf will ask each project what's newest."],
+  "unrecognized": ["Unrecognized", "isoshelf doesn't know what this file is. It can try to identify it, or you can name it yourself."],
+  "checksum mismatch": ["Checksum mismatch", "The file doesn't match the checksum the project publishes - usually a broken download, sometimes a changed file."],
+  "unverified": ["Unverified", "The project publishes no checksum for this file, so nothing can prove it arrived intact."],
+  "check failed": ["Check failed", "isoshelf couldn't reach the project this time. The note says what went wrong."],
+  "unknown": ["Not identified", "isoshelf hasn't worked out enough about this file to say what it is."],
+  "not checked": ["Not checked yet", "Press Check now and isoshelf will ask each project what the newest version is."],
 };
 
 function statusWord(status) {
@@ -68,17 +68,24 @@ function renderTodo() {
     const all = updates.length + byHand;
     cards.push(todoCard({
       tone: "s-update",
-      title: all === 1 ? "1 update ready" : `${all} updates ready`,
+      title: all === 1 ? "1 update available" : `${all} updates available`,
       detail: bytes ? `about ${formatBytes(bytes)} to download` : "",
       note: [
-        byHand ? `${byHand} to download by hand` : "",
+        byHand ? `${byHand} to download manually` : "",
         waiting ? `${waiting} already in the downloads` : "",
-      ].filter(Boolean).join(" 00b7 "),
-      actions: [el("button", {
-        type: "button", class: "btn primary", disabled: left === 0,
-        onclick: updateAll,
-      }, left === 0 ? (updates.length ? "All queued" : "By hand only")
-        : left === all ? "Update all" : `Update ${left}`)],
+      ].filter(Boolean).join(" · "),
+      // A button that can't be pressed is not a label. When every update has
+      // to be done by the user, the useful thing is to show them which ones
+      // - which is what somebody pressing it was hoping for.
+      actions: left === 0 && !updates.length
+        ? [el("button", {
+            type: "button", class: "btn",
+            onclick: () => showOnly("manual"),
+          }, "Show them")]
+        : [el("button", {
+            type: "button", class: "btn primary", disabled: left === 0,
+            onclick: updateAll,
+          }, left === 0 ? "All queued" : left === all ? "Update all" : `Update ${left}`)],
     }));
   }
 
@@ -88,7 +95,7 @@ function renderTodo() {
     cards.push(todoCard({
       title: older.length === 1 ? "1 older version" : `${older.length} older versions`,
       detail: bytes ? `${formatBytes(bytes)} you could free` : "",
-      note: "You have a newer version of each of these.",
+      note: "You already have a newer version of each of these.",
       actions: [el("button", {
         type: "button", class: "btn", disabled: scanning(),
         onclick: () => reviewOlder(older),
@@ -100,7 +107,7 @@ function renderTodo() {
     cards.push(todoCard({
       title: "Archive",
       detail: `${plural(state.removed.files, "file")} · ${formatBytes(state.removed.bytes)}`,
-      note: "Set aside, still using room here.",
+      note: "Removed but kept, still using space in this folder.",
       actions: [
         el("button", { type: "button", class: "btn", onclick: () => jumpTo("archive") }, "View"),
         el("button", { type: "button", class: "btn", disabled: scanning() || downloading(), onclick: emptyRemoved }, "Empty"),
@@ -112,8 +119,8 @@ function renderTodo() {
   if (stuck.length) {
     cards.push(todoCard({
       tone: "s-warn",
-      title: stuck.length === 1 ? "1 file won't boot here" : `${stuck.length} files won't boot here`,
-      note: "An image, but not in a shape this folder's boot menu can use.",
+      title: stuck.length === 1 ? "1 file won't boot" : `${stuck.length} files won't boot`,
+      note: "Images, but not in a format this folder's boot menu can use.",
       actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("not bootable") }, "Show them")],
     }));
   }
@@ -121,8 +128,8 @@ function renderTodo() {
   const unknown = items.filter((it) => it.status === "unrecognized");
   if (unknown.length) {
     cards.push(todoCard({
-      title: unknown.length === 1 ? "1 unknown file" : `${unknown.length} unknown files`,
-      note: "isoshelf can work out what they are.",
+      title: unknown.length === 1 ? "1 unrecognized file" : `${unknown.length} unrecognized files`,
+      note: "isoshelf can try to identify them.",
       actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("unrecognized") }, "Show them")],
     }));
   }
@@ -132,7 +139,7 @@ function renderTodo() {
     cards.push(todoCard({
       tone: "s-missing",
       title: missing.length === 1 ? "1 image missing" : `${missing.length} images missing`,
-      note: "You usually keep these here.",
+      note: "You usually keep these in this folder.",
       actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("missing") }, "Show them")],
     }));
   }
@@ -140,11 +147,11 @@ function renderTodo() {
   if (state.folder_changed) {
     cards.push(todoCard({
       title: "The folder changed",
-      note: "Something was added or removed outside isoshelf.",
+      note: "Files were added or removed outside isoshelf.",
       actions: [el("button", {
         type: "button", class: "btn", disabled: scanning() || downloading(),
         onclick: () => start("scan"),
-      }, "Look again")],
+      }, "Scan again")],
     }));
   }
 
@@ -197,10 +204,10 @@ const ARCHES = [
 ];
 
 const SHOW = [
-  ["updates", "Updates ready"],
+  ["updates", "Updates available"],
   ["favorites", "Favorites"],
   ["older", "Older versions"],
-  ["caution", "Worth knowing (⚠)"],
+  ["caution", "Has a caution (⚠)"],
 ];
 
 // renderFilters fills the Filter menu with what this folder actually holds,
@@ -434,7 +441,7 @@ function renderHeadings() {
     heading.classList.toggle("sorted", active);
     heading.setAttribute("aria-sort", active ? (view.desc ? "descending" : "ascending") : "none");
     heading.title = active
-      ? `Sorted ${view.desc ? "the other way round" : "this way"}. Click to reverse it.`
+      ? `Sorted by this column, ${view.desc ? "descending" : "ascending"}. Click to reverse it.`
       : hint;
     heading.onclick = () => {
       // The same column again turns it round; a different one starts fresh.
@@ -501,7 +508,7 @@ function problemLink(item) {
     `**Status:** ${item.status}`,
     item.note ? `**What it said:** ${item.note}` : null,
     "",
-    "What's wrong? For a moved download, the new address helps most — especially",
+    "What is wrong? For a download that moved, the new address helps most — especially",
     "where the project publishes its checksums now.",
   ].filter((line) => line !== null).join("\n");
   return ["Report a problem", `${state.report_url}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=catalog`];
@@ -591,7 +598,7 @@ function renderRow(item) {
     class: "star",
     "aria-pressed": track.starred ? "true" : "false",
     title: track.starred
-      ? "Starred: isoshelf reports it as missing if it ever disappears from this folder. Click to unstar."
+      ? "Starred: isoshelf reports this image as missing if it disappears from this folder. Click to unstar."
       : usual
         ? "Usually kept here (seen in recent scans). Star it to always report it if it goes missing."
         : "Star to always report this image if it goes missing from this folder",
@@ -604,7 +611,7 @@ function renderRow(item) {
     el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}`, title: statusHelp(item.status) },
       statusWord(item.status)),
     item.eol && item.status !== "EOL"
-      ? el("span", { class: "pill s-eol", title: statusHelp("EOL") }, "Old release")
+      ? el("span", { class: "pill s-eol", title: statusHelp("EOL") }, "End of life")
       : null);
 
   const name = item.page
@@ -653,7 +660,7 @@ function renderRow(item) {
   } else if (item.path && !item.entry) {
     actions.push(el("button", {
       type: "button", class: "btn small primary", disabled: scanning(),
-      title: "Let isoshelf work out what this file is",
+      title: "Let isoshelf identify this file",
       "aria-label": `Identify ${item.path}`,
       onclick: () => openIdentify(item),
     }, "What is this?"));

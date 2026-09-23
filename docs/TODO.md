@@ -9,7 +9,8 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**Nothing is in flight.** Everything below the next heading has shipped.
+**In flight: v0.5.0, the redesign.** Its wording half shipped as v0.4.13;
+what is left is the look. Everything else below the next heading has shipped.
 
 **Which version is the latest is not written down here, on purpose.** It went
 stale three times in one evening. Ask GitHub: the releases page, or
@@ -201,6 +202,40 @@ starts it thinking it is a form to fill in:
    an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
    once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
    drive ([#7]) - **and the redesign below**.
+16. **The tools that go with the images** (the maintainer, 2026-09-22:
+   "whatever happened to the author's suggested tools - Ventoy, balenaEtcher,
+   Rufus. I really like those tools and people who have isoshelf would too").
+   It was talked about and never written down anywhere, which is why it went
+   missing; it is written down now. A short, hand-kept list of the tools
+   somebody with a shelf of images actually needs - one that writes a drive,
+   one that boots many images from one drive, one that checks a disc - each a
+   line saying what it is for and a link to its own site.
+   - `docs/design.md` already has the rule this has to follow: plain text and
+     a link, never anybody's logo, and "independent project, not affiliated"
+     next to it. No downloads, no versions, no update checks: the moment
+     isoshelf tracks a tool's version it owns that tool's release notes
+     forever, and this is meant to be four sentences that never go stale.
+   - **Decided 2026-09-22** (the maintainer left it to me): both the README
+     and the page. The README is where somebody deciding whether to use
+     isoshelf reads; the page is where the people who already have it are,
+     and they are the ones the maintainer meant. On the page it is a folded
+     section low down, beside Archive and History, so it costs nothing until
+     it is opened. Two copies would normally break the "don't write down
+     anything that has to be maintained" rule - so a test in `internal/docs`
+     checks the two name the same tools, and no version or download is
+     tracked for any of them.
+17. **Say where a download is coming from** (the maintainer, 2026-09-22:
+   "when it is downloading, it would be nice to know if it was from the
+   internet or from the local server"). Copying from another isoshelf
+   (v0.4.9) is invisible while it happens: the dock says "Downloading 40%"
+   whether the bytes are crossing the room or the Atlantic, and the whole
+   point of the feature is that one of those is much faster. `fetch.Progress`
+   already carries `URL` and `fetch.Result` records which URL won, so this is
+   showing what is already known, not finding anything out.
+   - Name the isoshelf, not the URL: "from nas.local", "from the internet".
+     The peer's own name is in `internal/peer` (`FolderName`).
+   - It also tells somebody their peer setting is doing nothing, which is the
+     only way to find that out today short of watching a router.
 
 ## v0.5.0: the page, redone
 
@@ -225,6 +260,22 @@ textContent and never as HTML.
 
 Whatever is proposed, the maintainer wants to be asked about anything where
 more than one answer is good, rather than shown a finished redesign.
+
+**Asked and answered, 2026-09-22:**
+- *Words:* use the ordinary ones. A Settings switch for "simple mode" was
+  offered and turned down for now - two versions of every string across ten
+  files is a cost that never stops - so the page uses the normal word and
+  keeps its explanation in the hover and the second line. **Shipped as
+  v0.4.13**, which is the wording half of this done.
+- *Audience:* confident, not hand-holding. Same reasoning.
+- *Look:* "whichever option feels like TrueNAS does when using" - so
+  restrained palette, technical density: dark-first, dense, one blue accent,
+  real tables.
+- *The list:* keep the sortable table on desktop, cards on the phone.
+
+What is left of v0.5.0 is therefore the visual work: type scale, colour
+discipline, spacing and density. Show the maintainer what it looks like
+before committing to it.
 
 `docs/design-audit.md` is a critique of the page written before any of this
 was built, with seven such questions already worked out and a staged plan.

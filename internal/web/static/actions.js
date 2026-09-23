@@ -54,7 +54,7 @@ async function updateAll() {
   if (!items.length) return;
   const answer = await pickFiles({
     title: items.length === 1 ? "Update 1 image?" : `Update ${items.length} images?`,
-    text: "Each one is downloaded and checked before anything is replaced. Untick any you would rather leave.",
+    text: "Each one is downloaded and verified before anything is replaced. Untick any you would rather leave.",
     sizeLabel: "downloading about",
     rows: items.map((item) => ({
       id: item.entry,
@@ -80,7 +80,7 @@ async function updateAll() {
 async function removeItem(item) {
   const how = await ask(
     `Remove ${item.path}?`,
-    `This file uses ${formatBytes(item.size)}. Archiving keeps it in this folder, under “Images that were here”, where you can put it back or empty it later — the space isn't freed until you do.`,
+    `This file uses ${formatBytes(item.size)}. Archiving keeps it in this folder, under Archive, where you can restore it or delete it later — the space is not freed until you do.`,
     [
       { label: "Archive it", value: "move-aside", primary: true },
       { label: "Delete it now", value: "delete" },
@@ -95,7 +95,7 @@ async function removeItem(item) {
     return;
   }
   if (how === "move-aside") {
-    flashNotice(`Archived ${item.path}. You will find it under Archive on this page, where you can put it back; the space is freed when you empty the archive.`);
+    flashNotice(`Archived ${item.path}. It is under Archive on this page, where you can restore it; the space is freed when you empty the archive.`);
   } else {
     flashNotice(`Deleted ${item.path}.`);
   }
@@ -104,8 +104,8 @@ async function removeItem(item) {
 
 async function emptyRemoved() {
   const confirmed = await ask(
-    "Empty the removed folder?",
-    `${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)} will be deleted for good. This frees the space.`,
+    "Empty the archive?",
+    `${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)} will be deleted permanently. This frees the space.`,
     [{ label: "Delete them", value: "yes", primary: true }, { label: "Cancel", value: null }]);
   if (!confirmed) return;
   try {
@@ -185,7 +185,7 @@ function renderFooter() {
   renderCatalogStatus(footer);
   if (state.removed && state.removed.files > 0) {
     footer.append(el("div", { class: "footer-row" },
-      `Removed files waiting in .isoshelf/removed: ${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)}.`,
+      `Archived files in .isoshelf/removed: ${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)}.`,
       el("button", { type: "button", class: "btn small", disabled: scanning() || downloading(), onclick: emptyRemoved }, "Empty it")));
   }
   if (!state.report) return;
@@ -232,7 +232,7 @@ async function renderCatalog() {
         el("div", { class: "kind" },
           UPDATES_LABEL[entry.updates] || entry.updates,
           room === false
-            ? el("span", { class: "wont-fit" }, fitsHere(entry, true) ? " · no room once the waiting downloads are in" : " · bigger than the room left here")
+            ? el("span", { class: "wont-fit" }, fitsHere(entry, true) ? " · no space once the queued downloads are in" : " · bigger than the space left here")
             : null)),
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
       addButton(entry, room)));
@@ -246,12 +246,12 @@ async function renderCatalog() {
   request.replaceChildren();
   if (state.report_url) {
     request.append(
-      "Looking for an image that isn't listed? ",
+      "Not in the catalog? ",
       el("a", {
         href: `${state.report_url}?template=missing-image.yml`,
         target: "_blank", rel: "noopener noreferrer",
-      }, "Ask for it to be added"),
-      " — the form asks where the project publishes its checksums, which is the part that decides whether isoshelf can download it or only link to it.");
+      }, "Request it"),
+      " — the form asks where the project publishes its checksums, which is what decides whether isoshelf can download it or only link to it.");
   }
   if (!shown.length) {
     list.append(el("li", { class: "muted more-hint" }, missing.length
@@ -328,13 +328,13 @@ function addButton(entry, room) {
     return el("button", {
       type: "button", class: "btn small", disabled: true,
       title: entry.page
-        ? `isoshelf can't download ${entry.name} itself, because there is nowhere to check it against. Use its download page.`
-        : `isoshelf can't download ${entry.name} itself: there is nowhere to check it against.`,
+        ? `isoshelf can't verify a download of ${entry.name}: this project publishes no checksum. Use its download page.`
+        : `isoshelf can't verify a download of ${entry.name}: this project publishes no checksum.`,
     }, "Add");
   }
   return jobButton(entry.id, el("button", {
     type: "button", class: "btn small primary",
-    title: `Download the newest ${entry.name} into this folder. If something is downloading already, it waits its turn.`,
+    title: `Download the newest ${entry.name} into this folder. If something is downloading already, this one queues behind it.`,
     onclick: () => queueDownload(entry.id, "keep"),
   }, "Add"), false);
 }
@@ -391,8 +391,8 @@ function renderReportLink(item, label) {
 
   box.append(
     "Should isoshelf know this image? ",
-    el("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, "Tell the project about it"),
-    " — it opens a report you can read and change before sending. Nothing is sent by isoshelf.");
+    el("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, "Suggest it for the catalog"),
+    " — this opens a report you can read and edit before sending. isoshelf sends nothing by itself.");
 }
 
 // saveMyName writes the user's own name for a file into their own catalog.
@@ -454,12 +454,12 @@ function renderGuesses(guesses) {
   box.replaceChildren();
   if (!guesses.length) {
     box.append(el("p", { class: "muted" },
-      "isoshelf can't work this one out: nothing in the catalog looks like it, and no copy of it is in this folder. You can pick what it is yourself."));
+      "isoshelf can't identify this one: nothing in the catalog looks like it, and there is no other copy of it in this folder. You can say what it is yourself."));
     $("identify-all").open = true;
     return;
   }
   box.append(el("p", { class: "muted" },
-    guesses.length === 1 ? "isoshelf thinks this might be:" : "isoshelf thinks this might be one of these:"));
+    guesses.length === 1 ? "This is probably:" : "This is probably one of these:"));
 
   const list = el("ul", { class: "guesses" });
   for (const guess of guesses) {
@@ -475,7 +475,7 @@ function renderGuesses(guesses) {
       el("button", {
         type: "button", class: "btn small primary",
         onclick: () => confirmIdentity(guess.entry, guess.version),
-      }, "That's it")));
+      }, "Confirm")));
   }
   box.append(list);
 }
@@ -497,7 +497,7 @@ async function renderIdentifyCatalog() {
   for (const entry of catalog) {
     if (query && !`${entry.name} ${entry.id} ${entry.family || ""}`.toLowerCase().includes(query)) continue;
     if (++shown > 40) {
-      list.append(el("li", { class: "muted more-hint" }, "More images match. Keep typing to narrow it down."));
+      list.append(el("li", { class: "muted more-hint" }, "More images match. Keep typing to narrow the list."));
       break;
     }
     list.append(el("li", {},
@@ -508,7 +508,7 @@ async function renderIdentifyCatalog() {
       el("button", {
         type: "button", class: "btn small",
         onclick: () => confirmIdentity(entry.id, ""),
-      }, "This one")));
+      }, "Select")));
   }
   if (!shown) list.append(el("li", { class: "muted more-hint" }, "Nothing in the catalog matches that."));
 }

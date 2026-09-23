@@ -105,7 +105,7 @@ func uploadError(w http.ResponseWriter, err error, name string) {
 			base+" isn't an image file, so isoshelf won't put it in this folder. Disk images and ISOs only.")
 	case errors.Is(err, upload.ErrNoRoom):
 		writeError(w, http.StatusBadRequest,
-			"There isn't room in this folder for "+base+". Clear some space and try again.")
+			"There isn't enough space in this folder for "+base+". Free some space and try again.")
 	default:
 		writeError(w, http.StatusInternalServerError, err.Error())
 	}

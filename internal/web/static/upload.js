@@ -130,7 +130,7 @@ async function finish(file, req, trouble) {
       [
         { label: "Archive the old one", value: "move-aside", primary: true },
         { label: "Replace it", value: "delete" },
-        { label: "Leave it alone", value: "" },
+        { label: "Cancel", value: "" },
       ]);
     if (choice) {
       send(file, choice);
@@ -142,7 +142,7 @@ async function finish(file, req, trouble) {
     return;
   }
 
-  record(file.name, "failed", trouble || answer.error || `Didn't work (${req.status}).`);
+  record(file.name, "failed", trouble || answer.error || `Failed (${req.status}).`);
   sendNext();
 }
 

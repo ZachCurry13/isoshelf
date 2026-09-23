@@ -6,6 +6,41 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.13] - 2026-09-22
+
+### Changed
+- **The words on the page.** A pass over every label, status, button and hint
+  the page shows, for the ordinary word rather than a homemade one. Statuses
+  now read *Update available*, *End of life*, *Download manually*,
+  *Unrecognized*, *Checksum mismatch*, *Check failed* and *Won't boot from
+  here*; each still explains itself when you hover over it, and the key under
+  the list is unchanged. In Settings, *Check for updates by itself* is now
+  *Check for updates automatically*, *Update the images by itself* is *Update
+  images automatically*, *Who can get in* is *Sign-in*, and *This isoshelf*
+  is *Version*.
+- "Room" is called space everywhere, a failed download says *Failed* rather
+  than *Didn't work*, and verifying a download is called verifying rather
+  than checking, which is what the update check is called.
+
+### Added
+- **The browser tab says which isoshelf it is.** Anything reachable from
+  another machine - a NAS, a container - is now "isoshelf server" in the tab
+  and on its sign-in page. Somebody running one on their desktop and one on
+  their NAS had two tabs called the same thing, and the one that can change a
+  whole household's drive is the one worth being able to pick out.
+
+### Fixed
+- **The Roadmap in the README was eleven releases out of date.** It still
+  listed server mode as "later" and where each folder's records live as
+  "next", both of which shipped in v0.4.0 and v0.4.2. It now says what is
+  actually next. A test counts the catalog for it, since "86 so far" is
+  exactly the sort of number nobody re-reads.
+- **The "By hand only" button could not be pressed.** When every update had
+  to be done by hand, the updates card showed a greyed-out button reading
+  *By hand only* - a label pretending to be a button. It is now a *Show them*
+  button that filters the list down to those images, which is what anyone
+  pressing it wanted.
+
 ## [v0.4.12] - 2026-09-22
 
 ### Fixed
