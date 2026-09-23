@@ -73,6 +73,46 @@ half-built, everything visible finished:
    whole point is that nothing in it is half-built. First thing after, ahead
    of [#1] and [#4]: it is what makes running the server worth it.
 
+19. **Default credentials, where the project publishes them** (the
+   maintainer, 2026-09-23: "if any of these systems have default passwords
+   like below, that should be noted - user demo: demo, user root: root").
+   That example is MX Linux's documented live-session default, so the case is
+   real: a rescue or live image you boot once a year is exactly the thing
+   whose login you will not remember.
+
+   **The rule, which matters more than the field.** Credentials come from the
+   project's own documentation and nowhere else - the same rule as checksums,
+   and for the same reason. Not a forum, not a wiki somebody else runs, not
+   memory. If a project doesn't document them, isoshelf says nothing; a
+   password isoshelf guessed at is worse than no password at all, because
+   somebody will type it into a machine they care about.
+
+   **It rots, so it carries its source.** Defaults change between releases.
+   The entry stores the address it was read from and the page shows it, so a
+   reader can check rather than trust. This is the "don't write down anything
+   that has to be maintained" rule bending as far as it goes: the fact is
+   worth having, so it has to come with the means to re-check it.
+
+   **Shape.** A `[entry.credentials]` table: `user`, `password`, `note` (for
+   "no password", "sudo without one", "asked on first boot"), and `source`.
+   Shown in the details panel, not on the row - it is worth having, not worth
+   a column. Worded as what it is: "the project documents these as the live
+   session's defaults", never as something isoshelf found out.
+
+   **Not started, and not startable from these sessions.** Filling it means
+   reading each project's own documentation, and every such site tested from
+   here is refused by the egress proxy (see CLAUDE.md). This belongs to the
+   weekly catalog job, which runs where the network works. Build the field
+   and the display when there is data to put in them; an empty field shows
+   nothing and helps nobody.
+
+20. **The badge said "x86" for a 32-bit image** *(done in v0.5.0.* The
+   catalog was right - all ten of its `x86` entries say "(32-bit)" in their
+   names - and the badge was drawing the raw value. It says the bit width
+   now. Kept here because the lesson generalises: **the catalog's own words
+   are identifiers, not labels.** Anything drawn from a catalog field should
+   go through a map to what a person calls it.)*
+
 **After v0.5.0, in this order:** item 18 (asking the server by entry), [#1]
 the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is

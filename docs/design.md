@@ -466,6 +466,27 @@ wrong image gets trusted. So the split is deliberate.
   anything itself, and nothing personal goes in it. That is how new download
   sources arrive: a person checks each one once.
 
+### Default credentials
+
+Some live and rescue images ship with a documented login - MX Linux's
+`demo`/`demo`, and others like it. An image you boot once a year is exactly
+the one whose password you will not remember, so it is worth carrying.
+
+The rule is the checksum rule, for the same reason: **the credentials come
+from the project's own documentation and nowhere else.** Not a forum, not
+somebody else's wiki, not from memory. A project that doesn't document them
+gets nothing written down. A password isoshelf guessed at is worse than no
+password, because somebody will type it into a machine they care about.
+
+They rot - defaults change between releases - so the entry keeps the address
+it was read from and the page shows it. That is the "don't write down
+anything that has to be maintained" rule bending as far as it will go: the
+fact earns its place, so it has to arrive with the means to re-check it.
+
+The page says what it is: *the project documents these as the live session's
+defaults*, never anything implying isoshelf discovered them. Not yet built;
+see TODO item 19 for the shape.
+
 ### Ventoy and other tools
 
 Naming Ventoy to say isoshelf works with it is fine, and worth doing: many

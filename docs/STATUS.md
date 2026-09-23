@@ -117,6 +117,20 @@ record of where things stand and what was decided.
   checklist is on the issue; steps 5, 6 and 9 are the ones most likely to
   fail.
 
+## Decided 2026-09-23 (default credentials)
+
+- The maintainer asked for documented default logins to be noted - "user
+  demo: demo, user root: root", which is MX Linux's live-session default, so
+  the case is real. **The rule is written down and the feature is not built**,
+  deliberately: filling the field means reading each project's own
+  documentation, and every such site tested from these sessions is refused by
+  the egress proxy. An empty field would show nothing; a filled-from-memory
+  one would put unverified passwords in front of people.
+- The rule, in `docs/design.md`: the project's own documentation and nowhere
+  else, the same as checksums. It rots, so the entry carries the address it
+  was read from and the page shows it. Shape and reasoning in TODO item 19;
+  the weekly catalog job is where it gets filled.
+
 ## Latest change: v0.5.1 (2026-09-23)
 
 - **"It would be awesome if I didn't have to log in every time."** Sessions
