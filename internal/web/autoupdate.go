@@ -63,6 +63,9 @@ func (s *Server) watchForUpdates(ctx context.Context) {
 			return
 		case <-tick.C:
 			s.autoUpdateIfDue()
+			// Same tick, because both are "has enough time passed?" and
+			// neither wants a clock of its own.
+			s.emptyArchiveIfDue()
 		}
 	}
 }

@@ -56,6 +56,11 @@ type settingsRequest struct {
 	// AutoUpdateEvery how often.
 	AutoUpdate      *bool  `json:"auto_update"`
 	AutoUpdateEvery string `json:"auto_update_every"`
+	// ArchiveAfter is how many days a file waits in the archive before
+	// isoshelf deletes it, or 0 for never. A pointer, because 0 is a real
+	// answer here - it is how the timer is turned off - and the zero value
+	// of an int can't tell "never" from "not mentioned".
+	ArchiveAfter *int `json:"archive_after"`
 	// Appearance fields, one at a time like the rest.
 	Theme        *string `json:"theme"`
 	HighContrast *bool   `json:"high_contrast"`
@@ -126,6 +131,9 @@ func (req settingsRequest) applyTo(current *settings.Settings) {
 	}
 	if req.AutoUpdateEvery != "" {
 		current.AutoUpdateEvery = settings.CleanEvery(req.AutoUpdateEvery)
+	}
+	if req.ArchiveAfter != nil {
+		current.ArchiveAfter = cleanArchiveAfter(*req.ArchiveAfter)
 	}
 	if req.Theme != nil {
 		current.Appearance.Theme = settings.CleanTheme(*req.Theme)

@@ -117,7 +117,27 @@ record of where things stand and what was decided.
   checklist is on the issue; steps 5, 6 and 9 are the ones most likely to
   fail.
 
-## Latest change (2026-09-23)
+## Latest change: v0.4.16 (2026-09-23)
+
+- **v0.4.16: the archive empties itself after 7, 30 or 90 days**, the item the
+  maintainer picked out of decision 15. It rides the auto-update tick, because
+  both questions are "has enough time passed?" and neither wants a clock.
+- **It is off unless a number is chosen, and that is not a default waiting to
+  be changed.** This is the only thing isoshelf does by itself that throws
+  away something somebody might still want: the archive is the undo for every
+  removal and every replaced file. A timer that started deleting on upgrade
+  would break the rule the whole program rests on.
+- Three cares, each with a test: every file is judged by its own `GoneAt`, not
+  by one sweep of the folder; a file isoshelf has no archive record for is
+  never deleted, however long it has sat there; and Settings says what the
+  next sweep would take, in files and bytes, before it takes it.
+- `update.RemoveArchived` is the hands - it deletes the names it was given and
+  refuses anything that isn't a plain filename. `EmptyRemoved` still clears
+  the lot, but only when somebody presses Empty.
+- Next: the look half of v0.5.0 (waiting on the maintainer's yes), the tools
+  list (page work, so it waits on the look too), and [#6].
+
+## v0.4.15 (2026-09-23)
 
 - **v0.4.15: messages shown while a dialog was open were drawn behind it.**
   The maintainer: "I clicked That's it and nothing happened." Reproduced in a
@@ -171,8 +191,7 @@ record of where things stand and what was decided.
     first scan, has a date; one that was there before isoshelf ever ran does
     not.
 - Next: the look half of v0.5.0, and the tools list (TODO item 16).
-
-## Latest change (2026-09-22)
+## v0.4.13 (2026-09-22)
 
 - **v0.4.13: the words on the page.** The maintainer read the page and said
   the wording "sounds so strange", and named two things: "1 to download by

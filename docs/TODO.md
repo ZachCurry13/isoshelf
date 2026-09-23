@@ -231,7 +231,12 @@ starts it thinking it is a form to fill in:
    the drive: `internal/state/mirror.go` copies each folder's state into the
    config folder, including the entry ids seen by each scan. What's missing is
    the verb, plus exporting the list to a file someone can keep elsewhere.
-12. **Empty the archive after so many days** (decision 15, and the
+12. ~~**Empty the archive after so many days**~~ *(done in v0.4.16.
+   `internal/web/archivetimer.go`; it rides the auto-update tick rather than
+   keeping a clock of its own. Every care listed below was built: off unless
+   a number is chosen, each file judged by its own `GoneAt`, nothing touched
+   that isoshelf has no archive record for, and Settings says what the next
+   sweep would take before it takes it.)* (decision 15, and the
    maintainer picked this one next, 2026-09-22). 7 / 30 / 90 days or never,
    in Settings. Care needed: the archive is the undo for every removal and
    every replaced file, so emptying it on a timer is the one thing here that

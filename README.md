@@ -316,6 +316,9 @@ while it happens; and an Added column in the list, sortable like the rest.<br>
 **v0.4.15: messages that could be seen.** *2026-09-23:* anything isoshelf had
 to say while a dialog was open was drawn behind it, so a refused action looked
 like a button that did nothing.<br>
+**v0.4.16: the archive can empty itself.** *2026-09-23:* after 7, 30 or 90
+days, off unless you choose a number, judging each file by its own age and
+saying what it will take before it takes it.<br>
 **Next (v0.5.0): the page, redone.** A restrained palette and a denser
 layout, keeping the sortable table on a desktop and cards on a phone. The
 wording half of it went out in v0.4.13; the look is what is left. Alongside
