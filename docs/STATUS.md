@@ -94,6 +94,24 @@ record of where things stand and what was decided.
    hold (#2), Make bootable (#3), signatures on images (#5), two downloads at
    once (#4), portable test (#7).
 
+## Latest change (2026-09-23)
+
+- **v0.4.14: downloads say where they come from.** The maintainer, watching
+  one run: "it would be nice to know if it was from the internet or from the
+  local server". Copying from another isoshelf shipped in v0.4.9 and was
+  invisible while it happened - the same "Downloading 40%" either way, for a
+  feature whose entire value is that one of those is much faster. The dock
+  now reads "... from the NAS" or "... from the internet", and the finished
+  list says "Added from the NAS".
+- Nothing new is discovered to do it: `fetch.Progress` has carried the URL
+  since the fetcher was written, and the web layer threw it away.
+  `sourceName` (`internal/web/peer.go`) turns it into the peer's own name,
+  falling back to its host, and anything else into "the internet".
+- It answers a question that had no answer before: whether a peer somebody
+  set up is being used at all. Short of watching a router, there was no way
+  to find that out.
+- Next: the look half of v0.5.0, and the tools list (TODO item 16).
+
 ## Latest change (2026-09-22)
 
 - **v0.4.13: the words on the page.** The maintainer read the page and said

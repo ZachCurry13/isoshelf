@@ -6,6 +6,18 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.14] - 2026-09-23
+
+### Added
+- **Downloads say where they are coming from.** While one runs, the bar now
+  reads "... from the NAS" or "... from the internet", and the finished list
+  says "Added from the NAS". Copying an image from another isoshelf on your
+  network instead of fetching it again over the wire arrived in v0.4.9, and
+  until now it was invisible while it happened: the same "Downloading 40%"
+  whether the bytes were crossing the room or an ocean. It is also how you
+  find out that a peer you set up is never actually being used, which short
+  of watching a router was not findable at all.
+
 ## [v0.4.13] - 2026-09-22
 
 ### Changed

@@ -47,7 +47,9 @@ type finishedJob struct {
 	// conflict marks the one failure that is really a question: a file of
 	// the same name is already there.
 	conflict bool
-	at       time.Time
+	// from is where it came from, in words. See run.from.
+	from string
+	at   time.Time
 }
 
 type downloadsJSON struct {
@@ -76,6 +78,10 @@ type jobJSON struct {
 	Stage string `json:"stage,omitempty"`
 	Done  int64  `json:"done,omitempty"`
 	Total int64  `json:"total,omitempty"`
+	// From names where the bytes came from, for the one question a download
+	// raises that isoshelf could always answer and never did: the other
+	// isoshelf on the network, or the internet.
+	From string `json:"from,omitempty"`
 }
 
 func (j *job) json() jobJSON {
@@ -91,6 +97,7 @@ func (s *Server) downloadsLocked() downloadsJSON {
 		// has the s.scanning slot to itself.
 		p := s.downloading.progress
 		j.Stage, j.Done, j.Total = string(p.Stage), p.Done, p.Total
+		j.From = s.downloading.from
 		out.Current = &j
 	}
 	for _, j := range s.queue {
@@ -99,7 +106,7 @@ func (s *Server) downloadsLocked() downloadsJSON {
 	for i := range s.finished {
 		f := &s.finished[i]
 		j := f.job.json()
-		j.Outcome, j.Message, j.Conflict = f.outcome, f.message, f.conflict
+		j.Outcome, j.Message, j.Conflict, j.From = f.outcome, f.message, f.conflict, f.from
 		at := f.at
 		j.At = &at
 		out.Finished = append(out.Finished, j)
@@ -181,10 +188,13 @@ func (s *Server) executeJob(ctx context.Context, j *job) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	f := finishedJob{job: *j, outcome: "done", message: note, at: s.cfg.Now()}
+	if s.downloading != nil {
+		f.from = s.downloading.from
+	}
 	switch {
 	case errors.Is(err, context.Canceled):
 		f.outcome = "stopped"
-		f.message = "Stopped. What downloaded so far is kept, so Resume picks up from there."
+		f.message = "Stopped. What has downloaded so far is kept, so Resume continues from there."
 	case errors.Is(err, update.ErrSameName):
 		// Not a failure so much as a question: the page offers the answers
 		// rather than leaving a message nobody can act on.

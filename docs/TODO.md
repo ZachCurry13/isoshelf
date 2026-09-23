@@ -224,7 +224,12 @@ starts it thinking it is a form to fill in:
      anything that has to be maintained" rule - so a test in `internal/docs`
      checks the two name the same tools, and no version or download is
      tracked for any of them.
-17. **Say where a download is coming from** (the maintainer, 2026-09-22:
+17. ~~**Say where a download is coming from**~~ *(done in v0.4.14.*
+   `sourceName` in `internal/web/peer.go` turns the URL a download is using
+   into the peer's own name or "the internet"; the dock shows it while bytes
+   move and on the finished list. `fetch.Progress` already carried the URL,
+   so nothing new is found out - it was only ever thrown away.)*
+   (the maintainer, 2026-09-22:
    "when it is downloading, it would be nice to know if it was from the
    internet or from the local server"). Copying from another isoshelf
    (v0.4.9) is invisible while it happens: the dock says "Downloading 40%"

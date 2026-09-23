@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"net/url"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/peer"
@@ -176,4 +178,50 @@ func withJar(base *http.Client, jar http.CookieJar) *http.Client {
 		out.Transport, out.CheckRedirect, out.Timeout = base.Transport, base.CheckRedirect, base.Timeout
 	}
 	return out
+}
+
+// sourceName says where a download's bytes are arriving from, in words a
+// person can act on: the name of the other isoshelf, or "the internet".
+//
+// Copying from another isoshelf (v0.4.9) is the one feature whose whole value
+// is that it is faster, and it was invisible while it happened - the dock read
+// "Downloading 40%" whether the bytes were crossing the room or an ocean. It
+// also means somebody can see that their peer setting is doing nothing, which
+// short of watching a router was not findable at all.
+//
+// The name is the peer's own, which is what the person typed or what that
+// isoshelf calls its folder; its host is the fallback, because an address
+// nobody recognizes is still better than no answer.
+func sourceName(rawURL string, near *peer.Client) string {
+	if rawURL == "" {
+		return ""
+	}
+	u, err := url.Parse(rawURL)
+	if err != nil || u.Host == "" {
+		return ""
+	}
+	if near != nil && sameHost(u, near.Address) {
+		if near.FolderName != "" {
+			return near.FolderName
+		}
+		return u.Host
+	}
+	return "the internet"
+}
+
+// sameHost reports whether a URL points at the address a peer was set up
+// with. The peer's address may or may not carry a scheme, so it is compared
+// as a host and port rather than as text.
+func sameHost(u *url.URL, address string) bool {
+	if address == "" {
+		return false
+	}
+	if !strings.Contains(address, "//") {
+		address = "http://" + address
+	}
+	other, err := url.Parse(address)
+	if err != nil {
+		return false
+	}
+	return strings.EqualFold(u.Host, other.Host)
 }
