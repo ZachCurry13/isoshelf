@@ -232,17 +232,7 @@ const SETTING_GROUPS = [
         words: "records state history stars where kept read-only folder drive",
         available: () => state && state.target,
         control: () => recordsControl(),
-        note: () => {
-          const r = (state && state.records) || {};
-          if (!r.file) return "";
-          const where = `Right now: ${r.file}`;
-          if (r.location === "folder") return where;
-          // Kept away from the folder, they are found by its path - which is
-          // the one thing about this choice that can surprise somebody later.
-          return where + " - kept away from the folder, they're found by its path, so the same " +
-            "drive at a different letter or mount point starts with nothing. Your images " +
-            "and the archive never move.";
-        },
+        note: () => recordsNote(),
       },
       {
         name: "isoshelf's own folder",

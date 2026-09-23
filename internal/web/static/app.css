@@ -525,6 +525,11 @@ td.added-cell { color: var(--muted); font-variant-numeric: tabular-nums; }
 .ask h2 { margin: 0 0 6px; font-size: 1.2143rem; }
 .ask p { margin: 0 0 16px; color: var(--muted); overflow-wrap: anywhere; }
 .ask-buttons { display: flex; flex: none; gap: 8px; flex-wrap: wrap; justify-content: flex-end; padding-top: 16px; }
+/* The two files a records move is between, one to a line: a path run into a
+   sentence is the part nobody reads. */
+.records-move { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; }
+.records-move dt { color: var(--muted); }
+.records-move dd { margin: 0; font-family: var(--mono); font-size: 0.8571rem; overflow-wrap: anywhere; }
 
 /* Logos, links menu and the filter bar */
 
@@ -893,7 +898,9 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
 /* A path needs room, but not more than the panel has: min() lets it give way
    on a phone rather than pushing the button off the edge. */
 .setting-controls .records-dir { flex: 1 1 min(320px, 100%); min-width: 0; }
-.setting-note { font-size: 0.8571rem; margin-top: 6px; }
+/* Notes carry paths, and a path has no spaces to break at: without this one
+   ran the Settings panel sideways. */
+.setting-note { font-size: 0.8571rem; margin-top: 6px; overflow-wrap: anywhere; }
 /* "Saved", beside the setting that just saved. Everything here saves itself
    the moment it changes, which looks like nothing happening at all. */
 .saved-mark {
@@ -902,6 +909,9 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
   color: var(--ok-fg); background: var(--ok-bg);
 }
 .saved-mark::before { content: "✓ "; }
+/* What moving a folder's records just did, above where they now are. */
+.records-done { color: var(--ok-fg); font-weight: 600; margin-bottom: 2px; overflow-wrap: anywhere; }
+.records-done::before { content: "✓ "; }
 @media (prefers-reduced-motion: no-preference) {
   .saved-mark { animation: saved-in 140ms ease-out; }
   @keyframes saved-in { from { opacity: 0; } to { opacity: 1; } }

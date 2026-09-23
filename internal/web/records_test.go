@@ -140,7 +140,8 @@ func TestEachFolderAnswersForItself(t *testing.T) {
 	}
 }
 
-// The complaints, in the words the page shows.
+// The complaints, in the words the page shows - from the question as well as
+// the move, so nobody is asked about a move that would then be refused.
 func TestRecordsRefusesWhatCannotWork(t *testing.T) {
 	dirs, target := testDirs(t), sampleDrive(t)
 	s := newServer(t, dirs, target)
@@ -155,12 +156,14 @@ func TestRecordsRefusesWhatCannotWork(t *testing.T) {
 		{"a relative path", map[string]any{"location": settings.Elsewhere, "dir": "records"}, "whole path"},
 		{"inside the folder itself", map[string]any{"location": settings.Elsewhere, "dir": filepath.Join(target, "records")}, "same drive"},
 	} {
-		rec := request(t, s, http.MethodPost, "/api/records", c.body)
-		if rec.Code != http.StatusBadRequest {
-			t.Errorf("%s: %d, want 400", c.why, rec.Code)
-		}
-		if !strings.Contains(rec.Body.String(), c.want) {
-			t.Errorf("%s: %s, want it to mention %q", c.why, rec.Body, c.want)
+		for _, path := range []string{"/api/records/plan", "/api/records"} {
+			rec := request(t, s, http.MethodPost, path, c.body)
+			if rec.Code != http.StatusBadRequest {
+				t.Errorf("%s %s: %d, want 400", path, c.why, rec.Code)
+			}
+			if !strings.Contains(rec.Body.String(), c.want) {
+				t.Errorf("%s %s: %s, want it to mention %q", path, c.why, rec.Body, c.want)
+			}
 		}
 	}
 }
