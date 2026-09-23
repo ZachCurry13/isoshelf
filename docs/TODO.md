@@ -9,8 +9,35 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**In flight: v0.5.0, the redesign.** Its wording half shipped as v0.4.13;
-what is left is the look. Everything else below the next heading has shipped.
+**In flight: v0.5.0.** Its wording half shipped as v0.4.13.
+
+**What v0.5.0 holds, decided 2026-09-23** (the maintainer: "I want to make
+sure we clean up everything we can before posting 0.5.0. Like it should look
+like it could actually be a 1.0.0"). **Polish and correctness only** - nothing
+half-built, everything visible finished:
+
+1. The look (this file's v0.5.0 section).
+2. **[#6]** - the Fedora entries stop pinning a release number. This is the
+   least 1.0 thing in the repository: when Fedora 45 ships, isoshelf keeps
+   offering 44 and nothing fails, which is the kind of quiet wrongness that
+   costs trust once somebody notices.
+3. Emptying the archive on a timer (item 12).
+4. The tools list (item 16).
+5. **Moving a folder's records asks first.** Changing "Where this folder's
+   records are kept" relocates data the instant the dropdown changes, with no
+   warning and no result afterwards. What it does is safe - the new file is
+   written before the old one is removed, a destination that already has
+   records is left alone, and the archive never moves - but the maintainer
+   had to ask what it did, which is the bug. Say what will move, from where
+   to where, before doing it, and say what happened after, including the
+   silent "both existed so I kept both".
+
+**After v0.5.0, in this order:** [#1] the command line, [#4] two downloads at
+once, [#2] older versions with a hold, [#3] make bootable (rename and extract
+only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
+accepted - decided 2026-09-23), then [#11] and [#12].
+
+Everything else below the next heading has shipped.
 
 **Which version is the latest is not written down here, on purpose.** It went
 stale three times in one evening. Ask GitHub: the releases page, or
@@ -356,6 +383,7 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
 [#4]: https://github.com/ZachCurry13/isoshelf/issues/4
 [#5]: https://github.com/ZachCurry13/isoshelf/issues/5
+[#6]: https://github.com/ZachCurry13/isoshelf/issues/6
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#11]: https://github.com/ZachCurry13/isoshelf/issues/11
 [#12]: https://github.com/ZachCurry13/isoshelf/issues/12

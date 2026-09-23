@@ -94,6 +94,29 @@ record of where things stand and what was decided.
    hold (#2), Make bootable (#3), signatures on images (#5), two downloads at
    once (#4), portable test (#7).
 
+## Decided 2026-09-23 (the maintainer, clearing the issue list)
+
+- **v0.5.0 is polish and correctness only**: the look, [#6] (Fedora stops
+  pinning a release), emptying the archive on a timer, the tools list, and a
+  confirmation before a folder's records move. Their words: "it should look
+  like it could actually be a 1.0.0". Nothing half-built goes in.
+- **[#5], OpenPGP signatures: build it, and accept the second dependency**
+  (`github.com/ProtonMail/go-crypto`). The one-dependency rule has been worth
+  defending - `golang.org/x/term` was turned down for password echo a few days
+  ago - but a checksum proves nothing if the checksum file itself was
+  replaced, and "only from the project's own HTTPS site" is a rule about where
+  a file came from, not about whether it is genuine. A failed signature must
+  block placement exactly like a mismatch does.
+- **[#3], make bootable: rename and extract only.** A ChromeOS-family `.bin`
+  renamed to `.img`, and `.img.xz`/`.zip`/`.gz` extracted - both small,
+  standard library, original kept until the result is checked. **Not**
+  `.bin`/`.cue` to `.iso`: raw sectors and multi-track cue sheets, where being
+  subtly wrong gives a file that looks finished and won't boot. isoshelf says
+  what it can't fix and names `bchunk` instead.
+- **[#7] is the maintainer's to do** - it needs a real USB stick. A nine-step
+  checklist is on the issue; steps 5, 6 and 9 are the ones most likely to
+  fail.
+
 ## Latest change (2026-09-23)
 
 - **v0.4.14: downloads say where they come from.** The maintainer, watching
@@ -492,3 +515,7 @@ record of where things stand and what was decided.
 
 [#13]: https://github.com/ZachCurry13/isoshelf/pull/13
 [#14]: https://github.com/ZachCurry13/isoshelf/pull/14
+[#3]: https://github.com/ZachCurry13/isoshelf/issues/3
+[#5]: https://github.com/ZachCurry13/isoshelf/issues/5
+[#6]: https://github.com/ZachCurry13/isoshelf/issues/6
+[#7]: https://github.com/ZachCurry13/isoshelf/issues/7
