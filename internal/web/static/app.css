@@ -337,6 +337,10 @@ tbody tr:hover td { background: var(--surface-2); }
 tbody tr:last-child td { border-bottom: none; }
 
 .col-star { width: 36px; padding-right: 0; }
+/* Left to itself the name column took most of a wide window, and short
+   names sat in a sea of nothing. A share, not a fixed width, so a narrow
+   window still gives names room; long ones wrap at their separators. */
+#col-image { width: 32%; }
 td.replace { text-align: center; }
 
 .name { font-weight: 550; }
@@ -810,7 +814,18 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
   border-radius: 99px; background: var(--accent); color: var(--accent-text);
   font-size: 0.7857rem; font-weight: 700; text-align: center;
 }
-.filter-items { min-width: 230px; padding: 10px; gap: 10px; }
+/* The filters scroll and the footer stays put, so a long list on a short
+   screen shows that there is more of it, and Done is always in reach. */
+.filter-panel { display: flex; flex-direction: column; min-width: 230px; padding: 0; gap: 0; }
+.filter-panel.pinned { overflow: hidden; }
+.filter-items {
+  display: grid; gap: 10px; padding: 10px;
+  min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+}
+.filter-foot {
+  flex: none; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 10px; border-top: 1px solid var(--border);
+}
 .filter-group { display: grid; gap: 2px; }
 .filter-group + .filter-group { border-top: 1px solid var(--border); padding-top: 8px; }
 .filter-title {
@@ -839,7 +854,9 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
   display: flex; flex-wrap: wrap; gap: 4px;
   margin-top: 3px; font-size: 0.8571rem; color: var(--muted);
 }
-.under .file { font-family: var(--mono); font-size: 0.8214rem; overflow-wrap: anywhere; }
+/* No minimum width here: the one .file carries for tables left a gap after
+   every short file name, before its size. */
+.under .file { font-family: var(--mono); font-size: 0.8214rem; overflow-wrap: anywhere; min-width: 0; }
 .version-cell .latest-new { font-weight: 600; }
 
 /* The details panel: everything about one image, beside the list. */

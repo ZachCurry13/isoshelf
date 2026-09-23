@@ -66,27 +66,30 @@ function renderTodo() {
     const left = updates.length - waiting;
     const bytes = updates.reduce((sum, it) => sum + (it.size || 0), 0);
     const all = updates.length + byHand;
-    cards.push(todoCard({
-      tone: "s-update",
-      title: all === 1 ? "1 update available" : `${all} updates available`,
-      detail: bytes ? `about ${formatBytes(bytes)} to download` : "",
-      note: [
-        byHand ? `${byHand} to download manually` : "",
-        waiting ? `${waiting} already in the downloads` : "",
-      ].filter(Boolean).join(" · "),
-      // A button that can't be pressed is not a label. When every update has
-      // to be done by the user, the useful thing is to show them which ones
-      // - which is what somebody pressing it was hoping for.
-      actions: left === 0 && !updates.length
-        ? [el("button", {
-            type: "button", class: "btn",
-            onclick: () => showOnly("manual"),
-          }, "Show them")]
-        : [el("button", {
+    // When every update is one the user has to fetch, the card says that job
+    // rather than "updates available" with a footnote, and its button shows
+    // exactly those images. A button that can't be pressed is not a label.
+    cards.push(!updates.length
+      ? todoCard({
+          tone: "s-update",
+          title: byHand === 1 ? "1 update to download yourself" : `${byHand} updates to download yourself`,
+          note: byHand === 1 ? "isoshelf can't download this one for you." : "isoshelf can't download these for you.",
+          actions: [el("button", { type: "button", class: "btn", onclick: showUpdates },
+            byHand === 1 ? "Show it" : "Show them")],
+        })
+      : todoCard({
+          tone: "s-update",
+          title: all === 1 ? "1 update available" : `${all} updates available`,
+          detail: bytes ? `about ${formatBytes(bytes)} to download` : "",
+          note: [
+            byHand ? `${byHand} to download yourself` : "",
+            waiting ? `${waiting} already in the downloads` : "",
+          ].filter(Boolean).join(" · "),
+          actions: [el("button", {
             type: "button", class: "btn primary", disabled: left === 0,
             onclick: updateAll,
           }, left === 0 ? "All queued" : left === all ? "Update all" : `Update ${left}`)],
-    }));
+        }));
   }
 
   const older = items.filter((it) => it.older && it.path);
@@ -175,7 +178,21 @@ function jumpTo(id) {
 
 // showOnly filters the list down to one status, as a chip you can remove.
 function showOnly(status) {
-  view.status = status;
+  showJust(() => { view.status = status; });
+}
+
+// showUpdates is the same for the updates card. It only offers this when
+// isoshelf can download none of them, so every update is one of those.
+function showUpdates() {
+  showJust(() => { view.show.updates = true; });
+}
+
+// showJust is what "Show them" on a card does: exactly what the card
+// counted. Any other filter goes first - one left over would show fewer
+// than the card said, which reads as the card being wrong.
+function showJust(set) {
+  resetFilters();
+  set();
   saveView();
   renderFilters();
   renderRows();
@@ -246,7 +263,8 @@ function renderFilters() {
     ? el("div", { class: "filter-group" }, el("div", { class: "filter-title" }, title), boxes)
     : null;
 
-  box.append(
+  // A group with nothing in it is null, and append would write that as a word.
+  box.append(...[
     group("Show", SHOW.filter(([key]) => {
       if (key === "updates") return has((it) => it.status === "update available");
       if (key === "favorites") return has((it) => it.entry && (state.tracks[it.entry] || {}).starred);
@@ -262,12 +280,14 @@ function renderFilters() {
     group("Architecture", ARCHES.filter(([arch]) => has((it) => it.arch === arch))
       .map(([arch, label]) => filterBox(label, view.arches.includes(arch), (on) => {
         view.arches = on ? [...view.arches, arch] : view.arches.filter((a) => a !== arch);
-      }))));
+      }))),
+  ].filter(Boolean));
 
   const count = activeFilters().length;
   const badge = $("filter-count");
   badge.hidden = count === 0;
   badge.textContent = count;
+  $("filter-clear").disabled = count === 0;
   renderChips();
 }
 
@@ -311,7 +331,9 @@ function renderChips() {
   const box = $("chips");
   const chips = activeFilters();
   box.hidden = chips.length === 0;
-  box.replaceChildren(
+  // Nothing may be handed to replaceChildren in place of a node: unlike el,
+  // it doesn't skip a null but writes the word "null" on the page.
+  box.replaceChildren(...[
     ...chips.map((chip) => el("button", {
       type: "button", class: "chip-off", title: "Stop filtering by this",
       onclick: () => {
@@ -323,18 +345,23 @@ function renderChips() {
     }, chip.label, el("span", { class: "x", "aria-hidden": "true" }, "✕"))),
     chips.length > 1
       ? el("button", { type: "button", class: "linkish", onclick: clearFilters }, "Clear all")
-      : null);
+      : null,
+  ].filter(Boolean));
 }
 
 function clearFilters() {
+  resetFilters();
+  saveView();
+  renderFilters();
+  renderRows();
+}
+
+function resetFilters() {
   view.status = "";
   view.kinds = [];
   view.arches = [];
   for (const [key] of SHOW) view.show[key] = false;
   $("search").value = "";
-  saveView();
-  renderFilters();
-  renderRows();
 }
 
 function renderRows() {
@@ -656,20 +683,22 @@ function renderRow(item) {
   // The file, its size and when it arrived go under the name: one line each
   // instead of four columns.
   const under = [];
+  let added = null;
   if (item.path) {
     under.push(el("span", { class: "file", title: item.path }, breakable(item.path)));
     if (item.size) under.push(el("span", {}, formatBytes(item.size)));
     // On a phone there are no columns, so the date goes here instead; the
-     // stylesheet shows whichever of the two fits the width. Saying it twice
-     // at once would be worse than not saying it at all.
+    // stylesheet shows whichever of the two fits the width. Saying it twice
+    // at once would be worse than not saying it at all. The "·" before it is
+    // part of it, so where it is hidden no "·" is left hanging at the end.
     if (item.added) {
-      under.push(el("span", { class: "added-inline", title: new Date(item.added).toLocaleString() },
-        `${item.placed ? "Updated" : "Added"} ${shortDate(item.added)}`));
+      added = el("span", { class: "added-inline", title: new Date(item.added).toLocaleString() },
+        `· ${item.placed ? "Updated" : "Added"} ${shortDate(item.added)}`);
     }
   } else {
     under.push(el("span", { class: "muted" }, "Not in this folder"));
   }
-  imageCell.querySelector(".image-text").append(el("div", { class: "under" }, join(under, " · ")));
+  imageCell.querySelector(".image-text").append(el("div", { class: "under" }, join(under, " · "), added));
 
   // "22.04 → 24.04" says more in one column than two ever did.
   const newer = item.latest && item.status === "update available";

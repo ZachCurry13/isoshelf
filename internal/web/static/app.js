@@ -385,6 +385,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   wireMenu($("filter"));
+  $("filter-done").addEventListener("click", () => { $("filter").open = false; });
+  $("filter-clear").addEventListener("click", clearFilters);
   $("search").addEventListener("input", () => { renderChips(); renderRows(); });
   $("details-close").addEventListener("click", closeDetails);
   $("what-mean").addEventListener("click", showMeanings);
