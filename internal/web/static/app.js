@@ -248,6 +248,11 @@ function render() {
   const busy = scanning();
   const engaged = busy || downloading() || uploading();
   $("version").textContent = state.version;
+  // The tab's name. Somebody running one isoshelf on their desktop and
+  // another on their NAS has two tabs otherwise called the same thing, and
+  // the one that can change a whole household's drive is the one worth
+  // being able to pick out.
+  document.title = state.server ? "isoshelf server" : "isoshelf";
   // The look is settings.js's business, and so is the panel itself.
   applyAppearance(state.appearance);
   renderSettings();

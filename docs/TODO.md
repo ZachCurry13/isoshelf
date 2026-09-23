@@ -202,6 +202,31 @@ starts it thinking it is a form to fill in:
    an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
    once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
    drive ([#7]) - **and the redesign below**.
+16. **The tools that go with the images** (the maintainer, 2026-09-22:
+   "whatever happened to the author's suggested tools - Ventoy, balenaEtcher,
+   Rufus. I really like those tools and people who have isoshelf would too").
+   It was talked about and never written down anywhere, which is why it went
+   missing; it is written down now. A short, hand-kept list of the tools
+   somebody with a shelf of images actually needs - one that writes a drive,
+   one that boots many images from one drive, one that checks a disc - each a
+   line saying what it is for and a link to its own site.
+   - `docs/design.md` already has the rule this has to follow: plain text and
+     a link, never anybody's logo, and "independent project, not affiliated"
+     next to it. No downloads, no versions, no update checks: the moment
+     isoshelf tracks a tool's version it owns that tool's release notes
+     forever, and this is meant to be four sentences that never go stale.
+   - Where: its own small section, not a card in the way of the list. Decide
+     whether it sits on the page or only in the README.
+17. **Point it at an isoshelf, not at a share** (the maintainer, 2026-09-22:
+   "on the non-server version it says the folder isoshelf is watching - I'd
+   rather have it ask for the server address rather than the shared folder").
+   Today a desktop pointed at a NAS means mounting the share and picking a
+   path; the address of the isoshelf already running there is the thing the
+   person actually knows. **Needs a decision before any code** - see the
+   question in STATUS.md - because "connect to that isoshelf" can mean the
+   desktop managing the NAS's folder over HTTP, or just the folder chooser
+   offering the isoshelfs it can see. The second is close to what
+   `internal/peer` already does; the first is a new way for isoshelf to work.
 
 ## v0.5.0: the page, redone
 

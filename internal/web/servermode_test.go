@@ -164,3 +164,31 @@ func TestForbiddenPageSaysWhereTheLinkIs(t *testing.T) {
 		t.Error("the refusal page contains the token")
 	}
 }
+
+// Somebody running one isoshelf on their desktop and another on their NAS has
+// two browser tabs that would otherwise be called the same thing. The one
+// reachable from other machines says so - on the login page, which is the
+// first thing a server shows, and in the state the page names its tab from.
+func TestTheServerSaysSoInTheTab(t *testing.T) {
+	server, desktop := serverMode(t, true), serverMode(t, false)
+	if got, want := server.pageName(), "isoshelf server"; got != want {
+		t.Errorf("server tab is %q, want %q", got, want)
+	}
+	if got, want := desktop.pageName(), "isoshelf"; got != want {
+		t.Errorf("desktop tab is %q, want %q", got, want)
+	}
+
+	rec := httptest.NewRecorder()
+	server.writeLoginPage(rec, nil, "", http.StatusOK)
+	if !strings.Contains(rec.Body.String(), "<title>Set up isoshelf server</title>") {
+		t.Error("the setup page a server shows doesn't name itself a server")
+	}
+
+	if body := ask(t, server, http.MethodGet, "/api/state", nil).Body.String(); !strings.Contains(body, `"server":true`) {
+		t.Error("the page state doesn't say this is a server")
+	}
+	// A desktop answers only to localhost, so ask it there.
+	if body := ask(t, desktop, http.MethodGet, "http://127.0.0.1/api/state", nil).Body.String(); !strings.Contains(body, `"server":false`) {
+		t.Error("a desktop isoshelf claims to be a server")
+	}
+}

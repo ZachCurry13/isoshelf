@@ -113,6 +113,15 @@ record of where things stand and what was decided.
     two versions of every string across ten files is a cost with no end, and
     the explanations still live in the hover and the second line, which is
     where they serve both readers.
+  - Also in v0.4.13: the browser tab says **isoshelf server** on anything
+    reachable from another machine, so a NAS tab and a desktop tab are not
+    two tabs with the same name.
+  - **The README's Roadmap was eleven releases out of date** and the
+    maintainer caught it, not me: it listed server mode under "Later" (shipped
+    v0.4.0) and where each folder's records live under "Next" (v0.4.2). Fixed,
+    and CLAUDE.md now names those four lines as the thing to re-read at every
+    release, because no test can tell that a plan has come true. A test does
+    count the catalog, which is the part that can be checked.
   - This is the wording half of v0.5.0. The look is what is left.
 
 - **v0.4.12: sign out never worked, and the reason was already written down

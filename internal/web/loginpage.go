@@ -57,7 +57,7 @@ var loginPage = template.Must(template.New("login").Parse(`<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{if .First}}Set up isoshelf{{else}}isoshelf{{end}}</title>
+<title>{{if .First}}Set up {{.Name}}{{else}}{{.Name}}{{end}}</title>
 <style>{{.Style}}</style>
 </head><body>
 <main>
@@ -95,7 +95,11 @@ var loginPage = template.Must(template.New("login").Parse(`<!doctype html>
 `))
 
 type loginData struct {
-	Style       template.CSS
+	Style template.CSS
+	// Name is what this isoshelf is called in the tab: "isoshelf server" on
+	// anything reachable from another machine, so a NAS tab and a desktop
+	// tab don't look alike.
+	Name        string
 	First       bool
 	Problem     string
 	MinPassword int
@@ -118,9 +122,19 @@ func (s *Server) writeLoginPage(w http.ResponseWriter, have *auth.Account, probl
 	w.WriteHeader(code)
 	loginPage.Execute(w, loginData{
 		Style:       template.CSS(loginStyle),
+		Name:        s.pageName(),
 		First:       have == nil,
 		Problem:     problem,
 		MinPassword: auth.MinPassword,
 		FormToken:   token,
 	})
+}
+
+// pageName is what the browser tab says: the server version is worth telling
+// apart from the one on somebody's own machine.
+func (s *Server) pageName() string {
+	if s.cfg.AnyHost {
+		return "isoshelf server"
+	}
+	return "isoshelf"
 }

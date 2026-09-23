@@ -15,8 +15,13 @@ import (
 
 // stateJSON is everything the page shows.
 type stateJSON struct {
-	Version   string                 `json:"version"`
-	Portable  bool                   `json:"portable"`
+	Version  string `json:"version"`
+	Portable bool   `json:"portable"`
+	// Server is true when isoshelf answers to more than localhost - a NAS,
+	// a container, anything somebody opens from another machine. The page
+	// uses it to name the browser tab, because somebody running one on their
+	// desktop and one on their NAS has two tabs called the same thing.
+	Server    bool                   `json:"server"`
 	Target    string                 `json:"target"`
 	Profile   string                 `json:"profile"`
 	UpdatedAt *time.Time             `json:"updated_at,omitempty"`
@@ -194,6 +199,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 	out := stateJSON{
 		Version:         s.cfg.Version,
 		Portable:        s.cfg.Dirs.Portable,
+		Server:          s.cfg.AnyHost,
 		Target:          s.target,
 		Error:           s.lastErr,
 		Warnings:        nonNil(s.warningsLocked()),
