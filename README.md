@@ -324,6 +324,10 @@ layout - a status is a coloured mark beside plain words rather than one of ten
 filled chips, surfaces are flat, and the list reads as a proper table. The
 sortable table stays on a desktop, cards on a phone, and higher contrast puts
 every filled chip back.<br>
+**v0.5.1: logins that survive a restart.** *2026-09-23:* a signing key
+isoshelf couldn't read or write meant everyone was signed out at every
+restart, and nothing on the page said why. It says so now, and names the
+file.<br>
 **Next:** a short list of the other tools worth having beside a shelf of
 images, and [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6).<br>

@@ -366,3 +366,52 @@ func TestPostingToLoginWhileSignedInIsALogin(t *testing.T) {
 		t.Errorf("signing in while already signed in was refused: %d %s", out.Code, out.Body)
 	}
 }
+
+// A key that could not be saved means everyone is signed out at every
+// restart - on a NAS, every update and every reboot. The page has to say so:
+// this was silent, and "why do I have to log in every time?" had no answer on
+// the screen. Reported by the maintainer.
+func TestThePageSaysWhenLoginsWontSurviveARestart(t *testing.T) {
+	dirs := testDirs(t)
+	s := newServer(t, dirs, "")
+	if err := auth.Set(dirs.Config, "zach", "a good long password"); err != nil {
+		t.Fatal(err)
+	}
+
+	// Saved: nothing to warn about.
+	s.mu.Lock()
+	s.keyIsSaved = true
+	quiet := s.sessionKeyNote()
+	s.mu.Unlock()
+	if quiet != "" {
+		t.Errorf("a key that saved fine still warns: %s", quiet)
+	}
+
+	// Not saved: the page says it, and says where and what to do.
+	s.mu.Lock()
+	s.keyIsSaved = false
+	note := s.sessionKeyNote()
+	warnings := s.warningsLocked()
+	s.mu.Unlock()
+	for _, want := range []string{"signed out", "restarts", dirs.Config, auth.KeyFileName} {
+		if !strings.Contains(note, want) {
+			t.Errorf("the warning doesn't mention %q:\n  %s", want, note)
+		}
+	}
+	if len(warnings) == 0 || warnings[0] != note {
+		t.Errorf("the warning doesn't reach the page's own warnings: %v", warnings)
+	}
+}
+
+// With nobody logged in there is nobody to sign out, so the warning would be
+// noise on a desktop that never asked for a password.
+func TestNoLoginMeansNoWarningAboutLosingIt(t *testing.T) {
+	s := newServer(t, testDirs(t), "")
+	s.mu.Lock()
+	s.keyIsSaved = false
+	note := s.sessionKeyNote()
+	s.mu.Unlock()
+	if note != "" {
+		t.Errorf("warned about losing a login nobody has set: %s", note)
+	}
+}

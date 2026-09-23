@@ -125,9 +125,12 @@ func TestCheckNew(t *testing.T) {
 
 func TestSessions(t *testing.T) {
 	dir := t.TempDir()
-	key, err := LoadKey(dir)
+	key, saved, err := LoadKey(dir)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !saved {
+		t.Fatal("a writable folder should have kept the key")
 	}
 	now := time.Now()
 	cookie := key.Mint("zach", now)
@@ -145,7 +148,7 @@ func TestSessions(t *testing.T) {
 
 	// A restart keeps everyone logged in: the key is on disk, so the same
 	// cookie still checks out.
-	again, err := LoadKey(dir)
+	again, _, err := LoadKey(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -157,11 +160,45 @@ func TestSessions(t *testing.T) {
 	if err := Forget(dir); err != nil {
 		t.Fatal(err)
 	}
-	fresh, err := LoadKey(dir)
+	fresh, _, err := LoadKey(dir)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if fresh.Valid(cookie, now) {
 		t.Error("signing out everywhere left the old sessions working")
+	}
+}
+
+// A folder isoshelf can't write is not fatal - a key in memory still signs
+// sessions - but it has to say so, because it means everyone is thrown out at
+// every restart, and on a NAS that is every update and every reboot. That
+// used to be silent, which is how "why do I have to log in every time?"
+// became a question with no answer on the page.
+func TestAKeyThatCouldNotBeSavedSaysSo(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("mode bits don't keep a folder from being written on Windows")
+	}
+	if os.Geteuid() == 0 {
+		t.Skip("root writes to a folder whatever its mode says")
+	}
+	dir := filepath.Join(t.TempDir(), "locked")
+	if err := os.Mkdir(dir, 0o500); err != nil { // read and enter, not write
+		t.Fatal(err)
+	}
+
+	key, saved, err := LoadKey(dir)
+	if err != nil {
+		t.Fatalf("a folder it can't write should not stop isoshelf: %v", err)
+	}
+	if saved {
+		t.Error("LoadKey says it saved the key, into a folder it cannot write")
+	}
+	// The key still works; it just won't outlive the process.
+	now := time.Now()
+	if cookie := key.Mint("zach", now); !key.Valid(cookie, now) {
+		t.Error("the key held in memory doesn't sign a usable session")
+	}
+	if _, err := os.Stat(filepath.Join(dir, KeyFileName)); err == nil {
+		t.Error("a key file appeared in a folder that should not be writable")
 	}
 }

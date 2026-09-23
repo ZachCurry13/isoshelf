@@ -195,10 +195,17 @@ type rememberedJSON struct {
 // warningsLocked is what the page should say, including the one line about a
 // download isoshelf started by itself. s.mu must be held.
 func (s *Server) warningsLocked() []string {
-	if s.autoNote == "" {
-		return s.warnings
+	out := s.warnings
+	if s.autoNote != "" {
+		out = append([]string{s.autoNote}, out...)
 	}
-	return append([]string{s.autoNote}, s.warnings...)
+	// Said every time the page loads, not once at startup: somebody being
+	// signed out repeatedly needs the reason in front of them, and this one
+	// stays true until the folder's permissions are fixed.
+	if note := s.sessionKeyNote(); note != "" {
+		out = append([]string{note}, out...)
+	}
+	return out
 }
 
 // stateLocked builds the page state; s.mu must be held.

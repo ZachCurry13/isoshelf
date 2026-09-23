@@ -6,6 +6,23 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.5.1] - 2026-09-23
+
+### Fixed
+- **Being asked to log in again after every restart, with no reason given.**
+  Logins are signed with a key kept in isoshelf's own folder, and a key
+  isoshelf can't read or write lives only in memory - so every restart throws
+  every session away. On a NAS that is every app update and every reboot.
+  - The commonest cause is a `session-key` left behind by a run under a
+    different user, which happens when an app's user changes between
+    versions. The password itself still saves, so the symptom is only that
+    you are signed out constantly.
+  - isoshelf knew and never said: the write error was discarded, the caller
+    discarded it again, and the only hint was a line on stderr that nobody
+    reads on a NAS. The page now says it, names the file, and says what to
+    put right. Sessions still last 30 days when the key is where it should
+    be.
+
 ## [v0.5.0] - 2026-09-23
 
 ### Changed

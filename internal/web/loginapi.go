@@ -93,9 +93,9 @@ func (s *Server) signOutEverywhere(w http.ResponseWriter, r *http.Request) {
 // old one stops being worth anything.
 func (s *Server) rotateSessionKey() {
 	auth.Forget(s.cfg.Dirs.Config)
-	if key, err := auth.LoadKey(s.cfg.Dirs.Config); err == nil {
+	if key, saved, err := auth.LoadKey(s.cfg.Dirs.Config); err == nil {
 		s.mu.Lock()
-		s.sessions = key
+		s.sessions, s.keyIsSaved = key, saved
 		s.mu.Unlock()
 	}
 }

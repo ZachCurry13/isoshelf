@@ -39,29 +39,41 @@ type Key []byte
 
 // LoadKey reads the signing key, making one if there isn't one yet. A folder
 // it can't write to isn't fatal: a key held only in memory still works, it
-// just means a restart asks for the password again, and saying so is better
-// than refusing to start.
-func LoadKey(dir string) (Key, error) {
+// just means a restart asks for the password again.
+//
+// Saved says whether the key reached disk, and it matters more than it looks.
+// A key held only in memory signs everyone out at every restart - on a NAS,
+// that is every app update and every reboot - and the person it happens to
+// sees a login box and no reason. This used to be silent: the error was
+// thrown away here, the caller discarded it too, and the only hint was a line
+// on stderr that nobody reads on a NAS. So the answer is returned rather than
+// swallowed, and the page says it.
+func LoadKey(dir string) (key Key, saved bool, err error) {
 	if dir == "" {
-		return newKey()
+		key, err = newKey()
+		return key, false, err
 	}
 	path := filepath.Join(dir, KeyFileName)
 	if raw, err := os.ReadFile(path); err == nil {
 		if key, err := base64.StdEncoding.DecodeString(strings.TrimSpace(string(raw))); err == nil && len(key) >= 32 {
-			return key, nil
+			return key, true, nil
 		}
 		// Unreadable or too short to be a key: replaced rather than used.
 	} else if !errors.Is(err, fs.ErrNotExist) {
-		return newKey() // can't read it; carry on with one in memory
+		key, err := newKey()
+		return key, false, err // can't read it; carry on with one in memory
 	}
-	key, err := newKey()
+	key, err = newKey()
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
-	if err := os.MkdirAll(dir, 0o755); err == nil {
-		writeSecret(path, []byte(base64.StdEncoding.EncodeToString(key)+"\n"))
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return key, false, nil
 	}
-	return key, nil
+	if err := writeSecret(path, []byte(base64.StdEncoding.EncodeToString(key)+"\n")); err != nil {
+		return key, false, nil
+	}
+	return key, true, nil
 }
 
 // Forget throws the signing key away, so every session signed with it stops

@@ -117,7 +117,28 @@ record of where things stand and what was decided.
   checklist is on the issue; steps 5, 6 and 9 are the ones most likely to
   fail.
 
-## Latest change: v0.5.0 (2026-09-23)
+## Latest change: v0.5.1 (2026-09-23)
+
+- **"It would be awesome if I didn't have to log in every time."** Sessions
+  already last 30 days; what was broken is that the key they are signed with
+  was not surviving a restart, and nothing said so.
+- `auth.LoadKey` now returns whether the key reached disk. It was being
+  thrown away in three places at once: the write error inside `LoadKey`, the
+  caller's `s.sessions, _ =`, and `writeSecret`'s own return. The only hint
+  was a line on stderr, which nobody reads on a NAS.
+- **The shape that matters is not an unwritable folder** - that stops the
+  password saving too, so the symptom would be being asked to *set* one. It
+  is a `session-key` left behind by a run under a different user, which is
+  what happens when an app's user changes between versions. The account still
+  saves; only the sessions die. Reproduced exactly that way, as a non-root
+  user, before the fix and after.
+- The page says it now, names the file, and says what to put right. Tests
+  cover both halves, and the auth one skips under root and was run as an
+  unprivileged user to prove it passes.
+- Next: default credentials in the catalog (the maintainer, 2026-09-23), the
+  tools list (TODO 16), and [#6].
+
+## v0.5.0 (2026-09-23)
 
 - **v0.5.0: the page redone.** The maintainer approved the direction from
   screenshots of the real page with a candidate stylesheet layered over it -
