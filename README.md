@@ -313,6 +313,9 @@ for a greyed-out button that was really a label.<br>
 "from your isoshelf server" or "from the internet" while a download runs and
 after it finishes, so copying from another isoshelf on your network is visible
 while it happens; and an Added column in the list, sortable like the rest.<br>
+**v0.4.15: messages that could be seen.** *2026-09-23:* anything isoshelf had
+to say while a dialog was open was drawn behind it, so a refused action looked
+like a button that did nothing.<br>
 **Next (v0.5.0): the page, redone.** A restrained palette and a denser
 layout, keeping the sortable table on a desktop and cards on a phone. The
 wording half of it went out in v0.4.13; the look is what is left. Alongside

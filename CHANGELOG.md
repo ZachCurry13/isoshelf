@@ -6,6 +6,25 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.15] - 2026-09-23
+
+### Fixed
+- **Messages shown while a dialog was open were drawn behind it.** Reported
+  as "I clicked *That's it* and nothing happened" while identifying a file,
+  and that is exactly what it looked like: a dialog opened with `showModal()`
+  is drawn in the browser's top layer, above the whole page, so a message
+  written into the page underneath could not be seen at all. Every refusal
+  raised from inside the identify dialog, the checklist, the folder chooser
+  or any question isoshelf asks was invisible - including "a scan is running,
+  try again in a moment", which on a NAS that checks by itself is the one you
+  would hit most. Such messages now appear inside the dialog as well, and go
+  away when it closes.
+- **Confirming what a file already is said it had changed.** Pressing a guess
+  for the image isoshelf had already settled on answered "X is now treated as
+  Y" and started a fresh online check that could only give the same answer,
+  which is its own kind of nothing happening. It now says it was already that
+  and asks nobody anything.
+
 ## [v0.4.14] - 2026-09-23
 
 ### Added
@@ -26,7 +45,6 @@ last number rises for improvements to what it already does, like v0.3.3.
     Saying nothing is better than guessing at a date, and the first scan of a
     folder deliberately records no arrival time: every file is new to
     isoshelf then, which says nothing about when it arrived.
-
 ## [v0.4.13] - 2026-09-22
 
 ### Changed

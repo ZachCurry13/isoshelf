@@ -105,3 +105,31 @@ func TestIdentifyRefusals(t *testing.T) {
 		}
 	}
 }
+
+// Confirming the answer a file already has is not a mistake - it is what
+// pressing the same guess twice does. Saying "is now treated as" for it is
+// how a no-op comes to read as something having happened, and it also used
+// to start an online check that could only give the same answer back.
+func TestConfirmingAnIdentityAFileAlreadyHasSaysNothingChanged(t *testing.T) {
+	dirs, target := testDirs(t), sampleDrive(t)
+	s := newServer(t, dirs, target)
+	request(t, s, http.MethodPost, "/api/scan", nil)
+	waitIdle(t, s)
+
+	const file = "Windows.iso"
+	first := decode[map[string]any](t, request(t, s, http.MethodPost, "/api/identify",
+		map[string]any{"path": file, "entry": "netbootxyz", "version": ""}))
+	if msg, _ := first["message"].(string); !strings.Contains(msg, "is now treated as") {
+		t.Fatalf("the first answer says %q, want it to say the file is now treated as something", msg)
+	}
+
+	again := decode[map[string]any](t, request(t, s, http.MethodPost, "/api/identify",
+		map[string]any{"path": file, "entry": "netbootxyz", "version": ""}))
+	msg, _ := again["message"].(string)
+	if !strings.Contains(msg, "already") || !strings.Contains(msg, "nothing changed") {
+		t.Errorf("confirming the same answer says %q, want it to say nothing changed", msg)
+	}
+	if recheck, _ := again["recheck"].(bool); recheck {
+		t.Error("confirming the same answer asked for another online check, which can only give the same answer")
+	}
+}
