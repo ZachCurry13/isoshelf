@@ -32,8 +32,49 @@ half-built, everything visible finished:
    to where, before doing it, and say what happened after, including the
    silent "both existed so I kept both".
 
-**After v0.5.0, in this order:** [#1] the command line, [#4] two downloads at
-once, [#2] older versions with a hold, [#3] make bootable (rename and extract
+18. **Ask the server by entry, not only by hash** (the maintainer,
+   2026-09-23, two questions that turn out to be one answer: "is it possible
+   to have some sort of marker in the catalog that says there is a local copy
+   on the server?" and "if there are files that have to be manually
+   downloaded, but I have it on the server already, is it possible to just
+   download from the server instead of doing another manual pull? Since I
+   obviously did that already").
+
+   **Why neither works today.** The whole sharing protocol is keyed on the
+   checksum: `share/have?name=X&sha256=Y`, and `sharedFile` refuses without a
+   hash. That is what makes it safe - the peer is reached, never trusted, and
+   the bytes are checked against the project's own published checksum. A
+   manual entry has no published checksum, so isoshelf cannot even form the
+   question. Not an oversight; a consequence.
+
+   **The one new endpoint both need.** Ask by entry id: "what do you have for
+   `ubuntu-desktop`?" The answer is the filename, the server's own SHA256, the
+   size, and the version it believes the file to be. One call with no entry
+   given returns the lot, which is what the Add-images marker needs - one
+   round trip for the whole list, not one per image.
+
+   **The rule that has to hold.** Bytes copied this way are checked against
+   the hash the server gave, which proves the copy is identical to what is on
+   the server and proves nothing about provenance. So the file arrives
+   **Unverified**, and the existing rule applies unchanged: an unverified
+   download never replaces anything. Adding a manual image the folder doesn't
+   have is fine; overwriting one is not. Say in the UI whose word it rests on
+   - the person who put it there - rather than implying a check happened.
+   - The server can also hand back the entry and version it has recorded, so
+     the copy arrives identified rather than landing as "Unrecognized". That
+     is the same kind of assertion as somebody naming a file by hand, and
+     should be recorded as one.
+   - Sharing is off unless turned on and the asker must be signed in. Both
+     already true; neither changes.
+
+   **Not in v0.5.0**, which is polish and correctness only. This changes what
+   "verified" means at the edges and deserves a release where the
+   unverified-copy rules get real tests, rather than riding along in one whose
+   whole point is that nothing in it is half-built. First thing after, ahead
+   of [#1] and [#4]: it is what makes running the server worth it.
+
+**After v0.5.0, in this order:** item 18 (asking the server by entry), [#1]
+the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12].
 

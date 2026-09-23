@@ -594,6 +594,12 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   - **The sharer records which drives it served** (`internal/web/served.go`),
     keyed by the asking folder's target id. That list is most of what #11
     needs to rebuild a lost drive.
+  - **Not done:** asking by entry rather than by hash, which is what a manual
+    image would need to come from the server and what a "your server has
+    this" marker in the Add-images list would need. The protocol is keyed on
+    the published checksum, and a manual entry has none. See TODO item 18:
+    the answer is a copy marked unverified, resting on the word of whoever
+    put the file on the server, never on a check that did not happen.
   - **Not done:** finding the other isoshelf by itself. Doing that properly
     means mDNS, which means a second dependency or a fair amount of protocol
     code, and is a decision rather than an omission. Until then the address
