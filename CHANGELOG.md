@@ -29,6 +29,12 @@ last number rises for improvements to what it already does, like v0.3.3.
     are now that same colour thinned, so the mark follows the palette.
 
 ### Fixed
+- **A 32-bit image no longer says "x86".** The badge on each row showed the
+  catalog's own word for the architecture, and "x86" reads to most people as
+  the ordinary kind, which is to say 64-bit. The badge now says the bit width
+  - *32-bit*, *64-bit*, *ARM64*, *ARM32* - with the full name in its tooltip.
+  The catalog was never wrong about this: all ten of its 32-bit entries say
+  so in their names. The badge was.
 - **Larger text no longer cuts off the sort control.** Its width was capped at
   190 pixels, which is a cap that setting cannot reach, so "Needs attention
   first" was clipped for exactly the people who had asked for bigger words. It

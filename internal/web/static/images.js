@@ -203,6 +203,29 @@ const ARCHES = [
   ["multi", "Multi"],
 ];
 
+// What an architecture is called on a badge, and what it is called in full.
+//
+// The badge used to show the catalog's own word for it, which for 32-bit
+// images is "x86" - and "x86" reads to most people as the ordinary kind,
+// which is to say 64-bit. The catalog was never wrong (every x86 entry says
+// "(32-bit)" in its name); the badge was. So the badge says the bit width and
+// the full name waits in the tooltip.
+const ARCH_BADGE = {
+  "x86_64": "64-bit",
+  "x86": "32-bit",
+  "arm64": "ARM64",
+  "arm": "ARM32",
+  "multi": "Multi",
+};
+const ARCH_FULL = Object.fromEntries(ARCHES);
+
+// archBadge draws one, or nothing when there is no architecture to show.
+function archBadge(arch) {
+  if (!arch) return null;
+  return el("span", { class: "arch", title: ARCH_FULL[arch] || arch },
+    ARCH_BADGE[arch] || arch);
+}
+
 const SHOW = [
   ["updates", "Updates available"],
   ["favorites", "Favorites"],
@@ -627,7 +650,7 @@ function renderRow(item) {
       el("div", { class: "name-line" },
         el("span", { class: "name" }, name),
         caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null),
-      item.arch ? el("div", { class: "meta-line" }, el("span", { class: "arch" }, item.arch)) : null,
+      item.arch ? el("div", { class: "meta-line" }, archBadge(item.arch)) : null,
       item.note ? el("div", { class: "note" }, item.note) : null)));
 
   // The file, its size and when it arrived go under the name: one line each

@@ -138,6 +138,12 @@ record of where things stand and what was decided.
 - Two promises are now tests rather than intentions: higher contrast puts
   every filled chip back, and the sort control is capped in em so Larger text
   can reach it. Both were checked by breaking them first.
+- Also: **a 32-bit image no longer says "x86" on its badge**. The maintainer
+  reported it as the catalog needing cleaning up; checking all 86 entries
+  found zero disagreements between name and `arch`, so the data was right and
+  the badge was wrong - it drew the catalog's own word, and "x86" reads as
+  the ordinary kind. It says the bit width now, with the full name in the
+  tooltip, and a test stops anything drawing the raw value as a badge again.
 - Next: the tools list (TODO 16) and [#6].
 
 ## v0.4.16 (2026-09-23)

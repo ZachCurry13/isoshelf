@@ -220,3 +220,25 @@ func TestTheSortControlCanGrowWithLargerText(t *testing.T) {
 			"Measure it in em instead.", m[1])
 	}
 }
+
+// The badge on each row used to show the catalog's own word for an
+// architecture, which for 32-bit images is "x86" - and "x86" reads to most
+// people as the ordinary kind, which is to say 64-bit. Reported by the
+// maintainer as the catalog needing cleaning up; the catalog was right (all
+// ten x86 entries say "(32-bit)" in their names) and the badge was wrong.
+func TestTheArchitectureBadgeSaysTheBitWidth(t *testing.T) {
+	js := readStatic(t, "images.js")
+
+	for _, want := range []string{`"x86": "32-bit"`, `"x86_64": "64-bit"`} {
+		if !strings.Contains(js, want) {
+			t.Errorf("ARCH_BADGE doesn't map %s; a badge reading \"x86\" is read as 64-bit", want)
+		}
+	}
+	// Nothing may draw the raw catalog value as a badge again.
+	raw := regexp.MustCompile(`class: "arch" \}, [a-z]+\.arch`)
+	for _, name := range []string{"images.js", "actions.js"} {
+		if m := raw.FindString(readStatic(t, name)); m != "" {
+			t.Errorf("%s draws the raw architecture as a badge (%s); use archBadge()", name, m)
+		}
+	}
+}
