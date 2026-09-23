@@ -23,7 +23,7 @@ func readStatic(t *testing.T, name string) string {
 // leaves just as blank a page as one in the older.
 var scripts = []string{
 	"app.js", "images.js", "details.js", "downloads.js", "actions.js", "folders.js", "archive.js", "settings.js",
-	"upload.js", "report.js",
+	"settinglist.js", "access.js", "records.js", "upload.js", "report.js",
 }
 
 // There is no JavaScript engine in these tests, so the page scripts can't be
@@ -136,7 +136,9 @@ func TestGridMinimumsCanGiveWayOnNarrowScreens(t *testing.T) {
 // name the answer it owns, or the "Saved" mark has nothing to land on and
 // that silence comes back.
 func TestEverySavingSettingSaysWhichAnswerItOwns(t *testing.T) {
-	js := readStatic(t, "settings.js")
+	// The panel is settings.js and the table it is drawn from settinglist.js;
+	// the answers are named in the one and the mark drawn by the other.
+	js := readStatic(t, "settings.js") + readStatic(t, "settinglist.js")
 	// Each entry that saves through /api/settings does it by sending one
 	// named answer; the same name has to appear in that entry's fields.
 	sending := regexp.MustCompile(`\(\w+\) => \(\{ (\w+)`)
@@ -150,7 +152,7 @@ func TestEverySavingSettingSaysWhichAnswerItOwns(t *testing.T) {
 	// And the mark itself has to be drawn from those fields.
 	for _, want := range []string{"justSaved(setting)", "saved-mark", "savedFields"} {
 		if !strings.Contains(js, want) {
-			t.Errorf("settings.js no longer has %q, so nothing says a setting saved", want)
+			t.Errorf("Settings no longer has %q, so nothing says a setting saved", want)
 		}
 	}
 }
@@ -160,7 +162,7 @@ func TestEverySavingSettingSaysWhichAnswerItOwns(t *testing.T) {
 // of sentences belongs in the note under the control, where it is read at the
 // moment it matters.
 func TestSettingHintsStayShort(t *testing.T) {
-	js := readStatic(t, "settings.js")
+	js := readStatic(t, "settinglist.js")
 	hints := regexp.MustCompile(`hint: ((?:"(?:[^"\\]|\\.)*"(?:\s*\+\s*)?\s*)+),`)
 	joined := regexp.MustCompile(`"\s*\+\s*"`)
 	const longest = 210

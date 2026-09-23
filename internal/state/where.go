@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 // recordsDir is the folder for records kept away from their own folder.
@@ -83,7 +84,8 @@ func CleanHome(dir string) (Home, error) {
 	return Home(abs), nil
 }
 
-// Moved says what Move did, so the page can say it too.
+// Moved says what Move did, or with Plan what it would do, so the page can say
+// it too - before, so the user can say no, and after, so they know.
 type Moved struct {
 	// From and To are the files. Moved is false when nothing was moved.
 	From, To string
@@ -93,17 +95,16 @@ type Moved struct {
 	// ones are left where they are rather than thrown away - nothing isoshelf
 	// wrote is deleted unless the user chose it.
 	Kept bool
+	// FromSaved and ToSaved are when each file was last written, and zero
+	// where there is no file. With both set, they are how somebody tells
+	// which records would win before agreeing to it.
+	FromSaved, ToSaved time.Time
 }
 
-// Move takes target's records from one place to the other, which is what
-// changing where a folder's records live has to do: the alternative is a
-// folder that appears to have been forgotten - no history, no stars, every
-// image unidentified again.
-//
-// A folder with no records yet is not an error; there is simply nothing to
-// move. Neither is a destination that already has records for this folder: it
-// keeps them, and the old ones stay where they are.
-func Move(from, to Home, target string) (Moved, error) {
+// Plan says what Move would do, and does none of it. The page asks before a
+// move, and its question has to describe the move that then happens - so
+// both come from here rather than from two accounts that must agree.
+func Plan(from, to Home, target string) (Moved, error) {
 	src, err := from.File(target)
 	if err != nil {
 		return Moved{}, err
@@ -116,27 +117,62 @@ func Move(from, to Home, target string) (Moved, error) {
 	if src == dst {
 		return out, nil
 	}
-	data, err := os.ReadFile(src)
-	if errors.Is(err, fs.ErrNotExist) {
-		return out, nil // nothing learned about this folder yet
+	if out.FromSaved, err = savedAt(src); err != nil {
+		return out, err
 	}
+	if out.ToSaved, err = savedAt(dst); err != nil {
+		return out, err
+	}
+	switch {
+	case out.FromSaved.IsZero():
+		// Nothing learned about this folder yet, or nothing here: if the
+		// destination has records, those are simply the ones read from now on.
+	case !out.ToSaved.IsZero():
+		out.Kept = true
+	default:
+		out.Moved = true
+	}
+	return out, nil
+}
+
+// savedAt is when a records file was last written, or zero if there is none.
+func savedAt(name string) (time.Time, error) {
+	info, err := os.Stat(name)
+	if errors.Is(err, fs.ErrNotExist) {
+		return time.Time{}, nil
+	}
+	if err != nil {
+		return time.Time{}, err
+	}
+	return info.ModTime(), nil
+}
+
+// Move takes target's records from one place to the other, which is what
+// changing where a folder's records live has to do: the alternative is a
+// folder that appears to have been forgotten - no history, no stars, every
+// image unidentified again.
+//
+// A folder with no records yet is not an error; there is simply nothing to
+// move. Neither is a destination that already has records for this folder: it
+// keeps them, and the old ones stay where they are.
+func Move(from, to Home, target string) (Moved, error) {
+	out, err := Plan(from, to, target)
+	if err != nil || !out.Moved {
+		return out, err
+	}
+	out.Moved = false // until it has happened
+	data, err := os.ReadFile(out.From)
 	if err != nil {
 		return out, err
 	}
-	if _, err := os.Stat(dst); err == nil {
-		out.Kept = true
-		return out, nil
-	} else if !errors.Is(err, fs.ErrNotExist) {
+	if err := os.MkdirAll(filepath.Dir(out.To), 0o755); err != nil {
 		return out, err
 	}
-	if err := os.MkdirAll(filepath.Dir(dst), 0o755); err != nil {
-		return out, err
-	}
-	if err := writeFileAtomic(dst, data); err != nil {
+	if err := writeFileAtomic(out.To, data); err != nil {
 		return out, err
 	}
 	// Only once the new one is safely written.
-	if err := os.Remove(src); err != nil {
+	if err := os.Remove(out.From); err != nil {
 		return out, err
 	}
 	out.Moved = true
@@ -146,7 +182,7 @@ func Move(from, to Home, target string) (Moved, error) {
 	// refuses a folder that still holds the archive or a part-finished
 	// download, and those are the user's files, not isoshelf's housekeeping.
 	if from == "" {
-		os.Remove(filepath.Dir(src))
+		os.Remove(filepath.Dir(out.From))
 	}
 	return out, nil
 }

@@ -173,7 +173,7 @@ func TestSampleDrive(t *testing.T) {
 		// The stand-in files can't match the published checksums.
 		{"netboot.xyz.iso", UpdateAvailable, "3.0.3", false, "checksum changed"},
 		{"bazzite-deck-gnome-stable-live-amd64.iso", UpdateAvailable, "44.20260916", false, "checksum changed"},
-		{"FydeOS_for_PC_iris_v22.0-SP1-io.bin", NotBootable, "", false, "Make bootable"},
+		{"FydeOS_for_PC_iris_v22.0-SP1-io.bin", NotBootable, "", false, "Rename it to end in .img"},
 		{"HBCD_PE_x64.iso", Manual, "", false, ""},
 		{"Windows.iso", Unrecognized, "", false, ""},
 		{"", Missing, "22.3", false, ""},

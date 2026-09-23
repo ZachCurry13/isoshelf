@@ -6,6 +6,42 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.5.3] - 2026-09-23
+
+### Changed
+- **Moving a folder's records asks first, and says what happened.** Changing
+  "Where this folder's records are kept" used to move them the moment the list
+  changed, and say nothing afterwards. Now it names both files and what stays
+  behind (your images, the archive and part-finished downloads) before
+  anything moves, and Cancel puts the list back. Afterwards the note under the
+  setting says what it did.
+  - The case that used to happen in silence is said out loud: when isoshelf
+    already has records for the folder where these are going, it asks whether
+    to use those, with when each set was last saved, and says afterwards that
+    the others were left where they are.
+- **The Filter menu has Clear all and Done** at the bottom, and its list
+  scrolls above them, so on a short screen it's plain there is more.
+- **The name column takes a third of the table** instead of most of it.
+
+### Fixed
+- **A single filter showed "null" beside its chip.** Found by the maintainer
+  on a phone.
+- **"Show them" on the updates card showed the wrong images.** When the only
+  updates were ones to download yourself, it listed every "Download manually"
+  image - which didn't include the one with the update. The card now says
+  "1 update to download yourself" and shows exactly those. Every card's "Show
+  them" clears any other filter first, so it never shows fewer than it
+  counted.
+- **A file that won't boot was promised a fix that doesn't exist.** Its note
+  said "Make bootable can fix this (rename:.img)"; there is no such button
+  yet. It now says what to do: "Rename it to end in .img and it will boot."
+- **A short file name left a gap before its size**, and on a computer the
+  line under each name ended in a stray "·".
+- **A long path in Settings pushed the panel sideways.**
+- **The list of remembered folders could be one scan behind** right after a
+  scan finished. The same race made one test fail about one run in 300 on
+  Windows.
+
 ## [v0.5.2] - 2026-09-23
 
 ### Added

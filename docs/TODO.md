@@ -23,14 +23,20 @@ half-built, everything visible finished:
    costs trust once somebody notices.
 3. Emptying the archive on a timer (item 12).
 4. The tools list (item 16).
-5. **Moving a folder's records asks first.** Changing "Where this folder's
-   records are kept" relocates data the instant the dropdown changes, with no
-   warning and no result afterwards. What it does is safe - the new file is
-   written before the old one is removed, a destination that already has
-   records is left alone, and the archive never moves - but the maintainer
-   had to ask what it did, which is the bug. Say what will move, from where
-   to where, before doing it, and say what happened after, including the
-   silent "both existed so I kept both".
+5. ~~**Moving a folder's records asks first.**~~ *(done in v0.5.3.*
+   `state.Plan` says what `state.Move` would do and `Move` is built on it;
+   `/api/records/plan` serves it; `records.js` asks, and the setting's note
+   says what happened. What was learned:
+   - **`settings.Settings` holds maps, so a copy of it is not a copy.**
+     `after := saved; after.SetRecordsFor(...)` changes `saved` too. Work out
+     anything from the old answer before setting the new one - the existing
+     test for moving records back caught it.
+   - **`replaceChildren` and `append` write a null as the word "null"**; `el`
+     skips it. `static_null_test.go` finds a null handed straight to one.
+   - **The browser pane holds a dialog's `close` event until it draws.**
+     With the pane in the background, closing a dialog from a script looked
+     like a stuck page; a screenshot made it draw and every event fired. Test
+     dialogs with real clicks, or take a screenshot before believing a hang.)*
 
 18. **Ask the server by entry, not only by hash** (the maintainer,
    2026-09-23, two questions that turn out to be one answer: "is it possible
@@ -117,6 +123,13 @@ half-built, everything visible finished:
 the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12].
+
+On [#3]: the maintainer asked again for a one-click fix for a file that only
+needs renaming, and chose on 2026-09-23 to keep it in this order. Until it is
+built, the won't-boot note says what to do by hand (`notBootableNote`); when
+it is, the note is where the button's words come from, and the catalog's
+`fixup` field (`rename:.img`, `extract`) already says which fix each image
+needs.
 
 Everything else below the next heading has shipped.
 
@@ -310,10 +323,9 @@ starts it thinking it is a form to fill in:
      exists but not its age, which is most of deciding whether to take it.
      The release date is in what `source` already fetches for some sources;
      check which, and show it where it is known.
-   - **The filter menu needs Apply and Clear all.** Filters take effect as
-     they are ticked, which leaves people unsure anything happened. Either
-     add the buttons or make "it already applied" obvious - worth deciding
-     rather than assuming, and it overlaps the redesign below.
+   - ~~**The filter menu needs Apply and Clear all.**~~ *(done in v0.5.3:
+     the maintainer chose Clear all and Done, with filters still applying as
+     they are ticked - not Apply/Cancel.)*
    - **Offer to send an unknown image to the catalog.** When somebody names
      an image isoshelf doesn't recognize, offer to open a prefilled issue
      with the filename pattern and hash - the same shape as the bug report
@@ -422,7 +434,8 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
   `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
-  `archive.js`, `settings.js`, `upload.js` and `report.js`. Read the one you
+  `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
+  `upload.js` and `report.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
   `internal/web/static_test.go`, and in every list of them - which
   `internal/docs` checks, because this list was stale for four releases.

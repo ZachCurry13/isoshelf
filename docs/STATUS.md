@@ -131,7 +131,40 @@ record of where things stand and what was decided.
   was read from and the page shows it. Shape and reasoning in TODO item 19;
   the weekly catalog job is where it gets filled.
 
-## Latest change: v0.5.2 (2026-09-23)
+## Decided 2026-09-23 (the maintainer, using v0.5.1 on a phone)
+
+- Moving records asks in a dialog (both files, what stays), says what
+  happened in the setting's own note, and in the "records already there" case
+  keeps today's rule - those win, the others stay - but says so, with dates.
+- Filter menu: ticking still filters at once; a footer adds Clear all and
+  Done. Not Apply/Cancel.
+- When every update is one to fetch by hand, the card names that job ("1
+  update to download yourself") and "Show it" shows exactly those.
+- The name column was the one too wide.
+- One-click rename stays with [#3], after v0.5.0 as planned; the note stops
+  promising a button and says what to do by hand.
+- The six unreleased versions went out one at a time, each on its own merge
+  commit, v0.5.1 last.
+
+## Latest change: v0.5.3 (2026-09-23)
+
+- **TODO item 5 is done: moving a folder's records asks first.**
+  `state.Plan` says what `state.Move` would do, `/api/records/plan` serves
+  it, and the page asks before anything moves and says after what happened.
+- **The maintainer's report on v0.5.1**, all fixed: a lone filter chip
+  followed by "null" (`replaceChildren` writes a null as text; a test now
+  catches that), "Show them" showing the wrong images, a filter menu with no
+  way out, a name column that took most of the table, and a won't-boot note
+  that promised a button that doesn't exist.
+- A flaky Windows test was a real race: the page state read the remembered
+  folders before checking whether a scan was running. Fixed; 0 failures in
+  600 runs, against 1 in 300 before.
+- Four oversized files split with no change in behaviour: `settings.js`
+  (into `settinglist.js`, `access.js`, `records.js`), `server.go` (`guard.go`),
+  `records.go` (`forget.go`), `pagestate.go` (`pagedisk.go`).
+- **Next:** [#6], then item 18 (asking the server by entry).
+
+## v0.5.2 (2026-09-23)
 
 - **The tools that go with the images** (TODO 16): Ventoy for booting many
   images from one stick, Rufus, balenaEtcher and Raspberry Pi Imager for

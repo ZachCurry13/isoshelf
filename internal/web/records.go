@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/state"
@@ -13,7 +14,8 @@ import (
 // Where a folder's records are kept is the one setting that owns files. The
 // rest of Settings is switches; this one has to pick up what isoshelf has
 // learned about the folder and put it down somewhere else, with nothing lost
-// on the way and nothing deleted that the user didn't choose to lose.
+// on the way and nothing deleted that the user didn't choose to lose. So it
+// asks first (planRecords), and says afterwards what it did (setRecords).
 
 // recordsJSON is what the page shows and sends back.
 type recordsJSON struct {
@@ -24,6 +26,44 @@ type recordsJSON struct {
 	// File is where this folder's records are right now, so Settings can
 	// point at the actual file rather than describing it.
 	File string `json:"file,omitempty"`
+	// Moved is what a move just did. Only the answer to that move carries
+	// it; the page keeps it for as long as it goes on saying so.
+	Moved *movedJSON `json:"moved,omitempty"`
+}
+
+// movedJSON is what moving the records did, or would do.
+type movedJSON struct {
+	// What is "move"; "keep", when both places had records and the ones
+	// already where they were going win; "use", when only that place had
+	// any; "none", when nothing has been saved about the folder yet; or
+	// "same", when nothing changes.
+	What      string    `json:"what"`
+	From      string    `json:"from"`
+	To        string    `json:"to"`
+	FromDir   string    `json:"from_dir"`
+	ToDir     string    `json:"to_dir"`
+	FromSaved time.Time `json:"from_saved,omitzero"`
+	ToSaved   time.Time `json:"to_saved,omitzero"`
+}
+
+func movedFor(m state.Moved) *movedJSON {
+	out := &movedJSON{
+		From: m.From, To: m.To, FromDir: filepath.Dir(m.From), ToDir: filepath.Dir(m.To),
+		FromSaved: m.FromSaved, ToSaved: m.ToSaved,
+	}
+	switch {
+	case m.From == m.To:
+		out.What = "same"
+	case m.Moved:
+		out.What = "move"
+	case m.Kept:
+		out.What = "keep"
+	case !m.ToSaved.IsZero():
+		out.What = "use"
+	default:
+		out.What = "none"
+	}
+	return out
 }
 
 // recordsLocked describes where the open folder's records are. s.mu must be
@@ -41,21 +81,31 @@ func (s *Server) recordsLocked(saved settings.Settings) recordsJSON {
 	return out
 }
 
-// setRecords moves the open folder's records somewhere else and remembers
-// that that is where they now are.
-func (s *Server) setRecords(w http.ResponseWriter, r *http.Request) {
+// recordsChange is a request to keep the open folder's records somewhere
+// else, worked out: the folder, where its records are, where they would go,
+// and the settings that would say so.
+type recordsChange struct {
+	target   string
+	from, to state.Home
+	after    settings.Settings
+}
+
+// readRecordsChange reads what the page asked for and checks that it can be
+// done. Asking and doing both come through here, so nobody is asked a
+// question whose answer would then be refused. It writes any refusal itself.
+func (s *Server) readRecordsChange(w http.ResponseWriter, r *http.Request) (recordsChange, bool) {
 	var req struct {
 		Location string `json:"location"`
 		Dir      string `json:"dir"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "bad request")
-		return
+		return recordsChange{}, false
 	}
 	choice := settings.CleanRecordsLocation(req.Location)
 	if choice == "" {
 		writeError(w, http.StatusBadRequest, "Choose where to keep this folder's records.")
-		return
+		return recordsChange{}, false
 	}
 
 	// Nothing may be reading or writing the records while they move: a scan
@@ -66,11 +116,11 @@ func (s *Server) setRecords(w http.ResponseWriter, r *http.Request) {
 	s.mu.Unlock()
 	if target == "" {
 		writeError(w, http.StatusBadRequest, "Open a folder first.")
-		return
+		return recordsChange{}, false
 	}
 	if busy != "" {
 		writeError(w, http.StatusConflict, busy)
-		return
+		return recordsChange{}, false
 	}
 
 	want := settings.Records{Location: choice, Dir: req.Dir}
@@ -78,48 +128,78 @@ func (s *Server) setRecords(w http.ResponseWriter, r *http.Request) {
 		home, err := state.CleanHome(req.Dir)
 		if err != nil {
 			writeError(w, http.StatusBadRequest, err.Error())
-			return
+			return recordsChange{}, false
 		}
 		want.Dir = string(home)
 		if under, err := isUnder(target, want.Dir); err == nil && under {
 			writeError(w, http.StatusBadRequest,
 				"That folder is inside the one isoshelf is looking after, so its records would be on the same drive as the images. Keep them in the folder instead.")
-			return
+			return recordsChange{}, false
 		}
 	}
 
+	// Where they are now has to be worked out before the new answer is set:
+	// after is a copy of saved, but the answers are a map, and a copied map
+	// is the same map. Asked afterwards, saved would already say the new place.
 	saved := s.loadSettings()
 	from := state.Home(saved.RecordsHome(target, s.cfg.Dirs.Config))
 	after := saved
 	after.SetRecordsFor(target, want)
-	to := state.Home(after.RecordsHome(target, s.cfg.Dirs.Config))
+	return recordsChange{
+		target: target,
+		from:   from,
+		to:     state.Home(after.RecordsHome(target, s.cfg.Dirs.Config)),
+		after:  after,
+	}, true
+}
 
-	moved, err := state.Move(from, to, target)
+// planRecords says what moving the open folder's records would do, and does
+// none of it, so the page can ask before anything moves.
+func (s *Server) planRecords(w http.ResponseWriter, r *http.Request) {
+	c, ok := s.readRecordsChange(w, r)
+	if !ok {
+		return
+	}
+	plan, err := state.Plan(c.from, c.to, c.target)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "Couldn't look at this folder's records: "+err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, movedFor(plan))
+}
+
+// setRecords moves the open folder's records somewhere else, remembers that
+// that is where they now are, and says what it did - including when it moved
+// nothing, because records were already waiting where they were going.
+func (s *Server) setRecords(w http.ResponseWriter, r *http.Request) {
+	c, ok := s.readRecordsChange(w, r)
+	if !ok {
+		return
+	}
+	moved, err := state.Move(c.from, c.to, c.target)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "Couldn't move this folder's records: "+err.Error())
 		return
 	}
-	if err := settings.Save(s.cfg.Dirs.Config, after); err != nil {
+	if err := settings.Save(s.cfg.Dirs.Config, c.after); err != nil {
 		// The records are at the new place but nothing would look for them
 		// there. Put them back rather than leave them stranded.
-		state.Move(to, from, target)
+		state.Move(c.to, c.from, c.target)
 		writeError(w, http.StatusInternalServerError, "Couldn't remember where the records went, so they were put back: "+err.Error())
 		return
 	}
 
 	// Read them from where they now are, so the page shows what isoshelf will
 	// actually use from here on.
-	st, err := to.Load(target)
+	st, err := c.to.Load(c.target)
 	s.mu.Lock()
-	if err == nil && s.target == target {
+	if err == nil && s.target == c.target {
 		s.st = st
 	}
-	if moved.Kept {
-		s.warnings = append(s.warnings, "isoshelf already had records for this folder in "+filepath.Dir(moved.To)+
-			", so those are the ones it is using. The older ones are still in "+moved.From+" - delete them yourself if you don't want them.")
-	}
 	s.mu.Unlock()
-	s.getState(w, r)
+	out := s.pageState()
+	out.Records.Moved = movedFor(moved)
+	writeJSON(w, http.StatusOK, out)
 }
 
 // isUnder reports whether dir is inside parent, or is parent itself. Rel
@@ -130,45 +210,4 @@ func isUnder(parent, dir string) (bool, error) {
 		return false, err
 	}
 	return rel == "." || (rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator))), nil
-}
-
-// forgetFolder takes a folder off the list isoshelf remembers. It removes the
-// copy of its history in isoshelf's own folder and the answer it was given
-// about where its records live - and nothing else. The folder itself, its own
-// records, its archive and every image in it are untouched, which is what the
-// button has to mean if anyone is to press it.
-func (s *Server) forgetFolder(w http.ResponseWriter, r *http.Request) {
-	var req struct {
-		Path string `json:"path"`
-		ID   string `json:"id"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
-		return
-	}
-	if strings.TrimSpace(req.Path) == "" || strings.TrimSpace(req.ID) == "" {
-		writeError(w, http.StatusBadRequest, "Which folder?")
-		return
-	}
-	s.mu.Lock()
-	open := s.target
-	s.mu.Unlock()
-	if sameFolder(open, req.Path) {
-		writeError(w, http.StatusConflict, "That's the folder you have open. Open another one first.")
-		return
-	}
-	if err := state.Forget(s.cfg.Dirs.Config, req.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "Couldn't forget that folder: "+err.Error())
-		return
-	}
-	s.updateSettings(func(c *settings.Settings) {
-		c.SetRecordsFor(req.Path, settings.Records{Location: settings.InFolder})
-	})
-	s.getState(w, r)
-}
-
-// sameFolder compares two paths the way the rest of the page does: the same
-// spelling, ignoring case, since Windows and macOS do.
-func sameFolder(a, b string) bool {
-	return a != "" && strings.EqualFold(filepath.Clean(a), filepath.Clean(b))
 }

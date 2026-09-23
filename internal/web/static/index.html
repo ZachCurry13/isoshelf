@@ -15,6 +15,9 @@
 <script src="/static/folders.js" defer></script>
 <script src="/static/archive.js" defer></script>
 <script src="/static/settings.js" defer></script>
+<script src="/static/settinglist.js" defer></script>
+<script src="/static/access.js" defer></script>
+<script src="/static/records.js" defer></script>
 <script src="/static/upload.js" defer></script>
 <script src="/static/report.js" defer></script>
 </head>
@@ -85,7 +88,13 @@
       <input type="search" id="search" placeholder="Search your images…" aria-label="Search your images">
       <details class="menu filter-menu" id="filter">
         <summary class="btn">Filter <span id="filter-count" class="filter-count" hidden></span></summary>
-        <div class="menu-items filter-items" id="filter-items"></div>
+        <div class="menu-items filter-panel">
+          <div class="filter-items" id="filter-items"></div>
+          <div class="filter-foot">
+            <button type="button" class="linkish" id="filter-clear">Clear all</button>
+            <button type="button" class="btn small primary" id="filter-done">Done</button>
+          </div>
+        </div>
       </details>
       <select id="sort" aria-label="Sort by">
         <option value="attention">Needs attention first</option>

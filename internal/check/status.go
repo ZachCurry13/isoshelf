@@ -13,12 +13,32 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/version"
 )
 
+// notBootableNote says why a file won't boot from this folder and, where the
+// catalog knows, what to do about it by hand. It used to promise that "Make
+// bootable" could fix it, in the catalog's own word for how ("rename:.img") -
+// but there is no such button yet, so it promised what the page couldn't do.
 func notBootableNote(e *catalog.Entry, profile scan.Profile) string {
-	exts := strings.Join(profile.Extensions(), " ")
-	if e.Fixup != "" {
-		return fmt.Sprintf("%s lists only %s; Make bootable can fix this (%s)", profile, exts, e.Fixup)
+	lists := fmt.Sprintf("%s only lists %s files", bootMenu(profile), strings.Join(profile.Extensions(), ", "))
+	switch {
+	case strings.HasPrefix(e.Fixup, "rename:"):
+		return fmt.Sprintf("%s. Rename it to end in %s and it will boot.", lists, strings.TrimPrefix(e.Fixup, "rename:"))
+	case e.Fixup == "extract":
+		return lists + ". It's compressed: unpack it here and the file inside will boot."
+	case e.Fixup == "convert":
+		return lists + ". It has to be converted to another format first."
 	}
-	return fmt.Sprintf("%s lists only %s", profile, exts)
+	return lists + "."
+}
+
+// bootMenu is what reads a folder of this kind, as people call it.
+func bootMenu(p scan.Profile) string {
+	switch p {
+	case scan.Ventoy:
+		return "Ventoy"
+	case scan.Proxmox:
+		return "Proxmox"
+	}
+	return string(p)
 }
 
 // decide sets an item's status from the check result. recorded is the
