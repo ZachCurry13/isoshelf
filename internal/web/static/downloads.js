@@ -74,9 +74,15 @@ function downloadProgress() {
       const left = (run.total - run.done) / rate;
       if (left > 0 && left < 86400) text += ` · ${duration(left)} left`;
     }
+    // Copying from another isoshelf is worth seeing while it happens: it is
+    // the difference between a minute and an hour, and until now the only
+    // way to tell was the speed.
+    if (run.from) text += ` · from ${run.from}`;
     return { text, fraction, short: `Downloading ${pct}` };
   }
-  if (run.stage === "downloading") return { text: "Downloading…", fraction: null, short: "Downloading…" };
+  if (run.stage === "downloading") {
+    return { text: run.from ? `Downloading from ${run.from}…` : "Downloading…", fraction: null, short: "Downloading…" };
+  }
   if (run.stage === "verifying") {
     return {
       text: "Verifying it against the published checksum…",
@@ -283,6 +289,7 @@ const OUTCOME = {
 function finishedItem(job) {
   let [mark, tone] = OUTCOME[job.outcome] || ["", "s-muted"];
   let what = job.update ? "Updated" : "Added";
+  if (job.from) what += ` from ${job.from}`;
   // Done, but with something to know: a file nothing could check.
   if (job.outcome === "done" && job.message) {
     [mark, tone] = ["!", "s-warn"];
@@ -359,7 +366,7 @@ function renderDockProgress() {
   } else {
     const parts = [
       count("done") && `${count("done")} done`,
-      count("failed") && `${count("failed")} didn't work`,
+      count("failed") && `${count("failed")} failed`,
       count("stopped") && `${count("stopped")} stopped`,
     ].filter(Boolean);
     text = `Finished: ${parts.join(", ")}.`;

@@ -94,6 +94,61 @@ record of where things stand and what was decided.
    hold (#2), Make bootable (#3), signatures on images (#5), two downloads at
    once (#4), portable test (#7).
 
+## Decided 2026-09-23 (the maintainer, clearing the issue list)
+
+- **v0.5.0 is polish and correctness only**: the look, [#6] (Fedora stops
+  pinning a release), emptying the archive on a timer, the tools list, and a
+  confirmation before a folder's records move. Their words: "it should look
+  like it could actually be a 1.0.0". Nothing half-built goes in.
+- **[#5], OpenPGP signatures: build it, and accept the second dependency**
+  (`github.com/ProtonMail/go-crypto`). The one-dependency rule has been worth
+  defending - `golang.org/x/term` was turned down for password echo a few days
+  ago - but a checksum proves nothing if the checksum file itself was
+  replaced, and "only from the project's own HTTPS site" is a rule about where
+  a file came from, not about whether it is genuine. A failed signature must
+  block placement exactly like a mismatch does.
+- **[#3], make bootable: rename and extract only.** A ChromeOS-family `.bin`
+  renamed to `.img`, and `.img.xz`/`.zip`/`.gz` extracted - both small,
+  standard library, original kept until the result is checked. **Not**
+  `.bin`/`.cue` to `.iso`: raw sectors and multi-track cue sheets, where being
+  subtly wrong gives a file that looks finished and won't boot. isoshelf says
+  what it can't fix and names `bchunk` instead.
+- **[#7] is the maintainer's to do** - it needs a real USB stick. A nine-step
+  checklist is on the issue; steps 5, 6 and 9 are the ones most likely to
+  fail.
+
+## Latest change (2026-09-23)
+
+- **v0.4.14: downloads say where they come from.** The maintainer, watching
+  one run: "it would be nice to know if it was from the internet or from the
+  local server". Copying from another isoshelf shipped in v0.4.9 and was
+  invisible while it happened - the same "Downloading 40%" either way, for a
+  feature whose entire value is that one of those is much faster. The dock
+  now reads "... from the NAS" or "... from the internet", and the finished
+  list says "Added from the NAS".
+- Nothing new is discovered to do it: `fetch.Progress` has carried the URL
+  since the fetcher was written, and the web layer threw it away.
+  `sourceName` (`internal/web/peer.go`) turns it into the peer's own name,
+  falling back to its host, and anything else into "the internet".
+- It answers a question that had no answer before: whether a peer somebody
+  set up is being used at all. Short of watching a router, there was no way
+  to find that out.
+- The words name isoshelf, not the box: "from your isoshelf server", at the
+  maintainer's asking. The folder's own name said where the bytes were
+  without saying what served them, and only one peer is ever set up, so
+  nothing is ambiguous for want of the address.
+- **Also in v0.4.14: an Added column**, sortable like the others. The date was
+  already drawn under each name; what was missing was sorting by it. On a
+  phone it stays under the name, since there are no columns there.
+  - It reads "-" more often than it should on Linux: `Added` falls back
+    through `scan.File.Created`, `PlacedAt`, `FirstSeen`, and `created()` on
+    Linux always returns zero because birthtime needs `statx`, which is not
+    in `syscall` and would otherwise be a second dependency. Recorded in
+    TODO item 13. A file isoshelf downloaded, or one that appeared after the
+    first scan, has a date; one that was there before isoshelf ever ran does
+    not.
+- Next: the look half of v0.5.0, and the tools list (TODO item 16).
+
 ## Latest change (2026-09-22)
 
 - **v0.4.13: the words on the page.** The maintainer read the page and said
@@ -460,3 +515,7 @@ record of where things stand and what was decided.
 
 [#13]: https://github.com/ZachCurry13/isoshelf/pull/13
 [#14]: https://github.com/ZachCurry13/isoshelf/pull/14
+[#3]: https://github.com/ZachCurry13/isoshelf/issues/3
+[#5]: https://github.com/ZachCurry13/isoshelf/issues/5
+[#6]: https://github.com/ZachCurry13/isoshelf/issues/6
+[#7]: https://github.com/ZachCurry13/isoshelf/issues/7

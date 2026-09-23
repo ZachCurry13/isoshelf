@@ -102,10 +102,19 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 		// Somewhere closer than the internet, when one is set up.
 		Nearer: nearer(near, s.noteAboutPeer),
 		Progress: func(p fetch.Progress) {
+			// Where the bytes are coming from, worked out here rather than
+			// in the page: only this side knows which peer was offered, and
+			// a URL is not something to ask somebody to read.
+			from := sourceName(p.URL, near)
 			s.mu.Lock()
 			if s.downloading != nil {
 				s.downloading.progress = inventory.Progress{
 					Stage: inventory.Stage(p.Stage), File: p.Filename, Done: p.Done, Total: p.Total,
+				}
+				// An empty URL means this stage doesn't know; the last place
+				// that did is still where the file is coming from.
+				if from != "" {
+					s.downloading.from = from
 				}
 			}
 			s.mu.Unlock()

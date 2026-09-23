@@ -6,6 +6,27 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.4.14] - 2026-09-23
+
+### Added
+- **Downloads say where they are coming from.** While one runs, the bar now
+  reads "... from your isoshelf server" or "... from the internet", and the
+  finished list says "Added from your isoshelf server". Copying an image from
+  another isoshelf on your network instead of fetching it again over the wire
+  arrived in v0.4.9, and until now it was invisible while it happened: the
+  same "Downloading 40%" whether the bytes were crossing the room or an
+  ocean. It is also how you find out that a peer you set up is never actually
+  being used, which short of watching a router was not findable at all.
+- **An Added column in the list**, sortable like the others: when a file
+  arrived in the folder, or when an update last replaced it. The date was
+  already under each name; it could not be sorted by from there. On a phone,
+  where the list is cards rather than a table, it stays under the name.
+  - It reads "-" for files that were in the folder before isoshelf first
+    scanned it, and on Linux for files nothing else recorded a date for.
+    Saying nothing is better than guessing at a date, and the first scan of a
+    folder deliberately records no arrival time: every file is new to
+    isoshelf then, which says nothing about when it arrived.
+
 ## [v0.4.13] - 2026-09-22
 
 ### Changed

@@ -146,7 +146,11 @@ type run struct {
 	job      *job
 	started  time.Time
 	progress inventory.Progress
-	cancel   context.CancelFunc
+	// from is where the bytes are arriving from, in words: the name of the
+	// other isoshelf, or "the internet". Copying from a peer is the whole
+	// point of setting one up and was invisible while it happened.
+	from   string
+	cancel context.CancelFunc
 }
 
 // New creates the server and starts a background check for a newer isoshelf.

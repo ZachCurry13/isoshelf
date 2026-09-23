@@ -9,8 +9,76 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**In flight: v0.5.0, the redesign.** Its wording half shipped as v0.4.13;
-what is left is the look. Everything else below the next heading has shipped.
+**In flight: v0.5.0.** Its wording half shipped as v0.4.13.
+
+**What v0.5.0 holds, decided 2026-09-23** (the maintainer: "I want to make
+sure we clean up everything we can before posting 0.5.0. Like it should look
+like it could actually be a 1.0.0"). **Polish and correctness only** - nothing
+half-built, everything visible finished:
+
+1. The look (this file's v0.5.0 section).
+2. **[#6]** - the Fedora entries stop pinning a release number. This is the
+   least 1.0 thing in the repository: when Fedora 45 ships, isoshelf keeps
+   offering 44 and nothing fails, which is the kind of quiet wrongness that
+   costs trust once somebody notices.
+3. Emptying the archive on a timer (item 12).
+4. The tools list (item 16).
+5. **Moving a folder's records asks first.** Changing "Where this folder's
+   records are kept" relocates data the instant the dropdown changes, with no
+   warning and no result afterwards. What it does is safe - the new file is
+   written before the old one is removed, a destination that already has
+   records is left alone, and the archive never moves - but the maintainer
+   had to ask what it did, which is the bug. Say what will move, from where
+   to where, before doing it, and say what happened after, including the
+   silent "both existed so I kept both".
+
+18. **Ask the server by entry, not only by hash** (the maintainer,
+   2026-09-23, two questions that turn out to be one answer: "is it possible
+   to have some sort of marker in the catalog that says there is a local copy
+   on the server?" and "if there are files that have to be manually
+   downloaded, but I have it on the server already, is it possible to just
+   download from the server instead of doing another manual pull? Since I
+   obviously did that already").
+
+   **Why neither works today.** The whole sharing protocol is keyed on the
+   checksum: `share/have?name=X&sha256=Y`, and `sharedFile` refuses without a
+   hash. That is what makes it safe - the peer is reached, never trusted, and
+   the bytes are checked against the project's own published checksum. A
+   manual entry has no published checksum, so isoshelf cannot even form the
+   question. Not an oversight; a consequence.
+
+   **The one new endpoint both need.** Ask by entry id: "what do you have for
+   `ubuntu-desktop`?" The answer is the filename, the server's own SHA256, the
+   size, and the version it believes the file to be. One call with no entry
+   given returns the lot, which is what the Add-images marker needs - one
+   round trip for the whole list, not one per image.
+
+   **The rule that has to hold.** Bytes copied this way are checked against
+   the hash the server gave, which proves the copy is identical to what is on
+   the server and proves nothing about provenance. So the file arrives
+   **Unverified**, and the existing rule applies unchanged: an unverified
+   download never replaces anything. Adding a manual image the folder doesn't
+   have is fine; overwriting one is not. Say in the UI whose word it rests on
+   - the person who put it there - rather than implying a check happened.
+   - The server can also hand back the entry and version it has recorded, so
+     the copy arrives identified rather than landing as "Unrecognized". That
+     is the same kind of assertion as somebody naming a file by hand, and
+     should be recorded as one.
+   - Sharing is off unless turned on and the asker must be signed in. Both
+     already true; neither changes.
+
+   **Not in v0.5.0**, which is polish and correctness only. This changes what
+   "verified" means at the edges and deserves a release where the
+   unverified-copy rules get real tests, rather than riding along in one whose
+   whole point is that nothing in it is half-built. First thing after, ahead
+   of [#1] and [#4]: it is what makes running the server worth it.
+
+**After v0.5.0, in this order:** item 18 (asking the server by entry), [#1]
+the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
+only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
+accepted - decided 2026-09-23), then [#11] and [#12].
+
+Everything else below the next heading has shipped.
 
 **Which version is the latest is not written down here, on purpose.** It went
 stale three times in one evening. Ask GitHub: the releases page, or
@@ -180,9 +248,19 @@ starts it thinking it is a form to fill in:
      Work out why the scan doesn't match it to the entry it plainly is -
      start with `internal/identify` and the assignment path, and with what
      `check.Manual` actually means today.
-   - **Say when a file arrived on the drive.** The record has `Added`, and
-     the page doesn't show it. "Added to drive: 22 Sep 2026" next to each
-     image.
+   - ~~**Say when a file arrived on the drive.**~~ *(done in v0.4.14: an
+     Added column in the list, sortable, and still under the name on a
+     phone. The date was already drawn under each name - what was missing
+     was being able to sort by it.)*
+     - **What is still missing is the date itself, on Linux.** `Added` is
+       `scan.File.Created`, then `PlacedAt`, then `FirstSeen`, and on Linux
+       `created()` always returns zero (`internal/scan/created_other.go`):
+       birthtime needs `statx`, which is not in the `syscall` package and
+       would otherwise mean a second dependency. So a file that was on the
+       drive before isoshelf first scanned it reads "-" forever. Worth doing
+       with a hand-rolled `statx` call if it can be done without the
+       dependency and without per-architecture syscall numbers going stale;
+       not worth guessing a date for.
    - **Say when the new version came out.** An update says a newer version
      exists but not its age, which is most of deciding whether to take it.
      The release date is in what `source` already fetches for some sources;
@@ -224,7 +302,12 @@ starts it thinking it is a form to fill in:
      anything that has to be maintained" rule - so a test in `internal/docs`
      checks the two name the same tools, and no version or download is
      tracked for any of them.
-17. **Say where a download is coming from** (the maintainer, 2026-09-22:
+17. ~~**Say where a download is coming from**~~ *(done in v0.4.14.*
+   `sourceName` in `internal/web/peer.go` turns the URL a download is using
+   into the peer's own name or "the internet"; the dock shows it while bytes
+   move and on the finished list. `fetch.Progress` already carried the URL,
+   so nothing new is found out - it was only ever thrown away.)*
+   (the maintainer, 2026-09-22:
    "when it is downloading, it would be nice to know if it was from the
    internet or from the local server"). Copying from another isoshelf
    (v0.4.9) is invisible while it happens: the dock says "Downloading 40%"
@@ -341,6 +424,7 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
 [#4]: https://github.com/ZachCurry13/isoshelf/issues/4
 [#5]: https://github.com/ZachCurry13/isoshelf/issues/5
+[#6]: https://github.com/ZachCurry13/isoshelf/issues/6
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#11]: https://github.com/ZachCurry13/isoshelf/issues/11
 [#12]: https://github.com/ZachCurry13/isoshelf/issues/12

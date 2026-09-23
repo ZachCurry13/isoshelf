@@ -429,6 +429,7 @@ const COLUMN_SORTS = [
   ["col-image", "name", "By name, A to Z"],
   ["col-version", "version", "Newest version here first"],
   ["col-status", "attention", "Most urgent first"],
+  ["col-added", "added", "Most recently added first"],
 ];
 
 // renderHeadings makes the column titles sort the list, and shows which one
@@ -635,8 +636,11 @@ function renderRow(item) {
   if (item.path) {
     under.push(el("span", { class: "file", title: item.path }, breakable(item.path)));
     if (item.size) under.push(el("span", {}, formatBytes(item.size)));
+    // On a phone there are no columns, so the date goes here instead; the
+     // stylesheet shows whichever of the two fits the width. Saying it twice
+     // at once would be worse than not saying it at all.
     if (item.added) {
-      under.push(el("span", { title: new Date(item.added).toLocaleString() },
+      under.push(el("span", { class: "added-inline", title: new Date(item.added).toLocaleString() },
         `${item.placed ? "Updated" : "Added"} ${shortDate(item.added)}`));
     }
   } else {
@@ -649,6 +653,15 @@ function renderRow(item) {
   const versionCell = el("td", { class: "version-cell" },
     item.version || (item.latest ? "" : "–"),
     newer ? el("span", { class: "latest-new", title: item.latest_file || "" }, `${item.version ? " → " : ""}${item.latest}`) : null);
+
+  // When the file arrived, or when an update last replaced it. An image
+  // that isn't in the folder has no date and sorts last, like every other
+  // blank column.
+  const addedCell = el("td", { class: "col-added added-cell" },
+    item.added
+      ? el("span", { title: `${item.placed ? "Updated" : "Added"} ${new Date(item.added).toLocaleString()}` },
+        shortDate(item.added))
+      : el("span", { class: "muted" }, "–"));
 
   const actions = [];
   if (item.entry && item.updates === "download" && item.status === "update available") {
@@ -683,6 +696,7 @@ function renderRow(item) {
     imageCell,
     versionCell,
     statusCell,
+    addedCell,
     el("td", { class: "row-actions" }, actions));
   return row;
 }
