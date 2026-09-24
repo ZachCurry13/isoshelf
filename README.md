@@ -257,8 +257,6 @@ policy allows them.
 
 **Also planned:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6),
-[`isoshelf update` on the command
-line](https://github.com/ZachCurry13/isoshelf/issues/1),
 [two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
 [installing an older version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
@@ -377,9 +375,17 @@ use it. From the command line instead:
 ```
 
 Use `scan` instead of `check` to stay offline, add `--profile proxmox` for
-Proxmox ISO storage, or `--json` for scripts. `./isoshelf help` lists
-everything. isoshelf only writes to a `.isoshelf` folder inside the folder you
-check, plus its own settings folder.
+Proxmox ISO storage, or `--json` for scripts. `scan` and `check` only write to
+a `.isoshelf` folder inside the folder you check, plus isoshelf's own settings
+folder. To download the updates as well:
+
+```bash
+./isoshelf update --move-aside /path/to/your/isos
+```
+
+`update` has no default for the old files: say `--keep`, `--move-aside` (to
+the archive) or `--delete`. `--dry-run` says what it would download, and
+`./isoshelf help` lists everything.
 
 To run the tests: `go test ./...`
 

@@ -43,6 +43,16 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
+### v0.8.5: `isoshelf update` on the command line ([#1])
+
+*(released 2026-09-24)*: a check, then every update isoshelf can download,
+through `update.Run` as the page does; `--keep`, `--move-aside` or
+`--delete` with no default, `--only`, `--dry-run`; pins kept, dismissals
+honoured unless named. The test runs it against a made-up project site, with
+`--catalog` pointing at a catalog of one entry. On the way, the README's
+promise that the command line only writes to `.isoshelf` had to become a
+promise about `scan` and `check`.
+
 ### v0.8.4: duplicates, and a word about sharing (items 6 and 7)
 
 *(released 2026-09-24, [#57])*. Possible duplicates by entry, version and
@@ -537,7 +547,13 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.3 and older
+## From STATUS.md: releases v0.8.4 and older
+
+### v0.8.4 (2026-09-24)
+
+- **Duplicate copies** ([#57]): counted above the list, filterable, with
+  Make sure (reads the copies, only when pressed) and Remove this copy.
+- **A word about sharing** beside the switch and in the README.
 
 ### v0.8.3 (2026-09-24)
 

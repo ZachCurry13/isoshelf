@@ -6,6 +6,19 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.5] - 2026-09-24
+
+### Added
+- **`isoshelf update` on the command line**
+  ([#1](https://github.com/ZachCurry13/isoshelf/issues/1)), for a terminal or
+  a scheduled job. It checks the folder, then downloads every update
+  isoshelf can, verified exactly as the page does. Say what happens to each
+  old file with `--keep`, `--move-aside` (to the archive) or `--delete` -
+  there is no default. `--only ID` updates just those images, `--dry-run`
+  says what it would download and changes nothing, and a pinned file is kept
+  whatever the flag says. Updates you dismissed on the page are skipped
+  unless you name them with `--only`.
+
 ## [v0.8.4] - 2026-09-24
 
 ### Added
