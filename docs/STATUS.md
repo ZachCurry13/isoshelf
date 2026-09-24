@@ -176,7 +176,33 @@ record of where things stand and what was decided.
 - Order: v0.6.1 is upload speed and the good-neighbour pass; v0.7.0 is this;
   then the rest of the queue. Details in TODO.
 
-## Latest change: v0.6.0 (2026-09-23)
+## Decided 2026-09-24 (the maintainer, using v0.6.0)
+
+- **Logo:** a disc on a shelf, picked from three; the stacked bars read as a
+  menu button.
+- **Server folder card:** one line (checked, space, Refresh), with the
+  folder, its type and Choose folder in Settings. In v0.7.0 with the rest of
+  the page top.
+- **Linux install:** a one-line script, `install.sh`, in the README.
+- **The exe stays the Windows download**; no installer.
+- Sharing belongs to servers only; the Settings footer says where settings
+  really are.
+
+## Latest change: v0.6.1 (2026-09-24)
+
+- **Gentler with the projects' servers** ([#59]): `Retry-After` honoured from
+  every host, a long one stops rather than retries, retries spread at random,
+  and a per-server offset on the automatic schedule.
+- **Adding a file shows speed and time left**; **a one-line Linux install**
+  with a weekly workflow that runs it on x86-64 and ARM; **a new logo**.
+- **Sharing only on a server** - it could never work on a desktop, and left
+  on it made every scan hash everything - and the Settings footer worded for
+  portable and server.
+- v0.6.0 is the first signed release; v0.6.1 is the first update isoshelf
+  installs by itself, so it's the one that proves Update now for real.
+- **Next:** v0.7.0, the simpler shelf ([#54]).
+
+## v0.6.0 (2026-09-23)
 
 - **isoshelf updates itself.** Update now in the top bar downloads the new
   version, checks the project's Ed25519 signature on `SHA256SUMS`, waits for
@@ -716,3 +742,5 @@ record of where things stand and what was decided.
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#50]: https://github.com/ZachCurry13/isoshelf/pull/50
 [#51]: https://github.com/ZachCurry13/isoshelf/pull/51
+[#54]: https://github.com/ZachCurry13/isoshelf/issues/54
+[#59]: https://github.com/ZachCurry13/isoshelf/issues/59

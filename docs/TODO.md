@@ -9,9 +9,10 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**In flight: v0.5.0.** Its wording half shipped as v0.4.13.
+**In flight: v0.7.0, the simpler shelf** (its paragraph below). v0.5.x,
+v0.6.0 and v0.6.1 have shipped; what is left of the v0.5.0 list is [#6].
 
-**What v0.5.0 holds, decided 2026-09-23** (the maintainer: "I want to make
+**What v0.5.0 held, decided 2026-09-23** (the maintainer: "I want to make
 sure we clean up everything we can before posting 0.5.0. Like it should look
 like it could actually be a 1.0.0"). **Polish and correctness only** - nothing
 half-built, everything visible finished:
@@ -119,14 +120,14 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
-**In flight: v0.6.0, isoshelf updates itself** (item 10; the maintainer asked
-for it 2026-09-23 and put it first). Built; waiting on the maintainer's
-one-time signing-key setup (item 10 says how). Decided that day: it downloads only when
+**~~v0.6.0, isoshelf updates itself~~** *(released 2026-09-23, signed; the
+key is set up)* (item 10; the maintainer asked for it that day and put it
+first). Decided then: it downloads only when
 **Update now** is pressed, then checks the signature, waits for image
 downloads, swaps and restarts on the same port; in portable mode it replaces
 **all three** programs; a single download named for its version takes the
 **plain name** on its first update. Not in a container (the image is updated
-instead). Needs the maintainer's one-time key setup before it can ship.
+instead).
 
 **Releases after v0.6.0** (decided 2026-09-23): **v0.6.1** is items 1 and 2
 below (upload speed, already built on the `missing-and-more` branch, and the
@@ -166,20 +167,26 @@ and background downloads described things isoshelf already did):
 - **In a container, isoshelf asks once** on first run whether to keep images
   up to date automatically (Yes / Not now), off until answered. Desktop and
   portable stay off by default, with the switch in Settings as now.
+- **On a server, the folder card is one line** (decided 2026-09-24): "Checked
+  2 h ago · 244 GB in images · 2.7 TB free of 3.5 TB" and Refresh. The
+  folder's path, its type and Choose folder move to Settings, under "This
+  folder". Desktop and portable keep the card as it is.
 
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
-1. **Upload speed.** "Add a file from this computer" shows speed and time
-   left while it uploads, the way the downloads dock does.
-2. **Be a good neighbour to the projects' servers** (the maintainer's biggest
-   worry of the four raised 2026-09-23). Already polite: one download at a
-   time, resumed rather than restarted, a check at most once a day per image,
-   requests that say who they are. The gaps, found by reading the code:
-   `Retry-After` is honoured only from api.github.com, so a 429 or 503 from
-   anyone else is retried after 2, 4, 8 and 16 seconds regardless; and the
-   schedule for automatic updates has no random offset. Honour `Retry-After`
-   from every host, give up (and say so) rather than retry when told to wait
-   long, and add a random offset to scheduled runs.
+1. ~~**Upload speed.**~~ *(done in v0.6.1: `uploadRate` in `upload.js`,
+   smoothed the way the dock's is.)*
+2. ~~**Be a good neighbour to the projects' servers**~~ *(done in v0.6.1,
+   [#59]: `internal/remote/polite.go`. `Refused` reads `Retry-After` on a 429
+   or 503 from any host; over `MaxPoliteWait` (a minute) it is a `BusyError`,
+   which neither checks nor downloads retry. `NextWait` spreads the doubling
+   wait between half and one and a half times itself, and each server picks
+   an `autoOffset` of up to an hour for the automatic-update schedule.)*
+   Also in v0.6.1, from the maintainer's own use: sharing shown and honoured
+   only on a server (`sharing()` checks `AnyHost`), the Settings footer
+   worded for portable and server, a new logo (a disc on a shelf, picked
+   from three), and `install.sh` for Linux with a workflow that runs it on
+   x86-64 and ARM Ubuntu weekly.
 3. **Missing images get two actions:** "Download again" as the row's button
    ("Download page" for images fetched by hand), and "Stop expecting it" in
    the details panel - off the missing list until the image is in the folder
@@ -635,3 +642,5 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#11]: https://github.com/ZachCurry13/isoshelf/issues/11
 [#12]: https://github.com/ZachCurry13/isoshelf/issues/12
+[#54]: https://github.com/ZachCurry13/isoshelf/issues/54
+[#59]: https://github.com/ZachCurry13/isoshelf/issues/59

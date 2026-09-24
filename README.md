@@ -379,10 +379,10 @@ that won't boot is told how to fix it by hand.<br>
 downloads the new version, checks this project's signature, and restarts into
 it; the page reconnects by itself, and the old version comes back if the new
 one won't start.<br>
-**Next: v0.6.1** shows the speed while you add a file, and is [gentler with
-the projects' servers](https://github.com/ZachCurry13/isoshelf/issues/59)
-when they're busy.<br>
-**Then:** v0.7.0 is [a simpler
+**v0.6.1: gentler, and easier to install.** *2026-09-24:* adding a file shows
+its speed; isoshelf waits as long as a busy server asks, from every server; a
+one-line install for Linux; sharing only where it can work; and a new logo.<br>
+**Next:** v0.7.0 is [a simpler
 page](https://github.com/ZachCurry13/isoshelf/issues/54): *pin* a file to keep
 it whatever updates come, one summary line instead of the row of cards, and
 fewer badges. After that: [*Download again* and *Stop expecting
