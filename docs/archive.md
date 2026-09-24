@@ -43,6 +43,19 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
+### v0.8.2: dismissing an update (item 4)
+
+*(released 2026-09-24, [#56])*: for 7, 30 or 90 days or for good, from the
+details panel; the row greyed and sorted with the up-to-date ones, out of
+every count and of Update all and updating by itself; Settings lists every
+dismissal with Undo and Undo all. What was learned:
+- **`shortDate` only knows the past.** It called a date a month away
+  "today", so a dismissal said "until today". `untilDate` is for days still
+  to come.
+- The dismissal lives on the image's track in the folder's records, beside
+  its star, so it belongs to that folder: a laptop and a server can each
+  dismiss what they like.
+
 ### v0.8.1: copying anything from the server (item 18, part two)
 
 *(released 2026-09-24, [#62])*. `/api/share/list` on the sharing isoshelf,
@@ -506,7 +519,14 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.0 and older
+## From STATUS.md: releases v0.8.1 and older
+
+### v0.8.1 (2026-09-24)
+
+- **Copy any image from your server** ([#62], part two): Add images marks
+  what the server has and copies it; files the catalog doesn't know are in a
+  folded list. A copy is checked against the server's copy, recorded as a
+  copy with the server's account of it, and never called checked for that.
 
 ### v0.8.0 (2026-09-24)
 
@@ -1096,3 +1116,4 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#54]: https://github.com/ZachCurry13/isoshelf/issues/54
 [#59]: https://github.com/ZachCurry13/isoshelf/issues/59
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
+[#56]: https://github.com/ZachCurry13/isoshelf/issues/56
