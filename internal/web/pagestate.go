@@ -18,8 +18,10 @@ type stateJSON struct {
 	// a container, anything somebody opens from another machine. The page
 	// uses it to name the browser tab, because somebody running one on their
 	// desktop and one on their NAS has two tabs called the same thing.
-	Server    bool                   `json:"server"`
-	Target    string                 `json:"target"`
+	Server bool   `json:"server"`
+	Target string `json:"target"`
+	// Pinned lists the folder's pinned files, by path.
+	Pinned    []string               `json:"pinned"`
 	Profile   string                 `json:"profile"`
 	UpdatedAt *time.Time             `json:"updated_at,omitempty"`
 	Run       *runJSON               `json:"run,omitempty"`
@@ -142,6 +144,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		Warnings:        nonNil(s.warningsLocked()),
 		Tracks:          map[string]state.Track{},
 		UsualSet:        []string{},
+		Pinned:          []string{},
 		Recent:          recent,
 		Bookmarks:       nonNil(saved.Bookmarks),
 		OldFiles:        saved.OldFiles,
@@ -168,6 +171,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		out.Profile = string(s.st.Profile)
 		out.Tracks = s.st.Tracks
 		out.UsualSet = nonNil(s.st.UsualSet())
+		out.Pinned = nonNil(s.st.Pinned())
 	}
 	if s.report != nil {
 		j := s.report.JSON()

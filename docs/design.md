@@ -846,7 +846,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
 - The page is one script per part, all plain scripts sharing the same names
   and loaded in the order `index.html` lists them: `app.js` (what isoshelf has
   said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
-  to-do cards, filters, rows), `details.js` (the panel and the checklist),
+  to-do cards, filters, rows), `details.js` (the panel), `checklist.js` (the
+  checklist),
   `downloads.js` (the queue), `actions.js` (updating, removing, identifying),
   `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and

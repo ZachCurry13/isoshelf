@@ -76,6 +76,10 @@ type FileRecord struct {
 	// up after the folder's first scan. Where the system records when a file
 	// was created, that is used instead; this covers the rest.
 	FirstSeen time.Time `json:"first_seen,omitzero"`
+	// Pinned keeps this exact file whatever updates come (v0.7.0): an update
+	// downloads beside it and never replaces or archives it. It belongs to the
+	// file, so like an assignment it goes when the file changes.
+	Pinned bool `json:"pinned,omitempty"`
 }
 
 func (r FileRecord) current(f scan.File) bool {

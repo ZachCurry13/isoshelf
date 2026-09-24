@@ -310,7 +310,7 @@ Then:
 
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
-  `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
+  `images.js`, `details.js`, `checklist.js`, `downloads.js`, `actions.js`, `folders.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
   `upload.js`, `report.js` and `selfupdate.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in

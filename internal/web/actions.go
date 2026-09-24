@@ -99,6 +99,7 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 	res, err := update.Run(ctx, update.Options{
 		Target: j.target, Entry: s.catalog().Entry(j.entry), Client: client, Fetcher: fetcher,
 		State: st, Old: j.old, Removal: j.removal, Now: s.cfg.Now,
+		Pinned: pinnedAmong(st, j.old),
 		// Somewhere closer than the internet, when one is set up.
 		Nearer: nearer(near, s.noteAboutPeer),
 		Progress: func(p fetch.Progress) {
