@@ -36,8 +36,9 @@ function ask(title, text, choices, body) {
 // REMOVAL turns an image's saved choice into what a download needs.
 const REMOVAL = { replace: "delete", archive: "move-aside", keep: "keep" };
 
-// Updating one image asks nothing: the image carries its own choice about
-// what happens to the copy it replaces (see choiceField).
+// Updating one image asks nothing: Settings says what happens to the copy it
+// replaces (choiceFor), and a pinned file is kept whatever it says - the
+// server sees to that.
 async function updateItem(item) {
   await queueDownload(item.entry, REMOVAL[choiceFor(item)]);
 }
@@ -61,7 +62,7 @@ async function updateAll() {
       size: item.size,
       name: item.name,
       detail: `${item.version || "?"} → ${item.latest || "newest"}`,
-      note: CHOICE_WORD[choiceFor(item)],
+      note: isPinned(item) ? "keeps this pinned file" : CHOICE_WORD[choiceFor(item)],
     })),
     actions: [{ label: "Update them", value: "go", primary: true }],
   });
@@ -78,9 +79,12 @@ async function updateAll() {
 }
 
 async function removeItem(item) {
+  // Removing is the user's own choice, so a pin doesn't stop it - but it is
+  // said, since a pin means somebody once wanted this file kept.
+  const pinned = isPinned(item) ? "This file is pinned. " : "";
   const how = await ask(
     `Remove ${item.path}?`,
-    `This file uses ${formatBytes(item.size)}. Archiving keeps it in this folder, under Archive, where you can restore it or delete it later — the space is not freed until you do.`,
+    `${pinned}This file uses ${formatBytes(item.size)}. Archiving keeps it in this folder, under Archive, where you can restore it or delete it later — the space is not freed until you do.`,
     [
       { label: "Archive it", value: "move-aside", primary: true },
       { label: "Delete it now", value: "delete" },
@@ -468,7 +472,7 @@ function renderGuesses(guesses) {
       el("div", { class: "info" },
         el("div", {},
           el("span", { class: "name" }, guess.name),
-          archBadge(guess.arch),
+          archBadge(guess.arch, true),
           guess.version ? el("span", { class: "arch" }, guess.version) : null,
           el("span", { class: `pill ${guess.sure ? "s-ok" : "s-muted"}` }, sureness(guess.score))),
         el("div", { class: "kind" }, `Because ${guess.reason}.`)),
@@ -503,7 +507,7 @@ async function renderIdentifyCatalog() {
     list.append(el("li", {},
       logoTile(entry),
       el("div", { class: "info" },
-        el("div", {}, el("span", { class: "name" }, entry.name), archBadge(entry.arch)),
+        el("div", {}, el("span", { class: "name" }, entry.name), archBadge(entry.arch, true)),
         el("div", { class: "kind" }, UPDATES_LABEL[entry.updates] || entry.updates)),
       el("button", {
         type: "button", class: "btn small",

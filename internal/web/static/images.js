@@ -92,7 +92,9 @@ function renderTodo() {
         }));
   }
 
-  const older = items.filter((it) => it.older && it.path);
+  // A pinned file is one somebody decided to keep, so it is never offered up
+  // as an older version to clear.
+  const older = items.filter((it) => it.older && it.path && !isPinned(it));
   if (older.length) {
     const bytes = older.reduce((sum, it) => sum + (it.size || 0), 0);
     cards.push(todoCard({
@@ -237,10 +239,31 @@ const ARCH_BADGE = {
 const ARCH_FULL = Object.fromEntries(ARCHES);
 
 // archBadge draws one, or nothing when there is no architecture to show.
-function archBadge(arch) {
-  if (!arch) return null;
+//
+// Ordinary 64-bit PC images get none (v0.7.0): nearly every row said
+// "64-bit", which told nobody anything and hid the rows where it matters.
+// always is for the few places choosing between the two is the point, like
+// naming a file.
+function archBadge(arch, always) {
+  if (!arch || (arch === "x86_64" && !always)) return null;
   return el("span", { class: "arch", title: ARCH_FULL[arch] || arch },
     ARCH_BADGE[arch] || arch);
+}
+
+// pinIcon is the small pushpin a pinned row carries, drawn rather than an
+// emoji so it looks the same on every system.
+function pinIcon() {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
+  svg.classList.add("pin-icon");
+  for (const d of ["M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5-1.5l1.5-4l4-4", "M9 15l-4.5 4.5", "M14.5 4l5.5 5.5"]) {
+    const path = document.createElementNS(ns, "path");
+    path.setAttribute("d", d);
+    svg.append(path);
+  }
+  return svg;
 }
 
 const SHOW = [
@@ -676,8 +699,9 @@ function renderRow(item) {
       // wrapped name never leaves one dangling at the end of it.
       el("div", { class: "name-line" },
         el("span", { class: "name" }, name),
-        caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null),
-      item.arch ? el("div", { class: "meta-line" }, archBadge(item.arch)) : null,
+        caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null,
+        isPinned(item) ? el("span", { class: "pin-mark", title: "Pinned: kept whatever updates come", role: "img", "aria-label": "Pinned" }, pinIcon()) : null),
+      archBadge(item.arch) ? el("div", { class: "meta-line" }, archBadge(item.arch)) : null,
       item.note ? el("div", { class: "note" }, item.note) : null)));
 
   // The file, its size and when it arrived go under the name: one line each

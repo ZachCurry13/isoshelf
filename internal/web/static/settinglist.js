@@ -119,9 +119,9 @@ const SETTING_GROUPS = [
       {
         name: "What happens to the file an update replaces",
         fields: ["old_files"],
-        hint: "For images you haven't answered for yourself. Each one can choose " +
-          "differently in its own panel.",
-        words: "replace archive delete keep both old copies updates",
+        hint: "For every image. To keep one exact file whatever happens, pin it " +
+          "in its own panel.",
+        words: "replace archive delete keep both old copies updates pin pinned",
         control: () => choiceRow("What happens to the file an update replaces", [
           ["replace", "Replace it"],
           ["archive", "Move it to the archive"],

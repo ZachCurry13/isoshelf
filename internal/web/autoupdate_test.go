@@ -8,7 +8,6 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/check"
 	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/space"
-	"github.com/ZachCurry13/isoshelf/internal/state"
 	"github.com/ZachCurry13/isoshelf/internal/update"
 )
 
@@ -65,29 +64,27 @@ func TestHowOftenIsRemembered(t *testing.T) {
 	waitIdle(t, s)
 }
 
-// Each image follows the answer it already carries. What happens unattended
-// has to be what the page has been saying would happen, or somebody's drive
-// does something they were told it wouldn't.
-func TestWhatHappensToTheOldFileFollowsTheImagesOwnAnswer(t *testing.T) {
+// Every image follows the answer in Settings (v0.7.0: a pin is the exception,
+// and update.Run keeps that). What happens unattended has to be what the page
+// has been saying would happen, or somebody's drive does something they were
+// told it wouldn't.
+func TestWhatHappensToTheOldFileFollowsSettings(t *testing.T) {
 	item := check.Item{Path: "linuxmint-22.3.iso", LatestFile: "linuxmint-22.4.iso"}
 	fixed := check.Item{Path: "netboot.xyz.iso", LatestFile: "netboot.xyz.iso"}
 
 	for _, c := range []struct {
 		why      string
 		item     check.Item
-		track    state.Track
 		fallback string
 		want     update.Removal
 	}{
-		{"its own answer wins", item, state.Track{OldFiles: settings.OldArchive}, settings.OldReplace, update.MoveAside},
-		{"and over the older keep switch", item, state.Track{OldFiles: settings.OldReplace, KeepOld: true}, "", update.DeleteNow},
-		{"the old keep switch still counts", item, state.Track{KeepOld: true}, settings.OldReplace, update.Keep},
-		{"no answer falls back to Settings", item, state.Track{}, settings.OldArchive, update.MoveAside},
-		{"and to replacing when nothing is set", item, state.Track{}, "", update.DeleteNow},
-		{"a fixed name can't keep both, so it archives", fixed, state.Track{OldFiles: settings.OldKeep}, "", update.MoveAside},
-		{"a changing name can", item, state.Track{OldFiles: settings.OldKeep}, "", update.Keep},
+		{"Settings says archive", item, settings.OldArchive, update.MoveAside},
+		{"and replacing when nothing is set", item, "", update.DeleteNow},
+		{"something unexpected is replacing too", item, "shred", update.DeleteNow},
+		{"a fixed name can't keep both, so it archives", fixed, settings.OldKeep, update.MoveAside},
+		{"a changing name can", item, settings.OldKeep, update.Keep},
 	} {
-		if got := removalFor(c.item, c.track, c.fallback); got != c.want {
+		if got := removalFor(c.item, c.fallback); got != c.want {
 			t.Errorf("%s: %q, want %q", c.why, got, c.want)
 		}
 	}

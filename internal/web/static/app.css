@@ -353,6 +353,9 @@ td.replace { text-align: center; }
 .name a { color: inherit; }
 .name a:hover { color: var(--accent); }
 .arch { margin-left: 6px; font-size: 0.7857rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; font-weight: 500; }
+/* A pinned file: kept whatever updates come. */
+.pin-mark { margin-left: 6px; color: var(--accent); display: inline-flex; }
+.pin-icon { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -2px; }
 td.version-cell { font-family: var(--mono); font-size: 0.8571rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .latest-new { font-weight: 650; color: var(--update-fg); }
 .file { font-family: var(--mono); font-size: 0.8214rem; overflow-wrap: break-word; min-width: 170px; }
