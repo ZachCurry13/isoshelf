@@ -43,6 +43,14 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
+### v0.8.3: where to find it (item 5)
+
+*(released 2026-09-24, [#58])*. The catalog's `find` field, `{version}`
+filled in with the newest version (or `VERSION` when the check hasn't found
+one, which reads as a placeholder rather than a phrase spliced into a file
+name), shown in the details panel above the links, where the maintainer
+chose. The built-in catalog doesn't use it yet: see item 5 in `TODO.md`.
+
 ### v0.8.2: dismissing an update (item 4)
 
 *(released 2026-09-24, [#56])*: for 7, 30 or 90 days or for good, from the
@@ -519,7 +527,13 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.1 and older
+## From STATUS.md: releases v0.8.2 and older
+
+### v0.8.2 (2026-09-24)
+
+- **Dismiss an update** ([#56]) for 7, 30 or 90 days, or for good: greyed,
+  sorted with the up-to-date ones, out of every count and of Update all and
+  updating by itself; Settings lists them with Undo.
 
 ### v0.8.1 (2026-09-24)
 
@@ -1117,3 +1131,4 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#59]: https://github.com/ZachCurry13/isoshelf/issues/59
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
 [#56]: https://github.com/ZachCurry13/isoshelf/issues/56
+[#58]: https://github.com/ZachCurry13/isoshelf/issues/58

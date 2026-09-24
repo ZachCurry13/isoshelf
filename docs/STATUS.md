@@ -22,10 +22,11 @@ four times in one evening. The releases page on GitHub is the answer, and
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; open issues #1-#7, #11, #12, #57 and #58 are the
+- **GitHub:** public; open issues #1-#7, #11, #12 and #57 are the
   roadmap (#10, the phone layout, #54, the simpler shelf, #55, missing
-  images, #56, dismissing an update, #59, gentler with servers, and #62,
-  where each file came from, are closed); Discussions on.
+  images, #56, dismissing an update, #58, where to find it, #59, gentler
+  with servers, and #62, where each file came from, are closed);
+  Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
 
@@ -196,6 +197,9 @@ the archive timer and the update scheduler "next" after all three shipped.
 - **Saying yes to updating by itself starts the first run at once**, as the
   switch always has, and the container's question says beforehand what that
   run will do.
+- **[#58]'s note goes in the details panel**, above the links; **[#57]'s
+  duplicates** are a count on the line above the list, a filter, and Make
+  sure and Remove this copy on each.
 - **[#62]'s layout:** the server's images in Add images (an "On your server"
   mark, and a folded "Also on your server" list), where each file came from
   in the details panel only, and copies with no published checksum allowed,
@@ -222,14 +226,15 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.2 (2026-09-24)
+## Latest change: v0.8.3 (2026-09-24)
 
-- **Dismiss an update** ([#56]) for 7, 30 or 90 days, or for good: greyed,
-  sorted with the up-to-date ones, out of every count and of Update all and
-  updating by itself; Settings lists them with Undo.
-- **Next:** item 5, the "where to find it" note ([#58]).
+- **Where to find it** ([#58]): a catalog entry can say where the file is on
+  the download page, shown in the details panel above the links. The
+  built-in catalog starts using it once older copies have had time to
+  update, since they refuse an unknown field.
+- **Next:** item 6, duplicates ([#57]).
 
-Earlier releases, v0.8.1 back to the start, are written up in
+Earlier releases, v0.8.2 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
@@ -244,3 +249,4 @@ Earlier releases, v0.8.1 back to the start, are written up in
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
 [#56]: https://github.com/ZachCurry13/isoshelf/issues/56
 [#58]: https://github.com/ZachCurry13/isoshelf/issues/58
+[#57]: https://github.com/ZachCurry13/isoshelf/issues/57
