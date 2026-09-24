@@ -104,11 +104,12 @@ const SETTING_GROUPS = [
       {
         name: "Tell me about new isoshelf versions",
         fields: ["app_update_check"],
-        hint: "Checks GitHub for a newer isoshelf. Nothing is installed and nothing " +
-          "about you is sent - it's a link in the top bar.",
-        words: "isoshelf version update release new notify github",
+        hint: "Checks GitHub for a newer isoshelf and says so in the top bar. Nothing " +
+          "about you is sent, and nothing is installed until you press Update now.",
+        words: "isoshelf version update release new notify github self upgrade restart",
         control: () => switchRow("Tell me about new isoshelf versions", state && state.app_update_check,
           (on) => ({ app_update_check: on })),
+        note: () => selfUpdateNote(),
       },
     ],
   },

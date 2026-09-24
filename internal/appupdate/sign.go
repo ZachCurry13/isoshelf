@@ -79,6 +79,17 @@ func Sign(key ed25519.PrivateKey, data []byte) string {
 // ErrBadSignature means a file doesn't carry this project's signature.
 var ErrBadSignature = errors.New("the update isn't signed by the isoshelf project, so it wasn't installed")
 
+// VerifyRelease checks sig against the key built into isoshelf. The release
+// workflow uses it on its own signature, so a release signed with a key that
+// doesn't match fails there rather than on everybody's computer.
+func VerifyRelease(data []byte, sig string) error {
+	key, ok := releaseKey()
+	if !ok {
+		return ErrNoKey
+	}
+	return Verify(key, data, sig)
+}
+
 // Verify checks that sig is key's signature of data.
 func Verify(key ed25519.PublicKey, data []byte, sig string) error {
 	raw, err := base64.StdEncoding.DecodeString(strings.TrimSpace(sig))

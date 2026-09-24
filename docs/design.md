@@ -802,7 +802,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
-  (dragging a file onto the page, or picking one) and `report.js` (the
+  (dragging a file onto the page, or picking one), `selfupdate.js` (isoshelf
+  updating its own program) and `report.js` (the
   prefilled bug report). They were one 2,544-line
   `app.js` until v0.3.1; the split is what keeps changing one corner from
   meaning reading all of it.
