@@ -222,3 +222,32 @@ func TestTheScheduleSurvivesARestart(t *testing.T) {
 		t.Error("it started a run that wasn't due yet")
 	}
 }
+
+// Each isoshelf adds its own offset to the schedule, so copies that started
+// together drift apart instead of asking the same servers in the same minute.
+func TestTheScheduleIsSpread(t *testing.T) {
+	for _, c := range []struct {
+		ago  time.Duration
+		want bool
+	}{
+		{24*time.Hour + 10*time.Minute, false}, // a day has passed, the offset hasn't
+		{24*time.Hour + 50*time.Minute, true},
+	} {
+		dirs := testDirs(t)
+		if err := settings.Save(dirs.Config, settings.Settings{
+			AutoUpdate: boolPtr(true), AutoUpdateLast: time.Now().Add(-c.ago),
+		}); err != nil {
+			t.Fatal(err)
+		}
+		s := newServer(t, dirs, sampleDrive(t))
+		s.autoOffset = 45 * time.Minute
+		s.autoUpdateIfDue()
+		s.mu.Lock()
+		started := s.scanning != nil
+		s.mu.Unlock()
+		if started != c.want {
+			t.Errorf("last run %v ago, offset 45m: started=%v, want %v", c.ago, started, c.want)
+		}
+		waitIdle(t, s)
+	}
+}

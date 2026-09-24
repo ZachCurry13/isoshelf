@@ -32,7 +32,7 @@ func (c *Client) download(ctx context.Context, req Request, url, part string, pr
 			return nil, fmt.Errorf("%s: %w", url, last)
 		}
 		select {
-		case <-time.After(wait):
+		case <-time.After(remote.NextWait(last, wait)):
 		case <-ctx.Done():
 			return nil, ctx.Err()
 		}
@@ -101,7 +101,7 @@ func (c *Client) attempt(ctx context.Context, req Request, url, part string, att
 		if rl := rateLimit(resp); rl != nil {
 			return nil, rl
 		}
-		return nil, &remote.StatusError{URL: url, Status: resp.Status, Code: resp.StatusCode}
+		return nil, remote.Refused(url, resp, time.Now())
 	}
 
 	total := req.Size
