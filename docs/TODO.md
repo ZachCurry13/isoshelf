@@ -119,7 +119,40 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
-**After v0.5.0, in this order:** item 18 (asking the server by entry), [#1]
+**In flight: v0.6.0, isoshelf updates itself** (item 10; the maintainer asked
+for it 2026-09-23 and put it first). Decided that day: it downloads only when
+**Update now** is pressed, then checks the signature, waits for image
+downloads, swaps and restarts on the same port; in portable mode it replaces
+**all three** programs; a single download named for its version takes the
+**plain name** on its first update. Not in a container (the image is updated
+instead). Needs the maintainer's one-time key setup before it can ship.
+
+**Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
+
+1. **Upload speed.** "Add a file from this computer" shows speed and time
+   left while it uploads, the way the downloads dock does.
+2. **Missing images get two actions:** "Download again" as the row's button
+   ("Download page" for images fetched by hand), and "Stop expecting it" in
+   the details panel - off the missing list until the image is in the folder
+   again. The missing card gets "Download all" when isoshelf can download
+   them. Today a missing image offers only Details, and stays missing until
+   it drops out of the last 10 scans.
+3. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
+   manual or downloadable; for a downloadable one, "forever" is the "Never
+   update" list decided 2026-09-19, and Update all and automatic updates skip
+   it. **The timer holds** even if a newer version comes out. The row stays
+   listed, greyed, "Dismissed until 23 Oct", not counted on the updates card
+   and sorted with the up-to-date ones. Settings lists **everything**
+   dismissed, with Undo on each and Undo all.
+4. **A "where to find it" note for images fetched by hand**, e.g. "The
+   32-bit ISO is MX-{version}_386.iso, in the Xfce folder." Needs a new
+   catalog field, and the catalog is read with unknown fields refused
+   (`DisallowUnknownFields`), so isoshelf has to learn the field in one
+   release before `default.toml` may use it - otherwise every older copy
+   refuses the updated catalog. Show the maintainer where it would appear
+   before building it.
+
+**After those, in this order:** item 18 (asking the server by entry), [#1]
 the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12].
