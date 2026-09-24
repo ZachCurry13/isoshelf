@@ -149,6 +149,35 @@ and moves ruled-out ones to "Ruled out" with the reason.
 39. Memtest86+
 40. ShredOS
 
+### Manual entries to look at again
+
+The maintainer, 2026-09-23: DistroWatch's page for a distribution carries
+download links for most of the images this catalog only links to. Those links
+are a **lead, not a source**: follow one to find where the file lives, then
+find the same file and its checksum on the project's own HTTPS site, and
+record the project's own addresses. An entry becomes downloadable only if the
+project publishes a checksum there; otherwise it stays manual and the reason
+goes in "Manual entries" above. One of these a week, before the wish list,
+most likely first:
+
+1. EndeavourOS
+2. Zorin OS Core
+3. EasyOS (the release folders are named by codename; a listing that says
+   which is newest would do)
+4. Q4OS install CD (32-bit)
+5. HexOS installer
+6. NiceHash OS
+7. FydeOS for PC
+8. Hiren's BootCD PE (also: whether it publishes per-release SHA-256s that
+   would let a known hash say which version a file is)
+9. AtlasOS (archival ISO)
+10. Batocera (32-bit x86, archival)
+11. Tiny Core Linux, all three (http and MD5 only when last checked)
+
+Not these: Windows 10, 11 and 11 Insider Preview stay links - isoshelf never
+automates a vendor's download flow - and Pop!_OS 22.04 Raspberry Pi is
+discontinued.
+
 ### Ruled out
 
 Nothing yet.
