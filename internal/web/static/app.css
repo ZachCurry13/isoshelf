@@ -101,11 +101,12 @@ a:hover { text-decoration: underline; }
 
 .brand { display: flex; align-items: center; gap: 10px; }
 .logo { width: 20px; height: 20px; }
-.logo rect:nth-child(1) { fill: var(--accent); }
-/* The two paler blues are the accent thinned, so the mark follows the
-   palette rather than carrying colours of its own. */
-.logo rect:nth-child(2) { fill: color-mix(in srgb, var(--accent), transparent 35%); }
-.logo rect:nth-child(3) { fill: color-mix(in srgb, var(--accent), transparent 65%); }
+/* A disc on a shelf: the name, drawn. It replaced three stacked bars in
+   v0.6.1, which read as a menu button. The disc's hole is cut out of the
+   shape rather than painted, so it shows whatever is behind it; the shelf is
+   the accent thinned, so the mark follows the palette. */
+.logo-disc { fill: var(--accent); }
+.logo-shelf { fill: color-mix(in srgb, var(--accent), transparent 35%); }
 .brand-name { font-size: 1.0714rem; font-weight: 600; letter-spacing: 0; }
 .version { color: var(--muted); font-size: 0.8571rem; padding: 1px 6px; border: 1px solid var(--border); border-radius: 4px; }
 

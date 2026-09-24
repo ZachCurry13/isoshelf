@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/isoshelf.svg" alt="" width="80" height="80">
+
 # isoshelf
 
 **Keep your bootable images up to date, on a Ventoy USB drive, a NAS share, or Proxmox ISO storage.**
@@ -429,7 +431,19 @@ Adjust the first path to wherever your drive is mounted.
 
 ## Getting it
 
-Download it from the [releases
+**On Linux, in one line:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ZachCurry13/isoshelf/main/install.sh | sh
+```
+
+That finds the newest release, downloads the program for your machine (x86-64
+or ARM), checks it against the release's checksums, and puts it in
+`~/.local/bin` as `isoshelf` — no `sudo`, nothing else touched. Then run
+`isoshelf`. The script is [short enough to read first](install.sh), and a
+weekly check runs it for real on both kinds of machine.
+
+**Anywhere else,** download it from the [releases
 page](https://github.com/ZachCurry13/isoshelf/releases) — the newest one at
 the top. There's no installer and nothing to set up: it's one file.
 
