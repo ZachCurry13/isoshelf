@@ -132,26 +132,68 @@ instead). Needs the maintainer's one-time key setup before it can ship.
 
 1. **Upload speed.** "Add a file from this computer" shows speed and time
    left while it uploads, the way the downloads dock does.
-2. **Missing images get two actions:** "Download again" as the row's button
+2. **Be a good neighbour to the projects' servers** (the maintainer's biggest
+   worry of the four raised 2026-09-23). Already polite: one download at a
+   time, resumed rather than restarted, a check at most once a day per image,
+   requests that say who they are. The gaps, found by reading the code:
+   `Retry-After` is honoured only from api.github.com, so a 429 or 503 from
+   anyone else is retried after 2, 4, 8 and 16 seconds regardless; and the
+   schedule for automatic updates has no random offset. Honour `Retry-After`
+   from every host, give up (and say so) rather than retry when told to wait
+   long, and add a random offset to scheduled runs.
+3. **Missing images get two actions:** "Download again" as the row's button
    ("Download page" for images fetched by hand), and "Stop expecting it" in
    the details panel - off the missing list until the image is in the folder
    again. The missing card gets "Download all" when isoshelf can download
    them. Today a missing image offers only Details, and stays missing until
    it drops out of the last 10 scans.
-3. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
+4. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
    manual or downloadable; for a downloadable one, "forever" is the "Never
    update" list decided 2026-09-19, and Update all and automatic updates skip
    it. **The timer holds** even if a newer version comes out. The row stays
    listed, greyed, "Dismissed until 23 Oct", not counted on the updates card
    and sorted with the up-to-date ones. Settings lists **everything**
    dismissed, with Undo on each and Undo all.
-4. **A "where to find it" note for images fetched by hand**, e.g. "The
+5. **A "where to find it" note for images fetched by hand**, e.g. "The
    32-bit ISO is MX-{version}_386.iso, in the Xfce folder." Needs a new
    catalog field, and the catalog is read with unknown fields refused
    (`DisallowUnknownFields`), so isoshelf has to learn the field in one
    release before `default.toml` may use it - otherwise every older copy
    refuses the updated catalog. Show the maintainer where it would appear
    before building it.
+6. **Note duplicate images, and offer to delete a copy.** isoshelf already
+   finds *older* copies of an image; the same image and version twice, under
+   two names or in two folders, isn't found. Same entry and version and size
+   is the cheap first look; telling for sure means hashing both, minutes on
+   a USB stick, so ask the maintainer whether that runs on its own or only
+   when asked. Deleting goes through the archive like every other removal.
+7. **A sharing disclosure**, in the README and beside the sharing switch:
+   the licenses of the images you share are yours to mind. The maintainer's
+   view, 2026-09-23, and it holds for files people bring themselves - "like a
+   Plex server". The project's own responsibility is what its catalog lists
+   and what it promotes; sharing proprietary images shouldn't be pitched as a
+   feature.
+8. **AtlasOS: recognized, not listed.** "AtlasOS (archival ISO)" is in the
+   built-in catalog with a logo, so it appears under Add images for everyone.
+   AtlasOS itself moved from handing out modified Windows images to a
+   playbook applied to your own Windows. Keep recognizing the file; stop
+   listing it as something to go and get.
+9. **Logos by trademark policy.** A project being open source doesn't make
+   its logo free to use: Debian publishes an open-use logo, Canonical's
+   Ubuntu policy is strict. Keep a logo only where the project's own policy
+   allows this use, and a generic disc icon otherwise - starting with
+   Windows, Windows 11, Ubuntu, AtlasOS and NiceHash - including the ones
+   fetched from the Simple Icons CDN. The weekly catalog job can check each
+   policy on the project's own site. Delisting on request already stands.
+
+**Around 1.0, not before:** signing the Windows program so the "unknown
+publisher" warning goes (the maintainer, 2026-09-23: GitHub users are used to
+it). SignPath Foundation signs open-source projects for free; Microsoft's
+Trusted Signing is about $10 a month; a certificate authority costs hundreds a
+year and needs a hardware key. Even signed, Windows warns until the program
+has a reputation. Self-update already means the warning appears only on the
+first download, because files isoshelf downloads itself don't carry the
+browser's "came from the internet" mark.
 
 **After those, in this order:** item 18 (asking the server by entry), [#1]
 the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
