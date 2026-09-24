@@ -8,10 +8,11 @@ import (
 )
 
 // The page is one script per part, and some documents list them: CLAUDE.md,
-// docs/design.md and docs/TODO.md do today, and CONTRIBUTING.md once did. A new script is easy to add and easy to
-// forget in all three - report.js was missing from every one of them for four
-// releases, and the lists read as complete, so nobody looking at them could
-// tell. A document that names one script must name them all.
+// docs/design.md and docs/TODO.md do today, and CONTRIBUTING.md once did. A
+// new script is easy to add and easy to forget in every one of them -
+// report.js was missing from all three for four releases, and the lists read
+// as complete, so nobody looking at them could tell. A document that names
+// one script must name them all.
 func TestEveryDocumentListingPageScriptsListsThemAll(t *testing.T) {
 	root := repoRoot(t)
 	names, err := filepath.Glob(filepath.Join(root, "internal", "web", "static", "*.js"))

@@ -22,7 +22,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/remote/remotetest/recorded`: recorded HTTP responses the tests replay
 - `internal/sampledrive`: real filenames used as test fixtures; its `mkdrive` command writes them to a real folder for trying the page against a full drive
 - `internal/docs`: no code, just the test that keeps this repository's own claims about itself true
-- `docs/design.md` (full rules and design), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/catalog-sources.md`
+- `docs/design.md` (full rules and design), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/archive.md` (finished work moved out of those two), `docs/catalog-sources.md`
 
 ## Run and test
 - `go build ./... && go vet ./... && go test ./...` must pass before a commit (CI also checks `gofmt -l .`)
@@ -84,7 +84,7 @@ people have downloaded. Work never happens directly on it.
 ## Working rules
 - Read only the files needed for the task; never read whole directories.
 - Keep source files under ~200 lines; split by responsibility when they grow (a few older ones are still over: split them when you next change them).
-- After finishing a task, update docs/STATUS.md with 3-5 lines (what changed, what's next) and tick the item off docs/TODO.md, which is what the next session picks up from.
+- After finishing a task, update docs/STATUS.md with 3-5 lines (what changed, what's next) and move the finished item from docs/TODO.md to docs/archive.md; TODO.md is what the next session picks up from.
 - Delegate to the agent that fits (`.claude/agents/`):
   - `explorer` - find where something lives or how it works (read-only, haiku)
   - `worker` - small, clearly specified edits: renames, boilerplate, formatting

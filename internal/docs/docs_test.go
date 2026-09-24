@@ -22,6 +22,7 @@ var keepsOldVersions = map[string]bool{
 	"CHANGELOG.md":         true,
 	"CATALOG-CHANGES.md":   true,
 	"docs/design-audit.md": true,
+	"docs/archive.md":      true,
 }
 
 func TestNoDocumentNamesAVersionedReleaseFile(t *testing.T) {
