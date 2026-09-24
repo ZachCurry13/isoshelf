@@ -33,7 +33,9 @@ func sharingServer(t *testing.T, sharing bool) (*Server, string, string) {
 	if err := settings.Save(dirs.Config, settings.Settings{ShareImages: &sharing}); err != nil {
 		t.Fatal(err)
 	}
+	// Only a server shares: a desktop isoshelf answers its own computer alone.
 	s := newServer(t, dirs, dir)
+	s.cfg.AnyHost = true
 	// A scan is what puts the file in the records, hash and all, and the
 	// records are what sharing answers from.
 	request(t, s, http.MethodPost, "/api/scan", nil)
@@ -257,5 +259,18 @@ func TestTheSameFileTwiceIsRememberedOnce(t *testing.T) {
 	}
 	if record[0].Bytes != 10 {
 		t.Errorf("bytes = %d, want 10 rather than double-counted", record[0].Bytes)
+	}
+}
+
+// A desktop isoshelf answers its own computer alone, so it never shares -
+// even with the switch left on from before the switch was hidden there.
+func TestADesktopIsoshelfDoesNotShare(t *testing.T) {
+	s, name, sum := sharingServer(t, true)
+	s.cfg.AnyHost = false
+	if got, code := have(t, s, name, sum); got {
+		t.Errorf("a desktop isoshelf offered its file (answer %d)", code)
+	}
+	if s.sharing() {
+		t.Error("a desktop isoshelf thinks it is sharing, so its scans hash every image for nothing")
 	}
 }

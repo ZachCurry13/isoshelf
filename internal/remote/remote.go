@@ -58,6 +58,9 @@ type StatusError struct {
 	URL    string
 	Status string
 	Code   int
+	// RetryAfter is how long the server asked isoshelf to wait before
+	// trying again, when it said (see polite.go).
+	RetryAfter time.Duration
 }
 
 func (e *StatusError) Error() string {
@@ -113,7 +116,7 @@ func (c *Client) Get(ctx context.Context, rawURL string) (*Response, error) {
 			return nil, err
 		}
 		select {
-		case <-time.After(wait):
+		case <-time.After(NextWait(err, wait)):
 		case <-ctx.Done():
 			return nil, ctx.Err()
 		}
@@ -145,7 +148,7 @@ func (c *Client) get(ctx context.Context, u *url.URL) (*Response, error) {
 		if rl := rateLimit(u, resp); rl != nil {
 			return nil, rl
 		}
-		return nil, &StatusError{URL: resp.Request.URL.String(), Status: resp.Status, Code: resp.StatusCode}
+		return nil, Refused(resp.Request.URL.String(), resp, time.Now())
 	}
 	body, err := io.ReadAll(io.LimitReader(resp.Body, MaxBody+1))
 	if err != nil {

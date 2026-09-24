@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="96" height="96">
+  <title>isoshelf</title>
+  <path fill="#2c62d6" fill-rule="evenodd" d="M16 4a10 10 0 1 1 0 20a10 10 0 1 1 0-20zm0 7a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"/>
+  <rect x="3" y="26" width="26" height="3" rx="1.5" fill="#6f95e6"/>
+</svg>

@@ -9,9 +9,10 @@ doing it, so the next session doesn't rediscover it.
 
 ## Right now
 
-**In flight: v0.5.0.** Its wording half shipped as v0.4.13.
+**In flight: v0.7.0, the simpler shelf** (its paragraph below). v0.5.x,
+v0.6.0 and v0.6.1 have shipped; what is left of the v0.5.0 list is [#6].
 
-**What v0.5.0 holds, decided 2026-09-23** (the maintainer: "I want to make
+**What v0.5.0 held, decided 2026-09-23** (the maintainer: "I want to make
 sure we clean up everything we can before posting 0.5.0. Like it should look
 like it could actually be a 1.0.0"). **Polish and correctness only** - nothing
 half-built, everything visible finished:
@@ -119,39 +120,126 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
-**In flight: v0.6.0, isoshelf updates itself** (item 10; the maintainer asked
-for it 2026-09-23 and put it first). Built; waiting on the maintainer's
-one-time signing-key setup (item 10 says how). Decided that day: it downloads only when
+**~~v0.6.0, isoshelf updates itself~~** *(released 2026-09-23, signed; the
+key is set up)* (item 10; the maintainer asked for it that day and put it
+first). Decided then: it downloads only when
 **Update now** is pressed, then checks the signature, waits for image
 downloads, swaps and restarts on the same port; in portable mode it replaces
 **all three** programs; a single download named for its version takes the
 **plain name** on its first update. Not in a container (the image is updated
-instead). Needs the maintainer's one-time key setup before it can ship.
+instead).
+
+**Releases after v0.6.0** (decided 2026-09-23): **v0.6.1** is items 1 and 2
+below (upload speed, already built on the `missing-and-more` branch, and the
+good-neighbour pass). **v0.7.0** is the simpler shelf, next paragraph. Then
+items 3 onwards.
+
+**v0.7.0: the simpler shelf** (the maintainer, 2026-09-23, after a review of a
+simplification plan written with Gemini - whose sections on update prompts
+and background downloads described things isoshelf already did):
+
+- **Pin replaces the per-image Replace / Archive / Keep both menu.** One
+  global answer in Settings (replace or archive), plus a Pin per file:
+  pinned means *keep this exact file*. An update downloads beside it; the
+  new copy is not pinned, so later updates replace that one. Pinned files
+  are left out of the older-versions count and review, and automatic updates
+  never touch them. Remove still works and its question adds "This file is
+  pinned." A pin belongs to the file, so it goes when the file changes, like
+  an identification. The toggle lives in the details panel; a pinned row
+  shows a small pushpin.
+  - Migration: "Keep both" becomes pinned; an image with its own Archive or
+    Replace follows Settings from then on, and the page says once how many
+    changed.
+  - Three per-image markers then exist - Star (tell me if it goes missing),
+    Pin (keep this file) and Dismiss (item 4: stop telling me about this
+    update). Each has to say plainly what it does, or this is the clutter
+    it was meant to remove.
+  - SECURITY.md and design.md say each image "carries its own choice"; they
+    change with this.
+- **The to-do cards become one compact bar**: counts that filter the list
+  or open their review ("41 updates · 13 older · 3 unrecognized · 5 won't
+  boot · Archive 20.9 GB"), and the one button kept is **Update all**. Space
+  used stays on the folder line. The cards filled a phone's first screen
+  before a single image showed.
+- **The architecture badge shows only when it's unusual** - 32-bit, ARM64,
+  Multi - not "64-bit" on nearly every row. "Up to date" and the file line
+  stay as they are.
+- **In a container, isoshelf asks once** on first run whether to keep images
+  up to date automatically (Yes / Not now), off until answered. Desktop and
+  portable stay off by default, with the switch in Settings as now.
+- **On a server, the folder card is one line** (decided 2026-09-24): "Checked
+  2 h ago · 244 GB in images · 2.7 TB free of 3.5 TB" and Refresh. The
+  folder's path, its type and Choose folder move to Settings, under "This
+  folder". Desktop and portable keep the card as it is.
 
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
-1. **Upload speed.** "Add a file from this computer" shows speed and time
-   left while it uploads, the way the downloads dock does.
-2. **Missing images get two actions:** "Download again" as the row's button
+1. ~~**Upload speed.**~~ *(done in v0.6.1: `uploadRate` in `upload.js`,
+   smoothed the way the dock's is.)*
+2. ~~**Be a good neighbour to the projects' servers**~~ *(done in v0.6.1,
+   [#59]: `internal/remote/polite.go`. `Refused` reads `Retry-After` on a 429
+   or 503 from any host; over `MaxPoliteWait` (a minute) it is a `BusyError`,
+   which neither checks nor downloads retry. `NextWait` spreads the doubling
+   wait between half and one and a half times itself, and each server picks
+   an `autoOffset` of up to an hour for the automatic-update schedule.)*
+   Also in v0.6.1, from the maintainer's own use: sharing shown and honoured
+   only on a server (`sharing()` checks `AnyHost`), the Settings footer
+   worded for portable and server, a new logo (a disc on a shelf, picked
+   from three), and `install.sh` for Linux with a workflow that runs it on
+   x86-64 and ARM Ubuntu weekly.
+3. **Missing images get two actions:** "Download again" as the row's button
    ("Download page" for images fetched by hand), and "Stop expecting it" in
    the details panel - off the missing list until the image is in the folder
    again. The missing card gets "Download all" when isoshelf can download
    them. Today a missing image offers only Details, and stays missing until
    it drops out of the last 10 scans.
-3. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
+4. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
    manual or downloadable; for a downloadable one, "forever" is the "Never
    update" list decided 2026-09-19, and Update all and automatic updates skip
    it. **The timer holds** even if a newer version comes out. The row stays
    listed, greyed, "Dismissed until 23 Oct", not counted on the updates card
    and sorted with the up-to-date ones. Settings lists **everything**
    dismissed, with Undo on each and Undo all.
-4. **A "where to find it" note for images fetched by hand**, e.g. "The
+5. **A "where to find it" note for images fetched by hand**, e.g. "The
    32-bit ISO is MX-{version}_386.iso, in the Xfce folder." Needs a new
    catalog field, and the catalog is read with unknown fields refused
    (`DisallowUnknownFields`), so isoshelf has to learn the field in one
    release before `default.toml` may use it - otherwise every older copy
    refuses the updated catalog. Show the maintainer where it would appear
    before building it.
+6. **Note duplicate images, and offer to delete a copy.** isoshelf already
+   finds *older* copies of an image; the same image and version twice, under
+   two names or in two folders, isn't found. Same entry and version and size
+   is the cheap first look; telling for sure means hashing both, minutes on
+   a USB stick, so ask the maintainer whether that runs on its own or only
+   when asked. Deleting goes through the archive like every other removal.
+7. **A sharing disclosure**, in the README and beside the sharing switch:
+   the licenses of the images you share are yours to mind. The maintainer's
+   view, 2026-09-23, and it holds for files people bring themselves - "like a
+   Plex server". The project's own responsibility is what its catalog lists
+   and what it promotes; sharing proprietary images shouldn't be pitched as a
+   feature.
+8. **AtlasOS: recognized, not listed.** "AtlasOS (archival ISO)" is in the
+   built-in catalog with a logo, so it appears under Add images for everyone.
+   AtlasOS itself moved from handing out modified Windows images to a
+   playbook applied to your own Windows. Keep recognizing the file; stop
+   listing it as something to go and get.
+9. **Logos by trademark policy.** A project being open source doesn't make
+   its logo free to use: Debian publishes an open-use logo, Canonical's
+   Ubuntu policy is strict. Keep a logo only where the project's own policy
+   allows this use, and a generic disc icon otherwise - starting with
+   Windows, Windows 11, Ubuntu, AtlasOS and NiceHash - including the ones
+   fetched from the Simple Icons CDN. The weekly catalog job can check each
+   policy on the project's own site. Delisting on request already stands.
+
+**Around 1.0, not before:** signing the Windows program so the "unknown
+publisher" warning goes (the maintainer, 2026-09-23: GitHub users are used to
+it). SignPath Foundation signs open-source projects for free; Microsoft's
+Trusted Signing is about $10 a month; a certificate authority costs hundreds a
+year and needs a hardware key. Even signed, Windows warns until the program
+has a reputation. Self-update already means the warning appears only on the
+first download, because files isoshelf downloads itself don't carry the
+browser's "came from the internet" mark.
 
 **After those, in this order:** item 18 (asking the server by entry), [#1]
 the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
@@ -554,3 +642,5 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#11]: https://github.com/ZachCurry13/isoshelf/issues/11
 [#12]: https://github.com/ZachCurry13/isoshelf/issues/12
+[#54]: https://github.com/ZachCurry13/isoshelf/issues/54
+[#59]: https://github.com/ZachCurry13/isoshelf/issues/59

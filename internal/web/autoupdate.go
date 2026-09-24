@@ -88,7 +88,7 @@ func (s *Server) autoUpdateIfDue() {
 	}
 	now := s.cfg.Now()
 	last := s.lastAutoUpdate()
-	if !last.IsZero() && now.Sub(last) < saved.Every() {
+	if !last.IsZero() && now.Sub(last) < saved.Every()+s.autoOffset {
 		return
 	}
 

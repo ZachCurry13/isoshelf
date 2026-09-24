@@ -15,14 +15,14 @@ four times in one evening. The releases page on GitHub is the answer, and
   catalog that updates itself from this repository. Web page and CLI;
   Windows and Linux builds.
 - **Catalog:** 86 entries (60 downloadable, 9 update-check only, 17 link only),
-  revision `2026091804`. Checked live every Monday by
+  revision `2026092301`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm
   Chicago, just after the maintainer's weekly usage resets;
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; issues #1-#7 roadmap (#10, the phone layout, is
+- **GitHub:** public; issues #1-#7 and #54-#59 are the roadmap (#10, the phone layout, is
   closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
@@ -161,7 +161,48 @@ record of where things stand and what was decided.
 - The six unreleased versions, and v0.5.2 and v0.5.3, were released one at a
   time on their own merge commits.
 
-## Latest change: v0.6.0 (2026-09-23)
+## Decided 2026-09-23, late (the maintainer, on a simplification plan)
+
+- **Pin replaces the per-image Replace / Archive / Keep both menu**: one
+  global answer plus a pin that keeps an exact file. Pinned files are left out
+  of the older-versions review; Remove still works and says the file is
+  pinned; "Keep both" images become pinned, the rest follow Settings, and the
+  page says once how many changed.
+- **The to-do cards become a compact bar** that filters, keeping only Update
+  all as a button.
+- **The architecture badge shows only when it isn't ordinary 64-bit PC.**
+- **In a container, isoshelf asks once** whether to update images
+  automatically; everywhere else it stays off by default.
+- Order: v0.6.1 is upload speed and the good-neighbour pass; v0.7.0 is this;
+  then the rest of the queue. Details in TODO.
+
+## Decided 2026-09-24 (the maintainer, using v0.6.0)
+
+- **Logo:** a disc on a shelf, picked from three; the stacked bars read as a
+  menu button.
+- **Server folder card:** one line (checked, space, Refresh), with the
+  folder, its type and Choose folder in Settings. In v0.7.0 with the rest of
+  the page top.
+- **Linux install:** a one-line script, `install.sh`, in the README.
+- **The exe stays the Windows download**; no installer.
+- Sharing belongs to servers only; the Settings footer says where settings
+  really are.
+
+## Latest change: v0.6.1 (2026-09-24)
+
+- **Gentler with the projects' servers** ([#59]): `Retry-After` honoured from
+  every host, a long one stops rather than retries, retries spread at random,
+  and a per-server offset on the automatic schedule.
+- **Adding a file shows speed and time left**; **a one-line Linux install**
+  with a weekly workflow that runs it on x86-64 and ARM; **a new logo**.
+- **Sharing only on a server** - it could never work on a desktop, and left
+  on it made every scan hash everything - and the Settings footer worded for
+  portable and server.
+- v0.6.0 is the first signed release; v0.6.1 is the first update isoshelf
+  installs by itself, so it's the one that proves Update now for real.
+- **Next:** v0.7.0, the simpler shelf ([#54]).
+
+## v0.6.0 (2026-09-23)
 
 - **isoshelf updates itself.** Update now in the top bar downloads the new
   version, checks the project's Ed25519 signature on `SHA256SUMS`, waits for
@@ -701,3 +742,5 @@ record of where things stand and what was decided.
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#50]: https://github.com/ZachCurry13/isoshelf/pull/50
 [#51]: https://github.com/ZachCurry13/isoshelf/pull/51
+[#54]: https://github.com/ZachCurry13/isoshelf/issues/54
+[#59]: https://github.com/ZachCurry13/isoshelf/issues/59

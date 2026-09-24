@@ -6,6 +6,36 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.6.1] - 2026-09-24
+
+### Added
+- **Adding a file shows its speed and time left**, the way downloads do:
+  "1.2 GB of 4.0 GB · 30% · 85 MB/s · about 1 min left".
+- **A one-line install for Linux**, in the README under *Getting it*. It
+  downloads the newest release for your machine (x86-64 or ARM), checks it
+  against the release's checksums, and puts it in `~/.local/bin` without
+  `sudo`. A weekly check runs it for real on both kinds of machine.
+- **A new logo**: a disc on a shelf. The three stacked bars looked like a
+  menu button.
+
+### Changed
+- **Gentler with the projects' servers.** When a server says how long to
+  wait before asking again, isoshelf now waits that long for every server,
+  not only GitHub. When it asks for more than a minute, isoshelf stops and
+  says the server is busy, rather than trying again anyway; the next check
+  asks again. Without a wait from the server, retries are spread a little at
+  random, and each isoshelf adds its own offset of up to an hour to the
+  automatic-update schedule, so copies that started together drift apart.
+- **Sharing is offered only on a server.** A desktop or portable isoshelf
+  answers its own computer alone, so no other isoshelf could ever reach it,
+  and the switch did nothing - except, left on, make every scan hash every
+  image. *Copy from another isoshelf first* stays everywhere.
+
+### Fixed
+- **Settings said "Kept on this computer" when running from a Ventoy
+  drive.** It now says the drive, the server or this computer, whichever is
+  true.
+
 ## [v0.6.0] - 2026-09-23
 
 ### Added

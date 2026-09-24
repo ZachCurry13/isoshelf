@@ -213,6 +213,10 @@ const SETTING_GROUPS = [
       },
       {
         name: "Share this folder with other isoshelfs",
+        // Only a server can be reached by another isoshelf: a desktop or
+        // portable one answers this computer alone, so offering to share from
+        // it was a switch that could never do anything.
+        available: () => state && state.server,
         fields: ["share"],
         hint: "Offers the images in this folder to another isoshelf on your network that " +
           "signs in. Off unless you turn it on.",

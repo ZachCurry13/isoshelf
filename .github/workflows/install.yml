@@ -1,0 +1,46 @@
+name: install script
+
+# Runs the one-line Linux install from the README for real, on an x86-64 and
+# an ARM machine, and checks that what it installed runs and is the newest
+# release. The README promises that line works; this is what keeps it true.
+#
+# - When install.sh or this file changes, and on pull requests that change them.
+# - Every Monday, so a change on GitHub's side shows up within the week.
+#   (A release doesn't start it: GitHub doesn't let one workflow's release
+#   set off another.)
+
+on:
+  push:
+    branches: [main]
+    paths: [install.sh, .github/workflows/install.yml]
+  pull_request:
+    paths: [install.sh, .github/workflows/install.yml]
+  schedule:
+    - cron: "30 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install, the way the README says
+        run: ISOSHELF_DIR="$RUNNER_TEMP/bin" sh install.sh
+
+      - name: it runs, and it is the newest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          got=$("$RUNNER_TEMP/bin/isoshelf" version)
+          want=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)
+          echo "installed: $got; newest release: $want"
+          [ "$got" = "isoshelf $want" ] || { echo "installed $got, want isoshelf $want" >&2; exit 1; }

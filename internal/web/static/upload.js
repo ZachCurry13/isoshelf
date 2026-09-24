@@ -95,6 +95,7 @@ function send(file, replace) {
     if (!sending) return;
     sending.loaded = e.loaded;
     if (e.lengthComputable) sending.total = e.total;
+    uploadRate(sending);
     renderUploads();
   });
   req.addEventListener("load", () => finish(file, req));
@@ -174,6 +175,22 @@ function clearSent() {
   renderUploads();
 }
 
+// uploadRate works out how fast a file is going, the way the downloads dock
+// does: measured over a second at least, and smoothed, so the number doesn't
+// jump about with every chunk the browser hands over.
+function uploadRate(s) {
+  const now = Date.now();
+  if (!s.mark) {
+    s.mark = { loaded: s.loaded, at: now };
+    return;
+  }
+  const seconds = (now - s.mark.at) / 1000;
+  if (seconds < 1) return;
+  const rate = (s.loaded - s.mark.loaded) / seconds;
+  s.rate = s.rate ? s.rate * 0.7 + rate * 0.3 : rate;
+  s.mark = { loaded: s.loaded, at: now };
+}
+
 function renderUploads() {
   const list = $("upload-list");
   if (!list) return;
@@ -183,6 +200,12 @@ function renderUploads() {
     const fraction = sending.total ? sending.loaded / sending.total : null;
     let text = `${formatBytes(sending.loaded)} of ${formatBytes(sending.total)}`;
     if (fraction !== null) text += ` · ${Math.floor(fraction * 100)}%`;
+    // The same words the downloads dock uses for the same thing.
+    if (sending.rate > 0) {
+      text += ` · ${formatBytes(sending.rate)}/s`;
+      const left = (sending.total - sending.loaded) / sending.rate;
+      if (left > 0 && left < 86400) text += ` · ${duration(left)} left`;
+    }
     // The width is set on the element rather than in a style attribute: the
     // page's own content policy allows no inline styles.
     const fill = el("div", { class: "bar-fill" });

@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/isoshelf.svg" alt="" width="80" height="80">
+
 # isoshelf
 
 **Keep your bootable images up to date, on a Ventoy USB drive, a NAS share, or Proxmox ISO storage.**
@@ -377,10 +379,10 @@ that won't boot is told how to fix it by hand.<br>
 downloads the new version, checks this project's signature, and restarts into
 it; the page reconnects by itself, and the old version comes back if the new
 one won't start.<br>
-**Next: v0.6.1** shows the speed while you add a file, and is [gentler with
-the projects' servers](https://github.com/ZachCurry13/isoshelf/issues/59)
-when they're busy.<br>
-**Then:** v0.7.0 is [a simpler
+**v0.6.1: gentler, and easier to install.** *2026-09-24:* adding a file shows
+its speed; isoshelf waits as long as a busy server asks, from every server; a
+one-line install for Linux; sharing only where it can work; and a new logo.<br>
+**Next:** v0.7.0 is [a simpler
 page](https://github.com/ZachCurry13/isoshelf/issues/54): *pin* a file to keep
 it whatever updates come, one summary line instead of the row of cards, and
 fewer badges. After that: [*Download again* and *Stop expecting
@@ -429,7 +431,19 @@ Adjust the first path to wherever your drive is mounted.
 
 ## Getting it
 
-Download it from the [releases
+**On Linux, in one line:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ZachCurry13/isoshelf/main/install.sh | sh
+```
+
+That finds the newest release, downloads the program for your machine (x86-64
+or ARM), checks it against the release's checksums, and puts it in
+`~/.local/bin` as `isoshelf` — no `sudo`, nothing else touched. Then run
+`isoshelf`. The script is [short enough to read first](install.sh), and a
+weekly check runs it for real on both kinds of machine.
+
+**Anywhere else,** download it from the [releases
 page](https://github.com/ZachCurry13/isoshelf/releases) — the newest one at
 the top. There's no installer and nothing to set up: it's one file.
 
