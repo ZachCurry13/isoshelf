@@ -178,6 +178,17 @@ Both have their own `CHANGELOG.md` section but went out inside v0.3.3,
 because a release happens when a `v*` tag is pushed and those two were never
 tagged. Don't let it happen again - one version, one tag, one release.
 
+**Before every release, the public pages** (the maintainer, 2026-09-23: "you
+promised you'd keep all of GitHub up to date. everything!" - after the
+README's roadmap had said "Next" about work already shipped, and missed four
+features, when it was handed to another assistant as the description of
+isoshelf). Read, against the code, not from memory: the README's feature
+list, Safety first, roadmap (the released line added, **Next** moved on) and
+install steps; design.md's version plan; docs/docker.md; SECURITY.md's
+promises. Open or update an issue for anything newly planned, close the ones
+that shipped, and link them from the roadmap. A pull request isn't finished
+until what it changes is true on GitHub's `main` too.
+
 **How a release happens:** merge the pull request into `main`, then push a
 `v*` tag (or start the `release` workflow from the Actions tab with the
 version typed in). Either way it builds three binaries and the portable zip,
