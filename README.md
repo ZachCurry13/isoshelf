@@ -246,10 +246,10 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** [a note on
-where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
-you fetch yourself, and [spotting duplicate
-copies](https://github.com/ZachCurry13/isoshelf/issues/57).
+**Next:** [spotting duplicate
+copies](https://github.com/ZachCurry13/isoshelf/issues/57), and the first
+notes on where to find the images you fetch yourself, now that isoshelf can
+show them.
 
 **Also planned:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6),

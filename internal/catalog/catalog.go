@@ -97,6 +97,13 @@ type Entry struct {
 	// a preview that expires. It is shown as a mark, never as a block; people
 	// keep old images on purpose, for a VM or an old PC.
 	Caution string `toml:"caution"`
+	// Find says where to find the file on the download page, for an image
+	// fetched by hand (v0.8.3, #58): "The 32-bit ISO is MX-{version}_386.iso,
+	// in the Xfce folder." {version} stands for the newest version when the
+	// check knows it. isoshelf learned the field in v0.8.3, and the built-in
+	// catalog may only use it once older copies no longer matter, because
+	// they refuse a catalog with a field they don't know.
+	Find string `toml:"find"`
 	// Popular marks images that turn up in public "best of" round-ups. It is
 	// a hand-picked hint for sorting, dated in docs/catalog-sources.md, not a
 	// rating and not a count of anything users did.

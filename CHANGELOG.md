@@ -6,6 +6,20 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.3] - 2026-09-24
+
+### Added
+- **Where to find it**, for images you download yourself
+  ([#58](https://github.com/ZachCurry13/isoshelf/issues/58)): the list of
+  images can now say where the file is on a project's download page - "The
+  32-bit ISO is MX-23.6_386.iso, in the Xfce folder" - and the image's
+  details show it right above the Download page link.
+
+The first notes arrive in a later update to the list of images, not in this
+release: copies of isoshelf older than this one refuse a list with a field
+they don't know, so the list starts using it once they have had time to
+update.
+
 ## [v0.8.2] - 2026-09-24
 
 ### Added

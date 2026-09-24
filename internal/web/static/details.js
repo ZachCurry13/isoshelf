@@ -84,6 +84,10 @@ function renderDetails() {
     parts.push(detailRow("Expected here", [expectField(item)]));
   }
 
+  // Where to find the file on the download page, for images fetched by hand
+  // (#58): next to the link somebody is about to follow.
+  if (item.find) parts.push(detailRow("Where to find it", el("div", {}, item.find)));
+
   const links = linkList(item);
   if (links.length) parts.push(detailRow("Links", el("div", { class: "detail-links" }, links)));
 

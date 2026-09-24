@@ -1,6 +1,7 @@
 package check
 
 import (
+	"strings"
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
@@ -48,6 +49,9 @@ type ItemJSON struct {
 	Placed bool `json:"placed,omitempty"`
 	// Caution is something worth knowing before using the image.
 	Caution string `json:"caution,omitempty"`
+	// Find says where to find the file on the download page, with the newest
+	// version filled in when it is known (v0.8.3).
+	Find string `json:"find,omitempty"`
 	// Category and Family group the image; the rest are for showing it.
 	Category  string `json:"category,omitempty"`
 	Family    string `json:"family,omitempty"`
@@ -101,6 +105,15 @@ func (r *Report) JSON() ReportJSON {
 		if e := it.Entry; e != nil {
 			j.Entry, j.Arch, j.Page, j.Updates = e.ID, e.Arch, e.Page, e.Updates()
 			j.Category, j.Family, j.Caution = e.Category, e.Family, e.Caution
+			if e.Find != "" {
+				newest := it.Latest
+				if newest == "" {
+					// A placeholder a person reads as one, rather than a phrase
+					// spliced into a file name.
+					newest = "VERSION"
+				}
+				j.Find = strings.ReplaceAll(e.Find, "{version}", newest)
+			}
 			j.Icon, j.IconColor, j.Site, j.Forum = e.Icon, e.IconColor, e.Site, e.Forum
 			if j.Updates != catalog.UpdatesDownload {
 				j.LatestFile = ""

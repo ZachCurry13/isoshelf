@@ -11,11 +11,12 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: item 5, the "where to find it" note ([#58]),** which needs showing
-the maintainer where it would appear before it is built. Then the rest of
-the maintainer's queue, then the list under *After those*. v0.7.0, v0.7.1
-(missing images, item 3), v0.8.0 and v0.8.1 (item 18, [#62]) and v0.8.2
-(dismissing an update, item 4) are in `docs/archive.md`.
+**Next: item 6, duplicates ([#57]).** The maintainer chose the layout on
+2026-09-24: "2 possible duplicates" on the line above the list, a filter
+showing them, and on each Make sure (reads both, only when pressed) and
+Remove this copy (through the archive). Then the rest of the maintainer's
+queue, then the list under *After those*. v0.7.0 to v0.8.3 are in
+`docs/archive.md`.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
 number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
@@ -57,13 +58,13 @@ wrongness that costs trust once somebody notices.
 
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
-5. **A "where to find it" note for images fetched by hand**, e.g. "The
-   32-bit ISO is MX-{version}_386.iso, in the Xfce folder." Needs a new
-   catalog field, and the catalog is read with unknown fields refused
-   (`DisallowUnknownFields`), so isoshelf has to learn the field in one
-   release before `default.toml` may use it - otherwise every older copy
-   refuses the updated catalog. Show the maintainer where it would appear
-   before building it.
+5. **The first "where to find it" notes** (item 5 itself shipped in v0.8.3,
+   [#58]; see `docs/archive.md`). The catalog field is `find`; the built-in
+   catalog may use it once copies older than v0.8.3 no longer matter, since
+   they refuse a catalog with a field they don't know - a release or two
+   after v0.8.3 has been the latest. MX Linux's 32-bit ISO is the first:
+   "The 32-bit ISO is MX-{version}_386.iso, in the Xfce folder." The weekly
+   catalog job can add the rest, read from each project's own download page.
 6. **Note duplicate images, and offer to delete a copy.** isoshelf already
    finds *older* copies of an image; the same image and version twice, under
    two names or in two folders, isn't found. Same entry and version and size
@@ -283,3 +284,4 @@ Then:
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
 [#56]: https://github.com/ZachCurry13/isoshelf/issues/56
 [#58]: https://github.com/ZachCurry13/isoshelf/issues/58
+[#57]: https://github.com/ZachCurry13/isoshelf/issues/57
