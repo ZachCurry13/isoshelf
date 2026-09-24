@@ -11,97 +11,15 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: item 18 part two, copying any image from the server ([#62]).** Part
-one - where each file came from, and Check it - shipped in v0.8.0. Then the
-rest of the maintainer's queue, then the list under *After those*. v0.7.0,
-v0.7.1 (missing images, item 3) and v0.8.0 are in `docs/archive.md`.
+**Next: item 4, dismissing an update ([#56]).** Then the rest of the
+maintainer's queue, then the list under *After those*. v0.7.0, v0.7.1
+(missing images, item 3), v0.8.0 and v0.8.1 (item 18, [#62]) are in
+`docs/archive.md`.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
 number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
 isoshelf keeps offering 44 and nothing fails, which is the kind of quiet
 wrongness that costs trust once somebody notices.
-
-18. **Ask the server by entry, not only by hash** (the maintainer,
-   2026-09-23, two questions that turn out to be one answer: "is it possible
-   to have some sort of marker in the catalog that says there is a local copy
-   on the server?" and "if there are files that have to be manually
-   downloaded, but I have it on the server already, is it possible to just
-   download from the server instead of doing another manual pull? Since I
-   obviously did that already").
-
-   **Why neither works today.** The whole sharing protocol is keyed on the
-   checksum: `share/have?name=X&sha256=Y`, and `sharedFile` refuses without a
-   hash. That is what makes it safe - the peer is reached, never trusted, and
-   the bytes are checked against the project's own published checksum. A
-   manual entry has no published checksum, so isoshelf cannot even form the
-   question. Not an oversight; a consequence.
-
-   **The one new endpoint both need.** Ask by entry id: "what do you have for
-   `ubuntu-desktop`?" The answer is the filename, the server's own SHA256, the
-   size, and the version it believes the file to be. One call with no entry
-   given returns the lot, which is what the Add-images marker needs - one
-   round trip for the whole list, not one per image.
-
-   **The rule that has to hold.** Bytes copied this way are checked against
-   the hash the server gave, which proves the copy is identical to what is on
-   the server and proves nothing about provenance. So the file arrives
-   **Unverified**, and the existing rule applies unchanged: an unverified
-   download never replaces anything. Adding a manual image the folder doesn't
-   have is fine; overwriting one is not. Say in the UI whose word it rests on
-   - the person who put it there - rather than implying a check happened.
-   - The server can also hand back the entry and version it has recorded, so
-     the copy arrives identified rather than landing as "Unrecognized". That
-     is the same kind of assertion as somebody naming a file by hand, and
-     should be recorded as one.
-   - Sharing is off unless turned on and the asker must be signed in. Both
-     already true; neither changes.
-
-   **Asked for again, and wider, 2026-09-24** (the maintainer: "pull any
-   image locally from the server, even if it isn't in the normal catalog.
-   When pulling any image, do we keep the verified checksums locally? ...
-   making sure I pull the image from the correct source at least once"). It
-   is [#62], and **next after missing images** (decided that day), since
-   Download again can then try the server first.
-   - **Any image**, not only catalog ones: the laptop lists what the server
-     has that it doesn't, and copies it over.
-   - **A record of where each file came from**, which isoshelf doesn't keep
-     today. `FileRecord` has the file's own hash and, for a download, the
-     address and date - and for a copy from the server that address is the
-     server's. Keep instead: where the checksum came from and when it was
-     checked against it, and where the bytes came from (the project's site,
-     the server, added by hand). The server hands its record over with the
-     copy, so the laptop can say "no published checksum; copied from your
-     NAS, which has had it since March (added by hand)".
-   - **Checking a file by hand against the published checksum**, for a
-     catalog image that arrived any other way (a torrent, a USB stick). A
-     match proves it is byte for byte the release, which is worth more than
-     where it came from, and it is true. Only when asked, as for duplicates:
-     until then the page says the file hasn't been checked, and offers to.
-   - **Never a record of a check that didn't happen.** The maintainer asked
-     for it to "at least make it look like I did"; that was declined, and
-     said so. A false provenance record is worse than none - it is exactly
-     what looks bad if anyone ever looks - and a real check is available for
-     every catalog image anyway.
-
-   **Decided 2026-09-24, and what is left.** The maintainer picked: the
-   server's images show **in Add images** - a catalog image the server has
-   gets "On your server" and its Add button copies from there, and files the
-   catalog doesn't know go in a folded "Also on your server" list at the
-   bottom; provenance shows **in the details panel only**; and a copy with
-   no published checksum is allowed, **marked** as matching the server's
-   copy, never replacing anything. Part one (v0.8.0) built the record,
-   Where it came from and Check it. Part two is the rest: a list endpoint on
-   the sharing isoshelf (every hashed file, with its entry, version and
-   `Origin`), `peer.Client.List`, the marker and the folded list, and Copy
-   for a file that isn't the newest release (the newest already comes from
-   the server through the existing `Nearer` path, checked against the
-   project), verified against the server's hash and recorded with `Before`.
-
-   **Not in v0.5.0**, which is polish and correctness only. This changes what
-   "verified" means at the edges and deserves a release where the
-   unverified-copy rules get real tests, rather than riding along in one whose
-   whole point is that nothing in it is half-built. First thing after, ahead
-   of [#1] and [#4]: it is what makes running the server worth it.
 
 19. **Default credentials, where the project publishes them** (the
    maintainer, 2026-09-23: "if any of these systems have default passwords
@@ -138,8 +56,6 @@ wrongness that costs trust once somebody notices.
 
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
-   **Item 18, [#62], comes first** (decided 2026-09-24): getting any image
-   from the server, with a record of where each file came from.
 4. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
    manual or downloadable; for a downloadable one, "forever" is the "Never
    update" list decided 2026-09-19, and Update all and automatic updates skip
@@ -314,7 +230,7 @@ Then:
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
   `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,
-  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `folders.js`,
+  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `folders.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
   `upload.js`, `report.js` and `selfupdate.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
@@ -371,3 +287,4 @@ Then:
 [#12]: https://github.com/ZachCurry13/isoshelf/issues/12
 [#55]: https://github.com/ZachCurry13/isoshelf/issues/55
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
+[#56]: https://github.com/ZachCurry13/isoshelf/issues/56

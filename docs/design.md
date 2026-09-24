@@ -697,12 +697,18 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   - **The sharer records which drives it served** (`internal/web/served.go`),
     keyed by the asking folder's target id. That list is most of what #11
     needs to rebuild a lost drive.
-  - **Not done:** asking by entry rather than by hash, which is what a manual
-    image would need to come from the server and what a "your server has
-    this" marker in the Add-images list would need. The protocol is keyed on
-    the published checksum, and a manual entry has none. See TODO item 18:
-    the answer is a copy marked unverified, resting on the word of whoever
-    put the file on the server, never on a check that did not happen.
+  - **Copying anything the server has** (v0.8.1, #62 part two). The sharing
+    isoshelf lists every hashed file with its entry, version and `Origin`
+    (`/api/share/list`); the laptop asks through `/api/peer/files`, leaves
+    out what its folder has by hash or name, and marks catalog images "On
+    your server" in Add images, with the rest folded under "Also on your
+    server" (`fromserver.js`). **Copy** (`/api/peer/copy`) queues a job that
+    downloads from the server checked against the server's hash - proof
+    that it arrived as it is there, nothing more - so it is recorded as a
+    copy with the server's account in `Before` and never as checked; the
+    next check compares it with the published checksum like any file. A
+    copy never lands on a name that's taken. What the server was told by
+    hand about a file (an assignment) comes across as an assignment.
   - **Not done:** finding the other isoshelf by itself. Doing that properly
     means mDNS, which means a second dependency or a fair amount of protocol
     code, and is a decision rather than an omission. Until then the address
@@ -897,7 +903,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   (the checklist), `downloads.js` (the queue), `actions.js` (updating,
   removing), `catalog.js` (the Add images tab), `identify.js` (What is this?),
   `missing.js` (getting a missing image back, or not expecting it),
-  `origin.js` (where each file came from, and Check it),
+  `origin.js` (where each file came from, and Check it), `fromserver.js`
+  (copying from your server in Add images),
   `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
