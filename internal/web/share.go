@@ -96,9 +96,13 @@ const (
 )
 
 // sharing says whether this isoshelf offers its images to others.
+//
+// Only a server shares. An isoshelf on a desktop answers that computer alone,
+// so nobody could ask it for a file - and a switch left on from before would
+// otherwise make every scan hash every image for nothing.
 func (s *Server) sharing() bool {
 	share := s.loadSettings().ShareImages
-	return share != nil && *share
+	return s.cfg.AnyHost && share != nil && *share
 }
 
 // sharedFile turns a name and a hash into a path, or "" for anything that

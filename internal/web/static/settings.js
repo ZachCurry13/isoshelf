@@ -150,7 +150,13 @@ function renderSettings(force) {
   if (!shown) {
     body.append(el("p", { class: "muted" }, `Nothing in Settings matches “${$("settings-search").value.trim()}”.`));
   }
-  $("settings-where").textContent = "Kept on this computer, not in the folder.";
+  // Where the settings live depends on how isoshelf is running: "this
+  // computer" was wrong for anyone running it from a Ventoy drive.
+  $("settings-where").textContent = state.portable
+    ? "Kept on this drive, in isoshelf's own folder."
+    : state.server
+      ? "Kept on the server, in isoshelf's own folder."
+      : "Kept on this computer, not in the folder of images.";
 }
 
 // matches decides whether a setting belongs in a search. The group's name
