@@ -87,14 +87,17 @@ func Targets(exe string, portable bool) ([]Target, error) {
 	return out, nil
 }
 
-// versioned is how a single download is named: isoshelf-v0.5.3-linux-amd64.
-var versioned = regexp.MustCompile(`^isoshelf-v\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?-(.+)$`)
+// versioned is the front of a single download's name, isoshelf-v0.5.3 or
+// isoshelf-v1.0.0-rc1, once the platform is taken off the end. Matched in
+// that order because a version's own suffix and a platform both start with a
+// hyphen: read from the front, "-windows" looked like part of the version.
+var versioned = regexp.MustCompile(`^isoshelf-v\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?$`)
 
 // plainName is the name a program keeps after an update: the plain one, when
 // it arrived with a version in its name, and otherwise whatever it is called
 // now - somebody who named it isoshelf.exe meant it.
 func plainName(base, suffix string) string {
-	if m := versioned.FindStringSubmatch(base); m != nil && m[1] == suffix {
+	if front, ok := strings.CutSuffix(base, "-"+suffix); ok && versioned.MatchString(front) {
 		return "isoshelf-" + suffix
 	}
 	return base
