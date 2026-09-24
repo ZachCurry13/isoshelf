@@ -53,6 +53,10 @@ type Options struct {
 	// Removal says what happens to the old files once the new one is in
 	// place. It only ever applies to files of this entry.
 	Removal Removal
+	// Pinned are the old files the user pinned. Whatever Removal says, they
+	// stay exactly where they are: the new file goes beside them, taking a
+	// name with its version in it if it would otherwise land on one.
+	Pinned []string
 	// Version, when set, is the version to install instead of the newest.
 	// (Reserved for "install an older version"; not used yet.)
 	Version  string
@@ -139,13 +143,16 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	// there is no clash left to resolve. Only an update with no answer at all
 	// is refused, because that is the page asking.
 	sameName := slices.Contains(opts.Old, artifact.Filename)
-	if sameName && opts.Removal == "" {
+	// A pinned file is kept whatever the answer, so one the new file would
+	// land on means keeping both: the new one takes a versioned name.
+	pinnedClash := slices.Contains(opts.Pinned, artifact.Filename)
+	if sameName && opts.Removal == "" && !pinnedClash {
 		return nil, fmt.Errorf("%w: %s always has the same filename, so the new file would land on top of the one you have", ErrSameName, artifact.Filename)
 	}
 	// placeAs is the name the new file actually gets, which is the usual one
 	// unless both copies are being kept.
 	placeAs := artifact.Filename
-	keepBoth := sameName && opts.Removal == Keep
+	keepBoth := sameName && (opts.Removal == Keep || pinnedClash)
 	if keepBoth {
 		placeAs = KeepBothName(opts.Target, artifact.Filename, rel.Version, opts.Now())
 		sameName = false
@@ -230,7 +237,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		if missing(opts.Target, old) {
 			continue // removed by hand while the new one downloaded
 		}
-		if opts.Removal == Keep || opts.Removal == "" || unverified {
+		if opts.Removal == Keep || opts.Removal == "" || unverified || slices.Contains(opts.Pinned, old) {
 			result.Kept = append(result.Kept, old)
 			continue
 		}

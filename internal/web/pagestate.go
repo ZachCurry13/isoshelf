@@ -18,8 +18,10 @@ type stateJSON struct {
 	// a container, anything somebody opens from another machine. The page
 	// uses it to name the browser tab, because somebody running one on their
 	// desktop and one on their NAS has two tabs called the same thing.
-	Server    bool                   `json:"server"`
-	Target    string                 `json:"target"`
+	Server bool   `json:"server"`
+	Target string `json:"target"`
+	// Pinned lists the folder's pinned files, by path.
+	Pinned    []string               `json:"pinned"`
 	Profile   string                 `json:"profile"`
 	UpdatedAt *time.Time             `json:"updated_at,omitempty"`
 	Run       *runJSON               `json:"run,omitempty"`
@@ -30,8 +32,8 @@ type stateJSON struct {
 	UsualSet  []string               `json:"usual_set"`
 	Recent    []rememberedJSON       `json:"recent_targets"`
 	Bookmarks []string               `json:"bookmarks"`
-	// OldFiles is what happens to the copy an update replaces, for images
-	// that haven't been given their own answer.
+	// OldFiles is what happens to the copy an update replaces. A pinned
+	// file is kept whatever it says.
 	OldFiles string `json:"old_files,omitempty"`
 	// AutoCheck is whether isoshelf checks for updates by itself, and
 	// AppUpdateCheck whether it looks for a newer isoshelf.
@@ -41,6 +43,11 @@ type stateJSON struct {
 	// AutoUpdateEvery how often.
 	AutoUpdate      bool   `json:"auto_update"`
 	AutoUpdateEvery string `json:"auto_update_every"`
+	// AskAutoUpdate is set in a container until somebody has said whether
+	// the images should update by themselves (v0.7.0): an app on a NAS is
+	// left running for months, and nobody finds a switch they weren't told
+	// about. Until then it is off, like everywhere else.
+	AskAutoUpdate bool `json:"ask_auto_update,omitempty"`
 
 	// ArchiveAfter is how many days a file waits in the archive before
 	// isoshelf deletes it, 0 for never, and ArchiveDue is what the next
@@ -142,6 +149,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		Warnings:        nonNil(s.warningsLocked()),
 		Tracks:          map[string]state.Track{},
 		UsualSet:        []string{},
+		Pinned:          []string{},
 		Recent:          recent,
 		Bookmarks:       nonNil(saved.Bookmarks),
 		OldFiles:        saved.OldFiles,
@@ -149,6 +157,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		AppUpdateCheck:  settings.On(saved.AppUpdateCheck),
 		AutoUpdate:      saved.AutoUpdate != nil && *saved.AutoUpdate,
 		AutoUpdateEvery: settings.CleanEvery(saved.AutoUpdateEvery),
+		AskAutoUpdate:   s.cfg.SelfUpdate.Container && saved.AutoUpdate == nil,
 		ArchiveAfter:    cleanArchiveAfter(saved.ArchiveAfter),
 		Appearance:      saved.Appearance,
 		ConfigDir:       s.cfg.Dirs.Config,
@@ -168,6 +177,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		out.Profile = string(s.st.Profile)
 		out.Tracks = s.st.Tracks
 		out.UsualSet = nonNil(s.st.UsualSet())
+		out.Pinned = nonNil(s.st.Pinned())
 	}
 	if s.report != nil {
 		j := s.report.JSON()

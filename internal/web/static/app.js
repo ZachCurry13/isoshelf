@@ -265,6 +265,8 @@ function render() {
 
   renderSelfUpdate();
 
+  // On a server the folder card is one line; the folder is in Settings.
+  $("folder-card").classList.toggle("compact", Boolean(state.server && state.target));
   $("target-path").textContent = state.target || "No folder chosen yet";
   $("profile").value = state.profile || "ventoy";
   $("profile").disabled = engaged || !state.target;
@@ -281,6 +283,7 @@ function render() {
   else $("notice").hidden = true;
 
   renderJump();
+  renderFirstRun();
   renderTodo();
   renderFilters();
   renderHeadings();
@@ -355,15 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("cancel").addEventListener("click", async () => {
     try { await api("POST", "/api/cancel"); } catch (err) { showNotice(err.message, true); }
   });
-  $("profile").addEventListener("change", async (e) => {
-    try {
-      await api("POST", "/api/target", { path: state.target, profile: e.target.value });
-      catalog = null;
-      await start("scan");
-    } catch (err) {
-      showNotice(err.message, true);
-    }
-  });
+  $("profile").addEventListener("change", (e) => changeProfile(e.target.value));
   $("dock-toggle").addEventListener("click", () => {
     dockOpen = !dockOpen;
     renderDock();

@@ -181,7 +181,7 @@ type Settings struct {
 	AutoCheck *bool `json:"auto_check,omitempty"`
 	// AutoUpdate is whether isoshelf updates the images by itself: on a
 	// schedule it checks, downloads, verifies and puts the new file in place,
-	// each image following the answer it already carries about its old copy.
+	// doing with the old copy what OldFiles says and leaving a pinned one be.
 	// Nil and false are both off - this one is never on by default, because
 	// it changes somebody's drive while they aren't looking.
 	AutoUpdate *bool `json:"auto_update,omitempty"`

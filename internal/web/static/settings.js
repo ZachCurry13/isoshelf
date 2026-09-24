@@ -118,7 +118,7 @@ function justSaved(setting) {
 function settingsKey() {
   if (!state) return "";
   return JSON.stringify([
-    state.appearance, state.old_files, state.target, state.version,
+    state.appearance, state.old_files, state.target, state.profile, cantSwitch(), state.version,
     state.auto_check, state.app_update_check, state.checked_at,
     state.auto_update, state.auto_update_every, state.peer,
     state.config_dir, state.catalog, state.records, recordsChoice, recordsResult, state.login,

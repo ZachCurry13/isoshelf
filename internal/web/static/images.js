@@ -1,8 +1,8 @@
 "use strict";
 
-// Your images: the statuses in plain words, the cards saying what wants
-// doing, the filters and their chips, and the rows themselves. The panel
-// that opens when a row is clicked is in details.js.
+// Your images: the statuses in plain words, the filters and their chips,
+// and the rows themselves. The line saying what wants doing is summary.js;
+// the panel that opens when a row is clicked is details.js.
 
 // ---- Statuses in plain words ----------------------------------------------
 
@@ -48,157 +48,6 @@ function showMeanings() {
   dialog.showModal();
 }
 
-// ---- Things to do ----------------------------------------------------------
-
-// One card per thing that wants doing, instead of a stack of banners in
-// different styles. A card only appears when there is something to do.
-function renderTodo() {
-  const todo = $("todo");
-  todo.replaceChildren();
-  if (!state.report) return;
-  const items = state.report.items;
-  const cards = [];
-
-  const updates = updatable();
-  const byHand = items.filter((it) => it.status === "update available" && it.updates !== "download").length;
-  if (updates.length || byHand) {
-    const waiting = updates.filter((it) => inDownloads(it.entry)).length;
-    const left = updates.length - waiting;
-    const bytes = updates.reduce((sum, it) => sum + (it.size || 0), 0);
-    const all = updates.length + byHand;
-    // When every update is one the user has to fetch, the card says that job
-    // rather than "updates available" with a footnote, and its button shows
-    // exactly those images. A button that can't be pressed is not a label.
-    cards.push(!updates.length
-      ? todoCard({
-          tone: "s-update",
-          title: byHand === 1 ? "1 update to download yourself" : `${byHand} updates to download yourself`,
-          note: byHand === 1 ? "isoshelf can't download this one for you." : "isoshelf can't download these for you.",
-          actions: [el("button", { type: "button", class: "btn", onclick: showUpdates },
-            byHand === 1 ? "Show it" : "Show them")],
-        })
-      : todoCard({
-          tone: "s-update",
-          title: all === 1 ? "1 update available" : `${all} updates available`,
-          detail: bytes ? `about ${formatBytes(bytes)} to download` : "",
-          note: [
-            byHand ? `${byHand} to download yourself` : "",
-            waiting ? `${waiting} already in the downloads` : "",
-          ].filter(Boolean).join(" · "),
-          actions: [el("button", {
-            type: "button", class: "btn primary", disabled: left === 0,
-            onclick: updateAll,
-          }, left === 0 ? "All queued" : left === all ? "Update all" : `Update ${left}`)],
-        }));
-  }
-
-  const older = items.filter((it) => it.older && it.path);
-  if (older.length) {
-    const bytes = older.reduce((sum, it) => sum + (it.size || 0), 0);
-    cards.push(todoCard({
-      title: older.length === 1 ? "1 older version" : `${older.length} older versions`,
-      detail: bytes ? `${formatBytes(bytes)} you could free` : "",
-      note: "You already have a newer version of each of these.",
-      actions: [el("button", {
-        type: "button", class: "btn", disabled: scanning(),
-        onclick: () => reviewOlder(older),
-      }, "Review…")],
-    }));
-  }
-
-  if (state.removed && state.removed.files) {
-    cards.push(todoCard({
-      title: "Archive",
-      detail: `${plural(state.removed.files, "file")} · ${formatBytes(state.removed.bytes)}`,
-      note: "Removed but kept, still using space in this folder.",
-      actions: [
-        el("button", { type: "button", class: "btn", onclick: () => jumpTo("archive") }, "View"),
-        el("button", { type: "button", class: "btn", disabled: scanning() || downloading(), onclick: emptyRemoved }, "Empty"),
-      ],
-    }));
-  }
-
-  const stuck = items.filter((it) => it.status === "not bootable");
-  if (stuck.length) {
-    cards.push(todoCard({
-      tone: "s-warn",
-      title: stuck.length === 1 ? "1 file won't boot" : `${stuck.length} files won't boot`,
-      note: "Images, but not in a format this folder's boot menu can use.",
-      actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("not bootable") }, "Show them")],
-    }));
-  }
-
-  const unknown = items.filter((it) => it.status === "unrecognized");
-  if (unknown.length) {
-    cards.push(todoCard({
-      title: unknown.length === 1 ? "1 unrecognized file" : `${unknown.length} unrecognized files`,
-      note: "isoshelf can try to identify them.",
-      actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("unrecognized") }, "Show them")],
-    }));
-  }
-
-  const missing = items.filter((it) => it.status === "missing");
-  if (missing.length) {
-    cards.push(todoCard({
-      tone: "s-missing",
-      title: missing.length === 1 ? "1 image missing" : `${missing.length} images missing`,
-      note: "You usually keep these in this folder.",
-      actions: [el("button", { type: "button", class: "btn", onclick: () => showOnly("missing") }, "Show them")],
-    }));
-  }
-
-  if (state.folder_changed) {
-    cards.push(todoCard({
-      title: "The folder changed",
-      note: "Files were added or removed outside isoshelf.",
-      actions: [el("button", {
-        type: "button", class: "btn", disabled: scanning() || downloading(),
-        onclick: () => start("scan"),
-      }, "Scan again")],
-    }));
-  }
-
-  todo.append(...cards);
-}
-
-function todoCard({ title, detail, note, actions, tone }) {
-  return el("div", { class: `todo-card ${tone || ""}` },
-    el("div", { class: "todo-title" }, title),
-    detail ? el("div", { class: "todo-detail" }, detail) : null,
-    note ? el("div", { class: "todo-note" }, note) : null,
-    el("div", { class: "todo-actions" }, actions));
-}
-
-function jumpTo(id) {
-  const section = $(id);
-  const details = section.querySelector("details");
-  if (details) details.open = true;
-  section.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-// showOnly filters the list down to one status, as a chip you can remove.
-function showOnly(status) {
-  showJust(() => { view.status = status; });
-}
-
-// showUpdates is the same for the updates card. It only offers this when
-// isoshelf can download none of them, so every update is one of those.
-function showUpdates() {
-  showJust(() => { view.show.updates = true; });
-}
-
-// showJust is what "Show them" on a card does: exactly what the card
-// counted. Any other filter goes first - one left over would show fewer
-// than the card said, which reads as the card being wrong.
-function showJust(set) {
-  resetFilters();
-  set();
-  saveView();
-  renderFilters();
-  renderRows();
-  jumpTo("images");
-}
-
 // ---- Filters ---------------------------------------------------------------
 
 const KINDS = [
@@ -237,10 +86,31 @@ const ARCH_BADGE = {
 const ARCH_FULL = Object.fromEntries(ARCHES);
 
 // archBadge draws one, or nothing when there is no architecture to show.
-function archBadge(arch) {
-  if (!arch) return null;
+//
+// Ordinary 64-bit PC images get none (v0.7.0): nearly every row said
+// "64-bit", which told nobody anything and hid the rows where it matters.
+// always is for the few places choosing between the two is the point, like
+// naming a file.
+function archBadge(arch, always) {
+  if (!arch || (arch === "x86_64" && !always)) return null;
   return el("span", { class: "arch", title: ARCH_FULL[arch] || arch },
     ARCH_BADGE[arch] || arch);
+}
+
+// pinIcon is the small pushpin a pinned row carries, drawn rather than an
+// emoji so it looks the same on every system.
+function pinIcon() {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
+  svg.classList.add("pin-icon");
+  for (const d of ["M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5-1.5l1.5-4l4-4", "M9 15l-4.5 4.5", "M14.5 4l5.5 5.5"]) {
+    const path = document.createElementNS(ns, "path");
+    path.setAttribute("d", d);
+    svg.append(path);
+  }
+  return svg;
 }
 
 const SHOW = [
@@ -268,7 +138,7 @@ function renderFilters() {
     group("Show", SHOW.filter(([key]) => {
       if (key === "updates") return has((it) => it.status === "update available");
       if (key === "favorites") return has((it) => it.entry && (state.tracks[it.entry] || {}).starred);
-      if (key === "older") return has((it) => it.older);
+      if (key === "older") return has(isOlder);
       return has((it) => cautionOf(it));
     }).map(([key, label]) => filterBox(label, view.show[key], (on) => {
       view.show[key] = on;
@@ -343,6 +213,13 @@ function renderChips() {
         renderRows();
       },
     }, chip.label, el("span", { class: "x", "aria-hidden": "true" }, "✕"))),
+    // Older versions are shown to be cleared, so the list offers that.
+    view.show.older && state.report
+      ? el("button", {
+          type: "button", class: "btn small", disabled: scanning(),
+          onclick: () => reviewOlder(state.report.items.filter(shown)),
+        }, "Review and clear…")
+      : null,
     chips.length > 1
       ? el("button", { type: "button", class: "linkish", onclick: clearFilters }, "Clear all")
       : null,
@@ -364,6 +241,27 @@ function resetFilters() {
   $("search").value = "";
 }
 
+// shown says whether the search and the filters leave this image in the list.
+function shown(item) {
+  const query = $("search").value.trim().toLowerCase();
+  const haystack = `${item.name} ${item.path || ""} ${item.entry || ""} ${item.family || ""}`.toLowerCase();
+  const starred = item.entry && (state.tracks[item.entry] || {}).starred;
+  return (!view.status || item.status === view.status) &&
+    (!query || haystack.includes(query)) &&
+    (!view.kinds.length || view.kinds.includes(item.category || "other")) &&
+    (!view.arches.length || view.arches.includes(item.arch)) &&
+    (!view.show.updates || item.status === "update available") &&
+    (!view.show.favorites || starred) &&
+    (!view.show.older || isOlder(item)) &&
+    (!view.show.caution || cautionOf(item));
+}
+
+// isOlder is a file you could clear because a newer version of the same
+// image is here too. A pinned one isn't: somebody decided to keep it.
+function isOlder(item) {
+  return Boolean(item.older && item.path && !isPinned(item));
+}
+
 function renderRows() {
   const rows = $("rows");
   rows.replaceChildren();
@@ -377,19 +275,7 @@ function renderRows() {
     return;
   }
 
-  const query = $("search").value.trim().toLowerCase();
-  const items = sortItems(state.report.items.filter((item) => {
-    const haystack = `${item.name} ${item.path || ""} ${item.entry || ""} ${item.family || ""}`.toLowerCase();
-    const starred = item.entry && (state.tracks[item.entry] || {}).starred;
-    return (!view.status || item.status === view.status) &&
-      (!query || haystack.includes(query)) &&
-      (!view.kinds.length || view.kinds.includes(item.category || "other")) &&
-      (!view.arches.length || view.arches.includes(item.arch)) &&
-      (!view.show.updates || item.status === "update available") &&
-      (!view.show.favorites || starred) &&
-      (!view.show.older || item.older) &&
-      (!view.show.caution || cautionOf(item));
-  }));
+  const items = sortItems(state.report.items.filter(shown));
 
   for (const item of items) rows.append(renderRow(item));
   // Like the key on a menu: only there when something in the list has the mark.
@@ -676,8 +562,9 @@ function renderRow(item) {
       // wrapped name never leaves one dangling at the end of it.
       el("div", { class: "name-line" },
         el("span", { class: "name" }, name),
-        caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null),
-      item.arch ? el("div", { class: "meta-line" }, archBadge(item.arch)) : null,
+        caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null,
+        isPinned(item) ? el("span", { class: "pin-mark", title: "Pinned: kept whatever updates come", role: "img", "aria-label": "Pinned" }, pinIcon()) : null),
+      archBadge(item.arch) ? el("div", { class: "meta-line" }, archBadge(item.arch)) : null,
       item.note ? el("div", { class: "note" }, item.note) : null)));
 
   // The file, its size and when it arrived go under the name: one line each

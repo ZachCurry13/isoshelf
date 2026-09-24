@@ -7,17 +7,16 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/check"
 	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/space"
-	"github.com/ZachCurry13/isoshelf/internal/state"
 	"github.com/ZachCurry13/isoshelf/internal/update"
 )
 
 // Updating the images without being asked.
 //
 // Turned on, isoshelf checks on a schedule and downloads every update it
-// finds, verifies it, and puts it in place - each image following the answer
-// it already carries about its old copy (replace, archive, or keep both).
-// Nothing about that is new except that nobody pressed anything: it is the
-// same queue, the same verification, and the same answers.
+// finds, verifies it, and puts it in place - doing with each old copy what
+// Settings says (replace, archive, or keep both), and leaving a pinned file
+// where it is. Nothing about that is new except that nobody pressed anything:
+// it is the same queue, the same verification, and the same answers.
 //
 // It is off unless somebody turns it on, and it always will be. This is the
 // one thing isoshelf does that changes a drive while its owner isn't looking,
@@ -155,7 +154,7 @@ func (s *Server) queueUpdatesLocked(room space.Usage) (int, string) {
 		s.nextJob++
 		s.queue = append(s.queue, &job{
 			id: s.nextJob, target: s.target, entry: item.Entry.ID, name: item.Entry.Name,
-			size: item.Entry.Size, removal: removalFor(item, s.st.Track(item.Entry.ID), s.loadSettings().OldFiles),
+			size: item.Entry.Size, removal: removalFor(item, s.loadSettings().OldFiles),
 			old: old, automatic: true,
 		})
 		added++
@@ -166,21 +165,17 @@ func (s *Server) queueUpdatesLocked(room space.Usage) (int, string) {
 	return added, ""
 }
 
-// removalFor is what happens to the copy this update replaces: the image's
-// own answer, else the one in Settings, else replace.
+// removalFor is what happens to the copy this update replaces: the answer in
+// Settings, else replace. Since v0.7.0 an image no longer carries its own -
+// opening a folder turns the old per-image answers into pins (MigrateChoices)
+// - and a pinned file is kept by update.Run whatever this says.
 //
 // The page works the same thing out when it draws the choice (choiceFor in
 // details.js). The two have to agree: what happens automatically must be the
 // answer the page has been showing the whole time, or somebody's drive does
 // something they were told it wouldn't.
-func removalFor(item check.Item, track state.Track, fallback string) update.Removal {
-	choice := track.OldFiles
-	if choice == "" && track.KeepOld {
-		choice = settings.OldKeep
-	}
-	if choice == "" {
-		choice = settings.CleanOldFiles(fallback)
-	}
+func removalFor(item check.Item, fallback string) update.Removal {
+	choice := settings.CleanOldFiles(fallback)
 	if choice == "" {
 		choice = settings.OldReplace
 	}

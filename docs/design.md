@@ -15,13 +15,16 @@ project, not affiliated with Ventoy.
 
 - Never touch partitions, bootloaders, or Ventoy's `/ventoy` folder. Only work
   with image files inside the folder the user picks.
-- Never delete or overwrite anything the user hasn't chosen to replace. Each
-  image carries one choice - replace, archive, or keep both - made in its
-  details panel and followed by every update of that image from then on
-  (`old_files` in state; v0.3.0 replaced the old "replace old file" checkbox
-  with it). An image nobody has answered for follows the default in Settings,
-  which is replace until it is changed (v0.3.1). Replace = download -> verify
-  -> rename into place -> only then delete the old file(s) of that same track.
+- Never delete or overwrite anything the user hasn't chosen to replace. One
+  answer in Settings says what every update does with the old file - replace,
+  archive, or keep both (`old_files`; replace until it is changed, v0.3.1) -
+  and a **pinned** file (`FileRecord.Pinned`, v0.7.0) is never replaced,
+  archived or tidied away by an update: the new file downloads beside it.
+  From v0.3.0 to v0.7.0 each image carried its own answer, set in its details
+  panel; opening a folder now turns those into pins (keep both) or drops them
+  (anything else, which then follows Settings), once, and the page says what
+  it did (`MigrateChoices`). Replace = download -> verify -> rename into place
+  -> only then delete the old file(s) of that same track.
 - A download without a published checksum ("unverified") never replaces
   anything on its own: the old file stays until the user confirms that item.
 - Only ever delete image files inside the folder the user picked: recognized
@@ -602,8 +605,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   A Docker image (static binary plus CA certificates), built for amd64 and
   arm64 and published to ghcr.io, which is also what a TrueNAS app is.
   `/healthz` and `/login` are the two paths outside the guard. The rest of
-  the page - browsing the catalog, updating, the per-image answer, history -
-  was already there and needed nothing.
+  the page - browsing the catalog, updating, the answer about old files,
+  history - was already there and needed nothing.
 - **Getting in** (v0.4.5, the maintainer's decision over keeping the token
   alone): a username and password, chosen on first run or given in
   `ISOSHELF_USERNAME`/`ISOSHELF_PASSWORD`. One login, not user accounts -
@@ -641,12 +644,19 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   end to end, over downloading-but-not-placing or checking only). On a
   schedule - daily or weekly - a check runs, and what it finds goes into the
   same download queue the Update button uses, with the same verification and
-  the same per-image answer about the old copy. `internal/web/autoupdate.go`.
+  the same answer about the old copy. `internal/web/autoupdate.go`.
+  - **In a container it asks once** (v0.7.0): until somebody answers, the
+    page asks whether the images should update by themselves, every day,
+    every week, or not. It is off until then, like everywhere else. Yes
+    starts the first run at once, so the question says what that run will
+    do - how many updates, about how much to download, what happens to each
+    old file - before anyone answers.
   - **Off unless turned on, and always will be.** It is the one thing
     isoshelf does that changes a drive while its owner isn't looking.
-  - `removalFor` works out each image's answer, and has to agree exactly with
+  - `removalFor` works out the answer, and has to agree exactly with
     `choiceFor` in `details.js`: what happens unattended must be what the
-    page has been showing all along.
+    page has been showing all along. A pinned file is kept by `update.Run`
+    whatever either says.
   - It leaves room to spare (`roomToSpare`) rather than filling the folder,
     skips a folder that is already busy, and records when it last ran in the
     settings file - so a restart, which on a NAS is every app update, doesn't
@@ -758,22 +768,26 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   read the folder again and ask every project again. Scanning without going
   online is what turning the setting off does, not a second button.
 - The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
-  images, Archive, History. Above the list, one card per thing to do
-  (`renderTodo`). The list is a favorite star and four columns - image (file,
+  images, Archive, History. Above the list, one line says what wants doing
+  (`renderTodo` in `summary.js`, v0.7.0; it was a card for each until then):
+  `41 updates · 13 older · 3 unrecognized · Archive 20.9 GB [Update 31]`.
+  Each count shows exactly those images; Update all is the one button. The list is a favorite star and four columns - image (file,
   size and date underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
   row opens the details panel: everything about one image, its links, and
-  the choice below. Statuses are shown in plain words (`STATUS_WORDS`), each
+  the pin below. Statuses are shown in plain words (`STATUS_WORDS`), each
   explaining itself; the report keeps its own words for the CLI and JSON.
-- Each track carries what happens to its old files (`old_files` in state:
-  replace, archive or keep; `Track.Choice()`), set in the details panel and
-  followed by every update, so updating never stops to ask. "Update all" and
-  "clear older versions" share one checklist dialog (`pickFiles`).
+- What happens to old files is one answer in Settings, followed by every
+  update, so updating never stops to ask; a file pinned in its details panel
+  is the exception, kept whatever comes, and left out of the older versions
+  (`isOlder`). "Update all" and "clear older versions" share one checklist
+  dialog (`pickFiles`, `checklist.js`); filtering to older versions offers
+  Review and clear.
 - The list filters by kind, architecture, updates, favorites, older
   versions and the caution mark through one Filter menu; everything switched
   on shows as a chip above the list. Ticking filters at once; the menu's
-  footer has Clear all and Done, and its list scrolls above them. A card's
-  "Show them" clears every other filter first, so it shows exactly what the
-  card counted. Sorting is a menu and the three column
+  footer has Clear all and Done, and its list scrolls above them. Clicking
+  a count above the list clears every other filter first, so it shows
+  exactly what was counted. Sorting is a menu and the three column
   headings (empty cells last).
   The choices live in the browser's localStorage. When a filter hides
   everything, the empty message names the filters and offers to clear them.
@@ -846,8 +860,10 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
 - The page is one script per part, all plain scripts sharing the same names
   and loaded in the order `index.html` lists them: `app.js` (what isoshelf has
   said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
-  to-do cards, filters, rows), `details.js` (the panel and the checklist),
-  `downloads.js` (the queue), `actions.js` (updating, removing, identifying),
+  filters, rows), `summary.js` (the line saying what wants doing, and the
+  question a container asks once), `details.js` (the panel), `checklist.js`
+  (the checklist), `downloads.js` (the queue), `actions.js` (updating,
+  removing), `catalog.js` (the Add images tab), `identify.js` (What is this?),
   `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`

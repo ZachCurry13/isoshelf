@@ -1,13 +1,13 @@
 "use strict";
 
 // Everything about one image, out of the way until asked for: the panel
-// beside the list, and the checklist that "update all" and "clear older
-// versions" both use.
+// beside the list. The checklist that "update all" and "clear older
+// versions" both use is checklist.js.
 
 // ---- Details panel ---------------------------------------------------------
 
 // Everything about one image sits in a panel beside the list: where it came
-// from, what happens to old copies, its links, and what you can do with it.
+// from, whether it is pinned, its links, and what you can do with it.
 // The row itself stays short.
 let detailsOpen = null;
 
@@ -44,10 +44,9 @@ function renderDetails() {
   panel.hidden = false;
   $("details-logo").replaceChildren(logoTile(item));
   $("details-name").textContent = item.name;
-  $("details-sub").textContent = [item.arch, KIND_LABEL[item.category], item.family]
+  $("details-sub").textContent = [ARCH_FULL[item.arch] || item.arch, KIND_LABEL[item.category], item.family]
     .filter(Boolean).join(" · ");
 
-  const track = (item.entry && state.tracks[item.entry]) || {};
   const parts = [];
   parts.push(detailRow("Status", [
     el("div", {}, el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}` }, statusWord(item.status))),
@@ -73,8 +72,8 @@ function renderDetails() {
     versionField(item),
   ]));
 
-  if (item.entry && item.updates === "download") {
-    parts.push(detailRow("When an update arrives", [choiceField(item, track)]));
+  if (item.path && item.entry) {
+    parts.push(detailRow("Keep this file", [pinField(item)]));
   }
 
   const links = linkList(item);
@@ -151,19 +150,15 @@ function sameName(item) {
   return Boolean(item.latest_file && item.path && item.path.split("/").pop() === item.latest_file);
 }
 
+// choiceFor is what an update does with the file it replaces: the one answer
+// in Settings, since v0.7.0 - an image no longer carries its own, and a pin
+// is the exception. The server works the same out (removalFor in
+// autoupdate.go); what happens unattended must be what this says.
 function choiceFor(item) {
-  const track = (item.entry && state.tracks[item.entry]) || {};
-  const usually = state.old_files || "replace";
-  let choice = track.old_files || (track.keep_old ? "keep" : usually);
+  let choice = state.old_files || "replace";
   if (choice === "keep" && sameName(item)) choice = "archive";
   return choice;
 }
-
-const CHOICES = [
-  ["replace", "Replace the old file"],
-  ["archive", "Archive the old file (you can restore it)"],
-  ["keep", "Keep both"],
-];
 
 const CHOICE_WORD = {
   replace: "replaces the old file",
@@ -171,22 +166,36 @@ const CHOICE_WORD = {
   keep: "keeps both",
 };
 
-// choiceField is the one decision each image carries: what happens to the
-// copy it replaces. It is saved the moment it changes, so an update never
-// has to stop and ask.
-function choiceField(item, track) {
-  const current = choiceFor(item);
-  const select = el("select", {
-    "aria-label": `What happens to old ${item.name} files`,
-    disabled: scanning(),
-    onchange: (e) => setTrack(item.entry, { old_files: e.target.value }),
-  }, CHOICES.filter(([value]) => value !== "keep" || !sameName(item))
-    .map(([value, label]) => el("option", { value, selected: value === current || undefined }, label)));
+// isPinned says whether this exact file is pinned.
+function isPinned(item) {
+  return Boolean(item.path && state.pinned && state.pinned.includes(item.path));
+}
+
+// pinField keeps this exact file whatever updates come (#54). It replaced
+// the menu each image had for its old files: that is one answer in Settings
+// now, and a pin says "not this one".
+function pinField(item) {
+  const on = isPinned(item);
+  const otherwise = { replace: "replaces it", archive: "moves it to the archive", keep: "keeps it beside the new one" };
   return el("div", {},
-    select,
-    el("div", { class: "muted" }, sameName(item)
-      ? "This image always has the same filename, so the new one takes its place. Archiving keeps the old one in this folder until you empty the archive."
-      : "Used for every update of this image from now on."));
+    el("label", { class: "check" },
+      el("input", {
+        type: "checkbox", checked: on || undefined, disabled: scanning(),
+        onchange: (e) => setPin(item.path, e.target.checked),
+      }),
+      " Pin this file"),
+    el("div", { class: "muted" }, on
+      ? "Kept whatever happens: an update downloads beside it, and nothing tidies it away."
+      : `Unpinned, an update ${otherwise[choiceFor(item)]}, as Settings says. Pin it to keep this exact file.`));
+}
+
+async function setPin(path, pinned) {
+  try {
+    state = await api("POST", "/api/pin", { path, pinned });
+    render();
+  } catch (err) {
+    showNotice(err.message, true);
+  }
 }
 
 function linkList(item) {
@@ -200,88 +209,3 @@ function linkList(item) {
     .map(([label, url]) => el("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, label));
 }
 
-// ---- The checklist ---------------------------------------------------------
-
-// One dialog for every "which of these?" question: updating several images,
-// clearing older versions. It lists what will happen to each, lets you untick
-// anything, and adds up what it frees or downloads.
-function pickFiles({ title, text, rows, actions, sizeLabel }) {
-  const dialog = $("pick");
-  $("pick-title").textContent = title;
-  $("pick-text").textContent = text;
-  const list = $("pick-list");
-  const total = $("pick-total");
-  const boxes = new Map();
-
-  const tally = () => {
-    const chosen = rows.filter((row) => boxes.get(row.id).checked);
-    const bytes = chosen.reduce((sum, row) => sum + (row.size || 0), 0);
-    total.textContent = `${plural(chosen.length, "image")} chosen${bytes ? ` · ${sizeLabel || "about"} ${formatBytes(bytes)}` : ""}`;
-  };
-
-  list.replaceChildren(...rows.map((row) => {
-    const box = el("input", { type: "checkbox", checked: row.checked !== false || undefined, onchange: tally });
-    boxes.set(row.id, box);
-    return el("li", {},
-      el("label", { class: "pick-item" },
-        box,
-        el("span", { class: "info" },
-          el("span", { class: "name" }, row.name),
-          row.detail ? el("span", { class: "kind" }, row.detail) : null),
-        row.note ? el("span", { class: "muted pick-note" }, row.note) : null));
-  }));
-  tally();
-
-  return new Promise((resolve) => {
-    $("pick-actions").replaceChildren(...actions.map((action) => el("button", {
-      type: "button", class: `btn ${action.primary ? "primary" : ""}`,
-      onclick: () => {
-        const chosen = rows.filter((row) => boxes.get(row.id).checked).map((row) => row.id);
-        dialog.close();
-        resolve(chosen.length ? { action: action.value, ids: chosen } : null);
-      },
-    }, action.label)));
-    dialog.addEventListener("close", () => resolve(null), { once: true });
-    dialog.showModal();
-  });
-}
-
-// reviewOlder lists the older versions and clears the ones you tick.
-async function reviewOlder(older) {
-  const newest = {};
-  for (const item of state.report.items) {
-    if (item.entry && !item.older && item.path) newest[item.entry] = item.path.split("/").pop();
-  }
-  const answer = await pickFiles({
-    title: "Older versions",
-    text: "You already have a newer version of each of these. Untick anything you want to keep.",
-    sizeLabel: "freeing",
-    rows: older.map((item) => ({
-      id: item.path,
-      size: item.size,
-      name: item.name,
-      detail: `${item.path}${item.size ? ` · ${formatBytes(item.size)}` : ""}`,
-      note: newest[item.entry] ? `newer here: ${newest[item.entry]}` : "",
-    })),
-    actions: [
-      { label: "Archive them", value: "move-aside", primary: true },
-      { label: "Delete them", value: "delete" },
-    ],
-  });
-  if (!answer) return;
-  try {
-    state = await api("POST", "/api/remove", { paths: answer.ids, how: answer.action });
-    catalog = null;
-  } catch (err) {
-    showNotice(err.message, true);
-    return;
-  }
-  flashNotice(answer.action === "delete"
-    ? `${plural(answer.ids.length, "older version")} deleted.`
-    : `${plural(answer.ids.length, "older version")} archived, under Archive on this page.`);
-  if (scanning()) {
-    render();
-    return;
-  }
-  await start("scan");
-}

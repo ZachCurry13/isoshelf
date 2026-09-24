@@ -11,8 +11,9 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**In flight: v0.7.0, the simpler shelf** (its paragraph below). Then
-the maintainer's queue after it, then the list under *After those*.
+**Next: item 3, missing images ([#55]), then item 18 ([#62]).** Then the
+rest of the maintainer's queue, then the list under *After those*. v0.7.0,
+the simpler shelf, has shipped; it is in `docs/archive.md`.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
 number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
@@ -54,6 +55,33 @@ wrongness that costs trust once somebody notices.
    - Sharing is off unless turned on and the asker must be signed in. Both
      already true; neither changes.
 
+   **Asked for again, and wider, 2026-09-24** (the maintainer: "pull any
+   image locally from the server, even if it isn't in the normal catalog.
+   When pulling any image, do we keep the verified checksums locally? ...
+   making sure I pull the image from the correct source at least once"). It
+   is [#62], and **next after missing images** (decided that day), since
+   Download again can then try the server first.
+   - **Any image**, not only catalog ones: the laptop lists what the server
+     has that it doesn't, and copies it over.
+   - **A record of where each file came from**, which isoshelf doesn't keep
+     today. `FileRecord` has the file's own hash and, for a download, the
+     address and date - and for a copy from the server that address is the
+     server's. Keep instead: where the checksum came from and when it was
+     checked against it, and where the bytes came from (the project's site,
+     the server, added by hand). The server hands its record over with the
+     copy, so the laptop can say "no published checksum; copied from your
+     NAS, which has had it since March (added by hand)".
+   - **Checking a file by hand against the published checksum**, for a
+     catalog image that arrived any other way (a torrent, a USB stick). A
+     match proves it is byte for byte the release, which is worth more than
+     where it came from, and it is true. Only when asked, as for duplicates:
+     until then the page says the file hasn't been checked, and offers to.
+   - **Never a record of a check that didn't happen.** The maintainer asked
+     for it to "at least make it look like I did"; that was declined, and
+     said so. A false provenance record is worse than none - it is exactly
+     what looks bad if anyone ever looks - and a real check is available for
+     every catalog image anyway.
+
    **Not in v0.5.0**, which is polish and correctness only. This changes what
    "verified" means at the edges and deserves a release where the
    unverified-copy rules get real tests, rather than riding along in one whose
@@ -93,52 +121,19 @@ wrongness that costs trust once somebody notices.
    and the display when there is data to put in them; an empty field shows
    nothing and helps nobody.
 
-**v0.7.0: the simpler shelf** (the maintainer, 2026-09-23, after a review of a
-simplification plan written with Gemini - whose sections on update prompts
-and background downloads described things isoshelf already did):
-
-- **Pin replaces the per-image Replace / Archive / Keep both menu.** One
-  global answer in Settings (replace or archive), plus a Pin per file:
-  pinned means *keep this exact file*. An update downloads beside it; the
-  new copy is not pinned, so later updates replace that one. Pinned files
-  are left out of the older-versions count and review, and automatic updates
-  never touch them. Remove still works and its question adds "This file is
-  pinned." A pin belongs to the file, so it goes when the file changes, like
-  an identification. The toggle lives in the details panel; a pinned row
-  shows a small pushpin.
-  - Migration: "Keep both" becomes pinned; an image with its own Archive or
-    Replace follows Settings from then on, and the page says once how many
-    changed.
-  - Three per-image markers then exist - Star (tell me if it goes missing),
-    Pin (keep this file) and Dismiss (item 4: stop telling me about this
-    update). Each has to say plainly what it does, or this is the clutter
-    it was meant to remove.
-  - SECURITY.md and design.md say each image "carries its own choice"; they
-    change with this.
-- **The to-do cards become one compact bar**: counts that filter the list
-  or open their review ("41 updates · 13 older · 3 unrecognized · 5 won't
-  boot · Archive 20.9 GB"), and the one button kept is **Update all**. Space
-  used stays on the folder line. The cards filled a phone's first screen
-  before a single image showed.
-- **The architecture badge shows only when it's unusual** - 32-bit, ARM64,
-  Multi - not "64-bit" on nearly every row. "Up to date" and the file line
-  stay as they are.
-- **In a container, isoshelf asks once** on first run whether to keep images
-  up to date automatically (Yes / Not now), off until answered. Desktop and
-  portable stay off by default, with the switch in Settings as now.
-- **On a server, the folder card is one line** (decided 2026-09-24): "Checked
-  2 h ago · 244 GB in images · 2.7 TB free of 3.5 TB" and Refresh. The
-  folder's path, its type and Choose folder move to Settings, under "This
-  folder". Desktop and portable keep the card as it is.
-
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
 3. **Missing images get two actions:** "Download again" as the row's button
    ("Download page" for images fetched by hand), and "Stop expecting it" in
    the details panel - off the missing list until the image is in the folder
-   again. The missing card gets "Download all" when isoshelf can download
-   them. Today a missing image offers only Details, and stays missing until
+   again. Filtering to the missing ones offers "Download all" when
+   isoshelf can download them, the way filtering to older versions offers
+   Review and clear. A missing image whose file is still in the archive
+   should offer Restore first: it is instant and gives back the very file. Today a missing image offers only Details, and stays missing until
    it drops out of the last 10 scans.
+
+   **Then item 18, [#62]** (decided 2026-09-24): getting any image from the
+   server, with a record of where each file came from.
 4. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
    manual or downloadable; for a downloadable one, "forever" is the "Never
    update" list decided 2026-09-19, and Update all and automatic updates skip
@@ -157,8 +152,11 @@ and background downloads described things isoshelf already did):
    finds *older* copies of an image; the same image and version twice, under
    two names or in two folders, isn't found. Same entry and version and size
    is the cheap first look; telling for sure means hashing both, minutes on
-   a USB stick, so ask the maintainer whether that runs on its own or only
-   when asked. Deleting goes through the archive like every other removal.
+   a USB stick - **only when asked** (the maintainer, 2026-09-24: "I like the
+   idea of verifying optionally. A lot of times I just trust it but maybe you
+   can say that it needs to be verified"). So same-size copies are shown as
+   *possible* duplicates, with a button to make sure. Deleting goes through
+   the archive like every other removal.
 7. **A sharing disclosure**, in the README and beside the sharing switch:
    the licenses of the images you share are yours to mind. The maintainer's
    view, 2026-09-23, and it holds for files people bring themselves - "like a
@@ -187,8 +185,7 @@ has a reputation. Self-update already means the warning appears only on the
 first download, because files isoshelf downloads itself don't carry the
 browser's "came from the internet" mark.
 
-**After those, in this order:** item 18 (asking the server by entry), [#1]
-the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
+**After those, in this order:** [#1] the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12]. Any time a real
 USB drive is to hand: [#7], trying the portable zip on one.
@@ -310,7 +307,8 @@ Then:
 
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
-  `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
+  `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,
+  `actions.js`, `catalog.js`, `identify.js`, `folders.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
   `upload.js`, `report.js` and `selfupdate.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
@@ -365,3 +363,5 @@ Then:
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#11]: https://github.com/ZachCurry13/isoshelf/issues/11
 [#12]: https://github.com/ZachCurry13/isoshelf/issues/12
+[#55]: https://github.com/ZachCurry13/isoshelf/issues/55
+[#62]: https://github.com/ZachCurry13/isoshelf/issues/62

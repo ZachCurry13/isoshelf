@@ -29,7 +29,9 @@ function choiceRow(label, options, current, change) {
   }, options.map(([value, text]) => el("option", { value, selected: value === current || undefined }, text)));
 }
 
+// The folder comes first where it is shown at all: see FOLDER_SETTINGS.
 const SETTING_GROUPS = [
+  FOLDER_SETTINGS,
   {
     title: "How it looks",
     settings: [
@@ -96,9 +98,9 @@ const SETTING_GROUPS = [
               (state && state.auto_update_every) || "day", (every) => ({ auto_update_every: every }))
             : null),
         note: () => (state && state.auto_update)
-          ? "Changes your folder while you aren't watching. Each image keeps its own answer " +
-            "about the file it replaces, nothing is deleted that you hadn't already chosen to " +
-            "lose, and it stops before the folder is full."
+          ? "Changes your folder while you aren't watching. Old files go the way Updates and " +
+            "old files says, a pinned file stays where it is, nothing is deleted that you hadn't " +
+            "already chosen to lose, and it stops before the folder is full."
           : "",
       },
       {
@@ -119,9 +121,9 @@ const SETTING_GROUPS = [
       {
         name: "What happens to the file an update replaces",
         fields: ["old_files"],
-        hint: "For images you haven't answered for yourself. Each one can choose " +
-          "differently in its own panel.",
-        words: "replace archive delete keep both old copies updates",
+        hint: "For every image. To keep one exact file whatever happens, pin it " +
+          "in its own panel.",
+        words: "replace archive delete keep both old copies updates pin pinned",
         control: () => choiceRow("What happens to the file an update replaces", [
           ["replace", "Replace it"],
           ["archive", "Move it to the archive"],

@@ -35,9 +35,9 @@ broken is a security report, not a feature request.
 - **isoshelf only writes inside the folder you pick** (plus its own settings
   folder, and its own program's folder when you update it), and only
   deletes image files there. Removing one asks you first,
-  file by file, and always offers to archive it instead. An update follows
-  the choice that image already carries — replace, archive or keep both,
-  shown in its panel and changeable at any time — rather than asking again.
+  file by file, and always offers to archive it instead. An update does with the
+  old file what Settings says — replace, archive or keep both — rather than
+  asking again, and never touches a file you pinned.
 - **On your own computer, the web UI answers your computer only.** It listens
   on 127.0.0.1, needs a random token issued at startup, checks the `Host`
   header so a hostile website can't reach it by DNS rebinding, requires a

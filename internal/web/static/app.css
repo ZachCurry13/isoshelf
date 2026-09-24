@@ -195,6 +195,18 @@ input[type="search"], input[type="text"], select {
 .target-path { font-family: var(--mono); font-size: 0.9286rem; margin: 2px 0 6px; overflow-wrap: anywhere; }
 .target-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .target-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+/* On a server, one line: the folder, its type and choosing another are in
+   Settings, under This folder. */
+.target.compact { padding: 8px 12px 8px 16px; }
+.target.compact .eyebrow, .target.compact .target-path,
+.target.compact .inline-select, .target.compact #choose { display: none; }
+.target.compact .target-meta { gap: 6px; }
+.target.compact #space:not(:empty)::before { content: "· "; }
+@media (max-width: 720px) {
+  .target.compact .target-actions { width: auto; }
+  /* The two halves wrap onto lines of their own here. */
+  .target.compact #space::before { content: none; }
+}
 
 /* Progress */
 
@@ -353,6 +365,9 @@ td.replace { text-align: center; }
 .name a { color: inherit; }
 .name a:hover { color: var(--accent); }
 .arch { margin-left: 6px; font-size: 0.7857rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; font-weight: 500; }
+/* A pinned file: kept whatever updates come. */
+.pin-mark { margin-left: 6px; color: var(--accent); display: inline-flex; }
+.pin-icon { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -2px; }
 td.version-cell { font-family: var(--mono); font-size: 0.8571rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .latest-new { font-weight: 650; color: var(--update-fg); }
 .file { font-family: var(--mono); font-size: 0.8214rem; overflow-wrap: break-word; min-width: 170px; }
@@ -783,6 +798,8 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(6px);
 }
+/* A part of the page jumped to stops below the bar rather than under it. */
+main > section[id] { scroll-margin-top: 52px; }
 .jump a {
   padding: 5px 10px; border-radius: 8px;
   color: var(--muted); font-size: 0.9286rem; font-weight: 600; text-decoration: none;
@@ -790,27 +807,33 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
 .jump a:hover { background: var(--surface-2); color: var(--text); }
 .jump a { border-radius: 5px; }
 
-/* One card per thing that wants doing. */
+/* What wants doing, as one line: every count shows those images. */
 .todo {
-  display: grid; gap: 8px;
-  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
-}
-.todo-card { max-width: 340px; }
-.todo:empty { display: none; }
-.todo-card {
-  display: flex; flex-direction: column; gap: 2px;
-  padding: 9px 12px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;
+  padding: 5px 6px 5px 8px;
   background: var(--surface); border: 1px solid var(--border);
-  border-left: 2px solid var(--fg, var(--accent));
   border-radius: var(--radius); box-shadow: var(--shadow);
 }
-.todo-card.s-update { --fg: var(--update-fg); }
-.todo-card.s-warn { --fg: var(--warn-fg); }
-.todo-card.s-missing { --fg: var(--missing-fg); }
-.todo-title { font-weight: 600; font-size: 0.9643rem; }
-.todo-detail { font-size: 0.8571rem; color: var(--muted); }
-.todo-note { font-size: 0.8571rem; color: var(--muted); }
-.todo-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.todo:empty { display: none; }
+.summary-part {
+  background: none; border: 0; border-radius: 6px; padding: 4px 6px;
+  font: inherit; font-size: 0.9286rem; color: var(--text); cursor: pointer;
+}
+.summary-part:hover { background: var(--surface-2); }
+.summary-part:disabled { cursor: default; color: var(--muted); background: none; }
+.summary-part b { font-weight: 650; color: var(--fg, var(--text)); font-variant-numeric: tabular-nums; }
+.summary-part.s-update { --fg: var(--update-fg); }
+.summary-part.s-warn { --fg: var(--warn-fg); }
+.summary-part.s-missing { --fg: var(--missing-fg); }
+.summary-sep { color: var(--muted); }
+.summary-go { margin-left: auto; }
+
+/* Asked once, in a container. */
+.first-run { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-left: 2px solid var(--accent); }
+.first-run[hidden] { display: none; }
+.first-run-title { font-weight: 600; font-size: 0.9643rem; }
+.first-run p { margin: 0; color: var(--muted); font-size: 0.8929rem; max-width: 70ch; }
+.first-run-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 
 /* Filters: one menu, and a chip for everything that is on. */
 .filter-menu > summary { list-style: none; cursor: pointer; }

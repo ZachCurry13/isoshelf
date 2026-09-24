@@ -9,9 +9,13 @@
 <link rel="stylesheet" href="/static/app.css">
 <script src="/static/app.js" defer></script>
 <script src="/static/images.js" defer></script>
+<script src="/static/summary.js" defer></script>
 <script src="/static/details.js" defer></script>
+<script src="/static/checklist.js" defer></script>
 <script src="/static/downloads.js" defer></script>
 <script src="/static/actions.js" defer></script>
+<script src="/static/catalog.js" defer></script>
+<script src="/static/identify.js" defer></script>
 <script src="/static/folders.js" defer></script>
 <script src="/static/archive.js" defer></script>
 <script src="/static/settings.js" defer></script>
@@ -47,7 +51,7 @@
 </nav>
 
 <main>
-  <section class="card target">
+  <section class="card target" id="folder-card">
     <div class="target-info">
       <div class="eyebrow">Folder</div>
       <div class="target-path" id="target-path">No folder chosen yet</div>
@@ -81,7 +85,10 @@
 
   <div class="notice" id="notice" role="status" hidden></div>
 
-  <!-- Everything that wants doing, as one row of cards. -->
+  <!-- In a container, asked once: should the images update by themselves? -->
+  <section class="card first-run" id="first-run" aria-labelledby="first-run-title" hidden></section>
+
+  <!-- Everything that wants doing, as one line. -->
   <section class="todo" id="todo" aria-label="Things to do"></section>
 
   <section class="card images" id="images">

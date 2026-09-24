@@ -65,6 +65,14 @@ func (s *Server) openTarget(path, profile string) error {
 
 	s.mu.Lock()
 	s.target, s.st, s.report, s.scan, s.lastErr, s.warnings = abs, st, nil, nil, "", nil
+	// Records from before v0.7.0 carry an answer per image for old files;
+	// they become pins the first time the folder is opened.
+	base := st.Clone()
+	if s.migrateChoicesLocked(st) {
+		if err := s.saveMerged(abs, base, st); err != nil {
+			s.warnings = append(s.warnings, "Couldn't save the pins: "+err.Error())
+		}
+	}
 	s.mu.Unlock()
 	s.updateSettings(func(c *settings.Settings) { c.Target = abs })
 	return nil

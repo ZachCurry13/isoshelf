@@ -65,15 +65,16 @@ And the rest:
 
 - **Your own files.** Drag an image onto the page, or choose one, and it goes
   straight into the folder. Nothing is written over without asking.
-- **What wants doing, at the top.** Cards for updates, older copies you could
-  clear, the archive, files that won't boot, and anything unrecognized, each
-  with its button and the space involved.
+- **What wants doing, in one line.** Above the list: updates, older copies you
+  could clear, files that won't boot, anything unrecognized, and the archive.
+  Click a count to see exactly those images; *Update all* sits at the end.
 - **Plain words.** Statuses read *Update available*, *End of life*,
   *Download manually* or *Won't boot from here*, and explain themselves when
   you hover over them.
 - **Finding things.** Search, one Filter menu with a chip for everything
   switched on, sorting by name, size, version or age, and a panel with
-  everything about an image when you click it. The catalog of images you
+  everything about an image when you click it, including a pin that keeps
+  that exact file whatever updates come. The catalog of images you
   *could* add has its own filters.
 - **What will fit.** Every catalog image shows about how big its download is,
   and the folder shows the room left, counting the queue, so an image too big
@@ -111,9 +112,10 @@ isoshelf manages files you care about, so it is deliberately cautious:
 - **Nothing is deleted unless you choose it.** Every removal asks first, and
   offers archiving, which keeps the file in the folder until you empty the
   archive, so it can be restored until then.
-- **You decide what happens to old versions.** Each image chooses for itself
-  between *Replace the old file*, *Archive the old file* (undo any time) and
-  *Keep both*, and Settings sets what the ones you haven't answered for do.
+- **You decide what happens to old versions.** One setting chooses between
+  *Replace it*, *Move it to the archive* (undo any time) and *Keep both*, and
+  **pinning** a file keeps that exact file whatever updates come: the new
+  one downloads beside it, and nothing tidies it away.
   A replacement is downloaded, verified and renamed into place before the old
   file is touched. Images whose filename never changes (like
   `netboot.xyz.iso`) can still be kept in both versions: the **new** download
@@ -232,16 +234,15 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** v0.7.0 is [a simpler
-page](https://github.com/ZachCurry13/isoshelf/issues/54): *pin* a file to keep
-it whatever updates come, one summary line instead of the row of cards, and
-fewer badges. After that: [*Download again* and *Stop expecting
+**Next:** [*Download again* and *Stop expecting
 it*](https://github.com/ZachCurry13/isoshelf/issues/55) for images that went
-missing, [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
-for a while or for good, [spotting duplicate
-copies](https://github.com/ZachCurry13/isoshelf/issues/57), and [a note on
+missing. After that: [getting any image from your own
+server](https://github.com/ZachCurry13/isoshelf/issues/62), with a record of
+where each file came from, then [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
+for a while or for good, [a note on
 where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
-you fetch yourself.
+you fetch yourself, and [spotting duplicate
+copies](https://github.com/ZachCurry13/isoshelf/issues/57).
 
 **Also planned:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6),
