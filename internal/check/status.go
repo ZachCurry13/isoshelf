@@ -66,6 +66,12 @@ func decide(it *Item, rel *source.Release, art *resolve.Artifact, err error, rec
 		return
 	}
 	it.EOL = fileCycleEOL(e, rel, it.Version)
+	// Whatever its name, a file whose hash is the one the project publishes
+	// is that release.
+	if recorded != "" && art != nil && art.Checksum != nil && art.Checksum.Algorithm == verify.SHA256 &&
+		strings.EqualFold(recorded, art.Checksum.Hex) {
+		it.Matched = art.ChecksumURL
+	}
 
 	status, note := compare(it, e, art, recorded)
 	switch {

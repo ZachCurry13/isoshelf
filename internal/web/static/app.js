@@ -293,6 +293,7 @@ function render() {
   renderArchive();
   renderHistory();
   renderDetails();
+  sayHowTheCheckWent();
 }
 
 function renderRun() {

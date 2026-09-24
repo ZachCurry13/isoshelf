@@ -11,10 +11,10 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: item 18, getting any image from the server ([#62]).** Then the
+**Next: item 18 part two, copying any image from the server ([#62]).** Part
+one - where each file came from, and Check it - shipped in v0.8.0. Then the
 rest of the maintainer's queue, then the list under *After those*. v0.7.0,
-the simpler shelf, and v0.7.1, missing images (item 3), have shipped; they
-are in `docs/archive.md`.
+v0.7.1 (missing images, item 3) and v0.8.0 are in `docs/archive.md`.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
 number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
@@ -82,6 +82,20 @@ wrongness that costs trust once somebody notices.
      said so. A false provenance record is worse than none - it is exactly
      what looks bad if anyone ever looks - and a real check is available for
      every catalog image anyway.
+
+   **Decided 2026-09-24, and what is left.** The maintainer picked: the
+   server's images show **in Add images** - a catalog image the server has
+   gets "On your server" and its Add button copies from there, and files the
+   catalog doesn't know go in a folded "Also on your server" list at the
+   bottom; provenance shows **in the details panel only**; and a copy with
+   no published checksum is allowed, **marked** as matching the server's
+   copy, never replacing anything. Part one (v0.8.0) built the record,
+   Where it came from and Check it. Part two is the rest: a list endpoint on
+   the sharing isoshelf (every hashed file, with its entry, version and
+   `Origin`), `peer.Client.List`, the marker and the folded list, and Copy
+   for a file that isn't the newest release (the newest already comes from
+   the server through the existing `Nearer` path, checked against the
+   project), verified against the server's hash and recorded with `Before`.
 
    **Not in v0.5.0**, which is polish and correctness only. This changes what
    "verified" means at the edges and deserves a release where the
@@ -300,7 +314,7 @@ Then:
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
   `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,
-  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `folders.js`,
+  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `folders.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
   `upload.js`, `report.js` and `selfupdate.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in

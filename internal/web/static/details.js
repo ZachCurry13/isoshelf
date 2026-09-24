@@ -66,6 +66,8 @@ function renderDetails() {
     ]));
   }
 
+  if (item.path) parts.push(detailRow("Where it came from", originField(item)));
+
   parts.push(detailRow("Version", [
     el("div", {}, item.version || el("span", { class: "muted" }, "not known")),
     item.latest ? el("div", { class: "muted" }, `newest published: ${item.latest}`) : null,

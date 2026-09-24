@@ -83,6 +83,14 @@ type Item struct {
 	// Placed is true when isoshelf downloaded and placed this file, rather
 	// than the file just turning up in the folder.
 	Placed bool
+	// Origin is where the file came from and what proved it, from the
+	// records; Before is what the isoshelf it was copied from said about
+	// its copy. Hashed says whether the file has a hash to compare.
+	Origin, Before state.Origin
+	Hashed         bool
+	// Matched is the address of the published checksum the file's hash
+	// equals, found by this check. It is how a file becomes proven.
+	Matched string
 }
 
 // Report is the state of every image on a target.
@@ -109,6 +117,7 @@ func Offline(res *scan.Result, st *state.State, cat *catalog.Catalog) *Report {
 		rec := st.Files[f.Path]
 		it.Added = addedAt(f, rec)
 		it.Placed = !rec.PlacedAt.IsZero()
+		it.Origin, it.Before, it.Hashed = rec.Origin, rec.Before, rec.SHA256 != ""
 		if e := cat.Entry(rec.Entry); e != nil {
 			it.Entry, it.Version, it.Assigned = e, rec.Version, rec.Assigned
 			found[e.ID] = true

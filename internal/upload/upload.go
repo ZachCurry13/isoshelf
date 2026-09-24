@@ -144,8 +144,11 @@ func Place(ctx context.Context, src io.Reader, opts Options) (*Result, error) {
 	if opts.State != nil {
 		// No entry or version: the scan that follows matches it against the
 		// catalog, exactly as it would a file copied in with Explorer. What
-		// isoshelf does know is when it arrived.
-		if err := opts.State.Placed(opts.Target, name, state.FileRecord{PlacedAt: now().UTC()}); err != nil {
+		// isoshelf does know is when it arrived, and that it came from this
+		// computer rather than from any project.
+		at := now().UTC()
+		rec := state.FileRecord{PlacedAt: at, Origin: state.Origin{How: state.OriginUpload, At: at}}
+		if err := opts.State.Placed(opts.Target, name, rec); err != nil {
 			return res, err
 		}
 	}

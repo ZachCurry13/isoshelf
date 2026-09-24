@@ -80,6 +80,11 @@ type FileRecord struct {
 	// downloads beside it and never replaces or archives it. It belongs to the
 	// file, so like an assignment it goes when the file changes.
 	Pinned bool `json:"pinned,omitempty"`
+	// Origin is where the file came from and what proved it (v0.8.0, #62);
+	// Before is what the other isoshelf said about its own copy, for a file
+	// copied from one. See origin.go.
+	Origin Origin `json:"origin,omitzero"`
+	Before Origin `json:"before,omitzero"`
 }
 
 func (r FileRecord) current(f scan.File) bool {
