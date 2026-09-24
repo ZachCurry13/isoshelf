@@ -26,7 +26,7 @@ func read(t *testing.T, path string) string {
 // back exactly as it was.
 func TestSwapAndRestoreAPortableFolder(t *testing.T) {
 	suffix := ownSuffix(t)
-	dir := t.TempDir()
+	dir := realTempDir(t)
 	exe := filepath.Join(dir, "isoshelf-"+suffix)
 	for _, p := range Platforms {
 		write(t, filepath.Join(dir, "isoshelf-"+p), "old "+p)
@@ -67,7 +67,7 @@ func TestSwapAndRestoreAPortableFolder(t *testing.T) {
 // name - the case where the order of undoing matters.
 func TestSwapToThePlainName(t *testing.T) {
 	suffix := ownSuffix(t)
-	dir := t.TempDir()
+	dir := realTempDir(t)
 	exe := filepath.Join(dir, "isoshelf-v0.5.3-"+suffix)
 	plain := filepath.Join(dir, "isoshelf-"+suffix)
 	write(t, exe, "old versioned")
@@ -103,7 +103,7 @@ func TestSwapToThePlainName(t *testing.T) {
 // Somebody who named the program themselves meant it.
 func TestARenamedProgramKeepsItsName(t *testing.T) {
 	suffix := ownSuffix(t)
-	exe := filepath.Join(t.TempDir(), "my-isoshelf")
+	exe := filepath.Join(realTempDir(t), "my-isoshelf")
 	write(t, exe, "old")
 	targets, err := Targets(exe, false)
 	if err != nil {
@@ -117,7 +117,7 @@ func TestARenamedProgramKeepsItsName(t *testing.T) {
 // If putting one program in place fails, nothing is left half done.
 func TestAFailedSwapChangesNothing(t *testing.T) {
 	suffix := ownSuffix(t)
-	dir := t.TempDir()
+	dir := realTempDir(t)
 	for _, p := range Platforms {
 		write(t, filepath.Join(dir, "isoshelf-"+p), "old "+p)
 	}
@@ -146,4 +146,17 @@ func stageFake(t *testing.T, dir string, targets []Target) *Staged {
 		s.Files = append(s.Files, StagedFile{Target: target, New: n})
 	}
 	return s
+}
+
+// realTempDir is t.TempDir by its full name. Windows may hand out a folder's
+// short 8.3 name (RUNNER~1 for runneradmin, on GitHub's machines), and
+// Targets resolves the program's real path, so the two only compare equal
+// when both are spelled out in full.
+func realTempDir(t *testing.T) string {
+	t.Helper()
+	dir, err := filepath.EvalSymlinks(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	return dir
 }

@@ -13,6 +13,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -47,10 +49,10 @@ func TestAnUpdatedProgramComesBackOnTheSamePort(t *testing.T) {
 	}
 	go func() { time.Sleep(700 * time.Millisecond); hold.Close() }()
 
-	var out bytes.Buffer
+	out := &syncBuffer{}
 	cmd := exec.Command(exe, "ui", "--no-browser")
 	cmd.Env = childEnv(t, appupdate.Handover{Port: port, Stage: stage, From: "v9.0.0"})
-	cmd.Stdout, cmd.Stderr = &out, &out
+	cmd.Stdout, cmd.Stderr = out, out
 	if err := cmd.Start(); err != nil {
 		t.Fatal(err)
 	}
@@ -78,8 +80,8 @@ func TestAnUpdatedProgramComesBackOnTheSamePort(t *testing.T) {
 	waitFor(t, "the update to be kept", func() bool {
 		return gone(old) && gone(stage)
 	})
-	if !bytes.Contains(out.Bytes(), []byte("Updated from v9.0.0.")) {
-		t.Errorf("it didn't say it was updated:\n%s", out.Bytes())
+	if !strings.Contains(out.String(), "Updated from v9.0.0.") {
+		t.Errorf("it didn't say it was updated:\n%s", out.String())
 	}
 }
 
@@ -102,10 +104,10 @@ func TestAProgramThatCantComeUpPutsTheOldOneBack(t *testing.T) {
 	}
 	defer hold.Close()
 
-	var out bytes.Buffer
+	out := &syncBuffer{}
 	cmd := exec.Command(exe, "ui", "--no-browser")
 	cmd.Env = childEnv(t, appupdate.Handover{Port: port, Stage: stage, From: "v9.0.0"})
-	cmd.Stdout, cmd.Stderr = &out, &out
+	cmd.Stdout, cmd.Stderr = out, out
 	if err := cmd.Start(); err != nil {
 		t.Fatal(err)
 	}
@@ -115,17 +117,17 @@ func TestAProgramThatCantComeUpPutsTheOldOneBack(t *testing.T) {
 	case <-done:
 	case <-time.After(60 * time.Second):
 		cmd.Process.Kill()
-		t.Fatalf("it never gave up:\n%s", out.Bytes())
+		t.Fatalf("it never gave up:\n%s", out.String())
 	}
 
 	if got := fileSum(t, exe); got != oldSum {
-		t.Errorf("the program in place isn't the old one after undoing:\n%s", out.Bytes())
+		t.Errorf("the program in place isn't the old one after undoing:\n%s", out.String())
 	}
 	if !gone(old) {
 		t.Error("the old program is still set aside as well as back in place")
 	}
-	if !bytes.Contains(out.Bytes(), []byte("didn't start")) {
-		t.Errorf("it didn't say the update was undone:\n%s", out.Bytes())
+	if !strings.Contains(out.String(), "didn't start") {
+		t.Errorf("it didn't say the update was undone:\n%s", out.String())
 	}
 }
 
@@ -218,4 +220,23 @@ func tidyTempDir(t *testing.T) string {
 		}
 	})
 	return dir
+}
+
+// syncBuffer is what the programs print, read while they are still printing:
+// the copying into it happens on another goroutine, so it takes a lock.
+type syncBuffer struct {
+	mu sync.Mutex
+	b  bytes.Buffer
+}
+
+func (s *syncBuffer) Write(p []byte) (int, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.b.Write(p)
+}
+
+func (s *syncBuffer) String() string {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.b.String()
 }

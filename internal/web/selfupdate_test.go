@@ -72,7 +72,10 @@ func updatingServer(t *testing.T, version string, container bool) (*Server, *res
 	srv = httptest.NewTLSServer(mux)
 	t.Cleanup(srv.Close)
 
-	dir := t.TempDir()
+	dir, err := filepath.EvalSymlinks(t.TempDir()) // by its full name: see realTempDir in appupdate
+	if err != nil {
+		t.Fatal(err)
+	}
 	exe := filepath.Join(dir, "isoshelf-v9.0.0-"+suffix)
 	os.WriteFile(exe, []byte("the old program"), 0o755)
 	fc := fetch.New("test")
