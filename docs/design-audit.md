@@ -3,8 +3,8 @@ A design audit of the page, written by the `page` agent on 2026-09-21, before
 any of the redesign was built. It is a proposal with options, not a plan that
 was agreed: the maintainer asked to be consulted on anything where more than
 one answer is good, and the seven decision points in section 3 are what to
-ask. Kept here so v0.4.0 starts from a considered critique rather than a
-blank page. See the v0.4.0 section of docs/TODO.md for the brief it answers.
+ask. Kept as the critique the v0.5.0 redesign started from; the v0.5.0
+section of docs/TODO.md is the brief it answered.
 -->
 
 # isoshelf web page — design audit

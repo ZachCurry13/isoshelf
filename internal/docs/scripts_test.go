@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-// The page is one script per part, and three documents list them: CLAUDE.md,
-// docs/design.md and docs/TODO.md. A new script is easy to add and easy to
+// The page is one script per part, and some documents list them: CLAUDE.md,
+// docs/design.md and docs/TODO.md do today, and CONTRIBUTING.md once did. A new script is easy to add and easy to
 // forget in all three - report.js was missing from every one of them for four
 // releases, and the lists read as complete, so nobody looking at them could
 // tell. A document that names one script must name them all.
@@ -26,7 +26,7 @@ func TestEveryDocumentListingPageScriptsListsThemAll(t *testing.T) {
 		scripts = append(scripts, filepath.Base(name))
 	}
 
-	for _, doc := range []string{"CLAUDE.md", "docs/design.md", "docs/TODO.md", "README.md"} {
+	for _, doc := range []string{"CLAUDE.md", "docs/design.md", "docs/TODO.md", "README.md", "CONTRIBUTING.md", "SECURITY.md"} {
 		body, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(doc)))
 		if os.IsNotExist(err) {
 			continue

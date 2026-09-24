@@ -79,20 +79,9 @@ record of where things stand and what was decided.
 
 ## Next, in order
 
-1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout
-   (#10). *Done.* v0.3.1: the Settings panel (9). *Done.*
-2. v0.3.x: automatic remembered checks (3). *Done in v0.3.2.* Decision 10 in
-   full: where a folder's records live (v0.4.2) and the remembered-folders
-   list (v0.4.3). Next: the rest of decision 15 (empty the archive after so
-   many days, a download speed limit, hiding kinds and architectures) now
-   that Settings has a home for them; one-click self-update with signed
-   releases (13, 14).
-3. Server mode in Docker (16). *Done in v0.4.0.* What is left of it is a
-   scheduler that checks by itself, and the official TrueNAS store app that
-   is the 1.0 goal.
-4. v0.5.0: the page redone, plus `isoshelf update` (#1), older versions with a
-   hold (#2), Make bootable (#3), signatures on images (#5), two downloads at
-   once (#4), portable test (#7).
+`docs/TODO.md` ("Right now") is the one list of what comes next. This section
+used to keep a second one, and it went stale: it still called self-update,
+the archive timer and the update scheduler "next" after all three shipped.
 
 ## Decided 2026-09-23 (the maintainer, clearing the issue list)
 
@@ -187,6 +176,16 @@ record of where things stand and what was decided.
 - **The exe stays the Windows download**; no installer.
 - Sharing belongs to servers only; the Settings footer says where settings
   really are.
+
+## Documents brought into line (2026-09-24, no release)
+
+A review of the documents against the code. README: the Why list leads with
+the main features and puts the rest a line each; the per-release roadmap
+paragraphs went (CHANGELOG.md holds them); *Getting it* now holds the
+first-run paragraph and the Linux USB note. SECURITY.md: server mode and
+sharing with another isoshelf are promises too. CONTRIBUTING.md stops listing
+page scripts (it had 9 of 14), and `internal/docs` now checks it and
+SECURITY.md as well. CLAUDE.md's layout names every package.
 
 ## Latest change: v0.6.1 (2026-09-24)
 
