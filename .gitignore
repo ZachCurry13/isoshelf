@@ -5,3 +5,8 @@
 # Local browser-preview config (holds machine-specific paths)
 /.claude/launch.json
 /isoshelf.exe~
+
+# The release signing key made by internal/appupdate/keygen. Secret: it goes
+# into the repository's secrets and a password manager, never into git.
+release-key.txt
+*.key
