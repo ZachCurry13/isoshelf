@@ -16,7 +16,7 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
 )
 
-// version is set by release builds: -ldflags "-X main.version=v0.1.0".
+// version is set by release builds: -ldflags "-X main.version=vX.Y.Z".
 var version = "dev"
 
 const usage = `isoshelf keeps the bootable images in a folder up to date.

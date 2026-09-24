@@ -22,7 +22,8 @@ four times in one evening. The releases page on GitHub is the answer, and
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; issues #1-#7 and #54-#59 are the roadmap (#10, the phone layout, is
+- **GitHub:** public; open issues #1-#7, #11, #12 and #54-#58 are the
+  roadmap (#10, the phone layout, and #59, gentler with servers, are
   closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
@@ -79,20 +80,9 @@ record of where things stand and what was decided.
 
 ## Next, in order
 
-1. v0.3.0: the redesign (1, 2, 4-9, 11, 15, 17), including the phone layout
-   (#10). *Done.* v0.3.1: the Settings panel (9). *Done.*
-2. v0.3.x: automatic remembered checks (3). *Done in v0.3.2.* Decision 10 in
-   full: where a folder's records live (v0.4.2) and the remembered-folders
-   list (v0.4.3). Next: the rest of decision 15 (empty the archive after so
-   many days, a download speed limit, hiding kinds and architectures) now
-   that Settings has a home for them; one-click self-update with signed
-   releases (13, 14).
-3. Server mode in Docker (16). *Done in v0.4.0.* What is left of it is a
-   scheduler that checks by itself, and the official TrueNAS store app that
-   is the 1.0 goal.
-4. v0.5.0: the page redone, plus `isoshelf update` (#1), older versions with a
-   hold (#2), Make bootable (#3), signatures on images (#5), two downloads at
-   once (#4), portable test (#7).
+`docs/TODO.md` ("Right now") is the one list of what comes next. This section
+used to keep a second one, and it went stale: it still called self-update,
+the archive timer and the update scheduler "next" after all three shipped.
 
 ## Decided 2026-09-23 (the maintainer, clearing the issue list)
 
@@ -187,6 +177,23 @@ record of where things stand and what was decided.
 - **The exe stays the Windows download**; no installer.
 - Sharing belongs to servers only; the Settings footer says where settings
   really are.
+
+## Documents brought into line (2026-09-24, no release)
+
+A review of the documents against the code. README: the Why list leads with
+the main features and puts the rest a line each; the per-release roadmap
+paragraphs went (CHANGELOG.md holds them); *Getting it* now holds the
+first-run paragraph and the Linux USB note. SECURITY.md: server mode and
+sharing with another isoshelf are promises too. CONTRIBUTING.md stops listing
+page scripts (it had 9 of 14), and `internal/docs` now checks it and
+SECURITY.md as well. CLAUDE.md's layout names every package.
+
+Second pass: the secret link was still called "the way back from a forgotten
+password" in `docker-compose.yml` and the TrueNAS notes, though v0.4.7 ended
+that; a server with no login yet is open to whoever arrives first, which
+SECURITY.md and the README now say plainly. design.md stops listing
+dependencies and image signatures as if built, and its app-updates section
+stops saying "only a notice".
 
 ## Latest change: v0.6.1 (2026-09-24)
 

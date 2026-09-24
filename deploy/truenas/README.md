@@ -90,8 +90,8 @@ somebody's files on the network:
 
 - **Two storage questions**, both required: the folder of images, and a place
   for isoshelf's own files. Neither has a sensible default, and the second
-  one is the one people forget — without it, settings and the secret for the
-  link are lost every time the app updates.
+  one is the one people forget — without it, settings and the username and
+  password are lost every time the app updates.
 - **Offer the username and password, and say they are optional.** Since
   v0.4.5 isoshelf asks for them the first time the page is opened, so the
   form needs nothing. `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` set them
@@ -103,10 +103,10 @@ somebody's files on the network:
   `password` typed into it. `ISOSHELF_TOKEN` exists for people who want to
   choose, and is an advanced option at most.
 - **Say that the first thing to do is open it.** The description should say
-  that opening the address asks for a username and password, and that the
-  app's log also holds a link that gets in without one - because nobody
-  thinks to look there, and that link is the way back from a forgotten
-  password.
+  that opening the address asks for a username and password, and how to get
+  back in after forgetting it: set the two environment variables and restart,
+  or run `isoshelf password` in the app's shell. (The link in the app's log
+  only works until a password is set, so it is not the way back.)
 - **Say that the folder is the container's, not the host's.** In the folder
   chooser, the dataset mounted at `/images` appears as `/images`. That is
   the one thing about running in a container that surprises people.

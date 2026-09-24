@@ -204,7 +204,7 @@ symptom people notice first.
 
 ### If the images folder is read-only
 
-Mount it read-only if you like - isoshelf will scan it and tell you what is
+Mount it read-only if you like — isoshelf will scan it and tell you what is
 out of date, it just can't change anything. One thing needs moving first:
 what it works out about the folder normally goes in a `.isoshelf` folder
 inside it. In **Settings → Where things are → Where this folder's records
@@ -250,7 +250,7 @@ download would, and costs one fall back to the real source.
 Two things worth knowing:
 
 - **Sharing is off until you turn it on**, because it hands whole images to
-  anyone who can sign in - a different thing from letting them manage the
+  anyone who can sign in — a different thing from letting them manage the
   folder.
 - **The first scan after turning it on takes longer.** isoshelf hashes every
   image rather than only the ones whose filename never changes, because a
@@ -308,7 +308,7 @@ docker build -t isoshelf --build-arg VERSION=$(git describe --tags --always) .
 
 ## Looking after more than one folder
 
-The folder chooser works here the same as anywhere - but it shows the
+The folder chooser works here the same as anywhere — but it shows the
 container's paths, not your NAS's. The dataset you mounted as
 `/mnt/tank/isos:/images` appears in the chooser as `/images`, and folders you
 didn't mount don't appear at all, because as far as the container is

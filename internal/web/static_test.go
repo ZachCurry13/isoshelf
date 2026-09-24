@@ -181,7 +181,7 @@ func TestSettingHintsStayShort(t *testing.T) {
 	}
 }
 
-// The look redone in v0.5.0 shows most statuses as a coloured dot beside plain
+// The look redone in v0.5.0 shows most statuses as a colored dot beside plain
 // words rather than as a filled chip, which is right for somebody reading a
 // long list and wrong for somebody who turned Higher contrast on. That setting
 // exists for people who need the difference to shout, so under it every status

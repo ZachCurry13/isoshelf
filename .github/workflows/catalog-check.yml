@@ -5,9 +5,9 @@ name: catalog check
 # itself. New versions need no catalog change (isoshelf finds them), so what
 # this catches is a project moving its files.
 #
-# - Every Monday: problems go into one issue labelled "catalog", which is
+# - Every Monday: problems go into one issue labeled "catalog", which is
 #   opened, added to, or closed once everything answers again. The weekly
-#   catalog job reads it a couple of hours later.
+#   catalog job reads it later the same day.
 # - On every pull request that changes the catalog: a problem fails the check,
 #   so nothing is merged with a download that doesn't answer.
 

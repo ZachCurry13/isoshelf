@@ -49,9 +49,10 @@ isoshelf does that for you:
   one go. isoshelf remembers what left the folder and can download it again,
   and the archive can empty itself after 7, 30 or 90 days if you choose a
   number.
-- **Your own files too.** Drag an image onto the page, or choose one, and it
-  goes straight into the folder: for the images no catalog knows, or one you
-  already downloaded. Nothing is written over without asking.
+- **Flags problems.** Reports end-of-life releases, checksum mismatches,
+  files your boot menu won't list, and files it doesn't recognize, and puts a
+  ⚠ on images worth knowing about, such as releases that no longer get
+  security fixes.
 - **Works out what mystery files are.** A file the catalog doesn't know by
   name — `Windows.iso` from the Media Creation Tool, or something you renamed —
   gets a "What is this?" button. isoshelf reads what the disc says about
@@ -59,61 +60,47 @@ isoshelf does that for you:
   it is, with the reason and how sure it is. You confirm; nothing is renamed
   or moved. If it's something no list will ever know — an image you built or
   customized — name it yourself and isoshelf remembers it from then on.
-- **Flags problems.** Reports end-of-life releases, checksum mismatches,
-  files your boot menu won't list, and files it doesn't recognize, and puts a
-  ⚠ on images worth knowing about, such as releases that no longer get
-  security fixes.
-- **Says what wants doing.** Cards at the top of the page: updates available,
-  older versions you could clear, what's in the archive, files that won't
-  boot, and anything it doesn't recognize. Each carries the button for it,
-  and says how much space is involved where that matters.
-- **Plain words, explained.** Statuses read *Update available*, *End of
-  life*, *Download manually* or *Won't boot from here*, and each explains
-  itself when you hover over it.
-- **Finds things fast.** Search, one Filter menu (updates, favorites, older
-  versions, kinds, architectures) showing a chip for everything switched on,
-  and sorting by name, size, version or age. Click any image for a panel with
-  everything about it: its file, its versions, its links and its settings.
-  The catalog of images you *could* add has its own filters: kind,
-  architecture, how it updates, what fits in this folder, and popular picks.
-- **Knows what will fit.** Every image in the catalog shows about how big its
-  download is, and the folder shows how much room is left, counting the
-  downloads already queued. An image too big for the space says so instead of
-  failing half way through.
-- **Yours to set up.** One Settings panel with a search box: light, dark or
-  whatever your computer is set to, higher contrast, larger text, less
-  movement, what should happen to the files updates replace, whether isoshelf
-  checks and updates by itself, where each folder's records are kept, and —
-  when it's running on your network — who can get in.
-  Nothing there has to be touched — the defaults are the sensible ones — and
-  "Reset to defaults" puts every switch back without forgetting your
-  folders.
-- **Remembers your folders.** The folder chooser lists the ones you've used,
+
+And the rest:
+
+- **Your own files.** Drag an image onto the page, or choose one, and it goes
+  straight into the folder. Nothing is written over without asking.
+- **What wants doing, at the top.** Cards for updates, older copies you could
+  clear, the archive, files that won't boot, and anything unrecognized, each
+  with its button and the space involved.
+- **Plain words.** Statuses read *Update available*, *End of life*,
+  *Download manually* or *Won't boot from here*, and explain themselves when
+  you hover over them.
+- **Finding things.** Search, one Filter menu with a chip for everything
+  switched on, sorting by name, size, version or age, and a panel with
+  everything about an image when you click it. The catalog of images you
+  *could* add has its own filters.
+- **What will fit.** Every catalog image shows about how big its download is,
+  and the folder shows the room left, counting the queue, so an image too big
+  says so before it starts.
+- **Settings, if you want them.** One searchable panel: theme, contrast, text
+  size, motion, what happens to the files updates replace, checking and
+  updating by itself, where each folder's records are kept, and who can sign
+  in when it runs on your network. The defaults are the sensible ones, and
+  *Reset to defaults* keeps your folders.
+- **Your folders, remembered.** The folder chooser lists the ones you've used,
   with when you last looked and how many images each held, even when the
-  drive isn't plugged in. *Forget* takes one off the list without touching
-  anything in it.
-- **Something wrong? One button.** *Report a problem* opens a bug report with
-  the details filled in. You read it and send it yourself; isoshelf sends
+  drive isn't plugged in. *Forget* takes one off the list without touching it.
+- **One button when something's wrong.** *Report a problem* opens a bug report
+  with the details filled in. You read it and send it yourself; isoshelf sends
   nothing.
-- **Keeps them up to date on its own, if you want.** Turn it on and isoshelf
-  checks on a schedule, downloads every update it finds, verifies it against
-  the project's published checksum and puts it in place — with each image
-  following the answer it already carries about its old copy. It stops before
-  filling the folder, and it's off unless you ask for it.
-- **Takes the short way round.** If another isoshelf on your network already
-  has an image — the one on your NAS, usually — yours copies it from there
-  instead of crossing the internet for it again. Every file is still checked
-  against the project's own published checksum, so a local copy that turns
-  out to be wrong costs one fall back and nothing else.
-- **Updates itself, carefully.** When a new isoshelf is out, **Update now**
-  downloads it, checks this project's signature, lets image downloads finish,
-  and restarts into it, with the page reconnecting by itself. If the new
-  version won't start, the old one comes back.
-- **Learns about new images on its own.** The list of images isoshelf knows is
-  data, not code, so it refreshes itself from this repository — you get new
-  distributions without installing a new isoshelf. It's a checkbox you can
-  turn off, it only ever reads from here, and a list that doesn't pass every
-  check is refused.
+- **Updating by itself, if you ask.** On a schedule, verified the same way,
+  each image following the answer it already carries about its old copy, and
+  stopping before the folder fills. Off unless you turn it on.
+- **The short way round.** If another isoshelf on your network already has an
+  image (the one on your NAS, usually), yours copies it from there, still
+  checked against the project's own published checksum.
+- **Updating itself, carefully.** **Update now** downloads the new isoshelf,
+  checks this project's signature, lets image downloads finish and restarts
+  into it. If the new version won't start, the old one comes back.
+- **New images without a new isoshelf.** The list of images it knows is data,
+  not code, and refreshes itself from this repository. It only ever reads
+  from here, refuses a list that fails any check, and can be turned off.
 
 ## Safety first
 
@@ -154,15 +141,14 @@ isoshelf manages files you care about, so it is deliberately cautious:
 On your PC, isoshelf opens in your web browser and only your own computer can
 reach it. In a container it has to answer to the machine's address instead, so
 there it asks you to choose a username and password the first time you open
-it — one login, not user accounts. Until you set one it prints a link with a
-secret on the end, so a fresh install can be opened at all; that link stops
-working as soon as a password exists. Keep it on a network you trust.
+it — one login, not user accounts. Until you do, whoever opens it first gets
+to choose, so do it straight away (or set them before it starts; the
+walkthrough says how). Keep it on a network you trust.
 [docs/docker.md](docs/docker.md) is the walkthrough.
 
 > **New to all this?** [Ventoy](https://www.ventoy.net) turns one USB stick
-> into a boot menu of every ISO you drop on it, and isoshelf keeps those ISOs
-> current. They work well together, but neither needs the other, and isoshelf
-> isn't affiliated with Ventoy.
+> into a boot menu of every ISO you drop on it (more on it below), and
+> isoshelf keeps those ISOs current. Neither needs the other.
 
 ### Tools that go with these
 
@@ -171,15 +157,15 @@ job, and these are the ones worth having. Independent projects, none
 affiliated with isoshelf; no versions or downloads are tracked here, only
 what each one is for.
 
-- **[Ventoy](https://www.ventoy.net)** - turns one USB stick into a boot menu
+- **[Ventoy](https://www.ventoy.net)** — turns one USB stick into a boot menu
   of every image you drop on it, so adding an image is a file copy rather
   than a rewrite. The reason a folder of ISOs is worth keeping current.
-- **[Rufus](https://rufus.ie)** - writes one image to a USB stick on Windows,
+- **[Rufus](https://rufus.ie)** — writes one image to a USB stick on Windows,
   and is the usual answer when a stick has to boot something awkward.
-- **[balenaEtcher](https://etcher.balena.io)** - writes one image to a USB
+- **[balenaEtcher](https://etcher.balena.io)** — writes one image to a USB
   stick or SD card, on Windows, macOS and Linux, and checks what it wrote
   afterwards.
-- **[Raspberry Pi Imager](https://www.raspberrypi.com/software/)** - writes
+- **[Raspberry Pi Imager](https://www.raspberrypi.com/software/)** — writes
   card images for a Pi and the other small boards, and sets up the first boot
   before it does.
 
@@ -243,145 +229,9 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 
 ## Roadmap
 
-**v0.1: read-only.** isoshelf only writes to its own `.isoshelf/` folder.
+**Released:** everything from v0.1 (a read-only scan) to the newest release.
+[CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-- [x] Catalog loader and validation
-- [x] Scanner: filename matching and content sniffing
-- [x] Drive state and history, including portable mode
-- [x] Update sources: endoflife.date, GitHub, listings, manual
-- [x] Command line: `isoshelf scan` and `isoshelf check`, with `--json`
-- [x] Web interface showing the same table, opened in your browser
-
-**v0.2: doing something about it.** The first released version.
-
-- [x] Verified, resumable downloads
-- [x] An Update button per image, and "Update all"
-- [x] Removing images, with put-back, and an archive of what has left
-- [x] Working out what unrecognized files are, and naming the rest yourself
-- [x] Adding images from the catalog, with sizes and the room left
-- [x] A download queue you can reorder
-- [x] Older copies found and cleared in one go
-- [x] Filters, sorting, logos and links
-- [x] A catalog that keeps itself current
-
-**v0.3.0: the redesign.** *Released 2026-09-21:* one page with a jump bar, a
-row of things to do, plain-language statuses, one filter menu with chips, a
-details panel for each image, Archive and History apart, and
-[a layout for phones](https://github.com/ZachCurry13/isoshelf/issues/10).<br>
-**v0.3.1: Settings.** *2026-09-21, released as part of v0.3.3:* one searchable Settings panel —
-light and dark themes, higher contrast, larger text, less movement, what
-happens to the files updates replace, and Reset to defaults.<br>
-**v0.3.2: checking by itself.** *2026-09-21, released as part of v0.3.3:* the page checks for
-updates when it opens and after each scan, remembers what each project said
-for a day, and has one Refresh button. Both can be turned off in Settings.<br>
-**v0.3.3: fixes and tidying.** *Released 2026-09-21:* the Filter menu stays
-inside the window, a download that would overwrite a file asks what to do
-instead of failing, American spelling, *Restore* in the archive, and the page
-says how much room the images use and how much the queue will download.<br>
-**v0.3.4: scanning while downloads run.** *Released 2026-09-21:* a scan or *Refresh*
-is no longer refused while images download - the two run side by side, and
-the page shows both. A scan also stops being able to undo the record of a
-file a download had just placed.<br>
-**v0.3.5: add a file from your computer.** *Released 2026-09-21:* drag an image onto
-the page, or choose one, and it lands in the folder - for the images no
-catalog knows. Nothing is written over without asking.<br>
-**v0.3.6: keeping both, and reporting problems.** *Released 2026-09-21:* images whose
-filename never changes can now be kept in both versions. When something goes
-wrong, one button opens a bug report with the details filled in; isoshelf
-sends nothing itself. Plus a plainer set of words throughout.<br>
-**v0.3.7: the new file carries the version.** *2026-09-21:* when you keep
-both copies, it's the new download that gets `-2.0.87` in its name; the file
-already on your drive isn't touched at all.<br>
-**v0.4.0: run it on your NAS.** *2026-09-21:* a container image for amd64 and
-arm64, a compose file, and a walkthrough for adding it to TrueNAS SCALE as a
-custom app.<br>
-**v0.4.1: what the first real install found.** *2026-09-22:* the page no
-longer scrolls sideways on a phone, and typing a server's address without the
-link now says where the link is - in the app's log - instead of pointing at a
-window that only exists on a desktop.<br>
-**v0.4.2: records where you want them.** *2026-09-22:* what isoshelf has
-worked out about a folder can be kept in isoshelf's own folder, or one you
-pick, instead of inside the folder itself - for a drive it shouldn't be
-writing to. Changing the answer moves it; nothing is forgotten.<br>
-**v0.4.3: the folders isoshelf remembers.** *2026-09-22:* the folder chooser
-now says when you last looked at each one, how many images it held and how
-much room they took - and *Forget* takes one off the list without touching
-anything in it.<br>
-**v0.4.4: saying what to do about it.** *2026-09-22:* a folder isoshelf can't
-write to says which folder, which user it's running as and how to fix it,
-instead of a wall of "permission denied" later on. Reporting a problem gives
-you the details to copy, for when GitHub's form opens empty. Dialogs fit on a
-phone screen.<br>
-**v0.4.5: a username and password.** *2026-09-22:* isoshelf on a network asks
-you to choose one the first time you open it, and every device signs in with
-them after that. The link with the secret still works, and is the way back in
-if you forget. Nothing changes on your own computer.<br>
-**v0.4.6: updating by itself.** *2026-09-22:* turn it on and isoshelf checks
-every day or every week, downloads every update it finds, verifies it and puts
-it in place - each image following the answer it already carries about its old
-copy. Off unless you ask for it.<br>
-**v0.4.7: the password replaces the link.** *2026-09-22:* once you set a
-username and password, the link with the secret stops working - `isoshelf
-password` or the environment variables are the way back if you forget. Plus:
-downloads failing with "permission denied" are now explained at startup, with
-the exact command to fix them.<br>
-**v0.4.8: Settings says when it saved.** *2026-09-22:* a green *Saved* beside
-whatever you just changed, and every setting's description cut to a sentence
-or two, with the small print moved under the control where it's read when it
-matters.<br>
-**v0.4.9: copy from your NAS, not the internet.** *2026-09-22:* if the
-isoshelf on another machine already has an image, take it from there over your
-own network - still checked against the project's own checksum, and still
-falling back to the internet for anything it hasn't got.<br>
-**v0.4.10: honest version numbers.** *2026-09-22:* every release below 1.0 is
-marked a pre-release, and isoshelf still tells you about them - which needed
-it to stop asking GitHub for "the latest release", since that leaves
-pre-releases out.<br>
-**v0.4.11: and back out again.** *2026-09-22:* marking them broke the update
-notice for every isoshelf already installed, because those ask GitHub for its
-"latest release" and GitHub leaves pre-releases out of that. Only a `-rc` tag
-is a pre-release now.<br>
-**v0.4.12: sign out works.** *2026-09-22:* it answered "request refused" and
-left you signed in - a browser reports a plain form's sender as "null" when a
-page asks for no referrer, which isoshelf does, so its own check refused
-every sign-out.<br>
-**v0.4.13: the words on the page.** *2026-09-22:* a pass over every label,
-status and hint for the ordinary word rather than a homemade one, and a fix
-for a greyed-out button that was really a label.<br>
-**v0.4.14: where a download came from, and when a file arrived.** *2026-09-23:*
-"from your isoshelf server" or "from the internet" while a download runs and
-after it finishes, so copying from another isoshelf on your network is visible
-while it happens; and an Added column in the list, sortable like the rest.<br>
-**v0.4.15: messages that could be seen.** *2026-09-23:* anything isoshelf had
-to say while a dialog was open was drawn behind it, so a refused action looked
-like a button that did nothing.<br>
-**v0.4.16: the archive can empty itself.** *2026-09-23:* after 7, 30 or 90
-days, off unless you choose a number, judging each file by its own age and
-saying what it will take before it takes it.<br>
-**v0.5.0: the page, redone.** *2026-09-23:* a restrained palette and a denser
-layout - a status is a coloured mark beside plain words rather than one of ten
-filled chips, surfaces are flat, and the list reads as a proper table. The
-sortable table stays on a desktop, cards on a phone, and higher contrast puts
-every filled chip back.<br>
-**v0.5.1: logins that survive a restart.** *2026-09-23:* a signing key
-isoshelf couldn't read or write meant everyone was signed out at every
-restart, and nothing on the page said why. It says so now, and names the
-file.<br>
-**v0.5.2: the tools that go with these.** *2026-09-23:* a short, folded list
-low down the page, and the same one here - what each tool is for and a link
-to it, nothing tracked and nothing to go stale.<br>
-**v0.5.3: asking first, and what the maintainer found.** *2026-09-23:*
-moving a folder's records says what will move, from where to where, before it
-does, and what happened after. The Filter menu gets Done and Clear all, "Show
-them" shows exactly what its card counted, a stray "null" is gone, and a file
-that won't boot is told how to fix it by hand.<br>
-**v0.6.0: isoshelf updates itself.** *2026-09-23:* Update now in the top bar
-downloads the new version, checks this project's signature, and restarts into
-it; the page reconnects by itself, and the old version comes back if the new
-one won't start.<br>
-**v0.6.1: gentler, and easier to install.** *2026-09-24:* adding a file shows
-its speed; isoshelf waits as long as a busy server asks, from every server; a
-one-line install for Linux; sharing only where it can work; and a new logo.<br>
 **Next:** v0.7.0 is [a simpler
 page](https://github.com/ZachCurry13/isoshelf/issues/54): *pin* a file to keep
 it whatever updates come, one summary line instead of the row of cards, and
@@ -391,7 +241,8 @@ missing, [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/5
 for a while or for good, [spotting duplicate
 copies](https://github.com/ZachCurry13/isoshelf/issues/57), and [a note on
 where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
-you fetch yourself.<br>
+you fetch yourself.
+
 **Also planned:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6),
 [`isoshelf update` on the command
@@ -400,34 +251,25 @@ line](https://github.com/ZachCurry13/isoshelf/issues/1),
 [installing an older version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
 and [signature checking for the images
-themselves](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
+themselves](https://github.com/ZachCurry13/isoshelf/issues/5).
+
 **1.0:** an official TrueNAS app, so it installs from the store rather than as
-a custom app.<br>
+a custom app.
+
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
-[docs/catalog-sources.md](docs/catalog-sources.md), and
-[requests are welcome](https://github.com/ZachCurry13/isoshelf/discussions/9).<br>
-**Later:** rebuild a drive from your usual set; managing a NAS's folder from
-a desktop isoshelf, without mounting the share (copying an image from another
-isoshelf already works; this is the folder itself); a Proxmox LXC with the ISO
-storage bind-mounted, written down.
+[docs/catalog-sources.md](docs/catalog-sources.md), and requests go through
+[the catalog form](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
+
+**Later:** [rebuild a drive from your usual
+set](https://github.com/ZachCurry13/isoshelf/issues/11); [move a drive's
+images to a new or bigger one](https://github.com/ZachCurry13/isoshelf/issues/12);
+managing a NAS's folder from a desktop isoshelf, without mounting the share
+(copying an image from another isoshelf already works; this is the folder
+itself); a Proxmox LXC with the ISO storage bind-mounted, written down.
 
 **On a Mac?** Use the [container version](docs/docker.md) with Docker
 Desktop. There's no native Mac build planned; if you'd use one, say so in
 [Discussions](https://github.com/ZachCurry13/isoshelf/discussions).
-
-## Running from a USB drive on Linux
-
-Many Linux desktops mount USB drives with `noexec`, which blocks running
-programs from them. If the portable binary won't start, copy it to your home
-folder and run it from there:
-
-```bash
-cp /media/$USER/Ventoy/isoshelf/isoshelf-linux-amd64 ~/
-chmod +x ~/isoshelf-linux-amd64
-~/isoshelf-linux-amd64
-```
-
-Adjust the first path to wherever your drive is mounted.
 
 ## Getting it
 
@@ -467,6 +309,23 @@ you've set up points at the wrong file.
 Every release also has a `SHA256SUMS` file, and from v0.6.0 its signature, if
 you'd like to check what you downloaded is what was built.
 
+isoshelf opens a page in your browser that only your own computer can reach.
+Pick the folder your images live in, and it takes it from there.
+
+### Running from a USB drive on Linux
+
+Many Linux desktops mount USB drives with `noexec`, which blocks running
+programs from them. If the portable binary won't start, copy it to your home
+folder and run it from there:
+
+```bash
+cp /media/$USER/Ventoy/isoshelf/isoshelf-linux-amd64 ~/
+chmod +x ~/isoshelf-linux-amd64
+~/isoshelf-linux-amd64
+```
+
+Adjust the first path to wherever your drive is mounted.
+
 ### Updating it
 
 From v0.6.0, isoshelf updates itself. When a new version is out, the top bar
@@ -480,9 +339,6 @@ If the new version won't start, the old one is put back.
 In a container, pull the new image instead. A copy older than v0.6.0 can't
 update itself: download v0.6.0 or newer from the releases page once, and it
 can from then on.
-
-isoshelf opens a page in your browser that only your own computer can reach.
-Pick the folder your images live in, and it takes it from there.
 
 ## Building from source
 
@@ -534,8 +390,9 @@ What that did and did not change:
   are written down in [docs/design.md](docs/design.md), which the code follows.
 - **Nothing in the catalog is guessed.** Every entry was checked against the
   project's own site before it went in, and every downloadable one is resolved
-  live, from the project's own servers, before a catalog change goes out. Where a project's checksums can't be reached safely, the
-  entry says so and refuses to download rather than pretending.
+  live, from the project's own servers, before a catalog change goes out.
+  Where a project's checksums can't be reached safely, the entry says so and
+  refuses to download rather than pretending.
 - **It's tested, and it's used.** The tests replay recorded responses so they
   never touch the network or a real disk, they run on Windows and Linux for
   every commit, and the thing itself runs against a real ISO folder on a NAS.

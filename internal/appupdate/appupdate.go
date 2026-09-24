@@ -1,4 +1,6 @@
-// Package appupdate tells users when a newer release of isoshelf is out.
+// Package appupdate tells users when a newer release of isoshelf is out, and
+// installs it when they ask: it checks the release's signature, stages the new
+// program, swaps it in and restarts, putting the old one back if it fails.
 package appupdate
 
 import (

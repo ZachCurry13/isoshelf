@@ -6,7 +6,7 @@ Thanks for looking. isoshelf is early, so most things are still easy to change.
 
 **Tell me about an image isoshelf doesn't know**, or gets wrong. Use the
 [catalog form](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml),
-or press "What is this file?" in isoshelf itself and use the link there — it
+or press "What is this?" beside the file in isoshelf itself and use the link there — it
 fills in most of the form for you.
 
 The one detail that decides whether an image can be downloaded or only listed
@@ -70,11 +70,13 @@ Then check it against the live sites and re-record the responses the tests
 replay:
 
 ```bash
-go run ./internal/remote/remotetest/record
+go run ./internal/remote/remotetest/record -sizes
 ```
 
 That is the only thing in this repository that goes online. It resolves every
-entry, lists the ones that fail, and prints a note for every redirect.
+entry, lists the ones that fail, and prints a note for every redirect;
+`-sizes` also measures each download and prints the `size =` lines to
+copy into the catalog.
 
 ## Building and testing
 
@@ -97,10 +99,9 @@ go run ./cmd/isoshelf ui --port 8765 --no-browser /path/to/your/isos
 
 Open the link it prints. The page, its CSS and its scripts are embedded in
 the binary, so restart it after changing them. `index.html` loads one script
-per part of the page (`app.js`, `images.js`, `details.js`, `downloads.js`,
-`actions.js`, `folders.js`, `archive.js`, `settings.js`, `upload.js`); a new
-one has to be added to `scripts` in `internal/web/static_test.go` too, which
-is what keeps the page and the tests honest about each other.
+per part of the page, from `internal/web/static/`. A new one has to be added
+to `scripts` in `internal/web/static_test.go` too, which is what keeps the
+page and the tests honest about each other.
 
 Tests never touch a real drive (temp folders only) and never reach the network
 (recorded responses only). Please keep it that way.

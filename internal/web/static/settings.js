@@ -81,7 +81,7 @@ async function saveSetting(change) {
 // Saying so when something saves.
 //
 // Everything here saves itself the moment it changes, which is the right
-// behaviour and looks like nothing happening at all. So the setting that
+// behavior and looks like nothing happening at all. So the setting that
 // changed says "Saved" for a few seconds - next to that setting rather than
 // somewhere general, because "saved" only reassures if you can tell what was.
 

@@ -38,11 +38,20 @@ broken is a security report, not a feature request.
   file by file, and always offers to archive it instead. An update follows
   the choice that image already carries — replace, archive or keep both,
   shown in its panel and changeable at any time — rather than asking again.
-- **The web UI answers your computer only.** It listens on 127.0.0.1, needs a
-  random token issued at startup, checks the `Host` header so a hostile website
-  can't reach it by DNS rebinding, requires a custom header and a same-origin
-  `Origin` for anything that changes state, and never inserts text from your
-  drive as HTML.
+- **On your own computer, the web UI answers your computer only.** It listens
+  on 127.0.0.1, needs a random token issued at startup, checks the `Host`
+  header so a hostile website can't reach it by DNS rebinding, requires a
+  custom header and a same-origin `Origin` for anything that changes state,
+  and never inserts text from your drive as HTML.
+- **On a server, nothing but a bare "ok" health check answers until you
+  sign in.** Run in a container or on a network address, isoshelf asks for
+  a username and password to be chosen the first time it's opened, and until
+  then whoever opens it first is the one who chooses; it says so in its log.
+  Set `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` before the first start to
+  close that window. The log also has a link with a random secret on the end,
+  which stops working as soon as a password exists. The same checks on
+  changes apply. It is one login, not user accounts: keep it on a network you
+  trust.
 - **The catalog it downloads is validated before use.** A catalog that doesn't
   parse, has an unknown key, a pattern that won't compile, or a schema from the
   future is refused, and the previous one is kept.
@@ -54,9 +63,15 @@ broken is a security report, not a feature request.
   Nothing is downloaded until you press **Update now**; image downloads
   finish first; the old program is set aside, not deleted, until the new one
   has started, and put back if it doesn't. In a container isoshelf never
-  replaces itself - pull the new image instead.
+  replaces itself — pull the new image instead.
+- **Sharing images with another isoshelf is off unless you turn it on.**
+  When it's on, whoever can sign in can copy the images in the folder. An
+  isoshelf copying from another one still checks every file against the
+  project's own published checksum, so a wrong copy is thrown away, never
+  placed.
 - **No telemetry.** isoshelf talks to the sites in the catalog, to GitHub for
-  release information, and nowhere else.
+  release information and its own list of images, to another isoshelf on
+  your network if you point it at one, and nowhere else.
 
 ## What isoshelf does not promise
 

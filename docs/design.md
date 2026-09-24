@@ -76,10 +76,16 @@ project, not affiliated with Ventoy.
 - No native macOS build (decided 2026-09-19): Mac users run the container
   with Docker Desktop. A native one would need a Mac or a macOS CI runner, and
   Apple's signing and notarization for a first launch without warnings.
-- OpenPGP: `github.com/ProtonMail/go-crypto` (not deprecated `x/crypto/openpgp`).
-- Free space and filesystem type: `golang.org/x/sys`.
-- Archives (pure Go only): stdlib `compress/gzip` and `archive/zip`,
-  `github.com/ulikunitz/xz`, `github.com/bodgit/sevenzip`.
+- Dependencies today: `github.com/pelletier/go-toml/v2` and nothing else.
+  Free space comes from the standard library's `syscall` (`statfs`, and
+  `GetDiskFreeSpaceExW` on Windows).
+- Accepted for when they are built, not in `go.mod` yet: OpenPGP
+  ([#5](https://github.com/ZachCurry13/isoshelf/issues/5)) with
+  `github.com/ProtonMail/go-crypto` (not the deprecated `x/crypto/openpgp`);
+  extracting archives for Make bootable
+  ([#3](https://github.com/ZachCurry13/isoshelf/issues/3)), pure Go only:
+  stdlib `compress/gzip` and `archive/zip`, `github.com/ulikunitz/xz`,
+  `github.com/bodgit/sevenzip`.
 - Catalog: TOML, regexes in single-quoted literal strings. Parsed with
   `github.com/pelletier/go-toml/v2` in strict mode, so a misspelled key is an
   error with a line number.
@@ -112,8 +118,9 @@ Every catalog entry runs through four stages:
    `Artifact{Filename, URLs, Size, Checksum}`.
 3. **Verifier** (`internal/verify`) - GNU (`hash  file`) and BSD
    (`SHA256 (file) = hash`) manifests; MD5/SHA-1 count as weak integrity only.
-   Signature shapes: detached over manifest, clearsigned manifest, detached over
-   the image. Keys are armored files with fingerprints pinned in the catalog.
+   Signatures are planned ([#5](https://github.com/ZachCurry13/isoshelf/issues/5)),
+   not built: detached over manifest, clearsigned manifest, detached over the
+   image, with armored keys whose fingerprints are pinned in the catalog.
 4. **Fetcher** (`internal/fetch`) - `.part` files in `<target>/.isoshelf/partial/`
    plus a sidecar (URL, ETag, offset, SHA-256 state), resume via `Range` +
    `If-Range`, backoff on timeouts, 5xx and HTTP/2 stream resets (seen on
@@ -402,7 +409,10 @@ and keep. The binaries *inside* the portable zip keep the plain name
 one self-update replaces in place, so it must not change every release. The
 updater finds its asset by pattern (`isoshelf-<tag>-` at the front,
 `-windows-amd64.exe` at the end) rather than by an exact name, which would go
-stale every release.
+stale every release. Releases up to v0.3.0 attached plain names; those
+releases keep them, so anything reading old releases has to cope with both
+shapes. The update check itself reads only `tag_name` and `html_url`, so it
+is unaffected either way.
 - **isoshelf updates itself** (decisions 13 and 14, built in v0.6.0;
   `internal/appupdate`, `internal/web/selfupdate.go`,
   `cmd/isoshelf/handover.go`, `static/selfupdate.js`). The shape, and why:
@@ -440,10 +450,7 @@ stale every release.
     `cmd/isoshelf/handover_test.go` builds the real program and runs both
     paths, and the undo test was checked by breaking it.
   - **Not in a container** (`ISOSHELF_CONTAINER`, set in the Dockerfile): a
-    container is updated by pulling the image. Releases up to v0.3.0 attached plain
-names; those releases keep them, so anything reading old releases has to cope
-with both shapes. The update check itself reads only
-`tag_name` and `html_url`, so it is unaffected either way.
+    container is updated by pulling the image.
 
 ### The archive of images that have left
 
@@ -566,7 +573,7 @@ For when a new release breaks something and the user needs the previous one.
 
 ### App updates
 
-- Release builds embed their version (`-ldflags "-X main.version=v0.1.0"`).
+- Release builds embed their version (`-ldflags "-X main.version=vX.Y.Z"`).
   Development builds report `dev` and never check.
 - On start (at most once an hour, the same everywhere - there is no separate
   server-mode interval), ask the GitHub API for this repository's releases and
@@ -579,9 +586,9 @@ For when a new release breaks something and the user needs the previous one.
   ("Tell me about new isoshelf versions"), or with `--no-update-check` or
   `ISOSHELF_NO_UPDATE_CHECK`; the last check time lives in the config folder,
   in `update-check.json`.
-- Only a notice for now: users download the new build themselves (portable:
-  replace the files on the drive; Docker: pull the new image). A later
-  "install update" must verify the release's `SHA256SUMS` first.
+- Installing it is **Update now**, which checks the release's signed
+  `SHA256SUMS` first; how, and why, is under *isoshelf updates itself* in
+  Milestones. A container is updated by pulling the image.
 - The repo must be public by the first release, or both the check and
   downloads fail for users.
 
@@ -690,7 +697,10 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   (saved in state), `--json`, `--catalog FILE`, `--no-hash`, `--no-update-check`.
 - The folder defaults to the drive in portable mode and is required otherwise.
 - Catalog: `--catalog`, else `<config>/catalog.toml` if present, else built in.
-- Env: `GITHUB_TOKEN` (rate limit), `ISOSHELF_NO_UPDATE_CHECK`.
+- `password [username]` sets the page's username and password from a shell
+  on the machine; `version` prints the version; `help` lists everything.
+- Env: `GITHUB_TOKEN` (rate limit), `ISOSHELF_NO_UPDATE_CHECK`,
+  `ISOSHELF_USERNAME`/`ISOSHELF_PASSWORD` (the login, see Server mode).
 - Both commands record the scan, hash fixed-name images (progress only when
   stderr is a terminal), save state and (not portable) the mirror. A state
   that can't be saved (read-only share) is a warning, not an error.

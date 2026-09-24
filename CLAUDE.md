@@ -1,13 +1,17 @@
 # isoshelf
 
-Go app (Windows, Linux) that inventories, update-checks, downloads and verifies the bootable images in a folder: a Ventoy USB drive, a NAS share, Proxmox ISO storage. A web page on 127.0.0.1 plus a CLI; MIT. The maintainer is new to Go and Git: explain any manual step plainly.
+Go app (Windows, Linux) that inventories, update-checks, downloads and verifies the bootable images in a folder: a Ventoy USB drive, a NAS share, Proxmox ISO storage. A web page on 127.0.0.1 (or on a network, behind a login) plus a CLI; MIT. The maintainer is new to Go and Git: explain any manual step plainly.
 
 ## Layout
-- `cmd/isoshelf`: entry point and CLI (`scan`, `check`, `ui`)
+- `cmd/isoshelf`: entry point and CLI (`ui`, `scan`, `check`, `password`, `version`, `help`)
 - `internal/catalog`: catalog format and `default.toml`, the list of known images
 - `internal/{source,resolve,verify,fetch,update}`: latest version → exact file and checksum → download → place
 - `internal/{scan,sniff,state,inventory,check,identify}`: read a folder, keep its records, work out statuses
 - `internal/upload`: places a file dragged onto the page or picked from the user's own computer
+- `internal/{catupdate,usercat}`: the catalog refreshing itself from this repository; images the user named themselves
+- `internal/{settings,appdir,drives,space,lastcheck,version}`: this computer's choices; where isoshelf keeps its own files; drive names; room left; the last answer from each project; comparing versions
+- `internal/{auth,peer}`: the username and password on a network; copying an image from another isoshelf
+- `internal/appupdate`: isoshelf's own releases: the update notice, the signature check, and swapping in the new program
 - `internal/web`: HTTP server and the embedded page. `static/index.html` loads
   one script per part of the page: `app.js` (state, asking, drawing, wiring),
   `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
@@ -44,7 +48,7 @@ people have downloaded. Work never happens directly on it.
   isoshelf already installed asks GitHub for `/releases/latest`, which skips
   pre-releases, so marking them stopped anybody being told a new version
   existed - and the fix shipped in the release they would first have had to
-  be told about. **Before changing what a release is labelled, work out what
+  be told about. **Before changing what a release is labeled, work out what
   the copies already installed will ask for.** `internal/appupdate` reads the
   list rather than "the latest", which is the more robust thing anyway and is
   what makes a real `-rc` release work later.
