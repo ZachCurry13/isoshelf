@@ -237,7 +237,7 @@ It is off until you turn it on.
 ## Letting your other machines copy from it
 
 The machine holding the images is the one worth copying from. Turn on
-**Settings → Let other isoshelfs copy from this one** here, and on your laptop
+**Settings → Share this folder with other isoshelfs** here, and on your laptop
 turn on **Copy from another isoshelf first**, giving it this machine's address
 and the login for it.
 
@@ -263,6 +263,9 @@ Two things worth knowing:
 - **Sharing is off until you turn it on**, because it hands whole images to
   anyone who can sign in — a different thing from letting them manage the
   folder.
+- **What you share is yours to mind.** isoshelf hands over whatever is in
+  the folder, the way any file share would; the licenses of the images in it
+  are between you and their publishers.
 - **The first scan after turning it on takes longer.** isoshelf hashes every
   image rather than only the ones whose filename never changes, because a
   hash is how another isoshelf asks for one particular file. Images this

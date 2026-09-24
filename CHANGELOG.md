@@ -6,6 +6,22 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.4] - 2026-09-24
+
+### Added
+- **Duplicate copies** ([#57](https://github.com/ZachCurry13/isoshelf/issues/57)).
+  When the same image and version are in the folder twice, the line above
+  the list counts them, and clicking the count shows them, each saying which
+  file it matches. **Make sure** reads them and compares, only when you press
+  it; **Remove this copy…** removes one the usual way, archive first.
+- **A word about sharing**, beside the sharing switch and in the README:
+  the licenses of the images you share are yours to mind, as with any file
+  share.
+
+### Fixed
+- The container guide named the sharing switch *Let other isoshelfs copy
+  from this one*; it is *Share this folder with other isoshelfs*.
+
 ## [v0.8.3] - 2026-09-24
 
 ### Added

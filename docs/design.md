@@ -820,6 +820,12 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   row opens the details panel: everything about one image, its links, and
   the pin below. Statuses are shown in plain words (`STATUS_WORDS`), each
   explaining itself; the report keeps its own words for the CLI and JSON.
+- **Duplicate copies** (v0.8.4, #57, `duplicates.js`): files with the same
+  entry, version and size are possible duplicates; when all of them have a
+  hash, the hashes decide (`ItemJSON.SHA256`). Counted on the line above the
+  list and filterable; each says what it matches, and while the filter is
+  on its row has **Make sure** (`/api/hash`: an ordinary scan hashing those
+  files, only on request) and **Remove this copy…** (the usual removal).
 - **Dismissing an update** (v0.8.2, #56, `dismiss.js`): for 7, 30 or 90
   days, or for good (`Track.DismissedUntil`, `DismissedForever`). A date,
   not a version: it holds whatever comes out meanwhile. The row stays,
