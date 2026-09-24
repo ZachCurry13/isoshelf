@@ -11,9 +11,10 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: item 3, missing images ([#55]), then item 18 ([#62]).** Then the
+**Next: item 18, getting any image from the server ([#62]).** Then the
 rest of the maintainer's queue, then the list under *After those*. v0.7.0,
-the simpler shelf, has shipped; it is in `docs/archive.md`.
+the simpler shelf, and v0.7.1, missing images (item 3), have shipped; they
+are in `docs/archive.md`.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
 number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
@@ -123,17 +124,8 @@ wrongness that costs trust once somebody notices.
 
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
-3. **Missing images get two actions:** "Download again" as the row's button
-   ("Download page" for images fetched by hand), and "Stop expecting it" in
-   the details panel - off the missing list until the image is in the folder
-   again. Filtering to the missing ones offers "Download all" when
-   isoshelf can download them, the way filtering to older versions offers
-   Review and clear. A missing image whose file is still in the archive
-   should offer Restore first: it is instant and gives back the very file. Today a missing image offers only Details, and stays missing until
-   it drops out of the last 10 scans.
-
-   **Then item 18, [#62]** (decided 2026-09-24): getting any image from the
-   server, with a record of where each file came from.
+   **Item 18, [#62], comes first** (decided 2026-09-24): getting any image
+   from the server, with a record of where each file came from.
 4. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
    manual or downloadable; for a downloadable one, "forever" is the "Never
    update" list decided 2026-09-19, and Update all and automatic updates skip

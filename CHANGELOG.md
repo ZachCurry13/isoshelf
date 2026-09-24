@@ -6,6 +6,24 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.7.1] - 2026-09-24
+
+### Added
+- **Missing images come back in one click** ([#55](https://github.com/ZachCurry13/isoshelf/issues/55)).
+  An image you usually keep here that has gone missing now carries the one
+  button that gets it back: **Restore** when its file is still in the
+  archive, which is instant, **Download again** when isoshelf can download
+  it, checked like any other download, or **Download page** when it can't.
+  Click the missing count and **Download all…** fetches every one isoshelf
+  can, from the same checklist as Update all.
+- **Stop expecting it**, in a missing image's details, for one you removed
+  on purpose. It leaves the missing list straight away, and its star with
+  it, and counts as usual again once it is back in the folder.
+
+### Fixed
+- **Unstarring a missing image** took it off the list only at the next scan.
+  It goes at once now.
+
 ## [v0.7.0] - 2026-09-24
 
 The simpler shelf: fewer choices to make, and less on the page before your
