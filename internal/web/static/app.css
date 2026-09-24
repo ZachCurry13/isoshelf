@@ -195,6 +195,18 @@ input[type="search"], input[type="text"], select {
 .target-path { font-family: var(--mono); font-size: 0.9286rem; margin: 2px 0 6px; overflow-wrap: anywhere; }
 .target-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .target-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+/* On a server, one line: the folder, its type and choosing another are in
+   Settings, under This folder. */
+.target.compact { padding: 8px 12px 8px 16px; }
+.target.compact .eyebrow, .target.compact .target-path,
+.target.compact .inline-select, .target.compact #choose { display: none; }
+.target.compact .target-meta { gap: 6px; }
+.target.compact #space:not(:empty)::before { content: "· "; }
+@media (max-width: 720px) {
+  .target.compact .target-actions { width: auto; }
+  /* The two halves wrap onto lines of their own here. */
+  .target.compact #space::before { content: none; }
+}
 
 /* Progress */
 

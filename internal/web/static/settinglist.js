@@ -29,7 +29,9 @@ function choiceRow(label, options, current, change) {
   }, options.map(([value, text]) => el("option", { value, selected: value === current || undefined }, text)));
 }
 
+// The folder comes first where it is shown at all: see FOLDER_SETTINGS.
 const SETTING_GROUPS = [
+  FOLDER_SETTINGS,
   {
     title: "How it looks",
     settings: [

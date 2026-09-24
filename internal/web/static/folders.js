@@ -172,3 +172,64 @@ async function forgetFolder(folder) {
     showPickerError(err.message);
   }
 }
+
+// ---- This folder, in Settings ---------------------------------------------
+
+// On a server the folder hardly ever changes, so the card above the list is
+// one line - when it was last checked, and how full the drive is - and the
+// folder itself, its type and choosing another are here (v0.7.0). On a
+// desktop, where somebody may swap drives several times a day, the card
+// keeps all of it and this group isn't shown.
+const PROFILES = [
+  ["folder", "Folder of images"],
+  ["ventoy", "Ventoy drive"],
+  ["proxmox", "Proxmox ISO storage"],
+];
+
+const FOLDER_SETTINGS = {
+  title: "This folder",
+  settings: [
+    {
+      name: "Folder",
+      fields: ["target"],
+      hint: "The folder of images this isoshelf looks after.",
+      words: "folder path drive choose change another location target",
+      available: () => state && state.server,
+      control: () => el("div", { class: "setting-controls" },
+        el("div", { class: "file" }, state.target || "No folder chosen yet"),
+        el("button", { type: "button", class: "btn small", disabled: cantSwitch(), onclick: openPicker },
+          "Choose folder…")),
+    },
+    {
+      name: "Folder type",
+      fields: ["profile"],
+      hint: "What boots from this folder, which decides which files can.",
+      words: "type ventoy proxmox profile boot menu kind",
+      available: () => state && state.server && state.target,
+      control: () => el("select", {
+        "aria-label": "Folder type", disabled: cantSwitch(),
+        onchange: (e) => changeProfile(e.target.value),
+      }, PROFILES.map(([value, text]) =>
+        el("option", { value, selected: value === (state.profile || "ventoy") || undefined }, text))),
+    },
+  ],
+};
+
+// cantSwitch is true while the folder mustn't change under what is running:
+// a scan, a download, or a file still arriving from this computer. The
+// server refuses then too.
+function cantSwitch() {
+  return scanning() || downloading() || uploading();
+}
+
+// changeProfile says what kind of folder this is, and reads it again as one.
+async function changeProfile(profile) {
+  try {
+    await api("POST", "/api/target", { path: state.target, profile });
+    catalog = null;
+    saved(["profile"]);
+    await start("scan");
+  } catch (err) {
+    showNotice(err.message, true);
+  }
+}
