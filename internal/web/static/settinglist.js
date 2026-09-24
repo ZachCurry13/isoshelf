@@ -131,6 +131,14 @@ const SETTING_GROUPS = [
         ], (state && state.old_files) || "replace", (old_files) => ({ old_files })),
       },
       {
+        name: "Dismissed updates",
+        fields: ["dismissed"],
+        hint: "Updates you asked not to be shown, for a while or for good. Undo brings one back.",
+        words: "dismiss dismissed hide ignore skip never update snooze undo",
+        available: () => dismissedEntries().length > 0,
+        control: () => dismissedControl(),
+      },
+      {
         name: "Empty the archive by itself",
         fields: ["archive_after"],
         hint: "Delete archived files once they have waited this long. Off unless " +

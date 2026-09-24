@@ -22,10 +22,10 @@ four times in one evening. The releases page on GitHub is the answer, and
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; open issues #1-#7, #11, #12 and #56-#58 are the
+- **GitHub:** public; open issues #1-#7, #11, #12, #57 and #58 are the
   roadmap (#10, the phone layout, #54, the simpler shelf, #55, missing
-  images, #59, gentler with servers, and #62, where each file came from,
-  are closed); Discussions on.
+  images, #56, dismissing an update, #59, gentler with servers, and #62,
+  where each file came from, are closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
 
@@ -222,15 +222,14 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.1 (2026-09-24)
+## Latest change: v0.8.2 (2026-09-24)
 
-- **Copy any image from your server** ([#62], part two): Add images marks
-  what the server has and copies it; files the catalog doesn't know are in a
-  folded list. A copy is checked against the server's copy, recorded as a
-  copy with the server's account of it, and never called checked for that.
-- **Next:** item 4, dismissing an update ([#56]).
+- **Dismiss an update** ([#56]) for 7, 30 or 90 days, or for good: greyed,
+  sorted with the up-to-date ones, out of every count and of Update all and
+  updating by itself; Settings lists them with Undo.
+- **Next:** item 5, the "where to find it" note ([#58]).
 
-Earlier releases, v0.8.0 back to the start, are written up in
+Earlier releases, v0.8.1 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
@@ -244,3 +243,4 @@ Earlier releases, v0.8.0 back to the start, are written up in
 [#55]: https://github.com/ZachCurry13/isoshelf/issues/55
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
 [#56]: https://github.com/ZachCurry13/isoshelf/issues/56
+[#58]: https://github.com/ZachCurry13/isoshelf/issues/58

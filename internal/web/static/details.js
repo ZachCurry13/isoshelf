@@ -77,6 +77,9 @@ function renderDetails() {
   if (item.path && item.entry) {
     parts.push(detailRow("Keep this file", [pinField(item)]));
   }
+  if (item.entry && item.status === "update available") {
+    parts.push(detailRow("This update", [dismissField(item)]));
+  }
   if (item.status === "missing" && item.entry) {
     parts.push(detailRow("Expected here", [expectField(item)]));
   }

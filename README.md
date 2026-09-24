@@ -73,6 +73,9 @@ And the rest:
   downloaded it, copied it from your server, or found it in the folder, and
   whether it matches the checksum the project publishes. *Check it* reads a
   file you added yourself and tells you, when you ask.
+- **Not now, or never.** Dismiss any update for 7, 30 or 90 days, or for
+  good. It stays listed, greyed, and isn't counted; Settings lists what
+  you've dismissed, with Undo.
 - **Missing images come back in one click.** *Restore* if the file is still
   in the archive, *Download again* if isoshelf can fetch it, or its download
   page if not. Removed one on purpose? *Stop expecting it*.
@@ -243,8 +246,7 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
-for a while or for good, [a note on
+**Next:** [a note on
 where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
 you fetch yourself, and [spotting duplicate
 copies](https://github.com/ZachCurry13/isoshelf/issues/57).

@@ -137,6 +137,11 @@ func (s *Server) queueUpdatesLocked(room space.Usage) (int, string) {
 		if s.queuedLocked(item.Entry.ID) {
 			continue
 		}
+		// Dismissed means not now, or never: automatic updates leave it be,
+		// exactly as Update all does (#56).
+		if s.st.Track(item.Entry.ID).Dismissed(s.cfg.Now()) {
+			continue
+		}
 		// Room first. A download that fills the disk helps nobody, and the
 		// page's own "will this fit" check says the same thing.
 		if known && item.Entry.Size > 0 && free-item.Entry.Size < roomToSpare {

@@ -11,10 +11,11 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: item 4, dismissing an update ([#56]).** Then the rest of the
-maintainer's queue, then the list under *After those*. v0.7.0, v0.7.1
-(missing images, item 3), v0.8.0 and v0.8.1 (item 18, [#62]) are in
-`docs/archive.md`.
+**Next: item 5, the "where to find it" note ([#58]),** which needs showing
+the maintainer where it would appear before it is built. Then the rest of
+the maintainer's queue, then the list under *After those*. v0.7.0, v0.7.1
+(missing images, item 3), v0.8.0 and v0.8.1 (item 18, [#62]) and v0.8.2
+(dismissing an update, item 4) are in `docs/archive.md`.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
 number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
@@ -56,13 +57,6 @@ wrongness that costs trust once somebody notices.
 
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
-4. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
-   manual or downloadable; for a downloadable one, "forever" is the "Never
-   update" list decided 2026-09-19, and Update all and automatic updates skip
-   it. **The timer holds** even if a newer version comes out. The row stays
-   listed, greyed, "Dismissed until 23 Oct", not counted on the updates card
-   and sorted with the up-to-date ones. Settings lists **everything**
-   dismissed, with Undo on each and Undo all.
 5. **A "where to find it" note for images fetched by hand**, e.g. "The
    32-bit ISO is MX-{version}_386.iso, in the Xfce folder." Needs a new
    catalog field, and the catalog is read with unknown fields refused
@@ -230,7 +224,7 @@ Then:
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
   `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,
-  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `folders.js`,
+  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `folders.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
   `upload.js`, `report.js` and `selfupdate.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
@@ -288,3 +282,4 @@ Then:
 [#55]: https://github.com/ZachCurry13/isoshelf/issues/55
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
 [#56]: https://github.com/ZachCurry13/isoshelf/issues/56
+[#58]: https://github.com/ZachCurry13/isoshelf/issues/58

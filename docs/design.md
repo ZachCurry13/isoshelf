@@ -814,6 +814,13 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   row opens the details panel: everything about one image, its links, and
   the pin below. Statuses are shown in plain words (`STATUS_WORDS`), each
   explaining itself; the report keeps its own words for the CLI and JSON.
+- **Dismissing an update** (v0.8.2, #56, `dismiss.js`): for 7, 30 or 90
+  days, or for good (`Track.DismissedUntil`, `DismissedForever`). A date,
+  not a version: it holds whatever comes out meanwhile. The row stays,
+  greyed, sorted with the up-to-date ones; it is out of the updates count,
+  the updates filter, Update all (`updatable`) and updating by itself
+  (`queueUpdatesLocked`). The details panel can still update it by hand.
+  Settings lists every dismissal in force with Undo and Undo all.
 - What happens to old files is one answer in Settings, followed by every
   update, so updating never stops to ask; a file pinned in its details panel
   is the exception, kept whatever comes, and left out of the older versions
@@ -904,7 +911,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   removing), `catalog.js` (the Add images tab), `identify.js` (What is this?),
   `missing.js` (getting a missing image back, or not expecting it),
   `origin.js` (where each file came from, and Check it), `fromserver.js`
-  (copying from your server in Add images),
+  (copying from your server in Add images), `dismiss.js` (dismissing an
+  update for a while or for good),
   `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`

@@ -46,7 +46,8 @@ async function updateItem(item) {
 
 // updatable lists the images with an update isoshelf can download.
 function updatable() {
-  return state.report.items.filter((it) => it.entry && it.updates === "download" && it.status === "update available");
+  return state.report.items.filter((it) => it.entry && it.updates === "download" && it.status === "update available" &&
+    !isDismissed(it));
 }
 
 // downloadSize is about how much an update to item downloads: the catalog's

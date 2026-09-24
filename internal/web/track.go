@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"slices"
+	"strconv"
+	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/check"
 )
@@ -17,6 +19,9 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		// NotExpected is "Stop expecting it" (#55). It unstars the image
 		// too: a star means "tell me if this goes missing".
 		NotExpected *bool `json:"not_expected"`
+		// Dismiss hides the image's updates (#56): "7", "30" or "90" days,
+		// "forever", or "" to show them again.
+		Dismiss *string `json:"dismiss"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "bad request")
@@ -25,6 +30,17 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 	if req.OldFiles != nil && *req.OldFiles != "replace" && *req.OldFiles != "archive" && *req.OldFiles != "keep" {
 		writeError(w, http.StatusBadRequest, `old_files must be "replace", "archive" or "keep".`)
 		return
+	}
+	days := 0
+	if req.Dismiss != nil {
+		switch d := *req.Dismiss; d {
+		case "", "forever":
+		case "7", "30", "90":
+			days, _ = strconv.Atoi(d)
+		default:
+			writeError(w, http.StatusBadRequest, `dismiss must be "7", "30", "90", "forever" or "".`)
+			return
+		}
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -55,6 +71,13 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		t.NotExpected = *req.NotExpected
 		if t.NotExpected {
 			t.Starred = false
+		}
+	}
+	if req.Dismiss != nil {
+		// A date, not a version: the time holds whatever comes out meanwhile.
+		t.DismissedUntil, t.DismissedForever = time.Time{}, *req.Dismiss == "forever"
+		if days > 0 {
+			t.DismissedUntil = s.cfg.Now().AddDate(0, 0, days).UTC()
 		}
 	}
 	s.st.SetTrack(req.Entry, t)

@@ -106,6 +106,17 @@ type Track struct {
 	// in the folder again (v0.7.1, #55): "Stop expecting it", for an image
 	// somebody removed on purpose. See usualSet and RecordScan.
 	NotExpected bool `json:"not_expected,omitempty"`
+	// DismissedUntil hides this image's updates until then, and
+	// DismissedForever for good (v0.8.2, #56). The time holds even if a newer
+	// version comes out meanwhile: somebody chose a date, not a version.
+	// See Dismissed.
+	DismissedUntil   time.Time `json:"dismissed_until,omitzero"`
+	DismissedForever bool      `json:"dismissed_forever,omitempty"`
+}
+
+// Dismissed says whether this image's updates are dismissed at now.
+func (t Track) Dismissed(now time.Time) bool {
+	return t.DismissedForever || now.Before(t.DismissedUntil)
 }
 
 // Choice says what happens to this image's old files after an update:

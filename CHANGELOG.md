@@ -6,6 +6,17 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.2] - 2026-09-24
+
+### Added
+- **Dismiss an update** ([#56](https://github.com/ZachCurry13/isoshelf/issues/56))
+  for 7, 30 or 90 days, or for good, from the image's details. It stays in
+  the list, greyed, saying until when, and sorts with the ones that are up
+  to date. It isn't counted as an update, and Update all and updating by
+  itself leave it alone. The date holds even if a newer version comes out
+  meanwhile. Settings lists everything you've dismissed, with Undo on each
+  and Undo all.
+
 ## [v0.8.1] - 2026-09-24
 
 ### Added
