@@ -389,19 +389,58 @@ of decisions is in [STATUS.md](STATUS.md)).
 **v0.4** - running on a NAS in a container, with a login; where each folder's
 records live; updating images by itself; copying from another isoshelf.
 **v0.5** - the page redone, and a round of polish and correctness.
-**Next** - isoshelf updating itself (v0.6.0), then the order in
-[TODO.md](TODO.md): the items moved above, rebuild and repair modes, and an
-official TrueNAS app for 1.0.
+**v0.6** - isoshelf updating itself (below).
+**Next** - the order in [TODO.md](TODO.md): a simpler page (v0.7.0), the
+items moved above, rebuild and repair modes, and an official TrueNAS app for
+1.0.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release. Every file
 attached to a release carries the version
 (`isoshelf-vX.Y.Z-windows-amd64.exe`), because that is what people download
 and keep. The binaries *inside* the portable zip keep the plain name
 (`isoshelf-windows-amd64.exe`): that is the file run from the drive, and the
-one a future "update isoshelf" replaces in place, so it must not change every
-release. Whatever downloads an update must therefore find its asset by
-pattern (the name contains `windows-amd64.exe`) rather than by an exact name,
-which would go stale every release. Releases up to v0.3.0 attached plain
+one self-update replaces in place, so it must not change every release. The
+updater finds its asset by pattern (`isoshelf-<tag>-` at the front,
+`-windows-amd64.exe` at the end) rather than by an exact name, which would go
+stale every release.
+- **isoshelf updates itself** (decisions 13 and 14, built in v0.6.0;
+  `internal/appupdate`, `internal/web/selfupdate.go`,
+  `cmd/isoshelf/handover.go`, `static/selfupdate.js`). The shape, and why:
+  - **Signed.** The release workflow signs `SHA256SUMS` with an Ed25519 key
+    (`internal/appupdate/sign`, key from the `RELEASE_SIGNING_KEY` secret);
+    the public half is `internal/appupdate/release.pub`, embedded in every
+    build. `Prepare` refuses a release without `SHA256SUMS.sig`, with a
+    signature that doesn't verify, or whose program doesn't match its line.
+    A build with no key can't update itself at all. Standard library only.
+    The key is made once by `internal/appupdate/keygen`, which refuses to
+    replace an existing key without `-replace`: a new key strands every copy
+    already installed.
+  - **Only on request.** Nothing downloads until **Update now** (the
+    maintainer's choice, 2026-09-23). It waits for image downloads, scans and
+    uploads to finish, and nothing new starts once it is restarting.
+  - **What it replaces.** In portable mode every program in the folder, so a
+    stick never carries two versions; otherwise the running program. A
+    single download named for its version takes the plain name. Everything
+    is staged in `.isoshelf-update` beside the program, so putting it in
+    place is a rename.
+  - **Nothing is deleted until the new one runs.** `Swap` renames each old
+    program to `.old` and the new one into place, and writes `swapped.json`.
+    The old program stops listening and starts the new one with a handover
+    (`ISOSHELF_HANDOVER`: the port, the staging folder, the old version) and
+    the link's token (`ISOSHELF_TOKEN`), so the page's address and cookie
+    still work. On Linux that is `exec` - the same process, which a terminal
+    and a service manager both keep - and on Windows a new process in the
+    same console. The new program tries for its port for 15 seconds, and
+    once serving deletes the backups (`Confirm`). If it can't listen, or
+    panics first, it undoes the swap and starts the old program, which tells
+    the page why.
+  - **Windows can rename a running program but not delete it**, so undoing
+    moves the failed program into the staging folder rather than deleting it,
+    and `Tidy` clears such leftovers at the next normal start.
+    `cmd/isoshelf/handover_test.go` builds the real program and runs both
+    paths, and the undo test was checked by breaking it.
+  - **Not in a container** (`ISOSHELF_CONTAINER`, set in the Dockerfile): a
+    container is updated by pulling the image. Releases up to v0.3.0 attached plain
 names; those releases keep them, so anything reading old releases has to cope
 with both shapes. The update check itself reads only
 `tag_name` and `html_url`, so it is unaffected either way.

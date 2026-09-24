@@ -120,7 +120,8 @@ half-built, everything visible finished:
    go through a map to what a person calls it.)*
 
 **In flight: v0.6.0, isoshelf updates itself** (item 10; the maintainer asked
-for it 2026-09-23 and put it first). Decided that day: it downloads only when
+for it 2026-09-23 and put it first). Built; waiting on the maintainer's
+one-time signing-key setup (item 10 says how). Decided that day: it downloads only when
 **Update now** is pressed, then checks the signature, waits for image
 downloads, swaps and restarts on the same port; in portable mode it replaces
 **all three** programs; a single download named for its version takes the
@@ -305,12 +306,28 @@ starts it thinking it is a form to fill in:
    rather than name, so sharing makes scans hash everything. Still to decide:
    finding the other isoshelf by itself, which means mDNS, which means a
    second dependency or a lot of protocol code.)*
-10. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
-   swaps its own program, restarts, page reconnects - and only installs a
-   release carrying the project's signature, which needs the signing key set
-   up once. Whatever downloads the new file must find its asset **by pattern**
-   (the name contains `windows-amd64.exe`), never by an exact name: release
-   files carry the version now, so an exact name goes stale every release.
+10. ~~**isoshelf updates itself**~~ *(built for v0.6.0; the shape is in
+   docs/design.md under Releases.* **It can't ship until the maintainer has
+   set up the signing key once** - `go run ./internal/appupdate/keygen
+   -private release-key.txt`, commit `release.pub`, `gh secret set
+   RELEASE_SIGNING_KEY < release-key.txt`, keep a copy, delete the file -
+   because the release workflow now refuses to publish an unsigned release.
+   What was learned:
+   - **Windows can rename a running program but not delete it.** Undoing an
+     update from inside the new program has to move it aside, not remove it;
+     the first version removed it, and the end-to-end test failed with
+     "Access is denied" when that was put back on purpose.
+   - **isoshelf picks any free port by default**, so a restarted program has
+     to be told the old one's port, or the page loses it. That, the staging
+     folder and the old version travel in `ISOSHELF_HANDOVER`; the link's
+     token in `ISOSHELF_TOKEN`, which isoshelf already read.
+   - **The page's message line is redrawn on every refresh**, so a message
+     shown from code that isn't an event handler vanishes in half a second.
+     Anything that has to stay goes somewhere the redraw leaves alone - the
+     top bar, here.
+   - Not yet tried for real: downloading a signed release from GitHub and
+     the page reloading after a real restart. The first chance is v0.6.0 to
+     v0.6.1; watch that one.)*
 11. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
    Same feature, two reasons for wanting it, both from real r/Ventoy posts
    where people lost a drive's worth of images. The list is already kept off

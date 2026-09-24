@@ -33,7 +33,8 @@ broken is a security report, not a feature request.
   and only if you chose replacing.
 - **A download nobody can verify never replaces anything by itself.**
 - **isoshelf only writes inside the folder you pick** (plus its own settings
-  folder), and only deletes image files there. Removing one asks you first,
+  folder, and its own program's folder when you update it), and only
+  deletes image files there. Removing one asks you first,
   file by file, and always offers to archive it instead. An update follows
   the choice that image already carries — replace, archive or keep both,
   shown in its panel and changeable at any time — rather than asking again.
@@ -45,6 +46,15 @@ broken is a security report, not a feature request.
 - **The catalog it downloads is validated before use.** A catalog that doesn't
   parse, has an unknown key, a pattern that won't compile, or a schema from the
   future is refused, and the previous one is kept.
+- **isoshelf installs a new version of itself only if the release carries
+  this project's signature.** Each release's `SHA256SUMS` is signed with the
+  project's Ed25519 key, whose public half is built into isoshelf, and every
+  program in the update must match its line there. A missing or wrong
+  signature blocks the update exactly as a checksum mismatch blocks an image.
+  Nothing is downloaded until you press **Update now**; image downloads
+  finish first; the old program is set aside, not deleted, until the new one
+  has started, and put back if it doesn't. In a container isoshelf never
+  replaces itself - pull the new image instead.
 - **No telemetry.** isoshelf talks to the sites in the catalog, to GitHub for
   release information, and nowhere else.
 
@@ -52,8 +62,9 @@ broken is a security report, not a feature request.
 
 - **That an image is what its project says it is.** isoshelf checks that the
   bytes match the checksum the project published. If a project's own site is
-  compromised, a matching checksum proves nothing. Signature checking is
-  planned and not done yet.
+  compromised, a matching checksum proves nothing. Checking images' own
+  signatures is planned and not done yet; isoshelf's updates of itself are
+  signed (see above).
 - **That an image is safe to boot.** It's an operating system image; isoshelf
   only manages the file.
 - **Anything about a catalog you or someone else wrote by hand.** Entries in
@@ -62,4 +73,5 @@ broken is a security report, not a feature request.
 ## Versions
 
 Only the newest release is supported: security fixes go into a new release,
-not into older ones. isoshelf tells you when a newer version is out.
+not into older ones. isoshelf tells you when a newer version is out, and since
+v0.6.0 installs it itself when you press Update now.
