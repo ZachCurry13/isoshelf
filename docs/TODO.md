@@ -4,40 +4,20 @@ The running work list. A new session should read this first, then
 `CLAUDE.md` for the rules and `docs/design.md` for the why. `docs/STATUS.md`
 says where things stand and what was decided; this file says what to do.
 
-Keep it current: tick an item off when it ships, and add what you learn while
-doing it, so the next session doesn't rediscover it.
+Keep it current: when an item ships, move it (with what was learned doing it)
+to `docs/archive.md`, so this file stays a list of what is left. Items keep
+their numbers when others move out, because other items and decisions refer
+to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**In flight: v0.7.0, the simpler shelf** (its paragraph below). v0.5.x,
-v0.6.0 and v0.6.1 have shipped; what is left of the v0.5.0 list is [#6].
+**In flight: v0.7.0, the simpler shelf** (its paragraph below). Then
+the maintainer's queue after it, then the list under *After those*.
 
-**What v0.5.0 held, decided 2026-09-23** (the maintainer: "I want to make
-sure we clean up everything we can before posting 0.5.0. Like it should look
-like it could actually be a 1.0.0"). **Polish and correctness only** - nothing
-half-built, everything visible finished:
-
-1. The look (this file's v0.5.0 section).
-2. **[#6]** - the Fedora entries stop pinning a release number. This is the
-   least 1.0 thing in the repository: when Fedora 45 ships, isoshelf keeps
-   offering 44 and nothing fails, which is the kind of quiet wrongness that
-   costs trust once somebody notices.
-3. Emptying the archive on a timer (item 12).
-4. The tools list (item 16).
-5. ~~**Moving a folder's records asks first.**~~ *(done in v0.5.3.*
-   `state.Plan` says what `state.Move` would do and `Move` is built on it;
-   `/api/records/plan` serves it; `records.js` asks, and the setting's note
-   says what happened. What was learned:
-   - **`settings.Settings` holds maps, so a copy of it is not a copy.**
-     `after := saved; after.SetRecordsFor(...)` changes `saved` too. Work out
-     anything from the old answer before setting the new one - the existing
-     test for moving records back caught it.
-   - **`replaceChildren` and `append` write a null as the word "null"**; `el`
-     skips it. `static_null_test.go` finds a null handed straight to one.
-   - **The browser pane holds a dialog's `close` event until it draws.**
-     With the pane in the background, closing a dialog from a script looked
-     like a stuck page; a screenshot made it draw and every event fired. Test
-     dialogs with real clicks, or take a screenshot before believing a hang.)*
+**Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
+number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
+isoshelf keeps offering 44 and nothing fails, which is the kind of quiet
+wrongness that costs trust once somebody notices.
 
 18. **Ask the server by entry, not only by hash** (the maintainer,
    2026-09-23, two questions that turn out to be one answer: "is it possible
@@ -113,27 +93,6 @@ half-built, everything visible finished:
    and the display when there is data to put in them; an empty field shows
    nothing and helps nobody.
 
-20. **The badge said "x86" for a 32-bit image** *(done in v0.5.0.* The
-   catalog was right - all ten of its `x86` entries say "(32-bit)" in their
-   names - and the badge was drawing the raw value. It says the bit width
-   now. Kept here because the lesson generalises: **the catalog's own words
-   are identifiers, not labels.** Anything drawn from a catalog field should
-   go through a map to what a person calls it.)*
-
-**~~v0.6.0, isoshelf updates itself~~** *(released 2026-09-23, signed; the
-key is set up)* (item 10; the maintainer asked for it that day and put it
-first). Decided then: it downloads only when
-**Update now** is pressed, then checks the signature, waits for image
-downloads, swaps and restarts on the same port; in portable mode it replaces
-**all three** programs; a single download named for its version takes the
-**plain name** on its first update. Not in a container (the image is updated
-instead).
-
-**Releases after v0.6.0** (decided 2026-09-23): **v0.6.1** is items 1 and 2
-below (upload speed, already built on the `missing-and-more` branch, and the
-good-neighbour pass). **v0.7.0** is the simpler shelf, next paragraph. Then
-items 3 onwards.
-
 **v0.7.0: the simpler shelf** (the maintainer, 2026-09-23, after a review of a
 simplification plan written with Gemini - whose sections on update prompts
 and background downloads described things isoshelf already did):
@@ -174,19 +133,6 @@ and background downloads described things isoshelf already did):
 
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
-1. ~~**Upload speed.**~~ *(done in v0.6.1: `uploadRate` in `upload.js`,
-   smoothed the way the dock's is.)*
-2. ~~**Be a good neighbour to the projects' servers**~~ *(done in v0.6.1,
-   [#59]: `internal/remote/polite.go`. `Refused` reads `Retry-After` on a 429
-   or 503 from any host; over `MaxPoliteWait` (a minute) it is a `BusyError`,
-   which neither checks nor downloads retry. `NextWait` spreads the doubling
-   wait between half and one and a half times itself, and each server picks
-   an `autoOffset` of up to an hour for the automatic-update schedule.)*
-   Also in v0.6.1, from the maintainer's own use: sharing shown and honoured
-   only on a server (`sharing()` checks `AnyHost`), the Settings footer
-   worded for portable and server, a new logo (a disc on a shelf, picked
-   from three), and `install.sh` for Linux with a workflow that runs it on
-   x86-64 and ARM Ubuntu weekly.
 3. **Missing images get two actions:** "Download again" as the row's button
    ("Download page" for images fetched by hand), and "Stop expecting it" in
    the details panel - off the missing list until the image is in the folder
@@ -244,7 +190,8 @@ browser's "came from the internet" mark.
 **After those, in this order:** item 18 (asking the server by entry), [#1]
 the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
-accepted - decided 2026-09-23), then [#11] and [#12].
+accepted - decided 2026-09-23), then [#11] and [#12]. Any time a real
+USB drive is to hand: [#7], trying the portable zip on one.
 
 On [#3]: the maintainer asked again for a one-click fix for a file that only
 needs renaming, and chose on 2026-09-23 to keep it in this order. Until it is
@@ -253,7 +200,7 @@ it is, the note is where the button's words come from, and the catalog's
 `fixup` field (`rename:.img`, `extract`) already says which fix each image
 needs.
 
-Everything else below the next heading has shipped.
+## Releasing
 
 **Which version is the latest is not written down here, on purpose.** It went
 stale three times in one evening. Ask GitHub: the releases page, or
@@ -288,45 +235,6 @@ It does not follow from the release: a tag created by one workflow
 deliberately doesn't set another off, so the release workflow's tag never
 reaches it. A tag pushed by a person does.
 
-## ~~v0.3.4: scanning while downloads run~~ *(done)*
-
-A scan and a download had one `s.run` slot between them; they have one each
-now (`s.scanning`, `s.downloading`), so a scan or Refresh is no longer
-refused for as long as a queue takes. What was learned doing it:
-
-- **There was a second bug underneath, and it was the worse one.** A scan
-  loads the folder's records when it starts and saved them again wholesale at
-  the end, so a download that placed a file in between lost that file's
-  record and could be listed as an image that had left. `state.SaveOnto`
-  (merge.go) now does for a scan what `saveMerged` already did for everyone
-  else. This was reachable before the slot was split, whenever a scan
-  followed a download closely enough, so it is a fix, not fallout.
-- **Both directions are allowed**, not just the one the bug report named: a
-  download can also start while a scan runs. Blocking that would have taken
-  an extra guard, and the merge makes it safe either way.
-- **A download reports its own progress now** (`downloads.current` carries
-  `stage`, `done`, `total`), because `state.run` is the scan's card alone.
-  `drawnKey` in `app.js` has to strip those three fields, or the whole page
-  redraws twice a second and open menus close - the very thing that key is
-  for.
-- **Switching folders and emptying the archive still wait** for downloads
-  (`busyLocked`); scans wait only for another scan (`scanBusyLocked`).
-- `waitIdle` in the tests now waits for both slots; `state.run` going nil no
-  longer means the queue is done.
-
-## Answered 2026-09-21, late
-
-1. **Numbering:** the container work is **v0.4.0**, the redesign moves to
-   **v0.5.0**. Running on a NAS is a new ability, and the project's own rule
-   gives those the middle number.
-2. ~~**The unbuilt image:**~~ *settled:* the first `container image` run
-   built it for both architectures and pushed it, and the Dockerfile needed
-   no fixing.
-3. ~~**ghcr.io starts private**~~ *settled:* the maintainer made the package
-   public, and an anonymous pull of both architectures and both tags was
-   checked rather than assumed.
-4. **An official TrueNAS app is a 1.0 goal.** See below.
-
 ## 1.0: in the TrueNAS store
 
 The maintainer asked to try for this. What it actually takes, so nobody
@@ -345,8 +253,10 @@ starts it thinking it is a form to fill in:
   theirs in full.
 - **An icon.** A real one, not a letter in a box.
 - **Sensible defaults for someone who has never seen isoshelf.** The install
-  form has to make the token, not ask for one - a person pasting `password`
-  into that box has published their images folder to their whole network.
+  form must not ask for a token - isoshelf makes its own, and a person
+  pasting `password` into that box has published their images folder to
+  their whole network. The username and password are optional fields;
+  `deploy/truenas/README.md` says why.
 - **Worth knowing, and checked rather than assumed:** the folder chooser does
   work in a container. It browses the container's filesystem, which is where
   the mounts are, so a second folder is a second mount and both then show up
@@ -356,99 +266,17 @@ starts it thinking it is a form to fill in:
 
 ## Then, in order
 
-4. ~~**Upload from the browser**~~ *(done in v0.3.5. `internal/upload` does
-   the placing, `internal/web/upload.go` the endpoint - the request body is
-   the file itself rather than a form, so it streams to the disk - and
-   `static/upload.js` the page. What was learned: the file goes to
-   `.isoshelf/incoming` and is renamed into place only once all of it has
-   arrived, so a dropped connection costs nothing; and the page's content
-   policy forbids inline styles, so a progress bar's width is set with
-   `.style.width`, never a `style` attribute. It also turned up a bug older
-   than itself - a file replaced by one of the same name disappeared from the
-   archive at the next scan while still using room - fixed in the same
-   release.)*
-5. ~~**Run isoshelf on a NAS**~~ *(done in v0.4.0: `Dockerfile`,
-   `docker-compose.yml`, `docs/docker.md`, and `--listen` with the guard
-   changes behind it. What was learned: `os.UserConfigDir` honours
-   `XDG_CONFIG_HOME`, so the container needed no code change to keep its
-   files on a mount; and the same-origin check hardcoded `http://`, which a
-   reverse proxy in front of a NAS would have broken.)*
-6. ~~**Where each folder's records live**~~ *(done in v0.4.2. `state.Home`
-   resolves it, `state.Move` moves them when the answer changes, and the
-   answer is per folder, in the settings file under `folder_records`. What
-   was learned: a records file kept away from its folder has to be named from
-   the folder's path, because the target id lives inside the file you are
-   trying to find; and only the records may move - archiving is a rename, and
-   a rename across disks is a copy of every byte.)*
-7. ~~**The remembered-folders list**~~ *(done in v0.4.3, which finishes
-   decision 10. The mirrors in `<config>/targets/` gained `files` and `bytes`
-   - written from the state at save time, absent in older mirrors and then
-   simply not shown - and `state.Forget` removes one. The list lives in the
-   folder chooser, where you are already deciding which folder to open. What
-   was learned: a narrow column of full paths is useless, because the start
-   is what every folder on one machine has in common; the end is what tells
-   them apart.)*
-8. ~~**Update the images by itself**~~ *(done in v0.4.6.
-   `internal/web/autoupdate.go`: a schedule, the same download queue the
-   Update button uses, and `removalFor`, which has to agree exactly with
-   `choiceFor` in `details.js` - what happens unattended must be what the
-   page has been showing. What was learned: the settings file had one writer
-   and now has two, so every change to it has to take a turn, or a switch
-   somebody flicks can be quietly undone by the scheduler noting the time.)*
-9. ~~**Copy from another isoshelf on the network**~~ *(done in v0.4.9, the
-   maintainer's feature request. `internal/peer` asks, `internal/web/share.go`
-   offers, `update.Options.Nearer` puts the answer at the front of the
-   download's list of places. What was learned: the peer is reached, never
-   trusted - the checksum still comes from the project's own site, and
-   `fetch` had to learn to fall through to the next place on a mismatch, or
-   one bad copy would cost the whole download. Files are asked for by hash
-   rather than name, so sharing makes scans hash everything. Still to decide:
-   finding the other isoshelf by itself, which means mDNS, which means a
-   second dependency or a lot of protocol code.)*
-10. ~~**isoshelf updates itself**~~ *(built for v0.6.0; the shape is in
-   docs/design.md under Releases.* **It can't ship until the maintainer has
-   set up the signing key once** - `go run ./internal/appupdate/keygen
-   -private release-key.txt -secret RELEASE_SIGNING_KEY`, which writes
-   `release.pub` and stores the secret through `gh`; then commit
-   `release.pub`, keep a copy of the file in a password manager, and delete
-   it - because the release workflow now refuses to publish an unsigned
-   release.
-   What was learned:
-   - **Windows can rename a running program but not delete it.** Undoing an
-     update from inside the new program has to move it aside, not remove it;
-     the first version removed it, and the end-to-end test failed with
-     "Access is denied" when that was put back on purpose.
-   - **isoshelf picks any free port by default**, so a restarted program has
-     to be told the old one's port, or the page loses it. That, the staging
-     folder and the old version travel in `ISOSHELF_HANDOVER`; the link's
-     token in `ISOSHELF_TOKEN`, which isoshelf already read.
-   - **The page's message line is redrawn on every refresh**, so a message
-     shown from code that isn't an event handler vanishes in half a second.
-     Anything that has to stay goes somewhere the redraw leaves alone - the
-     top bar, here.
-   - Not yet tried for real: downloading a signed release from GitHub and
-     the page reloading after a real restart. The first chance is v0.6.0 to
-     v0.6.1; watch that one.)*
+These are older items, kept under the numbers they were given.
+
 11. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
    Same feature, two reasons for wanting it, both from real r/Ventoy posts
    where people lost a drive's worth of images. The list is already kept off
    the drive: `internal/state/mirror.go` copies each folder's state into the
    config folder, including the entry ids seen by each scan. What's missing is
    the verb, plus exporting the list to a file someone can keep elsewhere.
-12. ~~**Empty the archive after so many days**~~ *(done in v0.4.16.
-   `internal/web/archivetimer.go`; it rides the auto-update tick rather than
-   keeping a clock of its own. Every care listed below was built: off unless
-   a number is chosen, each file judged by its own `GoneAt`, nothing touched
-   that isoshelf has no archive record for, and Settings says what the next
-   sweep would take before it takes it.)* (decision 15, and the
-   maintainer picked this one next, 2026-09-22). 7 / 30 / 90 days or never,
-   in Settings. Care needed: the archive is the undo for every removal and
-   every replaced file, so emptying it on a timer is the one thing here that
-   throws away something somebody might still want. It has to say what it
-   will do before it does it, count from when each file was archived rather
-   than sweeping the lot, and never touch a file archived since the last
-   scan. The rest of decision 15 - a download speed limit, hiding kinds and
-   architectures you don't use - can follow.
+
+Then:
+
 13. **From the maintainer's own use, 2026-09-22**
    (`isoshelf_v0.4.9_tasks.md`; numbered v0.4.9 there, but that number went
    to copying between isoshelfs, so these are next rather than done):
@@ -457,26 +285,19 @@ starts it thinking it is a form to fill in:
      Work out why the scan doesn't match it to the entry it plainly is -
      start with `internal/identify` and the assignment path, and with what
      `check.Manual` actually means today.
-   - ~~**Say when a file arrived on the drive.**~~ *(done in v0.4.14: an
-     Added column in the list, sortable, and still under the name on a
-     phone. The date was already drawn under each name - what was missing
-     was being able to sort by it.)*
-     - **What is still missing is the date itself, on Linux.** `Added` is
-       `scan.File.Created`, then `PlacedAt`, then `FirstSeen`, and on Linux
-       `created()` always returns zero (`internal/scan/created_other.go`):
-       birthtime needs `statx`, which is not in the `syscall` package and
-       would otherwise mean a second dependency. So a file that was on the
-       drive before isoshelf first scanned it reads "-" forever. Worth doing
-       with a hand-rolled `statx` call if it can be done without the
-       dependency and without per-architecture syscall numbers going stale;
-       not worth guessing a date for.
+   - **The date a file arrived, on Linux.** The Added column (v0.4.14) sorts
+     by `scan.File.Created`, then `PlacedAt`, then `FirstSeen`, and on Linux
+     `created()` always returns zero (`internal/scan/created_other.go`):
+     birthtime needs `statx`, which is not in the `syscall` package and
+     would otherwise mean a second dependency. So a file that was on the
+     drive before isoshelf first scanned it reads "-" forever. Worth doing
+     with a hand-rolled `statx` call if it can be done without the
+     dependency and without per-architecture syscall numbers going stale;
+     not worth guessing a date for.
    - **Say when the new version came out.** An update says a newer version
      exists but not its age, which is most of deciding whether to take it.
      The release date is in what `source` already fetches for some sources;
      check which, and show it where it is known.
-   - ~~**The filter menu needs Apply and Clear all.**~~ *(done in v0.5.3:
-     the maintainer chose Clear all and Done, with filters still applying as
-     they are ticked - not Apply/Cancel.)*
    - **Offer to send an unknown image to the catalog.** When somebody names
      an image isoshelf doesn't recognize, offer to open a prefilled issue
      with the filename pattern and hash - the same shape as the bug report
@@ -484,101 +305,6 @@ starts it thinking it is a form to fill in:
      without them pressing submit.
 14. **The rest of decision 15**: a download speed limit, hiding kinds and
    architectures you don't use.
-15. **v0.4 proper**: `isoshelf update` on the command line ([#1]), installing
-   an older version with a hold ([#2]), Make bootable ([#3]), two downloads at
-   once ([#4]), OpenPGP signatures ([#5]), the portable zip tried on a real
-   drive ([#7]) - **and the redesign below**.
-16. ~~**The tools that go with the images**~~ *(done in v0.5.2. Ventoy,
-   Rufus, balenaEtcher and Raspberry Pi Imager, in a folded section above the
-   footer and under `### Tools that go with these` in README.md.
-   `internal/docs/tools_test.go` checks the two name the same tools at the
-   same addresses, and that neither has grown a version or a download.)*
-   (the maintainer, 2026-09-22:
-   "whatever happened to the author's suggested tools - Ventoy, balenaEtcher,
-   Rufus. I really like those tools and people who have isoshelf would too").
-   It was talked about and never written down anywhere, which is why it went
-   missing; it is written down now. A short, hand-kept list of the tools
-   somebody with a shelf of images actually needs - one that writes a drive,
-   one that boots many images from one drive, one that checks a disc - each a
-   line saying what it is for and a link to its own site.
-   - `docs/design.md` already has the rule this has to follow: plain text and
-     a link, never anybody's logo, and "independent project, not affiliated"
-     next to it. No downloads, no versions, no update checks: the moment
-     isoshelf tracks a tool's version it owns that tool's release notes
-     forever, and this is meant to be four sentences that never go stale.
-   - **Decided 2026-09-22** (the maintainer left it to me): both the README
-     and the page. The README is where somebody deciding whether to use
-     isoshelf reads; the page is where the people who already have it are,
-     and they are the ones the maintainer meant. On the page it is a folded
-     section low down, beside Archive and History, so it costs nothing until
-     it is opened. Two copies would normally break the "don't write down
-     anything that has to be maintained" rule - so a test in `internal/docs`
-     checks the two name the same tools, and no version or download is
-     tracked for any of them.
-17. ~~**Say where a download is coming from**~~ *(done in v0.4.14.*
-   `sourceName` in `internal/web/peer.go` turns the URL a download is using
-   into the peer's own name or "the internet"; the dock shows it while bytes
-   move and on the finished list. `fetch.Progress` already carried the URL,
-   so nothing new is found out - it was only ever thrown away.)*
-   (the maintainer, 2026-09-22:
-   "when it is downloading, it would be nice to know if it was from the
-   internet or from the local server"). Copying from another isoshelf
-   (v0.4.9) is invisible while it happens: the dock says "Downloading 40%"
-   whether the bytes are crossing the room or the Atlantic, and the whole
-   point of the feature is that one of those is much faster. `fetch.Progress`
-   already carries `URL` and `fetch.Result` records which URL won, so this is
-   showing what is already known, not finding anything out.
-   - Name the isoshelf, not the URL: "from nas.local", "from the internet".
-     The peer's own name is in `internal/peer` (`FolderName`).
-   - It also tells somebody their peer setting is doing nothing, which is the
-     only way to find that out today short of watching a router.
-
-## ~~v0.5.0: the page, redone~~ *(the look shipped in v0.5.0)*
-
-The maintainer's brief, given 2026-09-21: **"clean up the UI - make it look
-like something I could show an investor."** It was v0.4.0 when that was
-decided; the container work took that number, because running on a NAS is a
-new ability and the middle number is what rises for those. What was said when asked what drives it: the
-page doesn't look modern or polished, and it is a fresh start rather than a
-list of complaints about particular screens.
-
-Read that as a design job, not a tidy-up. The bones were decided deliberately
-(decisions 1-9 and 15-17 in STATUS.md: one page, a sticky jump bar, to-do
-cards, plain status words, one filter menu with chips, slim rows, a details
-panel) and v0.3.0 delivered them; what this asks for is the surface those
-bones are wearing - type, colour, spacing, rhythm, polish - and a willingness
-to overturn a decision where it earns it, by argument rather than quietly.
-
-Three things it must not cost, because each has a switch in Settings and
-someone relying on it: higher contrast, larger text, and less movement. Nor
-the phone layout, nor the rule that text from the drive is inserted with
-textContent and never as HTML.
-
-Whatever is proposed, the maintainer wants to be asked about anything where
-more than one answer is good, rather than shown a finished redesign.
-
-**Asked and answered, 2026-09-22:**
-- *Words:* use the ordinary ones. A Settings switch for "simple mode" was
-  offered and turned down for now - two versions of every string across ten
-  files is a cost that never stops - so the page uses the normal word and
-  keeps its explanation in the hover and the second line. **Shipped as
-  v0.4.13**, which is the wording half of this done.
-- *Audience:* confident, not hand-holding. Same reasoning.
-- *Look:* "whichever option feels like TrueNAS does when using" - so
-  restrained palette, technical density: dark-first, dense, one blue accent,
-  real tables.
-- *The list:* keep the sortable table on desktop, cards on the phone.
-
-What is left of v0.5.0 is therefore the visual work: type scale, colour
-discipline, spacing and density. Show the maintainer what it looks like
-before committing to it.
-
-`docs/design-audit.md` is a critique of the page written before any of this
-was built, with seven such questions already worked out and a staged plan.
-Start there; it is a proposal, not a decision.
-
-It also turned up two live bugs, ~~both fixed in v0.3.6~~: the Filter menu
-ran off the left edge at phone width, and Escape didn't close an open menu.
 
 ## Worth knowing before you start
 
@@ -604,6 +330,10 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   the network, not a bug. The recorded responses in the tests are the way to
   check that path without going online.
 - **Don't touch port 8765**: the maintainer's own preview runs there.
+- **The catalog's own words are identifiers, not labels.** A badge once said
+  "x86" for a 32-bit image because it drew the raw value (v0.5.0 fixed it).
+  Anything drawn from a catalog field goes through a map to what a person
+  calls it.
 - **Before changing what a release is labelled, work out what the copies
   already installed will ask for.** v0.4.10 marked every `v0.*` as a
   pre-release; GitHub leaves those out of `/releases/latest`, which is what
@@ -620,19 +350,12 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 
 ## Questions the maintainer still owes an answer to
 
-- ~~*Keep both* in the name-clash dialog~~ *(answered in v0.3.6, and the old
-  answer was wrong: it can work. The new download carries its version in its
-  name and the file already on the drive is not touched - the maintainer
-  chose that direction in v0.3.7, over renaming the old file, because then
-  nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
-  Still open:
-  an explicit *Cancel*, which is currently "do nothing" plus a message saying
-  nothing has changed. Add a real Cancel button that clears the row?
+- An explicit *Cancel* in the name-clash dialog, which is currently "do
+  nothing" plus a message saying nothing has changed. Add a real Cancel
+  button that clears the row?
 - Anything from the review doc listed as done that doesn't feel done when
   used on a real drive.
 
-[#13]: https://github.com/ZachCurry13/isoshelf/pull/13
-[#14]: https://github.com/ZachCurry13/isoshelf/pull/14
 [#1]: https://github.com/ZachCurry13/isoshelf/issues/1
 [#2]: https://github.com/ZachCurry13/isoshelf/issues/2
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
@@ -642,5 +365,3 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#11]: https://github.com/ZachCurry13/isoshelf/issues/11
 [#12]: https://github.com/ZachCurry13/isoshelf/issues/12
-[#54]: https://github.com/ZachCurry13/isoshelf/issues/54
-[#59]: https://github.com/ZachCurry13/isoshelf/issues/59

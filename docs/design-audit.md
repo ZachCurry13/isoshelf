@@ -4,7 +4,7 @@ any of the redesign was built. It is a proposal with options, not a plan that
 was agreed: the maintainer asked to be consulted on anything where more than
 one answer is good, and the seven decision points in section 3 are what to
 ask. Kept as the critique the v0.5.0 redesign started from; the v0.5.0
-section of docs/TODO.md is the brief it answered.
+section of docs/archive.md (moved from docs/TODO.md) is the brief it answered.
 -->
 
 # isoshelf web page — design audit
