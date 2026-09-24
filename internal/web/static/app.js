@@ -281,6 +281,7 @@ function render() {
   else $("notice").hidden = true;
 
   renderJump();
+  renderFirstRun();
   renderTodo();
   renderFilters();
   renderHeadings();

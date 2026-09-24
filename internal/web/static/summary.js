@@ -24,7 +24,7 @@ function renderTodo() {
   const all = updates.length + byHand;
   const waiting = updates.filter((it) => inDownloads(it.entry)).length;
   if (all) {
-    const bytes = updates.reduce((sum, it) => sum + (it.size || 0), 0);
+    const bytes = updates.reduce((sum, it) => sum + downloadSize(it), 0);
     parts.push(summaryPart(all, all === 1 ? "update" : "updates", "s-update", showUpdates, [
       bytes ? `about ${formatBytes(bytes)} for isoshelf to download` : "",
       byHand ? `${byHand} to download yourself` : "",
@@ -124,4 +124,55 @@ function showJust(set) {
   renderFilters();
   renderRows();
   jumpTo("images");
+}
+
+// ---- Asked once, in a container -------------------------------------------
+
+// renderFirstRun asks whether the images should update by themselves, in a
+// container, until somebody answers (v0.7.0). An app on a NAS is left running
+// for months and nobody goes looking for a switch they weren't told about;
+// until the answer it is off, like everywhere else.
+function renderFirstRun() {
+  const box = $("first-run");
+  box.hidden = !state.ask_auto_update;
+  if (box.hidden) return;
+  // None of the three is the one to pick, so none looks like it.
+  const answer = (label, change, said) => el("button", {
+    type: "button", class: "btn",
+    onclick: async () => {
+      try {
+        state = await api("POST", "/api/settings", change);
+      } catch (err) {
+        showNotice(err.message, true);
+        return;
+      }
+      flashNotice(`${said} Settings can change that whenever you like.`);
+      render();
+    },
+  }, label);
+  box.replaceChildren(
+    el("div", { class: "first-run-title", id: "first-run-title" }, "Update the images by themselves?"),
+    el("p", {}, "isoshelf can look for updates on a schedule, then download each one, verify it " +
+      "and put it in place with nothing to press. A pinned file stays where it is."),
+    el("p", {}, firstRunNow()),
+    el("div", { class: "first-run-buttons" },
+      answer("Every day", { auto_update: true, auto_update_every: "day" }, "The images will update every day."),
+      answer("Every week", { auto_update: true, auto_update_every: "week" }, "The images will update every week."),
+      answer("No, I'll press Update", { auto_update: false }, "Updates will wait for you to press Update.")));
+}
+
+// firstRunNow says what yes does straight away, because it does: the first
+// run starts the moment it is turned on. Found by answering it on a test
+// folder and watching it set off to update everything in it.
+function firstRunNow() {
+  const updates = state.report ? updatable() : [];
+  const gone = {
+    replace: "each old file is deleted once its update is verified (Settings can archive them instead)",
+    archive: "each old file moves to the archive",
+    keep: "the old files stay beside the new ones",
+  }[state.old_files || "replace"];
+  if (!updates.length) return `Yes also runs once now, then on the schedule. When updates come, ${gone}.`;
+  const bytes = updates.reduce((sum, it) => sum + downloadSize(it), 0);
+  return `Yes starts the first run now: ${plural(updates.length, "update")}` +
+    `${bytes ? `, about ${formatBytes(bytes)} to download` : ""}, and ${gone}.`;
 }

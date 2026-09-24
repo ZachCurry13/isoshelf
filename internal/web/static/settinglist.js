@@ -96,9 +96,9 @@ const SETTING_GROUPS = [
               (state && state.auto_update_every) || "day", (every) => ({ auto_update_every: every }))
             : null),
         note: () => (state && state.auto_update)
-          ? "Changes your folder while you aren't watching. Each image keeps its own answer " +
-            "about the file it replaces, nothing is deleted that you hadn't already chosen to " +
-            "lose, and it stops before the folder is full."
+          ? "Changes your folder while you aren't watching. Old files go the way Updates and " +
+            "old files says, a pinned file stays where it is, nothing is deleted that you hadn't " +
+            "already chosen to lose, and it stops before the folder is full."
           : "",
       },
       {

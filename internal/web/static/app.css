@@ -816,6 +816,13 @@ main > section[id] { scroll-margin-top: 52px; }
 .summary-sep { color: var(--muted); }
 .summary-go { margin-left: auto; }
 
+/* Asked once, in a container. */
+.first-run { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-left: 2px solid var(--accent); }
+.first-run[hidden] { display: none; }
+.first-run-title { font-weight: 600; font-size: 0.9643rem; }
+.first-run p { margin: 0; color: var(--muted); font-size: 0.8929rem; max-width: 70ch; }
+.first-run-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+
 /* Filters: one menu, and a chip for everything that is on. */
 .filter-menu > summary { list-style: none; cursor: pointer; }
 .filter-menu > summary::-webkit-details-marker { display: none; }

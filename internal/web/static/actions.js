@@ -48,6 +48,15 @@ function updatable() {
   return state.report.items.filter((it) => it.entry && it.updates === "download" && it.status === "update available");
 }
 
+// downloadSize is about how much an update to item downloads: the catalog's
+// size for the image, else the size of the file already here. It was only
+// ever the second, which is close on a real drive and nothing like it on a
+// folder of stand-ins.
+function downloadSize(item) {
+  const entry = catalog && catalog.find((e) => e.id === item.entry);
+  return (entry && entry.size) || item.size || 0;
+}
+
 // updateAll shows what it is about to do, image by image, and updates the
 // ones still ticked.
 async function updateAll() {
@@ -59,7 +68,7 @@ async function updateAll() {
     sizeLabel: "downloading about",
     rows: items.map((item) => ({
       id: item.entry,
-      size: item.size,
+      size: downloadSize(item),
       name: item.name,
       detail: `${item.version || "?"} → ${item.latest || "newest"}`,
       note: isPinned(item) ? "keeps this pinned file" : CHOICE_WORD[choiceFor(item)],
@@ -213,6 +222,10 @@ async function renderCatalog() {
     } catch {
       return;
     }
+    // The download sizes above the list come from the catalog, and they
+    // were drawn before it arrived.
+    renderFirstRun();
+    renderTodo();
   }
   const missing = catalog.filter((e) => !e.on_target);
   $("more-count").textContent = plural(missing.length, "image");

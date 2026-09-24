@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/ZachCurry13/isoshelf/internal/catalog"
+	"github.com/ZachCurry13/isoshelf/internal/remote/remotetest"
 	"github.com/ZachCurry13/isoshelf/internal/settings"
 )
 
@@ -127,5 +129,35 @@ func TestOldReplaceAnswerIsCarriedOver(t *testing.T) {
 	}
 	if got := settings.Load(dirs.Config).OldFiles; got != settings.OldArchive {
 		t.Errorf("old files is %q, want archive", got)
+	}
+}
+
+// In a container isoshelf asks once whether the images should update by
+// themselves, and either answer stops it asking. Until then they don't: the
+// question is the only thing that's new. A desktop never asks.
+func TestAContainerAsksOnceAboutUpdatingByItself(t *testing.T) {
+	for _, answer := range []bool{true, false} {
+		cat, err := catalog.Default()
+		if err != nil {
+			t.Fatal(err)
+		}
+		s := New(Config{
+			Dirs: testDirs(t), Catalog: cat, Version: "dev", Token: testToken,
+			HTTP:       &http.Client{Transport: remotetest.Recorded()},
+			SelfUpdate: SelfUpdateConfig{Container: true},
+		})
+		st := decode[stateJSON](t, request(t, s, http.MethodGet, "/api/state", nil))
+		if !st.AskAutoUpdate || st.AutoUpdate {
+			t.Fatalf("a new container: ask=%v on=%v, want it asking and off", st.AskAutoUpdate, st.AutoUpdate)
+		}
+		st = decode[stateJSON](t, request(t, s, http.MethodPost, "/api/settings", map[string]any{"auto_update": answer}))
+		if st.AskAutoUpdate || st.AutoUpdate != answer {
+			t.Errorf("answered %v: ask=%v on=%v, want no question and on=%v", answer, st.AskAutoUpdate, st.AutoUpdate, answer)
+		}
+	}
+
+	st := decode[stateJSON](t, request(t, newServer(t, testDirs(t), ""), http.MethodGet, "/api/state", nil))
+	if st.AskAutoUpdate {
+		t.Error("a desktop isoshelf asks about updating by itself")
 	}
 }

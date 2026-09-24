@@ -32,8 +32,8 @@ type stateJSON struct {
 	UsualSet  []string               `json:"usual_set"`
 	Recent    []rememberedJSON       `json:"recent_targets"`
 	Bookmarks []string               `json:"bookmarks"`
-	// OldFiles is what happens to the copy an update replaces, for images
-	// that haven't been given their own answer.
+	// OldFiles is what happens to the copy an update replaces. A pinned
+	// file is kept whatever it says.
 	OldFiles string `json:"old_files,omitempty"`
 	// AutoCheck is whether isoshelf checks for updates by itself, and
 	// AppUpdateCheck whether it looks for a newer isoshelf.
@@ -43,6 +43,11 @@ type stateJSON struct {
 	// AutoUpdateEvery how often.
 	AutoUpdate      bool   `json:"auto_update"`
 	AutoUpdateEvery string `json:"auto_update_every"`
+	// AskAutoUpdate is set in a container until somebody has said whether
+	// the images should update by themselves (v0.7.0): an app on a NAS is
+	// left running for months, and nobody finds a switch they weren't told
+	// about. Until then it is off, like everywhere else.
+	AskAutoUpdate bool `json:"ask_auto_update,omitempty"`
 
 	// ArchiveAfter is how many days a file waits in the archive before
 	// isoshelf deletes it, 0 for never, and ArchiveDue is what the next
@@ -152,6 +157,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		AppUpdateCheck:  settings.On(saved.AppUpdateCheck),
 		AutoUpdate:      saved.AutoUpdate != nil && *saved.AutoUpdate,
 		AutoUpdateEvery: settings.CleanEvery(saved.AutoUpdateEvery),
+		AskAutoUpdate:   s.cfg.SelfUpdate.Container && saved.AutoUpdate == nil,
 		ArchiveAfter:    cleanArchiveAfter(saved.ArchiveAfter),
 		Appearance:      saved.Appearance,
 		ConfigDir:       s.cfg.Dirs.Config,
