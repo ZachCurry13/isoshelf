@@ -373,13 +373,18 @@ that won't boot is told how to fix it by hand.<br>
 the new-version notice, which installs only releases signed by this project
 and puts the old version back if the new one won't start
 ([#52](https://github.com/ZachCurry13/isoshelf/pull/52)).<br>
-**Then:** v0.6.1 shows the speed while you add a file, and is gentler with
-the projects' servers when they're busy. v0.7.0 is a simpler page: *pin* a
-file to keep it whatever updates come, one summary line instead of the row
-of cards, and fewer badges. After that: *Download again* and *Stop expecting
-it* for images that went missing, dismissing an update for a while or for
-good, spotting duplicate copies, and a note on where to find the images you
-fetch yourself.<br>
+**Then:** v0.6.1 shows the speed while you add a file, and is [gentler with
+the projects' servers](https://github.com/ZachCurry13/isoshelf/issues/59)
+when they're busy. v0.7.0 is [a simpler
+page](https://github.com/ZachCurry13/isoshelf/issues/54): *pin* a file to keep
+it whatever updates come, one summary line instead of the row of cards, and
+fewer badges. After that: [*Download again* and *Stop expecting
+it*](https://github.com/ZachCurry13/isoshelf/issues/55) for images that went
+missing, [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
+for a while or for good, [spotting duplicate
+copies](https://github.com/ZachCurry13/isoshelf/issues/57), and [a note on
+where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
+you fetch yourself.<br>
 **Also planned:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6),
 [`isoshelf update` on the command
