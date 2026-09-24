@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
+	"github.com/ZachCurry13/isoshelf/internal/state"
 )
 
 // ReportJSON is a report as the CLI's --json output and the web UI show it.
@@ -56,6 +57,14 @@ type ItemJSON struct {
 	Forum     string `json:"forum,omitempty"`
 	// Release is a page about the newest release.
 	Release string `json:"release,omitempty"`
+	// Origin is where the file came from and what proved it; Before is what
+	// the isoshelf it was copied from said about its copy (v0.8.0).
+	Origin state.Origin `json:"origin,omitzero"`
+	Before state.Origin `json:"before,omitzero"`
+	// Hashed says the file has a hash; Matched is the address of the
+	// published checksum that hash equals, when this check found one.
+	Hashed  bool   `json:"hashed,omitempty"`
+	Matched string `json:"matched,omitempty"`
 }
 
 // TrashJSON is a trash folder and the space it uses.
@@ -87,6 +96,7 @@ func (r *Report) JSON() ReportJSON {
 			Assigned: it.Assigned, Older: it.Older,
 			Latest: it.Latest, LatestFile: it.LatestFile, Note: it.Note,
 			Modified: it.ModTime, Added: it.Added, Placed: it.Placed, Release: it.Release,
+			Origin: it.Origin, Before: it.Before, Hashed: it.Hashed, Matched: it.Matched,
 		}
 		if e := it.Entry; e != nil {
 			j.Entry, j.Arch, j.Page, j.Updates = e.ID, e.Arch, e.Page, e.Updates()

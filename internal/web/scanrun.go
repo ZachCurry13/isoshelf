@@ -17,11 +17,15 @@ import (
 //	             not to, reusing the answers isoshelf already has
 //	askAgain   - Refresh: ask every project again, however recently it was
 //	             asked
+//	askToProve - Check it: ask whatever isn't known fresh, even with
+//	             checking by itself turned off, because somebody pressed a
+//	             button whose whole point is the project's answer
 type asking int
 
 const (
 	askIfDue asking = iota
 	askAgain
+	askToProve
 )
 
 func (s *Server) start(w http.ResponseWriter, ask asking) {
@@ -42,7 +46,8 @@ func (s *Server) start(w http.ResponseWriter, ask asking) {
 
 // startScanLocked starts a scan; s.mu must be held and no other scan may be
 // running. A download may be: it has its own slot.
-func (s *Server) startScanLocked(ask asking) {
+// hash names files to hash in this run whatever else is hashed: Check it.
+func (s *Server) startScanLocked(ask asking, hash ...string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	mem := s.memoryFor(ask)
 	kind := "scan"
@@ -50,7 +55,7 @@ func (s *Server) startScanLocked(ask asking) {
 		kind = "check"
 	}
 	s.scanning = &run{kind: kind, started: s.cfg.Now(), progress: inventory.Progress{Stage: inventory.Scanning}, cancel: cancel}
-	go s.execute(ctx, s.target, s.st.Profile, mem)
+	go s.execute(ctx, s.target, s.st.Profile, mem, hash)
 }
 
 // memoryFor says whether this scan goes online and what it may reuse. Nil
@@ -60,6 +65,8 @@ func (s *Server) memoryFor(ask asking) check.Memory {
 	switch ask {
 	case askAgain:
 		return s.memory.Asking()
+	case askToProve:
+		return s.memory
 	case askIfDue:
 		if settings.On(s.loadSettings().AutoCheck) {
 			return s.memory
@@ -68,7 +75,7 @@ func (s *Server) memoryFor(ask asking) check.Memory {
 	return nil
 }
 
-func (s *Server) execute(ctx context.Context, target string, profile scan.Profile, mem check.Memory) {
+func (s *Server) execute(ctx context.Context, target string, profile scan.Profile, mem check.Memory, hash []string) {
 	client := s.client()
 	res, err := inventory.Run(ctx, inventory.Options{
 		Target:  target,
@@ -81,8 +88,9 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 		Records: s.recordsFor(target),
 		// Sharing means other isoshelfs ask for files by hash, so every
 		// image needs one rather than only the fixed-name ones.
-		HashAll: s.sharing(),
-		Now:     s.cfg.Now,
+		HashAll:   s.sharing(),
+		HashPaths: hash,
+		Now:       s.cfg.Now,
 		// Show the folder's contents as soon as they're known. Hashing the
 		// images whose filename never changes comes next, and on a USB drive
 		// that is minutes of reading; there's no reason to stare at a spinner

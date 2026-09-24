@@ -876,6 +876,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   (the checklist), `downloads.js` (the queue), `actions.js` (updating,
   removing), `catalog.js` (the Add images tab), `identify.js` (What is this?),
   `missing.js` (getting a missing image back, or not expecting it),
+  `origin.js` (where each file came from, and Check it),
   `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`

@@ -171,8 +171,9 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	// Somewhere closer than the internet, if there is one and if these bytes
 	// can be checked when they arrive.
 	urls := artifact.URLs
+	var near []string
 	if opts.Nearer != nil && artifact.Checksum != nil && artifact.Checksum.Algorithm == verify.SHA256 {
-		if near := opts.Nearer(artifact.Filename, artifact.Checksum.Hex); len(near) > 0 {
+		if near = opts.Nearer(artifact.Filename, artifact.Checksum.Hex); len(near) > 0 {
 			urls = append(append([]string{}, near...), urls...)
 		}
 	}
@@ -226,6 +227,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		HashedAt:  opts.Now().UTC(),
 		SourceURL: downloaded.URL,
 		PlacedAt:  opts.Now().UTC(),
+		Origin:    originOf(downloaded, artifact, near, opts.Now()),
 	}); err != nil {
 		return result, err
 	}
@@ -258,4 +260,19 @@ func missing(target, rel string) bool {
 	}
 	_, err := os.Lstat(filepath.Join(target, local))
 	return errors.Is(err, fs.ErrNotExist)
+}
+
+// originOf says where a download came from and what proved it: the project's
+// site or another isoshelf, and - when the bytes matched - the checksum the
+// project publishes. A copy from another isoshelf that matched that checksum
+// is as proven as a download; the checksum never came from the copy.
+func originOf(got *fetch.Result, artifact *resolve.Artifact, near []string, now time.Time) state.Origin {
+	o := state.Origin{How: state.OriginDownload, From: got.URL, At: now.UTC()}
+	if slices.Contains(near, got.URL) {
+		o.How = state.OriginCopy
+	}
+	if got.Verified {
+		o.Checked, o.CheckedAt = artifact.ChecksumURL, now.UTC()
+	}
+	return o
 }

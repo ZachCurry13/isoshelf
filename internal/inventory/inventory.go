@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"slices"
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
@@ -64,6 +65,9 @@ type Options struct {
 	// filename never changes. Sharing needs it: another isoshelf asks for a
 	// file by its hash, so a file with no hash can't be offered.
 	HashAll bool
+	// HashPaths are files to hash this run whatever else is: ones somebody
+	// asked to have checked against what the project publishes (v0.8.0).
+	HashPaths []string
 	// Now defaults to time.Now.
 	Now func() time.Time
 	// Progress, if not nil, is called as the run moves along.
@@ -139,6 +143,12 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 
 	if !opts.NoHash {
 		files := st.NeedsHash(res, opts.Catalog, opts.HashAll)
+		for _, f := range res.Files {
+			if slices.Contains(opts.HashPaths, f.Path) && st.Files[f.Path].SHA256 == "" &&
+				!slices.ContainsFunc(files, func(g scan.File) bool { return g.Path == f.Path }) {
+				files = append(files, f)
+			}
+		}
 		for i := range files {
 			err := st.HashFiles(ctx, target, files[i:i+1], func(f scan.File, done int64) {
 				progress(Progress{
@@ -159,6 +169,14 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		out.Report.Online(ctx, opts.Client, st, opts.Memory, func(done, total int) {
 			progress(Progress{Stage: Checking, Done: int64(done), Total: int64(total)})
 		})
+	}
+
+	// A file whose hash is the one the project publishes is proven, and its
+	// records say so from now on - with where that checksum came from.
+	for i, it := range out.Report.Items {
+		if it.Path != "" && it.Matched != "" && st.MarkChecked(it.Path, it.Matched, opts.Now()) {
+			out.Report.Items[i].Origin = st.Files[it.Path].Origin
+		}
 	}
 
 	progress(Progress{Stage: Saving})
