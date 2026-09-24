@@ -10,6 +10,8 @@ import (
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/auth"
+	"github.com/ZachCurry13/isoshelf/internal/catalog"
+	"github.com/ZachCurry13/isoshelf/internal/remote/remotetest"
 	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/state"
 )
@@ -44,10 +46,20 @@ func TestCopyingAFileFromTheServer(t *testing.T) {
 	}); err != nil {
 		t.Fatal(err)
 	}
-	laptop := newServer(t, dirs, target)
+	cat, err := catalog.Default()
+	if err != nil {
+		t.Fatal(err)
+	}
 	// The file comes from the test server on this machine, which the
-	// recorded answers the tests use for everything else don't cover.
-	laptop.cfg.HTTP = shared.Client()
+	// recorded answers the tests use for everything else don't cover; the
+	// rest still goes to those, so nothing here reaches the internet. Set
+	// before New, which starts work that reads it.
+	laptop := New(Config{
+		Dirs: dirs, Catalog: cat, Version: "dev", Token: testToken, Target: target,
+		HTTP: &http.Client{Transport: throughTo{
+			host: strings.TrimPrefix(shared.URL, "http://"), local: http.DefaultTransport, rest: remotetest.Recorded(),
+		}},
+	})
 	request(t, laptop, http.MethodPost, "/api/scan", nil)
 	waitIdle(t, laptop)
 
@@ -90,4 +102,18 @@ func TestCopyingAFileFromTheServer(t *testing.T) {
 	if rec := request(t, laptop, http.MethodPost, "/api/peer/copy", map[string]string{"name": name, "sha256": sum}); rec.Code != http.StatusConflict {
 		t.Errorf("a second copy answered %d, want a refusal", rec.Code)
 	}
+}
+
+// throughTo sends requests for one host - the test's own server - the real
+// way, and everything else to the recorded answers.
+type throughTo struct {
+	host        string
+	local, rest http.RoundTripper
+}
+
+func (t throughTo) RoundTrip(r *http.Request) (*http.Response, error) {
+	if r.URL.Host == t.host {
+		return t.local.RoundTrip(r)
+	}
+	return t.rest.RoundTrip(r)
 }
