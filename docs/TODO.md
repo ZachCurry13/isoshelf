@@ -320,9 +320,11 @@ starts it thinking it is a form to fill in:
 10. ~~**isoshelf updates itself**~~ *(built for v0.6.0; the shape is in
    docs/design.md under Releases.* **It can't ship until the maintainer has
    set up the signing key once** - `go run ./internal/appupdate/keygen
-   -private release-key.txt`, commit `release.pub`, `gh secret set
-   RELEASE_SIGNING_KEY < release-key.txt`, keep a copy, delete the file -
-   because the release workflow now refuses to publish an unsigned release.
+   -private release-key.txt -secret RELEASE_SIGNING_KEY`, which writes
+   `release.pub` and stores the secret through `gh`; then commit
+   `release.pub`, keep a copy of the file in a password manager, and delete
+   it - because the release workflow now refuses to publish an unsigned
+   release.
    What was learned:
    - **Windows can rename a running program but not delete it.** Undoing an
      update from inside the new program has to move it aside, not remove it;
