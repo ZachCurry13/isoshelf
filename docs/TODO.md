@@ -86,7 +86,7 @@ has a reputation. Self-update already means the warning appears only on the
 first download, because files isoshelf downloads itself don't carry the
 browser's "came from the internet" mark.
 
-**After those, in this order:** [#1] the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
+**After those, in this order:** [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12]. Any time a real
 USB drive is to hand: [#7], trying the portable zip on one.

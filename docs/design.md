@@ -408,8 +408,8 @@ alone is not an update.
 6. Growing the catalog without a new release (below). *Done.*
 Moved later, and still to come: installing older versions with a hold
 (below), Make bootable fix-ups, a CLI `isoshelf update` command (the web UI
-has it), two downloads at once from different hosts, and OpenPGP signature
-checking.
+has it; done in v0.8.5), two downloads at once from different hosts, and
+OpenPGP signature checking.
 
 **v0.3** - a redesign of the page and Settings (decided 2026-09-18; the list
 of decisions is in [STATUS.md](STATUS.md)).
@@ -751,6 +751,14 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   (saved in state), `--json`, `--catalog FILE`, `--no-hash`, `--no-update-check`.
 - The folder defaults to the drive in portable mode and is required otherwise.
 - Catalog: `--catalog`, else `<config>/catalog.toml` if present, else built in.
+- `update [flags] [folder]` (v0.8.5, #1): a check, then every update isoshelf
+  can download, through `update.Run` exactly as the page's queue does, with
+  pins kept. The old file's fate has no default: exactly one of `--keep`,
+  `--move-aside`, `--delete` (`--dry-run` needs none and changes nothing).
+  `--only ID[,ID]` names images, which also overrides a dismissal; without
+  it dismissed updates are skipped. Each update is saved onto the records as
+  they are then (`SaveOnto`), so a page open on the same folder keeps its
+  own changes.
 - `password [username]` sets the page's username and password from a shell
   on the machine; `version` prints the version; `help` lists everything.
 - Env: `GITHUB_TOKEN` (rate limit), `ISOSHELF_NO_UPDATE_CHECK`,
