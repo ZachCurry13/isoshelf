@@ -128,6 +128,45 @@ downloads, swaps and restarts on the same port; in portable mode it replaces
 **plain name** on its first update. Not in a container (the image is updated
 instead). Needs the maintainer's one-time key setup before it can ship.
 
+**Releases after v0.6.0** (decided 2026-09-23): **v0.6.1** is items 1 and 2
+below (upload speed, already built on the `missing-and-more` branch, and the
+good-neighbour pass). **v0.7.0** is the simpler shelf, next paragraph. Then
+items 3 onwards.
+
+**v0.7.0: the simpler shelf** (the maintainer, 2026-09-23, after a review of a
+simplification plan written with Gemini - whose sections on update prompts
+and background downloads described things isoshelf already did):
+
+- **Pin replaces the per-image Replace / Archive / Keep both menu.** One
+  global answer in Settings (replace or archive), plus a Pin per file:
+  pinned means *keep this exact file*. An update downloads beside it; the
+  new copy is not pinned, so later updates replace that one. Pinned files
+  are left out of the older-versions count and review, and automatic updates
+  never touch them. Remove still works and its question adds "This file is
+  pinned." A pin belongs to the file, so it goes when the file changes, like
+  an identification. The toggle lives in the details panel; a pinned row
+  shows a small pushpin.
+  - Migration: "Keep both" becomes pinned; an image with its own Archive or
+    Replace follows Settings from then on, and the page says once how many
+    changed.
+  - Three per-image markers then exist - Star (tell me if it goes missing),
+    Pin (keep this file) and Dismiss (item 4: stop telling me about this
+    update). Each has to say plainly what it does, or this is the clutter
+    it was meant to remove.
+  - SECURITY.md and design.md say each image "carries its own choice"; they
+    change with this.
+- **The to-do cards become one compact bar**: counts that filter the list
+  or open their review ("41 updates · 13 older · 3 unrecognized · 5 won't
+  boot · Archive 20.9 GB"), and the one button kept is **Update all**. Space
+  used stays on the folder line. The cards filled a phone's first screen
+  before a single image showed.
+- **The architecture badge shows only when it's unusual** - 32-bit, ARM64,
+  Multi - not "64-bit" on nearly every row. "Up to date" and the file line
+  stay as they are.
+- **In a container, isoshelf asks once** on first run whether to keep images
+  up to date automatically (Yes / Not now), off until answered. Desktop and
+  portable stay off by default, with the switch in Settings as now.
+
 **Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
 
 1. **Upload speed.** "Add a file from this computer" shows speed and time
