@@ -17,7 +17,9 @@ type Swapped struct {
 	// From and To are the versions.
 	From, To string
 	// Run is the program to start now: the running one's new place.
-	Run   string
+	Run string
+	// Dir is the staging folder, where a failed new program is put aside.
+	Dir   string
 	Moves []Move
 }
 
@@ -37,7 +39,7 @@ const manifestName = "swapped.json"
 // running program be renamed, though not replaced. If any step fails,
 // everything done so far is put back and nothing has changed.
 func (s *Staged) Swap(from string) (*Swapped, error) {
-	out := &Swapped{From: from, To: s.Version}
+	out := &Swapped{From: from, To: s.Version, Dir: s.Dir}
 	for _, f := range s.Files {
 		moves, err := swapOne(f)
 		out.Moves = append(out.Moves, moves...)
@@ -95,14 +97,22 @@ func swapOne(f StagedFile) ([]Move, error) {
 //
 // Every new program comes out before any old one goes back: a program taking
 // the plain name sets aside a file that was already there, and putting that
-// back first and then removing "the new one" would remove the wrong file.
+// back first and then moving "the new one" would move the wrong file.
+//
+// The new programs are moved into the staging folder, not deleted. The one
+// undoing the swap may be the new program itself, because it couldn't come
+// up, and Windows lets a running program be renamed but not removed. Tidy
+// clears them away later.
 func (w *Swapped) Restore() error {
 	var errs []error
 	for _, m := range w.Moves {
-		if m.Now != "" {
-			if err := os.Remove(m.Now); err != nil && !errors.Is(err, fs.ErrNotExist) {
-				errs = append(errs, err)
-			}
+		if m.Now == "" {
+			continue
+		}
+		aside := filepath.Join(w.Dir, filepath.Base(m.Now)+".failed")
+		os.Remove(aside) // one from an earlier failed update
+		if err := os.Rename(m.Now, aside); err != nil && !errors.Is(err, fs.ErrNotExist) {
+			errs = append(errs, err)
 		}
 	}
 	for i := len(w.Moves) - 1; i >= 0; i-- {
@@ -138,6 +148,17 @@ func (w *Swapped) Confirm(dir string) {
 	os.RemoveAll(filepath.Join(dir, StageDir))
 }
 
+// Previous is where the running program was before the swap: the program to
+// start again if the new one won't.
+func (w *Swapped) Previous() string {
+	for _, m := range w.Moves {
+		if m.Now == w.Run && m.Was != "" {
+			return m.Was
+		}
+	}
+	return w.Run
+}
+
 // LoadSwapped reads the record Swap wrote.
 func LoadSwapped(stageDir string) (*Swapped, error) {
 	data, err := os.ReadFile(filepath.Join(stageDir, manifestName))
@@ -149,4 +170,24 @@ func LoadSwapped(stageDir string) (*Swapped, error) {
 		return nil, err
 	}
 	return &w, nil
+}
+
+// Tidy clears away what an earlier update left beside the program: the
+// staging folder, and old programs set aside that couldn't be removed at the
+// time because they were still running. Only isoshelf's own files, by the
+// names it gave them. It is called when isoshelf starts normally - never while
+// an update is on trial, whose staging folder is still needed.
+func Tidy(exe string, portable bool) {
+	targets, err := Targets(exe, portable)
+	if err != nil || len(targets) == 0 {
+		return
+	}
+	for _, t := range targets {
+		for _, name := range []string{t.Path, t.To} {
+			if b := backupName(name); isBackup(b) {
+				os.Remove(b)
+			}
+		}
+	}
+	os.RemoveAll(filepath.Join(filepath.Dir(targets[0].Path), StageDir))
 }
