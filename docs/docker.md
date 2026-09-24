@@ -220,11 +220,15 @@ point a monitor at. The container's own health check uses it.
 ## Keeping the images up to date without doing anything
 
 A container is the one place isoshelf can do this properly, because it is
-always on. **Settings → Checking for updates → Update images automatically**:
-every day or every week it checks, downloads what it finds, verifies it
-against the project's published checksum and puts it in place. Each image
-follows the answer it already carries about its old copy — replace, archive
-or keep both — so nothing happens that the page hasn't been saying it would.
+always on, so the first time you open the page it asks whether it should:
+every day, every week, or only when you press Update. Until you answer, it
+doesn't. Change your mind any time in **Settings → Checking for updates →
+Update images automatically**. Every day or every week it checks, downloads
+what it finds, verifies it against the project's published checksum and puts
+it in place. The old copy goes the way Settings says — replace, archive or
+keep both — and a file you pinned is never touched, so nothing happens that
+the page hasn't been saying it would. Saying yes starts the first run
+straight away, and the question says beforehand how many updates that is.
 
 It stops before filling the folder rather than using the last of it, and it
 leaves a folder alone while you are scanning or downloading into it yourself.
@@ -323,8 +327,11 @@ So to look after a second folder, mount it too:
       - /mnt/tank/appdata/isoshelf:/config
 ```
 
-Then **Choose folder…** offers both, and isoshelf remembers which one you were
-last in. Bookmark them if you switch often.
+Then **Choose folder…**, under **Settings → This folder**, offers both, and
+isoshelf remembers which one you were last in. Bookmark them if you switch
+often. (On a server the card above the list is one line — when it last
+checked, and how full the drive is — so the folder, its type and choosing
+another live in Settings.)
 
 ## What is different in a container
 

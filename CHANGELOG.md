@@ -6,6 +6,48 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.7.0] - 2026-09-24
+
+The simpler shelf: fewer choices to make, and less on the page before your
+images start.
+
+### Changed
+- **Pin a file to keep it, in place of a choice for every image.** What an
+  update does with the old file - replace it, move it to the archive, or
+  keep both - is now one answer in Settings. To keep one exact file whatever
+  updates come, open it and tick **Pin this file**: the new version downloads
+  beside it, nothing tidies it away, and it's left out of the older
+  versions. A pinned row shows a small pin. Removing a pinned file still
+  works, and says it's pinned first.
+- **Your earlier answers carry over.** The first time a folder is opened, an
+  image you'd set to keep both copies has its files pinned, and any other
+  answer of its own gives way to the one in Settings. The page says once how
+  many changed.
+- **One line says what wants doing**, instead of a row of cards:
+  "41 updates · 13 older · 3 unrecognized · Archive 20.9 GB", each count
+  showing exactly those images when clicked, and **Update all** at the end.
+  Filtering to older versions offers **Review and clear**.
+- **The 64-bit badge is gone from ordinary rows.** Nearly every row said it,
+  which hid the few where it matters; 32-bit, ARM and Multi still show.
+- **On a server, the folder card is one line** - when it last checked, how
+  much the images use, how much room is left - and Refresh. The folder, its
+  type and **Choose folder…** are in Settings, under **This folder**. A
+  desktop or portable isoshelf keeps the whole card.
+
+### Added
+- **In a container, isoshelf asks once** whether to update the images by
+  itself: every day, every week, or only when you press Update. It stays off
+  until you answer. Saying yes starts the first run straight away, so the
+  question says beforehand how many updates that is, about how much it
+  downloads, and what happens to each old file.
+
+### Fixed
+- **Clicking a count opened the Filter menu** as well as filtering the list
+  (the cards' *Show them* did the same), and the list it jumped to landed
+  under the tabs at the top.
+- **"About … to download" added up the files already there**, not the
+  downloads. It now uses the size the catalog gives for each image.
+
 ## [v0.6.1] - 2026-09-24
 
 ### Added

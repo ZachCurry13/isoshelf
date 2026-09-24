@@ -22,9 +22,9 @@ four times in one evening. The releases page on GitHub is the answer, and
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; open issues #1-#7, #11, #12 and #54-#58 are the
-  roadmap (#10, the phone layout, and #59, gentler with servers, are
-  closed); Discussions on.
+- **GitHub:** public; open issues #1-#7, #11, #12, #55-#58 and #62 are the
+  roadmap (#10, the phone layout, #54, the simpler shelf, and #59, gentler
+  with servers, are closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
 
@@ -37,6 +37,8 @@ and plain words on the surface; everything adjustable in Settings.
 1. Layout: one page with a sticky jump bar (not tabs, not a sidebar).
 2. Top of page: a row of to-do cards (updates, older copies, archive, won't
    boot); "Review" opens a checklist instead of filtering the list.
+   *Replaced in v0.7.0 by one line of counts that filter the list, with
+   Update all its one button (decided 2026-09-23).*
 3. Checking: automatic on open and after scans, results remembered for a day,
    one Refresh button; a setting turns automatic checks off.
 4. Statuses: plain words ("Update available", "End of life", "Download
@@ -50,7 +52,8 @@ and plain words on the surface; everything adjustable in Settings.
    "Don't ask again" (turned back on in Settings). This relaxes the "every
    delete asks" rule for updates only; update docs/design.md when built.
    *Built in v0.3.0 (each image carries its own choice, so updates never ask)
-   and the hard rules in docs/design.md and SECURITY.md now say so.*
+   and the hard rules in docs/design.md and SECURITY.md now say so. Since
+   v0.7.0 it is one answer in Settings and a pin per file.*
 9. Settings: Light/Dark/System, high contrast, larger text, reduce motion.
 10. Records: the user chooses per folder (in the folder, in isoshelf's folder,
     or a folder they pick), plus a remembered-folders list with last used,
@@ -179,6 +182,20 @@ the archive timer and the update scheduler "next" after all three shipped.
 - Sharing belongs to servers only; the Settings footer says where settings
   really are.
 
+## Decided 2026-09-24, later (the maintainer, on pulling from the server)
+
+- **Checking a file is only ever done when asked** - "A lot of times I just
+  trust it" - with the page saying plainly which files haven't been checked.
+  The same answer settles duplicates (queue item 6).
+- **Pulling any image from the server**, catalog or not, with a record of
+  where each file and its checksum came from: item 18 in `docs/TODO.md`,
+  [#62], next after missing images. Asked to "make it look like" a file was
+  checked against its source; declined, since a false record is worse than
+  none and a real check is there for every catalog image.
+- **Saying yes to updating by itself starts the first run at once**, as the
+  switch always has, and the container's question says beforehand what that
+  run will do.
+
 ## Documents brought into line (2026-09-24, no release)
 
 A review of the documents against the code. README: the Why list leads with
@@ -200,21 +217,21 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.6.1 (2026-09-24)
+## Latest change: v0.7.0 (2026-09-24)
 
-- **Gentler with the projects' servers** ([#59]): `Retry-After` honoured from
-  every host, a long one stops rather than retries, retries spread at random,
-  and a per-server offset on the automatic schedule.
-- **Adding a file shows speed and time left**; **a one-line Linux install**
-  with a weekly workflow that runs it on x86-64 and ARM; **a new logo**.
-- **Sharing only on a server** - it could never work on a desktop, and left
-  on it made every scan hash everything - and the Settings footer worded for
-  portable and server.
-- v0.6.0 is the first signed release; v0.6.1 is the first update isoshelf
-  installs by itself, so it's the one that proves Update now for real.
-- **Next:** v0.7.0, the simpler shelf ([#54]).
+- **Pin replaces each image's own choice for old files** ([#54]): one answer
+  in Settings, and a pin keeps one exact file whatever comes. Old answers
+  become pins (keep both) or follow Settings, once, and the page says so.
+- **One line says what wants doing**, each count a filter, with Update all
+  its one button; the 64-bit badge only where it's unusual; on a server the
+  folder card is one line and the folder lives in Settings; a container asks
+  once whether to update by itself, saying what yes starts.
+- Fixed on the way: clicking a count opened the Filter menu, the list it
+  jumped to hid under the tabs, and download sizes were the files already
+  there.
+- **Next:** item 3, missing images ([#55]), then [#62].
 
-Earlier releases, v0.6.0 back to the start, are written up in
+Earlier releases, v0.6.1 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
@@ -225,3 +242,5 @@ Earlier releases, v0.6.0 back to the start, are written up in
 [#51]: https://github.com/ZachCurry13/isoshelf/pull/51
 [#54]: https://github.com/ZachCurry13/isoshelf/issues/54
 [#59]: https://github.com/ZachCurry13/isoshelf/issues/59
+[#55]: https://github.com/ZachCurry13/isoshelf/issues/55
+[#62]: https://github.com/ZachCurry13/isoshelf/issues/62

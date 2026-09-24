@@ -43,6 +43,49 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
+### v0.7.0: the simpler shelf
+
+**~~v0.7.0: the simpler shelf~~** *(released 2026-09-24, [#54])* (the
+maintainer, 2026-09-23, after a review of a simplification plan written with
+Gemini - whose sections on update prompts and background downloads described
+things isoshelf already did). As decided:
+
+- **Pin replaces the per-image Replace / Archive / Keep both menu.** One
+  answer in Settings, plus a Pin per file: *keep this exact file*. An update
+  downloads beside it; the new copy is not pinned. Pinned files are left out
+  of the older versions, and automatic updates never touch them. Remove
+  still works and says "This file is pinned." A pin belongs to the file, so
+  it goes when the file changes. Migration: "Keep both" becomes pinned; any
+  other answer of an image's own follows Settings; the page says once how
+  many changed (`MigrateChoices`).
+- **The to-do cards become one line** of counts that filter the list, with
+  **Update all** the one button (`summary.js`).
+- **The architecture badge only when it's unusual.**
+- **In a container, isoshelf asks once** whether to update by itself (every
+  day, every week, or no), off until answered.
+- **On a server, the folder card is one line**; the folder, its type and
+  Choose folder are in Settings under This folder.
+
+What was learned:
+- **`jumpTo` opened the Filter menu.** It opened the first `<details>` in
+  the part of the page it jumped to, from when the archive folded away; the
+  first one in the list is the Filter menu, so every "Show them" had opened
+  it. It only scrolls now, and parts of the page stop below the sticky bar
+  (`scroll-margin-top`) rather than under it.
+- **Saying yes to updating by itself starts a run at once** (it always has:
+  `AutoUpdateLast` is cleared so somebody sees it work). Found by answering
+  the container's new question on a test folder and watching it set off to
+  update all 31 images. The question now says what that run will do - how
+  many updates, about how much to download, and what happens to each old
+  file - and the maintainer chose to keep it starting at once.
+- **The download sizes above the list were the files already there**, not
+  the downloads: close on a real drive, 248 bytes on a folder of stand-ins.
+  `downloadSize` takes the catalog's size, and the line is redrawn once the
+  catalog has arrived.
+- `actions.js` became `actions.js`, `catalog.js` and `identify.js`; the
+  cards left `images.js` for `summary.js`. The badge test reads every script
+  rather than naming two, so a split can't slip past it.
+
 ### v0.6.0 and v0.6.1
 
 **~~v0.6.0, isoshelf updates itself~~** *(released 2026-09-23, signed; the
@@ -319,7 +362,20 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.6.0 and older
+## From STATUS.md: releases v0.6.1 and older
+
+### v0.6.1 (2026-09-24)
+
+- **Gentler with the projects' servers** ([#59]): `Retry-After` honoured from
+  every host, a long one stops rather than retries, retries spread at random,
+  and a per-server offset on the automatic schedule.
+- **Adding a file shows speed and time left**; **a one-line Linux install**
+  with a weekly workflow that runs it on x86-64 and ARM; **a new logo**.
+- **Sharing only on a server** - it could never work on a desktop, and left
+  on it made every scan hash everything - and the Settings footer worded for
+  portable and server.
+- v0.6.0 is the first signed release; v0.6.1 is the first update isoshelf
+  installs by itself, so it's the one that proves Update now for real.
 
 ### v0.6.0 (2026-09-23)
 
@@ -862,4 +918,5 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#13]: https://github.com/ZachCurry13/isoshelf/pull/13
 [#14]: https://github.com/ZachCurry13/isoshelf/pull/14
+[#54]: https://github.com/ZachCurry13/isoshelf/issues/54
 [#59]: https://github.com/ZachCurry13/isoshelf/issues/59

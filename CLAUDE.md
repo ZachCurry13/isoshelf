@@ -14,7 +14,9 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/appupdate`: isoshelf's own releases: the update notice, the signature check, and swapping in the new program
 - `internal/web`: HTTP server and the embedded page. `static/index.html` loads
   one script per part of the page: `app.js` (state, asking, drawing, wiring),
-  `images.js`, `details.js`, `checklist.js`, `downloads.js`, `actions.js`, `folders.js`,
+  `images.js`, `summary.js` (the line saying what wants doing), `details.js`,
+  `checklist.js`, `downloads.js`, `actions.js`, `catalog.js` (Add images),
+  `identify.js` (What is this?), `folders.js`,
   `archive.js`, `settings.js` (the panel), `settinglist.js` (what each
   setting is), `access.js` (sign-in and sharing), `records.js` (where a
   folder's records live), `upload.js`, `report.js`, `selfupdate.js`
