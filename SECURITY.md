@@ -44,12 +44,14 @@ broken is a security report, not a feature request.
   custom header and a same-origin `Origin` for anything that changes state,
   and never inserts text from your drive as HTML.
 - **On a server, nothing but a bare "ok" health check answers until you
-  sign in.** Run in a container or on a network address, isoshelf asks you
-  to choose a username and password the first time it's opened. Until then
-  it can only be opened with a link carrying a random secret, printed in its
-  log, and that link stops working as soon as a password exists. The same
-  checks on changes apply. It is one login, not user accounts: keep it on a
-  network you trust.
+  sign in.** Run in a container or on a network address, isoshelf asks for
+  a username and password to be chosen the first time it's opened, and until
+  then whoever opens it first is the one who chooses; it says so in its log.
+  Set `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` before the first start to
+  close that window. The log also has a link with a random secret on the end,
+  which stops working as soon as a password exists. The same checks on
+  changes apply. It is one login, not user accounts: keep it on a network you
+  trust.
 - **The catalog it downloads is validated before use.** A catalog that doesn't
   parse, has an unknown key, a pattern that won't compile, or a schema from the
   future is refused, and the previous one is kept.

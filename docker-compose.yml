@@ -1,5 +1,5 @@
-# isoshelf on a NAS or home server. See docs/docker.md, which explains the
-# token and the permissions snag that catches people out on TrueNAS.
+# isoshelf on a NAS or home server. See docs/docker.md, which explains
+# signing in and the permissions snag that catches people out on TrueNAS.
 services:
   isoshelf:
     image: ghcr.io/zachcurry13/isoshelf:latest
@@ -16,10 +16,12 @@ services:
     #   - ISOSHELF_USERNAME=you
     #   - ISOSHELF_PASSWORD=something long and random
     #
-    # isoshelf also prints a link with a secret on the end - docker logs
-    # isoshelf - which gets in without the password and is the way back if
-    # you forget it. Anyone who has either can add, replace and delete the
-    # images in the folder.
+    # Until a password is set, isoshelf also prints a link with a secret on
+    # the end (docker logs isoshelf); it stops working once there is one. If
+    # you forget the password, set the two variables above and restart, or
+    # run: docker exec -it isoshelf isoshelf password
+    # Anyone who can sign in can add, replace and delete the images in the
+    # folder.
     volumes:
       # The folder of images to look after.
       - /mnt/tank/isos:/images

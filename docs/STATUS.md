@@ -22,7 +22,8 @@ four times in one evening. The releases page on GitHub is the answer, and
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; issues #1-#7 and #54-#59 are the roadmap (#10, the phone layout, is
+- **GitHub:** public; open issues #1-#7, #11, #12 and #54-#58 are the
+  roadmap (#10, the phone layout, and #59, gentler with servers, are
   closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
@@ -186,6 +187,13 @@ first-run paragraph and the Linux USB note. SECURITY.md: server mode and
 sharing with another isoshelf are promises too. CONTRIBUTING.md stops listing
 page scripts (it had 9 of 14), and `internal/docs` now checks it and
 SECURITY.md as well. CLAUDE.md's layout names every package.
+
+Second pass: the secret link was still called "the way back from a forgotten
+password" in `docker-compose.yml` and the TrueNAS notes, though v0.4.7 ended
+that; a server with no login yet is open to whoever arrives first, which
+SECURITY.md and the README now say plainly. design.md stops listing
+dependencies and image signatures as if built, and its app-updates section
+stops saying "only a notice".
 
 ## Latest change: v0.6.1 (2026-09-24)
 

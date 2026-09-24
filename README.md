@@ -141,9 +141,9 @@ isoshelf manages files you care about, so it is deliberately cautious:
 On your PC, isoshelf opens in your web browser and only your own computer can
 reach it. In a container it has to answer to the machine's address instead, so
 there it asks you to choose a username and password the first time you open
-it — one login, not user accounts. Until you set one it prints a link with a
-secret on the end, so a fresh install can be opened at all; that link stops
-working as soon as a password exists. Keep it on a network you trust.
+it — one login, not user accounts. Until you do, whoever opens it first gets
+to choose, so do it straight away (or set them before it starts; the
+walkthrough says how). Keep it on a network you trust.
 [docs/docker.md](docs/docker.md) is the walkthrough.
 
 > **New to all this?** [Ventoy](https://www.ventoy.net) turns one USB stick
@@ -260,10 +260,12 @@ a custom app.
 [docs/catalog-sources.md](docs/catalog-sources.md), and requests go through
 [the catalog form](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
 
-**Later:** rebuild a drive from your usual set; managing a NAS's folder from
-a desktop isoshelf, without mounting the share (copying an image from another
-isoshelf already works; this is the folder itself); a Proxmox LXC with the ISO
-storage bind-mounted, written down.
+**Later:** [rebuild a drive from your usual
+set](https://github.com/ZachCurry13/isoshelf/issues/11); [move a drive's
+images to a new or bigger one](https://github.com/ZachCurry13/isoshelf/issues/12);
+managing a NAS's folder from a desktop isoshelf, without mounting the share
+(copying an image from another isoshelf already works; this is the folder
+itself); a Proxmox LXC with the ISO storage bind-mounted, written down.
 
 **On a Mac?** Use the [container version](docs/docker.md) with Docker
 Desktop. There's no native Mac build planned; if you'd use one, say so in

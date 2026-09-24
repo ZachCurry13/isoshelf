@@ -48,7 +48,7 @@ people have downloaded. Work never happens directly on it.
   isoshelf already installed asks GitHub for `/releases/latest`, which skips
   pre-releases, so marking them stopped anybody being told a new version
   existed - and the fix shipped in the release they would first have had to
-  be told about. **Before changing what a release is labelled, work out what
+  be told about. **Before changing what a release is labeled, work out what
   the copies already installed will ask for.** `internal/appupdate` reads the
   list rather than "the latest", which is the more robust thing anyway and is
   what makes a real `-rc` release work later.
