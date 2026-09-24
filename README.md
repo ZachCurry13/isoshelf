@@ -236,16 +236,15 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 
 **Next:** [*Download again* and *Stop expecting
 it*](https://github.com/ZachCurry13/isoshelf/issues/55) for images that went
-missing. After that: [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
+missing. After that: [getting any image from your own
+server](https://github.com/ZachCurry13/isoshelf/issues/62), with a record of
+where each file came from, then [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
 for a while or for good, [a note on
 where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
 you fetch yourself, and [spotting duplicate
 copies](https://github.com/ZachCurry13/isoshelf/issues/57).
 
-**Also planned:** [getting any image from your own
-server](https://github.com/ZachCurry13/isoshelf/issues/62), with a record of
-where each file came from;
-[the Fedora entries that pin a release
+**Also planned:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6),
 [`isoshelf update` on the command
 line](https://github.com/ZachCurry13/isoshelf/issues/1),
