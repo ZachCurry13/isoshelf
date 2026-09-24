@@ -195,6 +195,10 @@ the archive timer and the update scheduler "next" after all three shipped.
 - **Saying yes to updating by itself starts the first run at once**, as the
   switch always has, and the container's question says beforehand what that
   run will do.
+- **[#62]'s layout:** the server's images in Add images (an "On your server"
+  mark, and a folded "Also on your server" list), where each file came from
+  in the details panel only, and copies with no published checksum allowed,
+  marked as matching the server's copy.
 
 ## Documents brought into line (2026-09-24, no release)
 
@@ -217,17 +221,16 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.7.1 (2026-09-24)
+## Latest change: v0.8.0 (2026-09-24)
 
-- **Missing images come back in one click** ([#55]): Restore when the file is
-  still in the archive, Download again when isoshelf can fetch it, else its
-  download page; Download all when the list shows the missing ones.
-- **Stop expecting it** takes one off the missing list, and its star, until
-  it is back in the folder. Unstarring a missing image now takes it off at
-  once too.
-- **Next:** item 18, getting any image from the server ([#62]).
+- **Where each file came from** ([#62], part one): every file's records say
+  how it arrived and, when its hash matched a published checksum, which one
+  and when; the details panel shows it.
+- **Check it** reads one file on request and compares it with the published
+  checksum, going online if the answer isoshelf has is stale.
+- **Next:** [#62] part two, copying any image from the server.
 
-Earlier releases, v0.7.0 back to the start, are written up in
+Earlier releases, v0.7.1 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

@@ -32,6 +32,10 @@ broken is a security report, not a feature request.
   download, verify, rename into place, and only then deal with the old file —
   and only if you chose replacing.
 - **A download nobody can verify never replaces anything by itself.**
+- **A file is only called checked when it was.** Each file's records say
+  where it came from and, when its hash matched a checksum the project
+  publishes, which checksum and when. Nothing else marks a file checked —
+  not a copy from another isoshelf, not the name it has, not a guess.
 - **isoshelf only writes inside the folder you pick** (plus its own settings
   folder, and its own program's folder when you update it), and only
   deletes image files there. Removing one asks you first,

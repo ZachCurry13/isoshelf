@@ -43,6 +43,24 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
+### v0.8.0: where each file came from (item 18, part one)
+
+*(released 2026-09-24, [#62])*. `state.Origin` on every file record, filled
+in by downloads, uploads and any check that finds a file's hash is the
+published one; Where it came from in the details panel; Check it. What was
+learned:
+- **The check could already prove a file**, and never said so. A fixed-name
+  image is hashed every scan and compared with the published checksum, and
+  a newest-release file with a hash is compared too - but the answer only
+  ever became "up to date". `check.Item.Matched` keeps the checksum's
+  address, and `inventory.Run` records it.
+- **Remembered answers keep the checksum's address**, because `lastcheck`
+  stores the whole `resolve.Artifact`; a Check it that reuses today's answer
+  still says where the checksum came from.
+- Check it rides on an ordinary run (`HashPaths`, `askToProve`) rather than
+  a slot of its own, so the page shows its progress the way it shows any
+  scan, and it can't run beside a scan reading the same disk.
+
 ### v0.7.1: missing images
 
 **~~3. Missing images get two actions~~** *(released in v0.7.1, [#55])*: the
@@ -386,7 +404,16 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.7.0 and older
+## From STATUS.md: releases v0.7.1 and older
+
+### v0.7.1 (2026-09-24)
+
+- **Missing images come back in one click** ([#55]): Restore when the file is
+  still in the archive, Download again when isoshelf can fetch it, else its
+  download page; Download all when the list shows the missing ones.
+- **Stop expecting it** takes one off the missing list, and its star, until
+  it is back in the folder. Unstarring a missing image now takes it off at
+  once too.
 
 ### v0.7.0 (2026-09-24)
 
@@ -958,3 +985,4 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#55]: https://github.com/ZachCurry13/isoshelf/issues/55
 [#54]: https://github.com/ZachCurry13/isoshelf/issues/54
 [#59]: https://github.com/ZachCurry13/isoshelf/issues/59
+[#62]: https://github.com/ZachCurry13/isoshelf/issues/62

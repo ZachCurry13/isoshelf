@@ -69,6 +69,10 @@ And the rest:
   could clear, images you usually keep that have gone missing, files that
   won't boot, anything unrecognized, and the archive. Click a count to see
   exactly those images; *Update all* sits at the end.
+- **Where each file came from.** Each image's panel says whether isoshelf
+  downloaded it, copied it from your server, or found it in the folder, and
+  whether it matches the checksum the project publishes. *Check it* reads a
+  file you added yourself and tells you, when you ask.
 - **Missing images come back in one click.** *Restore* if the file is still
   in the archive, *Download again* if isoshelf can fetch it, or its download
   page if not. Removed one on purpose? *Stop expecting it*.
@@ -239,8 +243,8 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
 **Next:** [getting any image from your own
-server](https://github.com/ZachCurry13/isoshelf/issues/62), with a record of
-where each file came from. After that: [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
+server](https://github.com/ZachCurry13/isoshelf/issues/62), catalog or not (the
+record of where each file came from is already in). After that: [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
 for a while or for good, [a note on
 where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
 you fetch yourself, and [spotting duplicate

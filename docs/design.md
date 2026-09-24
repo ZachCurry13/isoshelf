@@ -707,6 +707,27 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
     means mDNS, which means a second dependency or a fair amount of protocol
     code, and is a decision rather than an omission. Until then the address
     is typed in.
+- **Where each file came from** (v0.8.0, #62 part one; the maintainer asked
+  for it wanting to be sure an image had come from the right source at
+  least once). `state.Origin`, on every `FileRecord`: how the file arrived
+  (`download`, `copy` from another isoshelf, `upload` from the page, or
+  empty for a file found in the folder), from where and when, and - only
+  when its hash matched a published checksum - that checksum's address and
+  when (`Checked`, `CheckedAt`). `Before` holds what the isoshelf a copy
+  came from said about its own copy.
+  - Filled in by `update.Run` as it places a download (`originOf`: a copy
+    from the server that matched the project's checksum is as proven as a
+    download, because the checksum never came from the copy), by an upload,
+    and by any check that finds a file's hash equal to the published one
+    (`check.Item.Matched`, recorded by `inventory.Run` through
+    `MarkChecked`). It belongs to the bytes and goes when the file changes.
+  - **Check it** (`/api/checkfile`) is an ordinary run that hashes one more
+    file (`inventory.Options.HashPaths`) and asks the project if the answer
+    isoshelf has is stale (`askToProve`, even with checking by itself off).
+    Only on request: the maintainer's answer to "hash by itself?" was no.
+  - The maintainer asked for a record that would "at least make it look
+    like" a file had been checked. Declined: a false record is worse than
+    none, and a real check is available for every catalog image.
 - **Not done:** a Proxmox LXC with the ISO storage bind-mounted, documented.
   An official TrueNAS store app, which is the 1.0 goal - `deploy/truenas/`
   has the start of one.

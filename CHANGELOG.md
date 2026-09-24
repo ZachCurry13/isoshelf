@@ -6,6 +6,26 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.0] - 2026-09-24
+
+### Added
+- **Where each file came from** ([#62](https://github.com/ZachCurry13/isoshelf/issues/62),
+  part one). Each image's details panel now says how its file arrived -
+  downloaded from the project's site, copied from your server, added from
+  this page, or found in the folder - and whether it matches the checksum
+  the project publishes, with where that checksum came from and when it was
+  checked. isoshelf records this for every download from now on.
+- **Check it**, for a file nobody has checked yet: isoshelf reads it and
+  compares it with the checksum the project publishes, and says what it
+  found. Only when you ask, because reading a big image off a slow drive
+  takes minutes. Where there's nothing to compare against - the project
+  publishes no checksum, or only one for its newest release - the panel
+  says so instead of offering the button.
+
+A file is only ever called checked when its hash matched a published
+checksum. Nothing else marks it: not a copy from another isoshelf, not its
+name, not a guess.
+
 ## [v0.7.1] - 2026-09-24
 
 ### Added
