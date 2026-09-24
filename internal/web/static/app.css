@@ -120,9 +120,9 @@ a:hover { text-decoration: underline; }
 }
 /* Update now, and then how the update is going. It takes the link's place on
    the right while the update runs, so the bar doesn't jump about. */
-.self-update { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; font-size: 0.9286rem; }
+.self-update { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; margin-left: auto; font-size: 0.9286rem; }
 .app-update:not([hidden]) + .self-update { margin-left: 0; }
-.self-update-failed { color: var(--bad-fg); font-weight: 500; }
+.self-update-failed { color: var(--bad-fg); font-weight: 500; overflow-wrap: anywhere; }
 
 main {
   max-width: 1280px;

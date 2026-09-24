@@ -62,16 +62,23 @@ function selfUpdateParts(u, latest) {
     case "restarting":
       return [el("span", {}, `Restarting into isoshelf ${latest || "its update"}…`)];
     case "failed":
+      // Said here rather than in the page's message line, which every
+      // refresh redraws: the reason has to stay until somebody acts on it.
       return [
-        el("span", { class: "self-update-failed", title: u.error || "" }, "The update didn't work."),
+        el("span", { class: "self-update-failed" }, `The update didn't work: ${u.error}`),
         el("button", { type: "button", class: "btn small", onclick: startSelfUpdate }, "Try again"),
       ];
   }
-  if (!latest || !u.can) return [];
-  return [el("button", {
-    type: "button", class: "btn small primary", onclick: startSelfUpdate,
-    title: "Download it, check the project's signature, and restart into it. Downloads in progress finish first.",
-  }, "Update now")];
+  const parts = [];
+  // An update that didn't start put the old program back; this is it.
+  if (u.failed) parts.push(el("span", { class: "self-update-failed" }, u.failed));
+  if (latest && u.can) {
+    parts.push(el("button", {
+      type: "button", class: "btn small primary", onclick: startSelfUpdate,
+      title: "Download it, check the project's signature, and restart into it. Downloads in progress finish first.",
+    }, "Update now"));
+  }
+  return parts;
 }
 
 async function startSelfUpdate() {
@@ -93,24 +100,21 @@ async function cancelSelfUpdate() {
   }
 }
 
-// announceSelfUpdate says once, per version, that isoshelf updated itself -
-// or why an update didn't take, and why it failed when it just did.
+// announceSelfUpdate says once, for a while, that isoshelf updated itself.
+// Once per version: reloading the page doesn't say it again.
 let selfAnnounced = "";
 function announceSelfUpdate(u) {
-  const key = [state.version, u.from, u.failed, u.stage === "failed" ? u.error : ""].join("|");
+  if (!u.from) return;
+  const key = `${u.from}>${state.version}`;
   if (key === selfAnnounced) return;
   selfAnnounced = key;
-  let seen = "";
   try {
-    seen = sessionStorage.getItem("isoshelf.self-update") || "";
+    if (sessionStorage.getItem("isoshelf.self-update") === key) return;
     sessionStorage.setItem("isoshelf.self-update", key);
   } catch {
     // Without storage it may be said again after a reload; that is all.
   }
-  if (seen === key) return;
-  if (u.stage === "failed" && u.error) showNotice(`The update didn't work: ${u.error}`, true);
-  else if (u.failed) showNotice(u.failed, true);
-  else if (u.from) flashNotice(`isoshelf updated itself from ${u.from} to ${state.version}.`);
+  flashNotice(`isoshelf updated itself from ${u.from} to ${state.version}.`);
 }
 
 // selfUpdateNote is the line under "Tell me about new isoshelf versions":
