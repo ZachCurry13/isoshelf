@@ -115,6 +115,7 @@ function pinIcon() {
 
 const SHOW = [
   ["updates", "Updates available"],
+  ["duplicates", "Possible duplicates"],
   ["favorites", "Favorites"],
   ["older", "Older versions"],
   ["caution", "Has a caution (⚠)"],
@@ -139,6 +140,7 @@ function renderFilters() {
       if (key === "updates") return has((it) => it.status === "update available" && !isDismissed(it));
       if (key === "favorites") return has((it) => it.entry && (state.tracks[it.entry] || {}).starred);
       if (key === "older") return has(isOlder);
+      if (key === "duplicates") return has(isDuplicate);
       return has((it) => cautionOf(it));
     }).map(([key, label]) => filterBox(label, view.show[key], (on) => {
       view.show[key] = on;
@@ -259,6 +261,7 @@ function shown(item) {
     (!view.show.updates || (item.status === "update available" && !isDismissed(item))) &&
     (!view.show.favorites || starred) &&
     (!view.show.older || isOlder(item)) &&
+    (!view.show.duplicates || isDuplicate(item)) &&
     (!view.show.caution || cautionOf(item));
 }
 
@@ -574,7 +577,8 @@ function renderRow(item) {
         caution ? el("span", { class: "caution", title: caution, "aria-label": `Worth knowing: ${caution}` }, "⚠") : null,
         isPinned(item) ? el("span", { class: "pin-mark", title: "Pinned: kept whatever updates come", role: "img", "aria-label": "Pinned" }, pinIcon()) : null),
       archBadge(item.arch) ? el("div", { class: "meta-line" }, archBadge(item.arch)) : null,
-      item.note ? el("div", { class: "note" }, item.note) : null)));
+      item.note ? el("div", { class: "note" }, item.note) : null,
+      duplicateNote(item))));
 
   // The file, its size and when it arrived go under the name: one line each
   // instead of four columns.
@@ -629,6 +633,7 @@ function renderRow(item) {
       onclick: () => openIdentify(item),
     }, "What is this?"));
   }
+  actions.push(...duplicateActions(item));
   actions.push(el("button", {
     type: "button", class: "btn small", "aria-label": `Everything about ${item.name}`,
     title: "Links, settings and everything else about this image",

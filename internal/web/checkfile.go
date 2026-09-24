@@ -40,3 +40,35 @@ func (s *Server) checkFile(w http.ResponseWriter, r *http.Request) {
 	s.startScanLocked(askToProve, req.Path)
 	writeJSON(w, http.StatusAccepted, map[string]string{"status": "started"})
 }
+
+// hashFiles is Make sure (v0.8.4, #57): read files that look like copies of
+// one image, so their hashes say whether they are. An ordinary scan that
+// hashes these too; nothing goes online that wouldn't have anyway.
+func (s *Server) hashFiles(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		Paths []string `json:"paths"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || len(req.Paths) == 0 {
+		writeError(w, http.StatusBadRequest, "bad request")
+		return
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	switch {
+	case s.target == "" || s.st == nil:
+		writeError(w, http.StatusBadRequest, "Choose a folder first.")
+		return
+	case s.scanBusyLocked() != "":
+		writeError(w, http.StatusConflict, s.scanBusyLocked())
+		return
+	}
+	for _, p := range req.Paths {
+		if _, ok := s.st.Files[p]; !ok {
+			writeError(w, http.StatusBadRequest, p+" isn't in the folder any more. Scan again.")
+			return
+		}
+	}
+	s.lastErr = ""
+	s.startScanLocked(askIfDue, req.Paths...)
+	writeJSON(w, http.StatusAccepted, map[string]string{"status": "started"})
+}

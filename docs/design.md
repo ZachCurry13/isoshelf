@@ -918,7 +918,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   `missing.js` (getting a missing image back, or not expecting it),
   `origin.js` (where each file came from, and Check it), `fromserver.js`
   (copying from your server in Add images), `dismiss.js` (dismissing an
-  update for a while or for good),
+  update for a while or for good), `duplicates.js` (copies of one image),
   `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
