@@ -103,6 +103,10 @@ isoshelf does that for you:
   instead of crossing the internet for it again. Every file is still checked
   against the project's own published checksum, so a local copy that turns
   out to be wrong costs one fall back and nothing else.
+- **Updates itself, carefully.** When a new isoshelf is out, **Update now**
+  downloads it, checks this project's signature, lets image downloads finish,
+  and restarts into it, with the page reconnecting by itself. If the new
+  version won't start, the old one comes back.
 - **Learns about new images on its own.** The list of images isoshelf knows is
   data, not code, so it refreshes itself from this repository — you get new
   distributions without installing a new isoshelf. It's a checkbox you can
@@ -369,13 +373,14 @@ moving a folder's records says what will move, from where to where, before it
 does, and what happened after. The Filter menu gets Done and Clear all, "Show
 them" shows exactly what its card counted, a stray "null" is gone, and a file
 that won't boot is told how to fix it by hand.<br>
-**Next: v0.6.0, isoshelf updates itself.** An *Update now* button beside
-the new-version notice, which installs only releases signed by this project
-and puts the old version back if the new one won't start
-([#52](https://github.com/ZachCurry13/isoshelf/pull/52)).<br>
-**Then:** v0.6.1 shows the speed while you add a file, and is [gentler with
+**v0.6.0: isoshelf updates itself.** *2026-09-23:* Update now in the top bar
+downloads the new version, checks this project's signature, and restarts into
+it; the page reconnects by itself, and the old version comes back if the new
+one won't start.<br>
+**Next: v0.6.1** shows the speed while you add a file, and is [gentler with
 the projects' servers](https://github.com/ZachCurry13/isoshelf/issues/59)
-when they're busy. v0.7.0 is [a simpler
+when they're busy.<br>
+**Then:** v0.7.0 is [a simpler
 page](https://github.com/ZachCurry13/isoshelf/issues/54): *pin* a file to keep
 it whatever updates come, one summary line instead of the row of cards, and
 fewer badges. After that: [*Download again* and *Stop expecting
@@ -445,8 +450,22 @@ Downloads folder. The files *inside* the portable zip don't: that's the copy
 you run from the drive, and it keeps the same name every release so nothing
 you've set up points at the wrong file.
 
-Every release also has a `SHA256SUMS` file, if you'd like to check what you
-downloaded is what was built.
+Every release also has a `SHA256SUMS` file, and from v0.6.0 its signature, if
+you'd like to check what you downloaded is what was built.
+
+### Updating it
+
+From v0.6.0, isoshelf updates itself. When a new version is out, the top bar
+says so, with an **Update now** button beside it. Press it and isoshelf
+downloads the new version, checks it carries this project's signature, lets
+any image downloads finish, and restarts into it; the page you have open
+reconnects by itself. The portable folder is updated as a whole, and a single
+download takes the plain name (`isoshelf-windows-amd64.exe`) the first time.
+If the new version won't start, the old one is put back.
+
+In a container, pull the new image instead. A copy older than v0.6.0 can't
+update itself: download v0.6.0 or newer from the releases page once, and it
+can from then on.
 
 isoshelf opens a page in your browser that only your own computer can reach.
 Pick the folder your images live in, and it takes it from there.

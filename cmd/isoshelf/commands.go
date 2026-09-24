@@ -6,12 +6,10 @@ import (
 	"errors"
 	"fmt"
 	"net"
-	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 
@@ -23,7 +21,6 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/scan"
 	"github.com/ZachCurry13/isoshelf/internal/settings"
 	"github.com/ZachCurry13/isoshelf/internal/state"
-	"github.com/ZachCurry13/isoshelf/internal/web"
 )
 
 // inventory runs a scan, and a check when opts.online is set, and prints the
@@ -144,126 +141,6 @@ func progress(e *env, opts options, p inv.Progress) {
 		msg = "Saving..."
 	}
 	fmt.Fprintf(e.stderr, "\r%-78.78s\r%s", "", msg)
-}
-
-// serveUI runs the web UI on localhost until ctx is done.
-func serveUI(ctx context.Context, e *env, opts options) error {
-	dirs, err := findDirs(e)
-	if err != nil {
-		return err
-	}
-	cat, catSource, err := loadCatalog(dirs, opts.catalog, e.stderr)
-	if err != nil {
-		return err
-	}
-	cat = withOwnImages(cat, dirs, e.stderr)
-	// Loopback unless told otherwise. Listening anywhere else is server mode:
-	// a container, or a machine someone opens the page on from their desk.
-	host := opts.listen
-	if host == "" {
-		host = "127.0.0.1"
-	}
-	listener, err := net.Listen("tcp", net.JoinHostPort(host, strconv.Itoa(opts.port)))
-	if err != nil {
-		return fmt.Errorf("can't listen on %s port %d (is isoshelf already running?): %w", host, opts.port, err)
-	}
-	anyHost := !isLoopback(host)
-
-	token, err := linkToken(e, dirs, anyHost)
-	if err != nil {
-		return err
-	}
-	// A folder named on the command line that isn't there is worth saying out
-	// loud. In a container it is the commonest first mistake - the mount was
-	// spelled differently, or left out - and without this isoshelf comes up
-	// with an empty folder chooser and no hint about why.
-	if opts.folder != "" {
-		if info, err := os.Stat(opts.folder); err != nil || !info.IsDir() {
-			fmt.Fprintf(e.stderr, "isoshelf: can't open the folder %s: %v\n", opts.folder, folderTrouble(info, err))
-			if anyHost {
-				fmt.Fprintln(e.stderr, "isoshelf: in a container this usually means nothing is mounted there. Check the mount, or choose a folder on the page.")
-			}
-		}
-	}
-	// A folder isoshelf can read but not write is the other half of the same
-	// mistake, and on its own it only shows up later as "permission denied"
-	// from whichever part of isoshelf happened to write first.
-	checkWritable(e.stderr, dirs.Config, opts.folder)
-	url := fmt.Sprintf("http://%s/?token=%s", listener.Addr(), token)
-	// The username and password, if there is one or the environment gives
-	// one. Before the server starts, so the log reads in the order things
-	// happen and nobody can reach the setup form ahead of this being said.
-	plainAddress := ""
-	if anyHost {
-		plainAddress = fmt.Sprintf("http://<this-machine>:%d/", listener.Addr().(*net.TCPAddr).Port)
-	}
-	setUpLogin(e, dirs, anyHost, plainAddress)
-
-	ui := web.New(web.Config{
-		Dirs:          dirs,
-		Catalog:       cat,
-		CatalogSource: catSource,
-		HTTP:          e.http,
-		GitHubToken:   e.getenv("GITHUB_TOKEN"),
-		Version:       version,
-		Token:         token,
-		AnyHost:       anyHost,
-		Target:        opts.folder,
-		Now:           e.now,
-	})
-	// Whatever isoshelf does while nobody is asking - updating the images on
-	// a schedule, when that is turned on - runs alongside the server and
-	// stops with it.
-	go ui.Run(ctx)
-	server := &http.Server{
-		Handler:           ui,
-		ReadHeaderTimeout: 10 * time.Second,
-	}
-	serveErr := make(chan error, 1)
-	go func() { serveErr <- server.Serve(listener) }()
-
-	if anyHost {
-		// The address it bound to is rarely the address anyone types, so say
-		// what to do rather than printing 0.0.0.0 and hoping.
-		port := listener.Addr().(*net.TCPAddr).Port
-		fmt.Fprintf(e.stdout, "isoshelf is listening on %s.\n\nOpen it from this machine's own address:\n\n  http://<this-machine>:%d/\n\n", listener.Addr(), port)
-		if haveLogin(dirs) {
-			fmt.Fprintf(e.stdout, "Sign in with the username and password you set. Forgotten them? Set\nISOSHELF_USERNAME and ISOSHELF_PASSWORD and restart, or run\n\"isoshelf password\" on this machine.\n")
-		} else {
-			fmt.Fprintf(e.stdout, "The first thing it asks is to choose a username and password. Until\nsomebody does, this link gets in without one:\n\n  http://<this-machine>:%d/?token=%s\n\nIt stops working the moment a password is set.\n", port, token)
-		}
-	} else {
-		fmt.Fprintf(e.stdout, "isoshelf is running at:\n\n  %s\n\nKeep this window open while you use it. Press Ctrl+C to stop.\n", url)
-	}
-	if e.listening != nil {
-		e.listening(url)
-	}
-	if !opts.noBrowser && !anyHost {
-		if err := e.openBrowser(url); err != nil {
-			fmt.Fprintln(e.stderr, "isoshelf: couldn't open the browser; open the link above yourself:", err)
-		}
-	}
-
-	select {
-	case err := <-serveErr:
-		return err
-	case <-ctx.Done():
-	}
-	shutdown, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	return server.Shutdown(shutdown)
-}
-
-// folderTrouble says what is wrong with a folder in words, since "no such
-// file or directory" and "not a directory" are different mistakes.
-func folderTrouble(info os.FileInfo, err error) error {
-	if err != nil {
-		return err
-	}
-	if info != nil && !info.IsDir() {
-		return errors.New("it is a file, not a folder")
-	}
-	return nil
 }
 
 // tokenFileName is where a server keeps the secret in its link.

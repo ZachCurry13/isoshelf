@@ -59,6 +59,8 @@ type stateJSON struct {
 	ConfigDir string `json:"config_dir,omitempty"`
 	// Records is where this folder's records are kept.
 	Records recordsJSON `json:"records"`
+	// SelfUpdate is isoshelf updating its own program.
+	SelfUpdate selfUpdateJSON `json:"self_update"`
 	// Peer is the other isoshelf this one looks at before the internet, and
 	// whether this one shares its own images.
 	Peer peerJSON `json:"peer"`
@@ -151,6 +153,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		Appearance:      saved.Appearance,
 		ConfigDir:       s.cfg.Dirs.Config,
 		Records:         s.recordsLocked(saved),
+		SelfUpdate:      s.selfUpdateLocked(),
 		Peer:            s.peerInfo(saved),
 		Removed:         s.removedInfo(s.target),
 		Catalog:         s.catalogStatusLocked(),

@@ -146,7 +146,37 @@ record of where things stand and what was decided.
 - The six unreleased versions went out one at a time, each on its own merge
   commit, v0.5.1 last.
 
-## Latest change: v0.5.3 (2026-09-23)
+## Decided 2026-09-23, evening (the maintainer)
+
+- **Self-update** (decisions 13 and 14): downloads only when Update now is
+  pressed; portable mode replaces all three programs; a single download takes
+  the plain name on its first update. Built first, ahead of [#6] and item 18.
+- **Queued behind it, in order:** upload speed; "Download again" and "Stop
+  expecting it" for missing images; dismissing an update for 7/30/90 days or
+  forever (any update, the timer holds, listed in Settings with Undo); a
+  "where to find it" note for images fetched by hand; noting duplicate
+  images and offering to delete a copy. Details in TODO.
+- DistroWatch's download links are a lead for the weekly catalog job, never a
+  source ([#50]). MX Linux 32-bit fixed in the catalog ([#51]).
+- The six unreleased versions, and v0.5.2 and v0.5.3, were released one at a
+  time on their own merge commits.
+
+## Latest change: v0.6.0 (2026-09-23)
+
+- **isoshelf updates itself.** Update now in the top bar downloads the new
+  version, checks the project's Ed25519 signature on `SHA256SUMS`, waits for
+  image downloads, swaps and restarts on the same port; the page reconnects.
+  If the new program can't come up it puts the old one back.
+- Tested end to end on Windows by building and running the real program
+  (`cmd/isoshelf/handover_test.go`); a real signed download from GitHub is
+  the one thing not yet tried, and can't be until v0.6.1 exists.
+- **Blocked on the maintainer:** the signing key (TODO item 10). The release
+  workflow refuses to publish without it.
+- Split on the way: `commands.go` (`ui.go`, `handover.go`), the web config
+  (`config.go`).
+- **Next:** the queue above, starting with upload speed.
+
+## v0.5.3 (2026-09-23)
 
 - **TODO item 5 is done: moving a folder's records asks first.**
   `state.Plan` says what `state.Move` would do, `/api/records/plan` serves
@@ -669,3 +699,5 @@ record of where things stand and what was decided.
 [#5]: https://github.com/ZachCurry13/isoshelf/issues/5
 [#6]: https://github.com/ZachCurry13/isoshelf/issues/6
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
+[#50]: https://github.com/ZachCurry13/isoshelf/pull/50
+[#51]: https://github.com/ZachCurry13/isoshelf/pull/51

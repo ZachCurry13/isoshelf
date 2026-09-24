@@ -37,6 +37,11 @@ COPY --from=build /out/isoshelf /usr/local/bin/isoshelf
 # os.UserConfigDir honours XDG_CONFIG_HOME. So /config is all it needs.
 ENV XDG_CONFIG_HOME=/config
 
+# A container is updated by pulling the new image, never by replacing the
+# program inside it: the next pull would put the old one back. This tells
+# isoshelf so, and the page says to pull instead of offering Update now.
+ENV ISOSHELF_CONTAINER=1
+
 # Not root. 1000 is the common default; isoshelf needs no home directory and
 # no passwd entry, so running it as any other uid works - TrueNAS runs its
 # apps as 568, and simply overrides this. What matters is that whoever it

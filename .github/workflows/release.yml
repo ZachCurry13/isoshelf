@@ -85,6 +85,18 @@ jobs:
       - name: checksums
         run: cd dist && sha256sum * > SHA256SUMS
 
+      # isoshelf installs an update of itself only if SHA256SUMS carries this
+      # project's signature (decision 14), and a release without one can't be
+      # installed that way at all - so a missing or wrong key stops the
+      # release here, with a message, rather than shipping one nobody can
+      # update to. The private key is the RELEASE_SIGNING_KEY secret; the
+      # public half is internal/appupdate/release.pub, and the tool checks
+      # its own signature against it before writing SHA256SUMS.sig.
+      - name: sign
+        env:
+          RELEASE_SIGNING_KEY: ${{ secrets.RELEASE_SIGNING_KEY }}
+        run: go run ./internal/appupdate/sign dist/SHA256SUMS
+
       # The release notes are that version's section of CHANGELOG.md, written
       # for people rather than generated from commit titles.
       - name: release notes

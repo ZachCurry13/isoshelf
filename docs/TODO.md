@@ -119,7 +119,41 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
-**After v0.5.0, in this order:** item 18 (asking the server by entry), [#1]
+**In flight: v0.6.0, isoshelf updates itself** (item 10; the maintainer asked
+for it 2026-09-23 and put it first). Built; waiting on the maintainer's
+one-time signing-key setup (item 10 says how). Decided that day: it downloads only when
+**Update now** is pressed, then checks the signature, waits for image
+downloads, swaps and restarts on the same port; in portable mode it replaces
+**all three** programs; a single download named for its version takes the
+**plain name** on its first update. Not in a container (the image is updated
+instead). Needs the maintainer's one-time key setup before it can ship.
+
+**Queued by the maintainer, 2026-09-23, after v0.6.0, in this order:**
+
+1. **Upload speed.** "Add a file from this computer" shows speed and time
+   left while it uploads, the way the downloads dock does.
+2. **Missing images get two actions:** "Download again" as the row's button
+   ("Download page" for images fetched by hand), and "Stop expecting it" in
+   the details panel - off the missing list until the image is in the folder
+   again. The missing card gets "Download all" when isoshelf can download
+   them. Today a missing image offers only Details, and stays missing until
+   it drops out of the last 10 scans.
+3. **Dismiss an update** for 7, 30 or 90 days or forever - **any** update,
+   manual or downloadable; for a downloadable one, "forever" is the "Never
+   update" list decided 2026-09-19, and Update all and automatic updates skip
+   it. **The timer holds** even if a newer version comes out. The row stays
+   listed, greyed, "Dismissed until 23 Oct", not counted on the updates card
+   and sorted with the up-to-date ones. Settings lists **everything**
+   dismissed, with Undo on each and Undo all.
+4. **A "where to find it" note for images fetched by hand**, e.g. "The
+   32-bit ISO is MX-{version}_386.iso, in the Xfce folder." Needs a new
+   catalog field, and the catalog is read with unknown fields refused
+   (`DisallowUnknownFields`), so isoshelf has to learn the field in one
+   release before `default.toml` may use it - otherwise every older copy
+   refuses the updated catalog. Show the maintainer where it would appear
+   before building it.
+
+**After those, in this order:** item 18 (asking the server by entry), [#1]
 the command line, [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12].
@@ -143,6 +177,17 @@ Worth knowing about the numbering: there is no v0.3.1 or v0.3.2 release.
 Both have their own `CHANGELOG.md` section but went out inside v0.3.3,
 because a release happens when a `v*` tag is pushed and those two were never
 tagged. Don't let it happen again - one version, one tag, one release.
+
+**Before every release, the public pages** (the maintainer, 2026-09-23: "you
+promised you'd keep all of GitHub up to date. everything!" - after the
+README's roadmap had said "Next" about work already shipped, and missed four
+features, when it was handed to another assistant as the description of
+isoshelf). Read, against the code, not from memory: the README's feature
+list, Safety first, roadmap (the released line added, **Next** moved on) and
+install steps; design.md's version plan; docs/docker.md; SECURITY.md's
+promises. Open or update an issue for anything newly planned, close the ones
+that shipped, and link them from the roadmap. A pull request isn't finished
+until what it changes is true on GitHub's `main` too.
 
 **How a release happens:** merge the pull request into `main`, then push a
 `v*` tag (or start the `release` workflow from the Actions tab with the
@@ -272,12 +317,30 @@ starts it thinking it is a form to fill in:
    rather than name, so sharing makes scans hash everything. Still to decide:
    finding the other isoshelf by itself, which means mDNS, which means a
    second dependency or a lot of protocol code.)*
-10. **isoshelf updates itself** (decisions 13 and 14): waits for downloads,
-   swaps its own program, restarts, page reconnects - and only installs a
-   release carrying the project's signature, which needs the signing key set
-   up once. Whatever downloads the new file must find its asset **by pattern**
-   (the name contains `windows-amd64.exe`), never by an exact name: release
-   files carry the version now, so an exact name goes stale every release.
+10. ~~**isoshelf updates itself**~~ *(built for v0.6.0; the shape is in
+   docs/design.md under Releases.* **It can't ship until the maintainer has
+   set up the signing key once** - `go run ./internal/appupdate/keygen
+   -private release-key.txt -secret RELEASE_SIGNING_KEY`, which writes
+   `release.pub` and stores the secret through `gh`; then commit
+   `release.pub`, keep a copy of the file in a password manager, and delete
+   it - because the release workflow now refuses to publish an unsigned
+   release.
+   What was learned:
+   - **Windows can rename a running program but not delete it.** Undoing an
+     update from inside the new program has to move it aside, not remove it;
+     the first version removed it, and the end-to-end test failed with
+     "Access is denied" when that was put back on purpose.
+   - **isoshelf picks any free port by default**, so a restarted program has
+     to be told the old one's port, or the page loses it. That, the staging
+     folder and the old version travel in `ISOSHELF_HANDOVER`; the link's
+     token in `ISOSHELF_TOKEN`, which isoshelf already read.
+   - **The page's message line is redrawn on every refresh**, so a message
+     shown from code that isn't an event handler vanishes in half a second.
+     Anything that has to stay goes somewhere the redraw leaves alone - the
+     top bar, here.
+   - Not yet tried for real: downloading a signed release from GitHub and
+     the page reloading after a real restart. The first chance is v0.6.0 to
+     v0.6.1; watch that one.)*
 11. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
    Same feature, two reasons for wanting it, both from real r/Ventoy posts
    where people lost a drive's worth of images. The list is already kept off
@@ -435,7 +498,7 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
   `images.js`, `details.js`, `downloads.js`, `actions.js`, `folders.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
-  `upload.js` and `report.js`. Read the one you
+  `upload.js`, `report.js` and `selfupdate.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
   `internal/web/static_test.go`, and in every list of them - which
   `internal/docs` checks, because this list was stale for four releases.

@@ -18,7 +18,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ZachCurry13/isoshelf/internal/appdir"
 	"github.com/ZachCurry13/isoshelf/internal/appupdate"
 	"github.com/ZachCurry13/isoshelf/internal/auth"
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
@@ -38,33 +37,6 @@ const (
 	cookieName    = "isoshelf_token"
 	requestHeader = "X-Isoshelf"
 )
-
-// Config is what the server needs.
-type Config struct {
-	Dirs    appdir.Dirs
-	Catalog *catalog.Catalog
-	// HTTP makes requests to download sites; nil means the default client.
-	HTTP        *http.Client
-	GitHubToken string
-	Version     string
-	// Token must be presented by every browser.
-	Token string
-	// Target is the folder to open. Empty means the last one used, or the
-	// drive in portable mode.
-	Target string
-	// CatalogSource says where Catalog came from: "built-in", "downloaded"
-	// or "yours". A catalog the user supplied is never replaced.
-	CatalogSource string
-	// AnyHost lets the page be opened by the machine's name or address on the
-	// network rather than only by localhost. It is set when isoshelf was told
-	// to listen somewhere other than loopback - in a container, mostly - and
-	// it is the only thing that changes about who may connect. The token, the
-	// cookie, the header on every change and the same-origin check all still
-	// apply, and they are what actually keeps other people out.
-	AnyHost bool
-	// Now defaults to time.Now.
-	Now func() time.Time
-}
 
 // Server is the web UI. Create it with New.
 type Server struct {
@@ -133,6 +105,10 @@ type Server struct {
 	lastErr  string
 	warnings []string
 	notice   *appupdate.Notice
+	// self is isoshelf updating its own program, and selfWhyNot why it
+	// can't, worked out at start and whenever somebody presses the button.
+	self       selfUpdate
+	selfWhyNot string
 	// memory is what each image's project said last time isoshelf asked. It
 	// has its own lock, so it is read and written without holding s.mu.
 	memory *lastcheck.Answers
@@ -170,6 +146,7 @@ func New(cfg Config) *Server {
 	// for the images already asked about today.
 	s.memory = lastcheck.Load(cfg.Dirs.Config)
 	s.memory.Now = cfg.Now
+	s.selfWhyNot = s.selfUpdateWhyNot()
 	s.runJob = s.runUpdate
 	if s.catSource == "" {
 		s.catSource = catalogBuiltIn
@@ -217,6 +194,8 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/settings", s.setSettings)
 	mux.HandleFunc("POST /api/records", s.setRecords)
 	mux.HandleFunc("POST /api/records/plan", s.planRecords)
+	mux.HandleFunc("POST /api/selfupdate", s.startSelfUpdate)
+	mux.HandleFunc("POST /api/selfupdate/cancel", s.cancelSelfUpdate)
 	mux.HandleFunc("POST /api/folders/forget", s.forgetFolder)
 	mux.HandleFunc("POST /api/login", s.setLogin)
 	mux.HandleFunc("POST /api/login/everywhere", s.signOutEverywhere)

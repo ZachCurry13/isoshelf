@@ -96,7 +96,7 @@ func (s *Server) autoUpdateIfDue() {
 	// A folder already being scanned or downloaded into is left alone: the
 	// next tick comes round in minutes, and interrupting somebody's own work
 	// to do this would be the wrong way round.
-	busy := s.target == "" || s.scanning != nil || s.downloading != nil || len(s.queue) > 0 || s.uploads > 0
+	busy := s.target == "" || s.scanning != nil || s.downloading != nil || len(s.queue) > 0 || s.uploads > 0 || s.selfBusyLocked()
 	s.mu.Unlock()
 	if busy {
 		return

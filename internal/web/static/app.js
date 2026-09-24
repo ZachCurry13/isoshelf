@@ -110,10 +110,16 @@ async function refresh() {
   try {
     state = await api("GET", "/api/state");
   } catch (err) {
+    // Restarting into an update, isoshelf is away for a moment on purpose.
+    if (selfUpdating()) {
+      schedule(1000);
+      return;
+    }
     showNotice(err.message, true);
     schedule(5000);
     return;
   }
+  if (selfArrived()) return;
   // A new scan changes which catalog images are already here.
   if (state.updated_at !== lastScan) {
     lastScan = state.updated_at;
@@ -130,8 +136,8 @@ async function refresh() {
   } catch (err) {
     showNotice(`Something went wrong while drawing the page: ${err.message}`, true);
   }
-  if (state.run || downloading()) {
-    schedule(600);
+  if (state.run || downloading() || selfUpdating()) {
+    schedule(selfUpdating() ? 1000 : 600);
     return;
   }
   if (state.target && !state.report && !state.error && !autoScanned) {
@@ -257,12 +263,7 @@ function render() {
   applyAppearance(state.appearance);
   renderSettings();
 
-  const update = $("app-update");
-  update.hidden = !state.app_update;
-  if (state.app_update) {
-    update.textContent = `isoshelf ${state.app_update.latest} is available`;
-    update.href = state.app_update.url;
-  }
+  renderSelfUpdate();
 
   $("target-path").textContent = state.target || "No folder chosen yet";
   $("profile").value = state.profile || "ventoy";

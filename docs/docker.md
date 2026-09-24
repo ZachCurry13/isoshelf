@@ -293,6 +293,11 @@ docker compose up -d
 Either way, isoshelf tells you when a new one is out: the top bar shows it,
 and Settings → *Tell me about new isoshelf versions* turns that off.
 
+On a desktop, isoshelf can install a new version itself with **Update now**.
+In a container it doesn't offer that, and says so: the next pull would put
+the old program back, so a container is always updated by pulling the new
+image, as above.
+
 ## Building the image yourself
 
 ```sh

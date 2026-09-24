@@ -6,6 +6,36 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.6.0] - 2026-09-23
+
+### Added
+- **isoshelf updates itself.** When a new version is out, the top bar has
+  **Update now** beside the notice. Pressing it downloads the new version,
+  checks that it carries this project's signature, waits for any image
+  downloads to finish, puts it in place and restarts into it - on the same
+  address, so the page you have open reconnects by itself and stays signed
+  in. Nothing is downloaded until you press the button.
+  - **Only a signed release is installed.** Each release's `SHA256SUMS` is
+    now signed, and isoshelf carries the key to check it. An update that
+    isn't signed, or doesn't match, is refused, and the top bar says why.
+  - **Nothing is lost if the new version won't start.** The old program is
+    set aside, not deleted, until the new one is running; if the new one
+    can't come up, the old one is put back and started again, and says what
+    happened.
+  - **The portable folder is updated as a whole** - the Windows program and
+    both Linux ones - so a stick you move between computers never carries
+    two versions.
+  - **A single download takes the plain name** on its first update:
+    `isoshelf-v0.6.0-windows-amd64.exe` becomes `isoshelf-windows-amd64.exe`,
+    so the name never says one version while running another. A shortcut to
+    the old name needs pointing at the new one, once.
+  - **Not in a container.** A container is updated by pulling the new image;
+    the page says so instead of offering the button.
+  - **Where it can't, it says why** - a development build, a folder it can't
+    write to - under "Tell me about new isoshelf versions" in Settings.
+  - This version is the first that can do it. Copies older than v0.6.0 have
+    to be updated by hand one last time.
+
 ## [v0.5.3] - 2026-09-23
 
 ### Changed
