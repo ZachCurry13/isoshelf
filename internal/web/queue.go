@@ -152,6 +152,9 @@ func (s *Server) scanBusyLocked() string {
 	if s.scanning != nil {
 		return "Wait until the scan finishes, or stop it."
 	}
+	if s.restartingLocked() {
+		return "isoshelf is restarting into its update."
+	}
 	return ""
 }
 
@@ -159,7 +162,9 @@ func (s *Server) scanBusyLocked() string {
 // queue has just run dry and something arrived, it scans the folder instead,
 // so the list catches up with what is there. s.mu must be held.
 func (s *Server) startNextLocked() {
-	if s.downloading != nil {
+	// Nothing starts while isoshelf restarts into an update: the restart
+	// would cut it off halfway.
+	if s.downloading != nil || s.restartingLocked() {
 		return
 	}
 	if len(s.queue) == 0 {

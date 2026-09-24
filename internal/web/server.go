@@ -105,6 +105,10 @@ type Server struct {
 	lastErr  string
 	warnings []string
 	notice   *appupdate.Notice
+	// self is isoshelf updating its own program, and selfWhyNot why it
+	// can't, worked out at start and whenever somebody presses the button.
+	self       selfUpdate
+	selfWhyNot string
 	// memory is what each image's project said last time isoshelf asked. It
 	// has its own lock, so it is read and written without holding s.mu.
 	memory *lastcheck.Answers
@@ -142,6 +146,7 @@ func New(cfg Config) *Server {
 	// for the images already asked about today.
 	s.memory = lastcheck.Load(cfg.Dirs.Config)
 	s.memory.Now = cfg.Now
+	s.selfWhyNot = s.selfUpdateWhyNot()
 	s.runJob = s.runUpdate
 	if s.catSource == "" {
 		s.catSource = catalogBuiltIn
@@ -189,6 +194,8 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/settings", s.setSettings)
 	mux.HandleFunc("POST /api/records", s.setRecords)
 	mux.HandleFunc("POST /api/records/plan", s.planRecords)
+	mux.HandleFunc("POST /api/selfupdate", s.startSelfUpdate)
+	mux.HandleFunc("POST /api/selfupdate/cancel", s.cancelSelfUpdate)
 	mux.HandleFunc("POST /api/folders/forget", s.forgetFolder)
 	mux.HandleFunc("POST /api/login", s.setLogin)
 	mux.HandleFunc("POST /api/login/everywhere", s.signOutEverywhere)

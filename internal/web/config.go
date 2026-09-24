@@ -33,4 +33,6 @@ type Config struct {
 	AnyHost bool
 	// Now defaults to time.Now.
 	Now func() time.Time
+	// SelfUpdate is what isoshelf needs to update its own program.
+	SelfUpdate SelfUpdateConfig
 }

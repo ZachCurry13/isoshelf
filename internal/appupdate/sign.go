@@ -36,6 +36,12 @@ func releaseKey() (key ed25519.PublicKey, ok bool) {
 	return ParsePublicKey(releasePub)
 }
 
+// HasKey says whether this build can check an update at all.
+func HasKey() bool {
+	_, ok := releaseKey()
+	return ok
+}
+
 // ParsePublicKey reads a public key written by EncodeKey.
 func ParsePublicKey(text string) (ed25519.PublicKey, bool) {
 	raw, err := base64.StdEncoding.DecodeString(strings.TrimSpace(text))
