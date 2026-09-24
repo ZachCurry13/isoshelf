@@ -10,8 +10,10 @@
 function originField(item) {
   const o = item.origin || {};
   const proof = proofOf(item, o);
+  const before = item.before || {};
   return [
     el("div", {}, arrivedHow(item, o)),
+    before.how || before.at ? el("div", { class: "muted" }, serverSaid(before)) : null,
     el("div", { class: "muted" }, proof.text),
     proof.check ? el("button", {
       type: "button", class: "btn small", disabled: scanning(),
@@ -31,6 +33,19 @@ function arrivedHow(item, o) {
   // Downloaded by an isoshelf from before these records were kept.
   if (item.placed) return `Downloaded by isoshelf${item.added ? `, ${shortDate(item.added)}` : ""}.`;
   return `Found in this folder${item.added ? `, first seen ${shortDate(item.added)}` : ""}. isoshelf doesn't know where it came from.`;
+}
+
+// serverSaid is the server's account of its own copy, for a file copied from
+// it: its word, and worded as its word.
+function serverSaid(b) {
+  const since = b.at ? ` since ${shortDate(b.at)}` : "";
+  const how = {
+    download: `downloaded there from ${hostOf(b.from)}`,
+    copy: "copied there from another isoshelf",
+    upload: "added there from a computer",
+  }[b.how] || "found in its folder, with nothing known of where it came from";
+  const proof = b.checked ? `, and it says the file matched the published checksum (${hostOf(b.checked)})` : "";
+  return `Your server has had it${since}: ${how}${proof}.`;
 }
 
 // proofOf says what shows the file is the release, or why nothing does, and
