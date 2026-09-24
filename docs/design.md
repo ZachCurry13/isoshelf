@@ -4,7 +4,7 @@ The full design: hard rules, architecture, catalog format, milestones and the
 web UI. This was CLAUDE.md until 2026-09-18; CLAUDE.md is now a short summary
 that points here. Where things stand and what comes next: [STATUS.md](STATUS.md).
 
-Working name; rename freely. An app (Windows + Linux, macOS later) that
+Working name; rename freely. An app (Windows and Linux; on a Mac, the container) that
 inventories, update-checks, downloads and verifies the bootable images on a
 Ventoy drive or in any image folder (NAS share, Proxmox ISO storage). It can be
 installed on a PC, run portably from the drive itself, or (later) run as a
@@ -70,10 +70,12 @@ project, not affiliated with Ventoy.
   - Desktop and portable: listen on `127.0.0.1` and open the browser. Guard with
     a random per-launch token and check `Host`/`Origin` headers (blocks DNS
     rebinding and cross-site requests).
-  - Server (`isoshelf serve`): configurable address and port, reached like other
-    homelab apps at `http://<nas-ip>:<port>`. Requires a login.
-- macOS later: same code, but needs a Mac or macOS CI runner, and Apple signing
-  and notarization for a smooth first launch.
+  - Server (`isoshelf ui --listen <address>`, which the container does):
+    reached like other homelab apps at `http://<nas-ip>:<port>`, with a
+    username and password.
+- No native macOS build (decided 2026-09-19): Mac users run the container
+  with Docker Desktop. A native one would need a Mac or a macOS CI runner, and
+  Apple's signing and notarization for a first launch without warnings.
 - OpenPGP: `github.com/ProtonMail/go-crypto` (not deprecated `x/crypto/openpgp`).
 - Free space and filesystem type: `golang.org/x/sys`.
 - Archives (pure Go only): stdlib `compress/gzip` and `archive/zip`,
@@ -377,14 +379,19 @@ alone is not an update.
 5. Adding catalog images that aren't on the target (the "Add" button), and
    a download queue for Add and Update. *Done.*
 6. Growing the catalog without a new release (below). *Done.*
-Moved to v0.4: installing older versions with a hold (below), Make bootable
-fix-ups, a CLI `isoshelf update` command (the web UI has it), two downloads at
-once from different hosts, and OpenPGP signature checking.
+Moved later, and still to come: installing older versions with a hold
+(below), Make bootable fix-ups, a CLI `isoshelf update` command (the web UI
+has it), two downloads at once from different hosts, and OpenPGP signature
+checking.
 
 **v0.3** - a redesign of the page and Settings (decided 2026-09-18; the list
 of decisions is in [STATUS.md](STATUS.md)).
-**v0.4** - the items moved from v0.2 above; then rebuild and repair modes.
-**Later** - server mode (below); macOS build.
+**v0.4** - running on a NAS in a container, with a login; where each folder's
+records live; updating images by itself; copying from another isoshelf.
+**v0.5** - the page redone, and a round of polish and correctness.
+**Next** - isoshelf updating itself (v0.6.0), then the order in
+[TODO.md](TODO.md): the items moved above, rebuild and repair modes, and an
+official TrueNAS app for 1.0.
 **Releases** - GitHub Actions matrix (Windows + Linux) on `v*` tags; attach
 binaries, the portable zip, and `SHA256SUMS` to the release. Every file
 attached to a release carries the version

@@ -44,7 +44,12 @@ isoshelf does that for you:
   dragging, with each button saying *Queued*, *Downloading* or *Added*.
 - **Tidying up.** Remove images you no longer want: archive them (restore any
   time) or delete them. Older copies of the same image are found and cleared in
-  one go. isoshelf remembers what left the folder and can download it again.
+  one go. isoshelf remembers what left the folder and can download it again,
+  and the archive can empty itself after 7, 30 or 90 days if you choose a
+  number.
+- **Your own files too.** Drag an image onto the page, or choose one, and it
+  goes straight into the folder: for the images no catalog knows, or one you
+  already downloaded. Nothing is written over without asking.
 - **Works out what mystery files are.** A file the catalog doesn't know by
   name — `Windows.iso` from the Media Creation Tool, or something you renamed —
   gets a "What is this?" button. isoshelf reads what the disc says about
@@ -58,8 +63,8 @@ isoshelf does that for you:
   security fixes.
 - **Says what wants doing.** Cards at the top of the page: updates available,
   older versions you could clear, what's in the archive, files that won't
-  boot, and anything it doesn't recognize. Each says how much space is
-  involved and carries the button for it.
+  boot, and anything it doesn't recognize. Each carries the button for it,
+  and says how much space is involved where that matters.
 - **Plain words, explained.** Statuses read *Update available*, *End of
   life*, *Download manually* or *Won't boot from here*, and each explains
   itself when you hover over it.
@@ -81,6 +86,13 @@ isoshelf does that for you:
   Nothing there has to be touched — the defaults are the sensible ones — and
   "Reset to defaults" puts every switch back without forgetting your
   folders.
+- **Remembers your folders.** The folder chooser lists the ones you've used,
+  with when you last looked and how many images each held, even when the
+  drive isn't plugged in. *Forget* takes one off the list without touching
+  anything in it.
+- **Something wrong? One button.** *Report a problem* opens a bug report with
+  the details filled in. You read it and send it yourself; isoshelf sends
+  nothing.
 - **Keeps them up to date on its own, if you want.** Turn it on and isoshelf
   checks on a schedule, downloads every update it finds, verifies it against
   the project's published checksum and puts it in place — with each image
@@ -128,10 +140,10 @@ isoshelf manages files you care about, so it is deliberately cautious:
 
 | Target | How |
 |---|---|
-| **Ventoy USB drive** | Install isoshelf on your PC, or copy the portable folder onto the drive and run it from there. Portable mode keeps its settings and temporary files on the drive. |
+| **Ventoy USB drive** | Run isoshelf on your PC, or copy the portable folder onto the drive and run it from there. Portable mode keeps its settings and temporary files on the drive. |
 | **Any folder** | Point it at a folder instead of a drive, such as ISOs on a NAS share or your downloads. Compressed card images (`.img.xz`) count too. |
 | **Proxmox ISO storage** | Point it at `/var/lib/vz/template/iso` (or `/mnt/pve/<storage>/template/iso` for NAS storage). Proxmox only lists `.iso` and `.img` files at the top level of that folder, and isoshelf follows the same rule. |
-| **NAS or home server** | A container, including [TrueNAS SCALE as a custom app](docs/docker.md). isoshelf runs next to the files rather than across the network, which for a 6 GB image is the difference between minutes and hours. Open it from your own machine at `http://<server>:8765/?token=...`, like your other homelab apps. |
+| **NAS or home server** | A container, including [TrueNAS SCALE as a custom app](docs/docker.md). isoshelf runs next to the files rather than across the network, which for a 6 GB image is the difference between minutes and hours. Open it from your own machine at `http://<server>:8765/` and sign in, like your other homelab apps. |
 
 On your PC, isoshelf opens in your web browser and only your own computer can
 reach it. In a container it has to answer to the machine's address instead, so
@@ -250,10 +262,10 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 row of things to do, plain-language statuses, one filter menu with chips, a
 details panel for each image, Archive and History apart, and
 [a layout for phones](https://github.com/ZachCurry13/isoshelf/issues/10).<br>
-**v0.3.1: Settings.** *Released 2026-09-21:* one searchable Settings panel —
+**v0.3.1: Settings.** *2026-09-21, released as part of v0.3.3:* one searchable Settings panel —
 light and dark themes, higher contrast, larger text, less movement, what
 happens to the files updates replace, and Reset to defaults.<br>
-**v0.3.2: checking by itself.** *Released 2026-09-21:* the page checks for
+**v0.3.2: checking by itself.** *2026-09-21, released as part of v0.3.3:* the page checks for
 updates when it opens and after each scan, remembers what each project said
 for a day, and has one Refresh button. Both can be turned off in Settings.<br>
 **v0.3.3: fixes and tidying.** *Released 2026-09-21:* the Filter menu stays
@@ -357,14 +369,31 @@ moving a folder's records says what will move, from where to where, before it
 does, and what happened after. The Filter menu gets Done and Clear all, "Show
 them" shows exactly what its card counted, a stray "null" is gone, and a file
 that won't boot is told how to fix it by hand.<br>
-**Next:** [the Fedora entries that pin a release
-number](https://github.com/ZachCurry13/isoshelf/issues/6).<br>
-**Also in v0.5:** [`isoshelf update` on the command
-line](https://github.com/ZachCurry13/isoshelf/issues/1), [installing an older
-version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
-[fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
+**Next: v0.6.0, isoshelf updates itself.** An *Update now* button beside
+the new-version notice, which installs only releases signed by this project
+and puts the old version back if the new one won't start
+([#52](https://github.com/ZachCurry13/isoshelf/pull/52)).<br>
+**Then:** v0.6.1 shows the speed while you add a file, and is [gentler with
+the projects' servers](https://github.com/ZachCurry13/isoshelf/issues/59)
+when they're busy. v0.7.0 is [a simpler
+page](https://github.com/ZachCurry13/isoshelf/issues/54): *pin* a file to keep
+it whatever updates come, one summary line instead of the row of cards, and
+fewer badges. After that: [*Download again* and *Stop expecting
+it*](https://github.com/ZachCurry13/isoshelf/issues/55) for images that went
+missing, [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
+for a while or for good, [spotting duplicate
+copies](https://github.com/ZachCurry13/isoshelf/issues/57), and [a note on
+where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
+you fetch yourself.<br>
+**Also planned:** [the Fedora entries that pin a release
+number](https://github.com/ZachCurry13/isoshelf/issues/6),
+[`isoshelf update` on the command
+line](https://github.com/ZachCurry13/isoshelf/issues/1),
 [two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
-and [signature checking](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
+[installing an older version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
+[fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
+and [signature checking for the images
+themselves](https://github.com/ZachCurry13/isoshelf/issues/5).<br>
 **1.0:** an official TrueNAS app, so it installs from the store rather than as
 a custom app.<br>
 **Ongoing:** more images in the catalog. 86 so far; the wish list is in
@@ -373,7 +402,11 @@ a custom app.<br>
 **Later:** rebuild a drive from your usual set; managing a NAS's folder from
 a desktop isoshelf, without mounting the share (copying an image from another
 isoshelf already works; this is the folder itself); a Proxmox LXC with the ISO
-storage bind-mounted, written down; a macOS build.
+storage bind-mounted, written down.
+
+**On a Mac?** Use the [container version](docs/docker.md) with Docker
+Desktop. There's no native Mac build planned; if you'd use one, say so in
+[Discussions](https://github.com/ZachCurry13/isoshelf/discussions).
 
 ## Running from a USB drive on Linux
 
