@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/ZachCurry13/isoshelf/internal/scan"
 )
@@ -23,11 +24,16 @@ type options struct {
 	// page is for the person at the keyboard. Anything else is server mode,
 	// which is a deliberate choice and changes what the server accepts.
 	listen string
+	// For update: which entries (--only, repeatable or comma-separated),
+	// what happens to each old file, and whether to only say what it would do.
+	only                       []string
+	keep, moveAside, deleteOld bool
+	dryRun                     bool
 }
 
 // parseFlags reads flags and the folder, in any order.
 func parseFlags(cmd string, args []string, stderr io.Writer) (options, error) {
-	opts := options{online: cmd == "check"}
+	opts := options{online: cmd == "check" || cmd == "update"}
 	fs := flag.NewFlagSet(cmd, flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
 	fs.StringVar(&opts.catalog, "catalog", "", "")
@@ -35,6 +41,20 @@ func parseFlags(cmd string, args []string, stderr io.Writer) (options, error) {
 		fs.IntVar(&opts.port, "port", 0, "")
 		fs.BoolVar(&opts.noBrowser, "no-browser", false, "")
 		fs.StringVar(&opts.listen, "listen", "", "")
+	} else if cmd == "update" {
+		fs.StringVar(&opts.profile, "profile", "", "")
+		fs.Func("only", "", func(v string) error {
+			for _, id := range strings.Split(v, ",") {
+				if id = strings.TrimSpace(id); id != "" {
+					opts.only = append(opts.only, id)
+				}
+			}
+			return nil
+		})
+		fs.BoolVar(&opts.keep, "keep", false, "")
+		fs.BoolVar(&opts.moveAside, "move-aside", false, "")
+		fs.BoolVar(&opts.deleteOld, "delete", false, "")
+		fs.BoolVar(&opts.dryRun, "dry-run", false, "")
 	} else {
 		fs.StringVar(&opts.profile, "profile", "", "")
 		fs.BoolVar(&opts.json, "json", false, "")

@@ -25,6 +25,7 @@ Usage:
   isoshelf [ui] [flags] [folder]    open isoshelf in your web browser
   isoshelf scan  [flags] [folder]   list the images in a folder (offline)
   isoshelf check [flags] [folder]   list them and check for updates online
+  isoshelf update [flags] [folder]  download and verify every update it can
   isoshelf password [username]      set the username and password for the page
   isoshelf version                  print the version
 
@@ -40,6 +41,15 @@ Flags for scan and check:
   --catalog FILE            use this catalog instead of the built-in one
   --no-hash                 don't hash images whose filename never changes
   --no-update-check         don't check for a newer version of isoshelf
+
+Flags for update (say what happens to each old file; there is no default):
+  --keep                    keep the old file beside the new one
+  --move-aside              move the old file to the archive (undo any time)
+  --delete                  delete the old file once the new one is verified
+  --only ID[,ID]            update only these images (catalog ids, as check
+                            --json prints them); may be given more than once
+  --dry-run                 say what it would download, and change nothing
+  --profile, --catalog      as for scan and check
 
 Flags for ui:
   --port N                  listen on this port (default: any free port)
@@ -100,7 +110,7 @@ func run(ctx context.Context, args []string, e *env) int {
 	cmd := "ui"
 	if len(args) > 0 && (args[0] == "" || args[0][0] != '-') {
 		switch args[0] {
-		case "ui", "scan", "check":
+		case "ui", "scan", "check", "update":
 			cmd, args = args[0], args[1:]
 		case "password":
 			if err := setPassword(e, os.Stdin, args[1:]); err != nil {
@@ -132,9 +142,12 @@ func run(ctx context.Context, args []string, e *env) int {
 		fmt.Fprintln(e.stderr, "isoshelf:", err)
 		return 2
 	}
-	if cmd == "ui" {
+	switch cmd {
+	case "ui":
 		err = serveUI(ctx, e, opts)
-	} else {
+	case "update":
+		err = updateImages(ctx, e, opts)
+	default:
 		err = inventory(ctx, e, opts)
 	}
 	if err != nil {
