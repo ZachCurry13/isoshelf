@@ -99,11 +99,12 @@ And the rest:
   with the details filled in. You read it and send it yourself; isoshelf sends
   nothing.
 - **Updating by itself, if you ask.** On a schedule, verified the same way,
-  each image following the answer it already carries about its old copy, and
-  stopping before the folder fills. Off unless you turn it on.
+  doing with each old copy what Settings says, never touching a pinned file,
+  and stopping before the folder fills. Off unless you turn it on.
 - **The short way round.** If another isoshelf on your network already has an
   image (the one on your NAS, usually), yours copies it from there, still
-  checked against the project's own published checksum.
+  checked against the project's own published checksum. *Add images* marks
+  what your server has, catalog or not, and copies any of it in one click.
 - **Updating itself, carefully.** **Update now** downloads the new isoshelf,
   checks this project's signature, lets image downloads finish and restarts
   into it. If the new version won't start, the old one comes back.
@@ -242,9 +243,7 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** [getting any image from your own
-server](https://github.com/ZachCurry13/isoshelf/issues/62), catalog or not (the
-record of where each file came from is already in). After that: [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
+**Next:** [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
 for a while or for good, [a note on
 where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
 you fetch yourself, and [spotting duplicate

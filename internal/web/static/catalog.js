@@ -99,11 +99,13 @@ async function renderCatalog() {
     } catch {
       return;
     }
+    forgetServerFiles();
     // The download sizes above the list come from the catalog, and they
     // were drawn before it arrived.
     renderFirstRun();
     renderTodo();
   }
+  loadServerFiles();
   const missing = catalog.filter((e) => !e.on_target);
   $("more-count").textContent = plural(missing.length, "image");
   // Images added from here stay listed, ticked, until the downloads are
@@ -115,6 +117,7 @@ async function renderCatalog() {
   list.replaceChildren();
   for (const entry of shown) {
     const room = jobFor(entry.id) ? null : fitsHere(entry);
+    const theirs = serverFileFor(entry.id);
     list.append(el("li", {},
       logoTile(entry),
       el("div", { class: "info" },
@@ -122,6 +125,7 @@ async function renderCatalog() {
         el("div", { class: "meta-line" },
           archBadge(entry.arch),
           entry.popular ? el("span", { class: "pill s-ok", title: "Turns up in public round-ups of what people are running. A hand-picked hint, not a rating." }, "popular") : null,
+          theirs ? serverMark(theirs) : null,
           entry.size ? el("span", { class: "muted" }, `about ${formatBytes(entry.size)}`) : null),
         el("div", { class: "kind" },
           UPDATES_LABEL[entry.updates] || entry.updates,
@@ -129,8 +133,9 @@ async function renderCatalog() {
             ? el("span", { class: "wont-fit" }, fitsHere(entry, true) ? " · no space once the queued downloads are in" : " · bigger than the space left here")
             : null)),
       entry.page ? el("a", { class: "btn small", href: entry.page, target: "_blank", rel: "noopener noreferrer" }, "Page") : null,
-      addButton(entry, room)));
+      theirs ? copyButton(theirs, entry.id) : addButton(entry, room)));
   }
+  renderServerOnly();
   $("more-shown").textContent = shown.length === listed.length
     ? ""
     : `showing ${shown.length} of ${listed.length}`;

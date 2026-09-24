@@ -22,9 +22,10 @@ four times in one evening. The releases page on GitHub is the answer, and
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; open issues #1-#7, #11, #12, #56-#58 and #62 are the
+- **GitHub:** public; open issues #1-#7, #11, #12 and #56-#58 are the
   roadmap (#10, the phone layout, #54, the simpler shelf, #55, missing
-  images, and #59, gentler with servers, are closed); Discussions on.
+  images, #59, gentler with servers, and #62, where each file came from,
+  are closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
 
@@ -188,7 +189,7 @@ the archive timer and the update scheduler "next" after all three shipped.
   trust it" - with the page saying plainly which files haven't been checked.
   The same answer settles duplicates (queue item 6).
 - **Pulling any image from the server**, catalog or not, with a record of
-  where each file and its checksum came from: item 18 in `docs/TODO.md`,
+  where each file and its checksum came from: item 18, now in `docs/archive.md`,
   [#62], next after missing images. Asked to "make it look like" a file was
   checked against its source; declined, since a false record is worse than
   none and a real check is there for every catalog image.
@@ -221,16 +222,15 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.0 (2026-09-24)
+## Latest change: v0.8.1 (2026-09-24)
 
-- **Where each file came from** ([#62], part one): every file's records say
-  how it arrived and, when its hash matched a published checksum, which one
-  and when; the details panel shows it.
-- **Check it** reads one file on request and compares it with the published
-  checksum, going online if the answer isoshelf has is stale.
-- **Next:** [#62] part two, copying any image from the server.
+- **Copy any image from your server** ([#62], part two): Add images marks
+  what the server has and copies it; files the catalog doesn't know are in a
+  folded list. A copy is checked against the server's copy, recorded as a
+  copy with the server's account of it, and never called checked for that.
+- **Next:** item 4, dismissing an update ([#56]).
 
-Earlier releases, v0.7.1 back to the start, are written up in
+Earlier releases, v0.8.0 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
@@ -243,3 +243,4 @@ Earlier releases, v0.7.1 back to the start, are written up in
 [#59]: https://github.com/ZachCurry13/isoshelf/issues/59
 [#55]: https://github.com/ZachCurry13/isoshelf/issues/55
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
+[#56]: https://github.com/ZachCurry13/isoshelf/issues/56

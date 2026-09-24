@@ -6,6 +6,25 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.1] - 2026-09-24
+
+### Added
+- **Copy any image from your server** ([#62](https://github.com/ZachCurry13/isoshelf/issues/62),
+  part two). With **Copy from another isoshelf first** set up, *Add images*
+  marks each image your server has with *On your server*, and its button
+  copies it from there. Files the catalog doesn't know are in a folded *Also
+  on your server* list at the bottom, with *Copy* too.
+- A copy is checked against your server's copy on the way in, and its
+  details say so: where it came from, what your server knew about its own
+  copy, and - once a check has compared it - whether it matches the
+  checksum the project publishes. It is never called checked just for
+  having come from your server, and it never replaces a file that's
+  already here.
+
+### Fixed
+- The README said automatic updates follow each image's own answer about
+  its old copy, which stopped being true in v0.7.0.
+
 ## [v0.8.0] - 2026-09-24
 
 ### Added

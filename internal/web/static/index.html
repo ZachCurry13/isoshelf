@@ -18,6 +18,7 @@
 <script src="/static/identify.js" defer></script>
 <script src="/static/missing.js" defer></script>
 <script src="/static/origin.js" defer></script>
+<script src="/static/fromserver.js" defer></script>
 <script src="/static/folders.js" defer></script>
 <script src="/static/archive.js" defer></script>
 <script src="/static/settings.js" defer></script>
@@ -191,6 +192,11 @@
       </div>
       <ul class="catalog" id="catalog"></ul>
       <p class="muted more-hint" id="catalog-request"></p>
+      <!-- Files your server has that the catalog doesn't know (v0.8.1). -->
+      <details class="server-only" id="server-only" hidden>
+        <summary>Also on your server <span class="muted" id="server-only-count"></span></summary>
+        <ul class="catalog" id="server-only-list"></ul>
+      </details>
     </details>
   </section>
 

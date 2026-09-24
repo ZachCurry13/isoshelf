@@ -43,6 +43,108 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
+### v0.8.1: copying anything from the server (item 18, part two)
+
+*(released 2026-09-24, [#62])*. `/api/share/list` on the sharing isoshelf,
+`peer.Client.List`, `/api/peer/files` and `/api/peer/copy` on the laptop, a
+copy job in the download queue (`runCopy`), and in Add images the "On your
+server" mark and the folded "Also on your server" list (`fromserver.js`).
+What was learned:
+- **`s.catalog()` takes `s.mu`**, so calling it with the lock held hangs the
+  request for good; the copy handler did, and the test sat there until it
+  was stopped. Under the lock, read `s.cat`.
+- **A server that found a file on its first scan knows nothing of when it
+  got it** (the first scan sets no `FirstSeen`), so `Before` can be empty,
+  and that is the honest answer; the page then says only that it came from
+  the server.
+- The newest release of a catalog image already came from the server
+  through `Nearer`, checked against the project; a copy is for everything
+  else, and the next check proves it if it happens to be the release.
+
+The item as it was written, for the reasoning:
+
+18. **Ask the server by entry, not only by hash** (the maintainer,
+   2026-09-23, two questions that turn out to be one answer: "is it possible
+   to have some sort of marker in the catalog that says there is a local copy
+   on the server?" and "if there are files that have to be manually
+   downloaded, but I have it on the server already, is it possible to just
+   download from the server instead of doing another manual pull? Since I
+   obviously did that already").
+
+   **Why neither works today.** The whole sharing protocol is keyed on the
+   checksum: `share/have?name=X&sha256=Y`, and `sharedFile` refuses without a
+   hash. That is what makes it safe - the peer is reached, never trusted, and
+   the bytes are checked against the project's own published checksum. A
+   manual entry has no published checksum, so isoshelf cannot even form the
+   question. Not an oversight; a consequence.
+
+   **The one new endpoint both need.** Ask by entry id: "what do you have for
+   `ubuntu-desktop`?" The answer is the filename, the server's own SHA256, the
+   size, and the version it believes the file to be. One call with no entry
+   given returns the lot, which is what the Add-images marker needs - one
+   round trip for the whole list, not one per image.
+
+   **The rule that has to hold.** Bytes copied this way are checked against
+   the hash the server gave, which proves the copy is identical to what is on
+   the server and proves nothing about provenance. So the file arrives
+   **Unverified**, and the existing rule applies unchanged: an unverified
+   download never replaces anything. Adding a manual image the folder doesn't
+   have is fine; overwriting one is not. Say in the UI whose word it rests on
+   - the person who put it there - rather than implying a check happened.
+   - The server can also hand back the entry and version it has recorded, so
+     the copy arrives identified rather than landing as "Unrecognized". That
+     is the same kind of assertion as somebody naming a file by hand, and
+     should be recorded as one.
+   - Sharing is off unless turned on and the asker must be signed in. Both
+     already true; neither changes.
+
+   **Asked for again, and wider, 2026-09-24** (the maintainer: "pull any
+   image locally from the server, even if it isn't in the normal catalog.
+   When pulling any image, do we keep the verified checksums locally? ...
+   making sure I pull the image from the correct source at least once"). It
+   is [#62], and **next after missing images** (decided that day), since
+   Download again can then try the server first.
+   - **Any image**, not only catalog ones: the laptop lists what the server
+     has that it doesn't, and copies it over.
+   - **A record of where each file came from**, which isoshelf doesn't keep
+     today. `FileRecord` has the file's own hash and, for a download, the
+     address and date - and for a copy from the server that address is the
+     server's. Keep instead: where the checksum came from and when it was
+     checked against it, and where the bytes came from (the project's site,
+     the server, added by hand). The server hands its record over with the
+     copy, so the laptop can say "no published checksum; copied from your
+     NAS, which has had it since March (added by hand)".
+   - **Checking a file by hand against the published checksum**, for a
+     catalog image that arrived any other way (a torrent, a USB stick). A
+     match proves it is byte for byte the release, which is worth more than
+     where it came from, and it is true. Only when asked, as for duplicates:
+     until then the page says the file hasn't been checked, and offers to.
+   - **Never a record of a check that didn't happen.** The maintainer asked
+     for it to "at least make it look like I did"; that was declined, and
+     said so. A false provenance record is worse than none - it is exactly
+     what looks bad if anyone ever looks - and a real check is available for
+     every catalog image anyway.
+
+   **Decided 2026-09-24, and what is left.** The maintainer picked: the
+   server's images show **in Add images** - a catalog image the server has
+   gets "On your server" and its Add button copies from there, and files the
+   catalog doesn't know go in a folded "Also on your server" list at the
+   bottom; provenance shows **in the details panel only**; and a copy with
+   no published checksum is allowed, **marked** as matching the server's
+   copy, never replacing anything. Part one (v0.8.0) built the record,
+   Where it came from and Check it. Part two is the rest: a list endpoint on
+   the sharing isoshelf (every hashed file, with its entry, version and
+   `Origin`), `peer.Client.List`, the marker and the folded list, and Copy
+   for a file that isn't the newest release (the newest already comes from
+   the server through the existing `Nearer` path, checked against the
+   project), verified against the server's hash and recorded with `Before`.
+
+   **Not in v0.5.0**, which is polish and correctness only. This changes what
+   "verified" means at the edges and deserves a release where the
+   unverified-copy rules get real tests, rather than riding along in one whose
+   whole point is that nothing in it is half-built. First thing after, ahead
+   of [#1] and [#4]: it is what makes running the server worth it.
+
 ### v0.8.0: where each file came from (item 18, part one)
 
 *(released 2026-09-24, [#62])*. `state.Origin` on every file record, filled
@@ -404,7 +506,15 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.7.1 and older
+## From STATUS.md: releases v0.8.0 and older
+
+### v0.8.0 (2026-09-24)
+
+- **Where each file came from** ([#62], part one): every file's records say
+  how it arrived and, when its hash matched a published checksum, which one
+  and when; the details panel shows it.
+- **Check it** reads one file on request and compares it with the published
+  checksum, going online if the answer isoshelf has is stale.
 
 ### v0.7.1 (2026-09-24)
 

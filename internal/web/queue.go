@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/ZachCurry13/isoshelf/internal/peer"
 	"github.com/ZachCurry13/isoshelf/internal/update"
 )
 
@@ -37,6 +38,9 @@ type job struct {
 	// automatic marks a download isoshelf started by itself, so the page can
 	// say so rather than leaving somebody wondering what they pressed.
 	automatic bool
+	// copy, when set, is a file to copy from the server rather than an
+	// image to download (fromserver.go).
+	copy *peer.SharedFile
 }
 
 // finishedJob is a download that ended, and how.

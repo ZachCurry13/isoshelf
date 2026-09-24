@@ -243,7 +243,14 @@ and the login for it.
 
 After that, an image this one already has arrives over your own network in a
 minute instead of over the internet in an hour. Anything it hasn't got is
-downloaded as before.
+downloaded as before. The laptop's **Add images** marks what this machine
+has, and copies any of it with **Copy** — including images the catalog
+doesn't know, in a folded **Also on your server** list at the bottom.
+
+A copy of a file the project publishes no checksum for can only be checked
+against this machine's own copy. It arrives saying exactly that, with what
+this machine knew about where it came from, and like any unverified file it
+never replaces anything.
 
 **Every file is still checked against the project's own published checksum**,
 wherever the bytes came from. That is what makes the local copy safe to

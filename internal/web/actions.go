@@ -75,6 +75,9 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 // runUpdate does the download itself, on a state loaded fresh from disk so
 // the page can keep reading the current one.
 func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
+	if j.copy != nil {
+		return s.runCopy(ctx, j)
+	}
 	st, err := s.recordsFor(j.target).Load(j.target)
 	if err != nil {
 		return "", err
