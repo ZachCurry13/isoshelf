@@ -9,6 +9,16 @@ Every image here was checked against the project's own site before it went in.
 Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml);
 requests are looked at every Monday.
 
+## 2026-09-23
+
+### Fixed
+- **MX Linux Xfce (32-bit)** said an update was waiting and gave no way to
+  find it. The update is real - MX 23.6 has a 32-bit ISO - but the link went
+  to MX's download page, which now shows only MX 25, and that has no 32-bit
+  ISO. The link now goes to the folder that holds it. The newer file is also
+  called `MX-23.6_386.iso` rather than `_x32`, which isoshelf didn't
+  recognise; it does now. Found by the maintainer.
+
 ## 2026-09-18
 
 ### Added

@@ -56,6 +56,14 @@ Update and EOL checks work, but there's nothing to download yet.
   are. MX 25 renamed files to `MX-25.2_Xfce_x64.iso`; monthly respins add the
   month (`MX-23.1_November_x64.iso`). No 32-bit MX 25 ISO, so x32 is pinned to
   23.
+  - Checked 2026-09-23 in a browser: the newest 32-bit ISO is
+    `Old/MX-23.6/Xfce/MX-23.6_386.iso` on SourceForge, with a `.sha256`, `.md5`
+    and `.sig` beside it - named `_386`, not `_x32`, though the folder's
+    README says `_i386`. MX's own download page lists only MX 25, so the
+    32-bit entry's `page` links that folder instead, and has to move if a
+    23.7 ever appears. The checksum is there, but SourceForge serves it
+    through a redirect to a mirror, which the catalog refuses, so the entry
+    stays check-only.
 - **Manjaro Xfce**: listing of `manjaro.org/products/download/x86/` (the address
   without the trailing slash redirects). No directory index for the exact
   filename.

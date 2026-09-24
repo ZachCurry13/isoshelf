@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026091804 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026092301 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -992,9 +992,14 @@ channel = "latest"
 id = "mx-linux-xfce-x32"
 name = "MX Linux Xfce (32-bit)"
 arch = "x86"
-match = 'MX-(?P<version>\d+(?:\.\d+)*)_x32\.iso'
-samples = ["MX-23.3_x32.iso"]
-page = "https://mxlinux.org/download-links/"
+# MX-23.6's 32-bit ISO is named "_386" (its README says "_i386"); older ones
+# said "_x32". All three are the same image.
+match = 'MX-(?P<version>\d+(?:\.\d+)*)_(?:x32|386|i386)\.iso'
+samples = ["MX-23.3_x32.iso", "MX-23.6_386.iso"]
+# MX's download page shows only MX 25, which has no 32-bit ISO, so the link
+# goes to the folder that holds the newest 32-bit one. It names a version:
+# move it when endoflife.date's cycle 23 moves past 23.6.
+page = "https://sourceforge.net/projects/mx-linux/files/Old/MX-23.6/Xfce/"
 category = "desktop"
 family = "mx-linux"
 icon = "mxlinux"
