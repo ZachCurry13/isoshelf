@@ -100,6 +100,13 @@ func (ec entryCheck) checkExtras(hashes map[string]string) {
 	case len(c) > maxCaution:
 		ec.problem("caution", "is %d characters; keep it under %d, one plain sentence", len(c), maxCaution)
 	}
+	// Where to find a file is read beside a link, so it stays a line or two.
+	switch f := e.Find; {
+	case strings.ContainsAny(f, "\r\n"):
+		ec.problem("find", "must be one line")
+	case len(f) > 2*maxCaution:
+		ec.problem("find", "is %d characters; keep it under %d", len(f), 2*maxCaution)
+	}
 
 	// A size is a hint, so it only has to be believable for an image: a
 	// mistyped one (bytes read as megabytes, or an extra zero) would be worse

@@ -329,6 +329,12 @@ alone is not an update.
     and a key under the list when any row has one. It is never a block:
     people keep old images on purpose. Keep cautions to verifiable facts about
     support and provenance, never opinions about a project.
+  - `find` (v0.8.3, #58): where to find the file on the download page, for
+    an image fetched by hand, one line of at most 400 characters; `{version}`
+    stands for the newest version. Shown in the details panel above the
+    links. isoshelf learned it in v0.8.3; the built-in catalog may use it
+    only once copies older than that no longer matter, because the catalog
+    is read with unknown fields refused and they would refuse the list.
 - `[entry.source]`: `type` plus only that type's fields. endoflife: `product`,
   `channel`, optional `cycles` (regex over cycle names; only matching cycles
   belong to the track, e.g. to keep LMDE out of Linux Mint). github: `repo`,
