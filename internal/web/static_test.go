@@ -22,7 +22,7 @@ func readStatic(t *testing.T, name string) string {
 // them. Everything below checks all of them: a mistake in the newer file
 // leaves just as blank a page as one in the older.
 var scripts = []string{
-	"app.js", "images.js", "details.js", "checklist.js", "downloads.js", "actions.js", "folders.js", "archive.js", "settings.js",
+	"app.js", "images.js", "summary.js", "details.js", "checklist.js", "downloads.js", "actions.js", "folders.js", "archive.js", "settings.js",
 	"settinglist.js", "access.js", "records.js", "upload.js", "report.js", "selfupdate.js",
 }
 
