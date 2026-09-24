@@ -122,6 +122,7 @@ function settingsKey() {
     state.auto_check, state.app_update_check, state.checked_at,
     state.auto_update, state.auto_update_every, state.peer,
     state.config_dir, state.catalog, state.records, recordsChoice, recordsResult, state.login,
+    dismissedEntries().map((entry) => JSON.stringify(state.tracks[entry])).join(","),
     Boolean(state.app_update), $("settings-search").value,
     savedFields.join(","),
   ]);

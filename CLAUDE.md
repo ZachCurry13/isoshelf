@@ -18,7 +18,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
   `checklist.js`, `downloads.js`, `actions.js`, `catalog.js` (Add images),
   `identify.js` (What is this?), `missing.js` (getting a missing image back),
   `origin.js` (where a file came from, and Check it), `fromserver.js`
-  (copying from your server),
+  (copying from your server), `dismiss.js` (dismissing an update),
   `folders.js`,
   `archive.js`, `settings.js` (the panel), `settinglist.js` (what each
   setting is), `access.js` (sign-in and sharing), `records.js` (where a

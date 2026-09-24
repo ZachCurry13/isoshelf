@@ -136,7 +136,7 @@ function renderFilters() {
   // A group with nothing in it is null, and append would write that as a word.
   box.append(...[
     group("Show", SHOW.filter(([key]) => {
-      if (key === "updates") return has((it) => it.status === "update available");
+      if (key === "updates") return has((it) => it.status === "update available" && !isDismissed(it));
       if (key === "favorites") return has((it) => it.entry && (state.tracks[it.entry] || {}).starred);
       if (key === "older") return has(isOlder);
       return has((it) => cautionOf(it));
@@ -256,7 +256,7 @@ function shown(item) {
     (!query || haystack.includes(query)) &&
     (!view.kinds.length || view.kinds.includes(item.category || "other")) &&
     (!view.arches.length || view.arches.includes(item.arch)) &&
-    (!view.show.updates || item.status === "update available") &&
+    (!view.show.updates || (item.status === "update available" && !isDismissed(item))) &&
     (!view.show.favorites || starred) &&
     (!view.show.older || isOlder(item)) &&
     (!view.show.caution || cautionOf(item));
@@ -326,7 +326,8 @@ function compareVersions(a, b) {
 function sorters() {
   const byName = (a, b) => a.name.localeCompare(b.name) || (a.path || "").localeCompare(b.path || "");
   const starred = (item) => (item.entry && (state.tracks[item.entry] || {}).starred ? 0 : 1);
-  const rank = (item) => STATUS_ORDER.indexOf(item.status);
+  // A dismissed update sorts with the ones that are up to date (#56).
+  const rank = (item) => STATUS_ORDER.indexOf(isDismissed(item) ? "up to date" : item.status);
   const text = (value) => (value || "").toLowerCase();
   return {
     attention: (a, b) => rank(a) - rank(b) || byName(a, b),
@@ -551,8 +552,10 @@ function renderRow(item) {
   }, track.starred ? "★" : "☆");
 
   const statusCell = el("td", {},
-    el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}`, title: statusHelp(item.status) },
-      statusWord(item.status)),
+    isDismissed(item)
+      ? el("span", { class: "pill s-muted", title: "You dismissed this update. Its details panel can bring it back." }, dismissedWords(item))
+      : el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}`, title: statusHelp(item.status) },
+        statusWord(item.status)),
     item.eol && item.status !== "EOL"
       ? el("span", { class: "pill s-eol", title: statusHelp("EOL") }, "End of life")
       : null);
@@ -609,7 +612,7 @@ function renderRow(item) {
       : el("span", { class: "muted" }, "–"));
 
   const actions = [];
-  if (item.entry && item.updates === "download" && item.status === "update available") {
+  if (item.entry && item.updates === "download" && item.status === "update available" && !isDismissed(item)) {
     actions.push(jobButton(item.entry, el("button", {
       type: "button", class: "btn small primary",
       title: `Download ${item.latest || "the newest version"} and put it in this folder`,
@@ -634,7 +637,7 @@ function renderRow(item) {
 
   // The whole row opens the details panel; the buttons in it don't.
   const row = el("tr", {
-    class: detailsKey(item) === detailsOpen ? "row picked" : "row",
+    class: `row${detailsKey(item) === detailsOpen ? " picked" : ""}${isDismissed(item) ? " dismissed" : ""}`,
     onclick: (e) => {
       if (e.target.closest("button, a, input, label, summary")) return;
       openDetails(item);

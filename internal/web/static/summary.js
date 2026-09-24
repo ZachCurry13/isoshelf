@@ -20,7 +20,7 @@ function renderTodo() {
   const parts = [];
 
   const updates = updatable();
-  const byHand = items.filter((it) => it.status === "update available" && it.updates !== "download").length;
+  const byHand = items.filter((it) => it.status === "update available" && it.updates !== "download" && !isDismissed(it)).length;
   const all = updates.length + byHand;
   const waiting = updates.filter((it) => inDownloads(it.entry)).length;
   if (all) {

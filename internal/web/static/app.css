@@ -1057,3 +1057,8 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
   resize: vertical; white-space: pre; overflow-wrap: normal;
 }
 .report-said { font-size: 0.8571rem; min-height: 1.2em; }
+
+/* A dismissed update (v0.8.2): still listed, greyed, until it's undone. */
+tr.row.dismissed td:not(.row-actions) { opacity: 0.6; }
+.dismissed-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.dismissed-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
