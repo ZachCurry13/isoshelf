@@ -73,6 +73,9 @@ And the rest:
   downloaded it, copied it from your server, or found it in the folder, and
   whether it matches the checksum the project publishes. *Check it* reads a
   file you added yourself and tells you, when you ask.
+- **Duplicates, spotted.** The same image and version twice is counted above
+  the list; *Make sure* compares the files when you ask, and *Remove this
+  copy* goes through the archive.
 - **Not now, or never.** Dismiss any update for 7, 30 or 90 days, or for
   good. It stays listed, greyed, and isn't counted; Settings lists what
   you've dismissed, with Undo.
@@ -108,6 +111,8 @@ And the rest:
   image (the one on your NAS, usually), yours copies it from there, still
   checked against the project's own published checksum. *Add images* marks
   what your server has, catalog or not, and copies any of it in one click.
+  Sharing is off until you turn it on, and like any file share, the licenses
+  of what you share are yours to mind.
 - **Updating itself, carefully.** **Update now** downloads the new isoshelf,
   checks this project's signature, lets image downloads finish and restarts
   into it. If the new version won't start, the old one comes back.
@@ -246,10 +251,9 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** [spotting duplicate
-copies](https://github.com/ZachCurry13/isoshelf/issues/57), and the first
-notes on where to find the images you fetch yourself, now that isoshelf can
-show them.
+**Next:** the first notes on where to find the images you fetch yourself,
+now that isoshelf can show them, and logos only where each project's own
+policy allows them.
 
 **Also planned:** [the Fedora entries that pin a release
 number](https://github.com/ZachCurry13/isoshelf/issues/6),

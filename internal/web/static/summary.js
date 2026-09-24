@@ -41,6 +41,15 @@ function renderTodo() {
     ]));
   }
 
+  const groups = duplicateGroups();
+  const copies = groups.reduce((n, g) => n + g.items.length, 0);
+  if (copies) {
+    const sure = groups.every((g) => g.sure);
+    parts.push(summaryPart(copies, sure ? "duplicates" : "possible duplicates", "", () => showJust(() => { view.show.duplicates = true; }), [
+      sure ? "The same file more than once" : "The same image, version and size more than once",
+    ]));
+  }
+
   const count = (status) => items.filter((it) => it.status === status).length;
   const missing = count("missing");
   if (missing) {

@@ -236,7 +236,9 @@ const SETTING_GROUPS = [
         note: () => (state && state.peer && state.peer.sharing)
           ? "Anyone who can sign in to this isoshelf can copy whole images from it. Scans " +
             "also hash every image now, which the first one after turning this on will spend " +
-            "time doing - that hash is how another isoshelf asks for a particular file."
+            "time doing - that hash is how another isoshelf asks for a particular file. " +
+            "The licenses of the images you share are yours to mind, as with anything else " +
+            "you share on your network."
           : "",
       },
       {

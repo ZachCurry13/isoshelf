@@ -43,6 +43,16 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
+### v0.8.4: duplicates, and a word about sharing (items 6 and 7)
+
+*(released 2026-09-24, [#57])*. Possible duplicates by entry, version and
+size, settled by hashes when every copy has one; a count on the line above
+the list, a filter, and Make sure and Remove this copy on each row while it
+is on. Make sure is `/api/hash`, an ordinary scan hashing those files, only
+when pressed, as the maintainer decided. The sharing disclosure went beside
+the switch and in the README (item 7), and on the way the container guide
+turned out to name the switch by a name it never had.
+
 ### v0.8.3: where to find it (item 5)
 
 *(released 2026-09-24, [#58])*. The catalog's `find` field, `{version}`
@@ -527,7 +537,14 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.2 and older
+## From STATUS.md: releases v0.8.3 and older
+
+### v0.8.3 (2026-09-24)
+
+- **Where to find it** ([#58]): a catalog entry can say where the file is on
+  the download page, shown in the details panel above the links. The
+  built-in catalog starts using it once older copies have had time to
+  update, since they refuse an unknown field.
 
 ### v0.8.2 (2026-09-24)
 
@@ -1132,3 +1149,4 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#62]: https://github.com/ZachCurry13/isoshelf/issues/62
 [#56]: https://github.com/ZachCurry13/isoshelf/issues/56
 [#58]: https://github.com/ZachCurry13/isoshelf/issues/58
+[#57]: https://github.com/ZachCurry13/isoshelf/issues/57

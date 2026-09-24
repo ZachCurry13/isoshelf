@@ -11,11 +11,10 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: item 6, duplicates ([#57]).** The maintainer chose the layout on
-2026-09-24: "2 possible duplicates" on the line above the list, a filter
-showing them, and on each Make sure (reads both, only when pressed) and
-Remove this copy (through the archive). Then the rest of the maintainer's
-queue, then the list under *After those*. v0.7.0 to v0.8.3 are in
+**Next: item 8, AtlasOS recognized but not listed, and item 9, logos by
+trademark policy.** Item 8 needs a catalog field, so it waits for the same
+reason item 5's notes do (see item 5) and should go into the catalog with
+them. Then the list under *After those*. v0.7.0 to v0.8.4 are in
 `docs/archive.md`.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
@@ -65,21 +64,6 @@ wrongness that costs trust once somebody notices.
    after v0.8.3 has been the latest. MX Linux's 32-bit ISO is the first:
    "The 32-bit ISO is MX-{version}_386.iso, in the Xfce folder." The weekly
    catalog job can add the rest, read from each project's own download page.
-6. **Note duplicate images, and offer to delete a copy.** isoshelf already
-   finds *older* copies of an image; the same image and version twice, under
-   two names or in two folders, isn't found. Same entry and version and size
-   is the cheap first look; telling for sure means hashing both, minutes on
-   a USB stick - **only when asked** (the maintainer, 2026-09-24: "I like the
-   idea of verifying optionally. A lot of times I just trust it but maybe you
-   can say that it needs to be verified"). So same-size copies are shown as
-   *possible* duplicates, with a button to make sure. Deleting goes through
-   the archive like every other removal.
-7. **A sharing disclosure**, in the README and beside the sharing switch:
-   the licenses of the images you share are yours to mind. The maintainer's
-   view, 2026-09-23, and it holds for files people bring themselves - "like a
-   Plex server". The project's own responsibility is what its catalog lists
-   and what it promotes; sharing proprietary images shouldn't be pitched as a
-   feature.
 8. **AtlasOS: recognized, not listed.** "AtlasOS (archival ISO)" is in the
    built-in catalog with a logo, so it appears under Add images for everyone.
    AtlasOS itself moved from handing out modified Windows images to a
@@ -225,7 +209,7 @@ Then:
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
   `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,
-  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `folders.js`,
+  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `duplicates.js`, `folders.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
   `upload.js`, `report.js` and `selfupdate.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in

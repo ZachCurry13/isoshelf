@@ -294,6 +294,7 @@ function render() {
   renderHistory();
   renderDetails();
   sayHowTheCheckWent();
+  sayWhetherTheyMatched();
 }
 
 function renderRun() {
