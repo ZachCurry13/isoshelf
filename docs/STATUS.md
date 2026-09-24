@@ -161,6 +161,21 @@ record of where things stand and what was decided.
 - The six unreleased versions, and v0.5.2 and v0.5.3, were released one at a
   time on their own merge commits.
 
+## Decided 2026-09-23, late (the maintainer, on a simplification plan)
+
+- **Pin replaces the per-image Replace / Archive / Keep both menu**: one
+  global answer plus a pin that keeps an exact file. Pinned files are left out
+  of the older-versions review; Remove still works and says the file is
+  pinned; "Keep both" images become pinned, the rest follow Settings, and the
+  page says once how many changed.
+- **The to-do cards become a compact bar** that filters, keeping only Update
+  all as a button.
+- **The architecture badge shows only when it isn't ordinary 64-bit PC.**
+- **In a container, isoshelf asks once** whether to update images
+  automatically; everywhere else it stays off by default.
+- Order: v0.6.1 is upload speed and the good-neighbour pass; v0.7.0 is this;
+  then the rest of the queue. Details in TODO.
+
 ## Latest change: v0.6.0 (2026-09-23)
 
 - **isoshelf updates itself.** Update now in the top bar downloads the new
