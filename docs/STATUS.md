@@ -22,9 +22,9 @@ four times in one evening. The releases page on GitHub is the answer, and
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; open issues #1-#7, #11, #12, #55-#58 and #62 are the
-  roadmap (#10, the phone layout, #54, the simpler shelf, and #59, gentler
-  with servers, are closed); Discussions on.
+- **GitHub:** public; open issues #1-#7, #11, #12, #56-#58 and #62 are the
+  roadmap (#10, the phone layout, #54, the simpler shelf, #55, missing
+  images, and #59, gentler with servers, are closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
 
@@ -217,21 +217,17 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.7.0 (2026-09-24)
+## Latest change: v0.7.1 (2026-09-24)
 
-- **Pin replaces each image's own choice for old files** ([#54]): one answer
-  in Settings, and a pin keeps one exact file whatever comes. Old answers
-  become pins (keep both) or follow Settings, once, and the page says so.
-- **One line says what wants doing**, each count a filter, with Update all
-  its one button; the 64-bit badge only where it's unusual; on a server the
-  folder card is one line and the folder lives in Settings; a container asks
-  once whether to update by itself, saying what yes starts.
-- Fixed on the way: clicking a count opened the Filter menu, the list it
-  jumped to hid under the tabs, and download sizes were the files already
-  there.
-- **Next:** item 3, missing images ([#55]), then [#62].
+- **Missing images come back in one click** ([#55]): Restore when the file is
+  still in the archive, Download again when isoshelf can fetch it, else its
+  download page; Download all when the list shows the missing ones.
+- **Stop expecting it** takes one off the missing list, and its star, until
+  it is back in the folder. Unstarring a missing image now takes it off at
+  once too.
+- **Next:** item 18, getting any image from the server ([#62]).
 
-Earlier releases, v0.6.1 back to the start, are written up in
+Earlier releases, v0.7.0 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

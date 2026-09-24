@@ -97,6 +97,10 @@ type Track struct {
 	OldFiles string `json:"old_files,omitempty"`
 	// Starred puts the entry in the usual set even if it's not on the target.
 	Starred bool `json:"starred,omitempty"`
+	// NotExpected takes the entry out of the usual set until a scan finds it
+	// in the folder again (v0.7.1, #55): "Stop expecting it", for an image
+	// somebody removed on purpose. See usualSet and RecordScan.
+	NotExpected bool `json:"not_expected,omitempty"`
 }
 
 // Choice says what happens to this image's old files after an update:

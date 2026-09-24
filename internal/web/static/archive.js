@@ -39,6 +39,7 @@ async function archiveItems() {
   try {
     const items = (await api("GET", "/api/archive")).items;
     archiveCache = { at: Date.now(), items };
+    noteArchive(items);
     return items;
   } catch {
     return null;

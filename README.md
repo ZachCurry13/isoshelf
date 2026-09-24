@@ -66,8 +66,12 @@ And the rest:
 - **Your own files.** Drag an image onto the page, or choose one, and it goes
   straight into the folder. Nothing is written over without asking.
 - **What wants doing, in one line.** Above the list: updates, older copies you
-  could clear, files that won't boot, anything unrecognized, and the archive.
-  Click a count to see exactly those images; *Update all* sits at the end.
+  could clear, images you usually keep that have gone missing, files that
+  won't boot, anything unrecognized, and the archive. Click a count to see
+  exactly those images; *Update all* sits at the end.
+- **Missing images come back in one click.** *Restore* if the file is still
+  in the archive, *Download again* if isoshelf can fetch it, or its download
+  page if not. Removed one on purpose? *Stop expecting it*.
 - **Plain words.** Statuses read *Update available*, *End of life*,
   *Download manually* or *Won't boot from here*, and explain themselves when
   you hover over them.
@@ -234,11 +238,9 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** [*Download again* and *Stop expecting
-it*](https://github.com/ZachCurry13/isoshelf/issues/55) for images that went
-missing. After that: [getting any image from your own
+**Next:** [getting any image from your own
 server](https://github.com/ZachCurry13/isoshelf/issues/62), with a record of
-where each file came from, then [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
+where each file came from. After that: [dismissing an update](https://github.com/ZachCurry13/isoshelf/issues/56)
 for a while or for good, [a note on
 where to find](https://github.com/ZachCurry13/isoshelf/issues/58) the images
 you fetch yourself, and [spotting duplicate

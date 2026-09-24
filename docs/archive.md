@@ -43,6 +43,30 @@ half-built, everything visible finished:
    are identifiers, not labels.** Anything drawn from a catalog field should
    go through a map to what a person calls it.)*
 
+### v0.7.1: missing images
+
+**~~3. Missing images get two actions~~** *(released in v0.7.1, [#55])*: the
+row's button gets the image back, and "Stop expecting it" in the details
+panel is for one removed on purpose. As built:
+- The button is **Restore** when the image's file is still in the archive,
+  **Download again** when isoshelf can download it, else **Download page**
+  (`missingAction` in `missing.js`). Restore first because it is instant and
+  gives back the very file; nobody wants 5 GB downloaded to replace a file
+  that is sitting in `.isoshelf/removed`. The rows are drawn before the
+  archive is read, so `noteArchive` draws them again when it changes.
+- Filtering to missing images offers **Download all…**, the Update all
+  checklist again, leaving out any queued or waiting in the archive.
+- **Stop expecting it** sets `Track.NotExpected` and unstars the image;
+  `usualSet` leaves it out, and `RecordScan` clears it when a scan finds the
+  image again. The server drops the row from the report at once
+  (`dropMissingLocked`) - rebuilding the report with `check.Offline` would
+  have thrown away the last check for everything else - and unstarring a
+  missing image now does the same, where before it stayed until the next
+  scan.
+- In the details panel the button shows only when it does something the
+  Links don't: a manual image already has its Download page there, and the
+  first draft listed it twice.
+
 ### v0.7.0: the simpler shelf
 
 **~~v0.7.0: the simpler shelf~~** *(released 2026-09-24, [#54])* (the
@@ -362,7 +386,20 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.6.1 and older
+## From STATUS.md: releases v0.7.0 and older
+
+### v0.7.0 (2026-09-24)
+
+- **Pin replaces each image's own choice for old files** ([#54]): one answer
+  in Settings, and a pin keeps one exact file whatever comes. Old answers
+  become pins (keep both) or follow Settings, once, and the page says so.
+- **One line says what wants doing**, each count a filter, with Update all
+  its one button; the 64-bit badge only where it's unusual; on a server the
+  folder card is one line and the folder lives in Settings; a container asks
+  once whether to update by itself, saying what yes starts.
+- Fixed on the way: clicking a count opened the Filter menu, the list it
+  jumped to hid under the tabs, and download sizes were the files already
+  there.
 
 ### v0.6.1 (2026-09-24)
 
@@ -918,5 +955,6 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#7]: https://github.com/ZachCurry13/isoshelf/issues/7
 [#13]: https://github.com/ZachCurry13/isoshelf/pull/13
 [#14]: https://github.com/ZachCurry13/isoshelf/pull/14
+[#55]: https://github.com/ZachCurry13/isoshelf/issues/55
 [#54]: https://github.com/ZachCurry13/isoshelf/issues/54
 [#59]: https://github.com/ZachCurry13/isoshelf/issues/59

@@ -6,7 +6,8 @@ import (
 )
 
 // UsualSet returns the ids of the entries normally kept on this target: the
-// starred ones, plus those seen in at least 2 of the last 10 scans.
+// starred ones, plus those seen in at least 2 of the last 10 scans, less any
+// somebody has said to stop expecting.
 func (s *State) UsualSet() []string {
 	return usualSet(s.Tracks, s.History)
 }
@@ -42,6 +43,9 @@ func usualSet(tracks map[string]Track, history []ScanRecord) []string {
 	for id, t := range tracks {
 		if t.Starred {
 			usual[id] = true
+		}
+		if t.NotExpected {
+			delete(usual, id)
 		}
 	}
 	return slices.Sorted(maps.Keys(usual))
