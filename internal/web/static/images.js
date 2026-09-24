@@ -213,6 +213,12 @@ function renderChips() {
         renderRows();
       },
     }, chip.label, el("span", { class: "x", "aria-hidden": "true" }, "✕"))),
+    // Missing images are shown to be got back, so the list offers that.
+    view.status === "missing" && downloadableMissing().length
+      ? el("button", {
+          type: "button", class: "btn small", onclick: downloadMissing,
+        }, "Download all…")
+      : null,
     // Older versions are shown to be cleared, so the list offers that.
     view.show.older && state.report
       ? el("button", {
@@ -609,6 +615,9 @@ function renderRow(item) {
       title: `Download ${item.latest || "the newest version"} and put it in this folder`,
       onclick: () => updateItem(item),
     }, "Update"), true));
+  } else if (item.status === "missing" && item.entry) {
+    const back = missingAction(item, true);
+    if (back) actions.push(back);
   } else if (item.path && !item.entry) {
     actions.push(el("button", {
       type: "button", class: "btn small primary", disabled: scanning(),

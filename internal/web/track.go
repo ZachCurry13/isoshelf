@@ -3,6 +3,9 @@ package web
 import (
 	"encoding/json"
 	"net/http"
+	"slices"
+
+	"github.com/ZachCurry13/isoshelf/internal/check"
 )
 
 func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
@@ -11,6 +14,9 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		KeepOld  *bool   `json:"keep_old"`
 		OldFiles *string `json:"old_files"`
 		Starred  *bool   `json:"starred"`
+		// NotExpected is "Stop expecting it" (#55). It unstars the image
+		// too: a star means "tell me if this goes missing".
+		NotExpected *bool `json:"not_expected"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "bad request")
@@ -45,10 +51,30 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 	if req.Starred != nil {
 		t.Starred = *req.Starred
 	}
+	if req.NotExpected != nil {
+		t.NotExpected = *req.NotExpected
+		if t.NotExpected {
+			t.Starred = false
+		}
+	}
 	s.st.SetTrack(req.Entry, t)
+	s.dropMissingLocked(req.Entry)
 	if err := s.saveStateLocked(base); err != nil {
 		writeError(w, http.StatusInternalServerError, "Couldn't save the setting: "+err.Error())
 		return
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"tracks": s.st.Tracks, "usual_set": nonNil(s.st.UsualSet())})
+}
+
+// dropMissingLocked takes an image off the list as missing once it isn't
+// expected here any more - unstarred, or not expected - rather than at the
+// next scan. Only that row goes: building the report again would lose what
+// the last check found for everything else. s.mu must be held.
+func (s *Server) dropMissingLocked(entry string) {
+	if s.report == nil || slices.Contains(s.st.UsualSet(), entry) {
+		return
+	}
+	s.report.Items = slices.DeleteFunc(slices.Clone(s.report.Items), func(it check.Item) bool {
+		return it.Status == check.Missing && it.Entry != nil && it.Entry.ID == entry
+	})
 }

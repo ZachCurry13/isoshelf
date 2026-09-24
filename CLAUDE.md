@@ -16,7 +16,8 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
   one script per part of the page: `app.js` (state, asking, drawing, wiring),
   `images.js`, `summary.js` (the line saying what wants doing), `details.js`,
   `checklist.js`, `downloads.js`, `actions.js`, `catalog.js` (Add images),
-  `identify.js` (What is this?), `folders.js`,
+  `identify.js` (What is this?), `missing.js` (getting a missing image back),
+  `folders.js`,
   `archive.js`, `settings.js` (the panel), `settinglist.js` (what each
   setting is), `access.js` (sign-in and sharing), `records.js` (where a
   folder's records live), `upload.js`, `report.js`, `selfupdate.js`

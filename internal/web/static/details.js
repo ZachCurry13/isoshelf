@@ -75,11 +75,18 @@ function renderDetails() {
   if (item.path && item.entry) {
     parts.push(detailRow("Keep this file", [pinField(item)]));
   }
+  if (item.status === "missing" && item.entry) {
+    parts.push(detailRow("Expected here", [expectField(item)]));
+  }
 
   const links = linkList(item);
   if (links.length) parts.push(detailRow("Links", el("div", { class: "detail-links" }, links)));
 
   const buttons = [];
+  // A download page is already under Links; the button is for getting it back.
+  if (item.status === "missing" && item.entry && (item.updates === "download" || archivedFor[item.entry])) {
+    buttons.push(missingAction(item, false));
+  }
   if (item.entry && item.updates === "download" && item.status === "update available") {
     buttons.push(jobButton(item.entry, el("button", {
       type: "button", class: "btn primary",
@@ -105,7 +112,7 @@ function renderDetails() {
       onclick: () => removeItem(item),
     }, "Remove…"));
   }
-  parts.push(el("div", { class: "details-buttons" }, buttons));
+  parts.push(el("div", { class: "details-buttons" }, buttons.filter(Boolean)));
   $("details-body").replaceChildren(...parts.filter(Boolean));
 }
 

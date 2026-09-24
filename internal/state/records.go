@@ -62,6 +62,15 @@ func (s *State) RecordScan(res *scan.Result, now time.Time) {
 	}
 	s.Files = files
 
+	// An image somebody stopped expecting is expected again once it is back:
+	// they said they had removed it, and now it is here.
+	for id := range found {
+		if t := s.Track(id); t.NotExpected {
+			t.NotExpected = false
+			s.SetTrack(id, t)
+		}
+	}
+
 	s.History = append(s.History, ScanRecord{
 		Time:         now.UTC(),
 		Entries:      slices.Sorted(maps.Keys(found)),

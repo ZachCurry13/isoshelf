@@ -224,9 +224,20 @@ alone is not an update.
   NAS that is asleep or a stick in a drawer. **Forget** deletes that one
   mirror and the folder's records answer, and nothing on the drive at all.
 - Usual set = starred entries + entries seen in at least 2 of the last 10
-  scans. "Missing" means
+  scans, less any the user has stopped expecting. "Missing" means
   missing from the usual set, not from the whole catalog. Rebuild offers the
   usual set as a preset.
+- A missing image offers one way back (v0.7.1, #55, `missing.js`):
+  **Restore** when its file is still in the archive (instant, and the very
+  file that was there), else **Download again** when isoshelf can download
+  it, else **Download page**. Filtering to missing images offers **Download
+  all**, through the same checklist as Update all. **Stop expecting it**, in
+  the details panel, is for an image removed on purpose: it sets
+  `Track.NotExpected`, which takes the image out of the usual set and off its
+  star until a scan finds it in the folder again (`RecordScan` clears it).
+  The server drops that row from the report at once rather than rebuilding
+  the report, which would lose the last check (`dropMissingLocked`); the
+  same goes for unstarring a missing image.
 - Scanner lists files that match a catalog entry or have a bootable extension.
   It skips `ventoy/` (top level), `.isoshelf/`, `System Volume Information` and
   the portable app folder, and reports the size of trash folders (`.Trash-*`,
@@ -864,6 +875,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   question a container asks once), `details.js` (the panel), `checklist.js`
   (the checklist), `downloads.js` (the queue), `actions.js` (updating,
   removing), `catalog.js` (the Add images tab), `identify.js` (What is this?),
+  `missing.js` (getting a missing image back, or not expecting it),
   `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
