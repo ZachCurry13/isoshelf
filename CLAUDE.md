@@ -29,7 +29,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/remote/remotetest/recorded`: recorded HTTP responses the tests replay
 - `internal/sampledrive`: real filenames used as test fixtures; its `mkdrive` command writes them to a real folder for trying the page against a full drive
 - `internal/docs`: no code, just the test that keeps this repository's own claims about itself true
-- `docs/design.md` (full rules and design), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/archive.md` (finished work moved out of those two), `docs/catalog-sources.md`
+- `docs/design.md` (full rules and design), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/archive.md` (finished work moved out of those two), `docs/HANDOFF.md` (the 2026-09-29 handoff to a model on the maintainer's own computer), `docs/catalog-sources.md`
 
 ## Run and test
 - `go build ./... && go vet ./... && go test ./...` must pass before a commit (CI also checks `gofmt -l .`)
