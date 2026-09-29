@@ -444,6 +444,30 @@ td.version-cell { font-family: var(--mono); font-size: 0.8571rem; font-variant-n
 .catalog .info { flex: 1; min-width: 0; }
 .catalog .kind { font-size: 0.8571rem; color: var(--muted); }
 
+/* Usage: a small table of weeks, then the facts as name and value. */
+.usage-table { margin: 0 20px 6px; overflow-x: auto; }
+.usage-table td { font-variant-numeric: tabular-nums; }
+.usage-week { white-space: nowrap; font-weight: 550; }
+.usage-num { text-align: right; }
+.usage-track { height: 4px; margin-top: 4px; max-width: 160px; background: var(--muted-bg); border-radius: 2px; overflow: hidden; }
+.usage-bar { display: block; height: 100%; background: var(--accent); }
+.usage-count { white-space: nowrap; }
+.usage-small { font-size: 0.8571rem; }
+.usage-system {
+  display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px;
+  margin: 4px 20px 14px; padding-top: 10px; border-top: 1px solid var(--border);
+}
+.usage-system dt { color: var(--muted); }
+.usage-system dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 720px) {
+  /* Four columns have to fit a phone: tighter cells, and the counts never
+     broken across lines, so what gives is the small print under them. */
+  .usage-table { margin: 0 8px 6px; }
+  .usage-table th, .usage-table td { padding: 5px 6px; }
+  .usage-system { grid-template-columns: 1fr; gap: 0; margin: 4px 12px 14px; }
+  .usage-system dd { margin-bottom: 6px; }
+}
+
 /* The tools that go with the images: a short read, not a catalog. */
 .tools { list-style: none; margin: 0 20px 12px; padding: 0; display: grid; gap: 10px; }
 .tools li { display: grid; gap: 1px; }

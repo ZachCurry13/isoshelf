@@ -547,7 +547,15 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.4 and older
+## From STATUS.md: releases v0.8.5 and older
+
+### v0.8.5 (2026-09-24)
+
+- **`isoshelf update` on the command line** ([#1]): a check, then every
+  update it can download, verified as the page does, with `--keep`,
+  `--move-aside` or `--delete` required, `--only` and `--dry-run`.
+- **Next:** items 8 and 9 (AtlasOS recognized but not listed; logos by
+  trademark policy), then [#4] and the rest of *After those* in `TODO.md`.
 
 ### v0.8.4 (2026-09-24)
 

@@ -937,7 +937,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
   (dragging a file onto the page, or picking one), `selfupdate.js` (isoshelf
-  updating its own program) and `report.js` (the
+  updating its own program), `usage.js` (the Usage section: what the folder
+  saw week by week, and where isoshelf runs) and `report.js` (the
   prefilled bug report). They were one 2,544-line
   `app.js` until v0.3.1; the split is what keeps changing one corner from
   meaning reading all of it.
@@ -949,6 +950,17 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
 - **Archive** lists files still in `.isoshelf/removed`, with Restore;
   **History** lists images that have left, with Download again for catalog
   ones.
+- **Usage** (v0.8.6, `usage.go`, `state/usage.go`, `static/usage.js`) is a
+  folded section: the last 8 weeks, Monday to Sunday where isoshelf runs,
+  with what arrived by `Origin.How` (or `PlacedAt` for downloads older than
+  origins), what left by `Gone`, and scans from `History`; then the facts
+  about this isoshelf that are otherwise spread across Settings. It records
+  nothing of its own: it is worked out from what the folder's records already
+  hold, so it can't disagree with them, and an image that leaves keeps its
+  `Arrived` so its download still counts. `GET /api/usage` is asked only
+  while the section is open, and again when a scan, a download or the
+  archive changes, because it reads every record rather than riding on the
+  page's twice-a-second state.
 - Downloads (`queue.go`): Add, Update, Update all and Download again join a
   queue that runs one at a time, and the queue drains into one rescan. The
   page shows it in a bar along the bottom (Steam-like): the running download
