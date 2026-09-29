@@ -30,6 +30,7 @@
 <script src="/static/upload.js" defer></script>
 <script src="/static/report.js" defer></script>
 <script src="/static/selfupdate.js" defer></script>
+<script src="/static/usage.js" defer></script>
 </head>
 <body>
 <header class="topbar">
@@ -240,6 +241,19 @@
       </summary>
       <p class="muted more-hint">Images that have left this folder: deleted, replaced by an update, or gone some other way. The files aren't here any more, but isoshelf can download the ones it knows again.</p>
       <ul class="catalog" id="history-list"></ul>
+    </details>
+  </section>
+
+  <!-- Usage: what this folder saw, week by week, and where isoshelf is
+       running. Folded, and asked for only while open (usage.js). -->
+  <section class="card more" id="usage">
+    <details id="usage-details">
+      <summary>
+        <span class="more-title">Usage</span>
+        <span class="muted">the last 8 weeks, and this isoshelf</span>
+      </summary>
+      <div id="usage-weeks"></div>
+      <dl class="usage-system" id="usage-system"></dl>
     </details>
   </section>
 

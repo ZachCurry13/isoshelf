@@ -23,7 +23,7 @@ func readStatic(t *testing.T, name string) string {
 // leaves just as blank a page as one in the older.
 var scripts = []string{
 	"app.js", "images.js", "summary.js", "details.js", "checklist.js", "downloads.js", "actions.js", "catalog.js", "identify.js", "missing.js", "origin.js", "fromserver.js", "dismiss.js", "duplicates.js", "folders.js", "archive.js", "settings.js",
-	"settinglist.js", "access.js", "records.js", "upload.js", "report.js", "selfupdate.js",
+	"settinglist.js", "access.js", "records.js", "upload.js", "report.js", "selfupdate.js", "usage.js",
 }
 
 // There is no JavaScript engine in these tests, so the page scripts can't be

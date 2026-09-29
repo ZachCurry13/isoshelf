@@ -94,6 +94,8 @@ type Server struct {
 	// servers in the same minute every day (#59).
 	autoOffset time.Duration
 	autoNote   string
+	// startedAt is when this isoshelf started, for the usage page.
+	startedAt time.Time
 	// queue holds the downloads waiting their turn, in order; finished the
 	// ones that ended, newest first. placed says a download has put a file in
 	// the folder since the last scan.
@@ -153,6 +155,7 @@ func New(cfg Config) *Server {
 	s.memory.Now = cfg.Now
 	s.selfWhyNot = s.selfUpdateWhyNot()
 	s.autoOffset = rand.N(time.Hour)
+	s.startedAt = cfg.Now()
 	s.runJob = s.runUpdate
 	if s.catSource == "" {
 		s.catSource = catalogBuiltIn
@@ -178,6 +181,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("GET /api/browse", s.browse)
 	mux.HandleFunc("GET /logo/{slug}", s.logo)
 	mux.HandleFunc("GET /api/archive", s.getArchive)
+	mux.HandleFunc("GET /api/usage", s.getUsage)
 	mux.HandleFunc("POST /api/restore", s.restore)
 	mux.HandleFunc("POST /api/target", s.setTarget)
 	// A scan checks for updates too, unless Settings says not to; Refresh

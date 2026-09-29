@@ -6,6 +6,26 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.6] - 2026-09-29
+
+### Added
+- **Usage**, a folded section low on the page. It shows the last 8 weeks of
+  the folder: what arrived (downloaded, copied from your server, or added by
+  you) and how much, what left (replaced, archived, deleted), and how often
+  the folder was read, with a bar for each week's downloads. Below that,
+  everything about this isoshelf in one place: its version, the system it
+  runs on and how, how long it has been running, the folder, its images and
+  free space, the archive, the last scan and check, the catalog, what it
+  does by itself, sharing, and where its records and its own files are.
+  It is worked out from records isoshelf already kept, so a folder you have
+  used for a while has weeks to show the first time you open it. Files that
+  were already in the folder rather than brought by isoshelf aren't counted
+  as arriving.
+
+### Changed
+- An image that leaves the folder now keeps how it arrived, so its download
+  still counts in the week it happened after an update replaces it.
+
 ## [v0.8.5] - 2026-09-24
 
 ### Added

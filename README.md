@@ -101,6 +101,8 @@ And the rest:
 - **Your folders, remembered.** The folder chooser lists the ones you've used,
   with when you last looked and how many images each held, even when the
   drive isn't plugged in. *Forget* takes one off the list without touching it.
+- **Usage.** The last 8 weeks of the folder, what arrived and what left, and
+  everything about where isoshelf runs, in one folded section.
 - **One button when something's wrong.** *Report a problem* opens a bug report
   with the details filled in. You read it and send it yourself; isoshelf sends
   nothing.

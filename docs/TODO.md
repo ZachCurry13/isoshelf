@@ -17,6 +17,19 @@ reason item 5's notes do (see item 5) and should go into the catalog with
 them. Then the list under *After those*. v0.7.0 to v0.8.4 are in
 `docs/archive.md`.
 
+**Found 2026-09-29, before anything else: a data race in the page's state.**
+`go test -race ./internal/web/` fails on `main` now and then (6 reports in
+two runs; `TestForgettingAFolder` and `TestRecordsAlreadyThereAreSaidBeforeAndAfter`
+among the tests that trip it). A scan hashes files through
+`inventory` -> `State.HashFiles` -> `setHash`, writing the folder's `State`
+without `s.mu`, while `/api/state` reads the same `State` under `s.mu`
+(`stateLocked` -> `State.Pinned`). CI runs `-race`, so this is a red build
+waiting to happen, and in the program itself a page refresh during a scan
+can read a map mid-write. Fix the ownership, not the test: the scan should
+hash into its own copy and merge it back under the lock, the way a scan's
+save already goes through `SaveOnto`. `/api/usage` (v0.8.6) reads the same
+`State` under the same lock, so the fix covers it too.
+
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
 number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
 isoshelf keeps offering 44 and nothing fails, which is the kind of quiet
@@ -211,7 +224,7 @@ Then:
   `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,
   `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `duplicates.js`, `folders.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
-  `upload.js`, `report.js` and `selfupdate.js`. Read the one you
+  `upload.js`, `report.js`, `selfupdate.js` and `usage.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
   `internal/web/static_test.go`, and in every list of them - which
   `internal/docs` checks, because this list was stale for four releases.
