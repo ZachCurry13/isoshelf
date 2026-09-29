@@ -11,7 +11,8 @@ last number rises for improvements to what it already does, like v0.3.3.
 This release also carries everything in v0.8.6, which was never published
 on its own: a **Usage** section, folded low on the page, showing the last 8
 weeks of your folder (what arrived, what left, how often it was read) and
-everything about this isoshelf in one place. v0.8.6 below has the details.
+everything about this isoshelf in one place. The v0.8.6 section of
+CHANGELOG.md has the details.
 
 ### Fixed
 - **isoshelf could crash if the page refreshed while a scan was working out
