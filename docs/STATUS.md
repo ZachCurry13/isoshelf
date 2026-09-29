@@ -15,7 +15,7 @@ four times in one evening. The releases page on GitHub is the answer, and
   catalog that updates itself from this repository. Web page and CLI;
   Windows and Linux builds.
 - **Catalog:** 86 entries (60 downloadable, 9 update-check only, 17 link only),
-  revision `2026092301`. Checked live every Monday by
+  revision `2026092901`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm
   Chicago, just after the maintainer's weekly usage resets;

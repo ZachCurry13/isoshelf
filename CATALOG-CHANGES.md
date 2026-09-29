@@ -9,6 +9,22 @@ Every image here was checked against the project's own site before it went in.
 Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml);
 requests are looked at every Monday.
 
+## 2026-09-29
+
+### Changed
+- **No Ubuntu, Windows, AtlasOS or NiceHash logos, for now.** A project
+  being open source doesn't make its logo free to use, and these are the
+  ones whose rules are strict or unclear. Their images show their initials
+  instead, as any image without a logo always has, until a plain disc takes
+  their place in a later isoshelf. The other logos will be checked against
+  each project's own rules the same way.
+- **MX Linux Xfce (32-bit)** now says where to find its file on the download
+  page: "The 32-bit ISO is MX-23.6_386.iso, in that version's Xfce folder."
+  Shown in the image's details, above the links.
+- **Download sizes brought up to date** for Bazzite Deck, openSUSE
+  Tumbleweed, Clonezilla and Nobara, from the files as they are published
+  today.
+
 ## 2026-09-23
 
 ### Fixed

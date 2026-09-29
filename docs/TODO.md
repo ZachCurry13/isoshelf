@@ -11,11 +11,11 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: the catalog update** the maintainer asked for on 2026-09-29, now
-that the network works from here (see `docs/HANDOFF.md`): [#6] (the Fedora
-entries stop pinning a release number), sizes refreshed from the live
-answers, item 5's first note (MX Linux's 32-bit ISO; `find` has been out
-since v0.8.3), and item 9, logos by policy. Item 8's field, `unlisted`,
+**Next: the rest of the catalog update** the maintainer asked for on
+2026-09-29. Done in catalog revision 2026092901: sizes refreshed from the
+live answers, item 5's first note, and item 9 begun (five logos off). Left:
+[#6], which needs isoshelf to find a checksum file by pattern first (as the
+issue suggests), and item 9's disc and the other logos' policies. Item 8's field, `unlisted`,
 shipped in v0.8.8; AtlasOS gets it a release or two later, once older copies
 no longer matter. Then the list under *After those*. Finished work is in
 `docs/archive.md`.
@@ -64,9 +64,9 @@ wrongness that costs trust once somebody notices.
    [#58]; see `docs/archive.md`). The catalog field is `find`; the built-in
    catalog may use it once copies older than v0.8.3 no longer matter, since
    they refuse a catalog with a field they don't know - a release or two
-   after v0.8.3 has been the latest. MX Linux's 32-bit ISO is the first:
-   "The 32-bit ISO is MX-{version}_386.iso, in the Xfce folder." The weekly
-   catalog job can add the rest, read from each project's own download page.
+   after v0.8.3 has been the latest. **The first is in** (catalog revision
+   2026092901): MX Linux's 32-bit ISO. The weekly catalog job can add the
+   rest, read from each project's own download page.
 8. **AtlasOS: recognized, not listed.** The field is `unlisted = true`
    (shipped in v0.8.8: Add images leaves the entry out, What is this? still
    offers it); set it on AtlasOS once copies older than v0.8.8 no longer
@@ -82,6 +82,11 @@ wrongness that costs trust once somebody notices.
    Windows, Windows 11, Ubuntu, AtlasOS and NiceHash - including the ones
    fetched from the Simple Icons CDN. The weekly catalog job can check each
    policy on the project's own site. Delisting on request already stands.
+   **Begun 2026-09-29** (catalog revision 2026092901): those five entries no
+   longer name a logo, so they show initials. Still to do: a plain disc in
+   isoshelf for them (a reserved `icon = "disc"`, which older copies would
+   simply fail to fetch and fall back from); taking their files out of
+   `internal/web/static/logos`; and checking every other logo's policy.
 
 **Around 1.0, not before:** signing the Windows program so the "unknown
 publisher" warning goes (the maintainer, 2026-09-23: GitHub users are used to
