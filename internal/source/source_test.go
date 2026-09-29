@@ -43,16 +43,16 @@ func TestLatestRecorded(t *testing.T) {
 		wantTag     string
 	}{
 		{"linuxmint-cinnamon", "22.3", "22.3", ""},
-		{"mx-linux-xfce-x64", "25.2", "25", ""},
+		{"mx-linux-xfce-x64", "25.3", "25", ""},
 		{"mx-linux-xfce-x32", "23.6", "23", ""},
 		{"centos-7-i386-minimal", "7 (2009)", "7", ""},
 		{"netbootxyz", "3.0.3", "", "3.0.3"},
 		{"netbootxyz-multiarch", "3.0.3", "", "3.0.3"},
-		{"bazzite-deck-gnome", "44.20260916", "", "44.20260916"},
+		{"bazzite-deck-gnome", "44.20260929", "", "44.20260929"},
 		{"popos-2204-intel", "58", "", ""},
 		{"cachyos-desktop", "260809", "", ""},
 		{"manjaro-xfce", "26.1.0", "", ""},
-		{"clonezilla-alternative", "20260705", "", ""},
+		{"clonezilla-alternative", "20260913", "", ""},
 	}
 	client := recordedClient()
 	for _, tt := range tests {

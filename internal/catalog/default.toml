@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026092301 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026092901 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -27,8 +27,6 @@ popular = true
 page = "https://ubuntu.com/download"
 category = "desktop"
 family = "ubuntu"
-icon = "ubuntu"
-icon_color = "#E95420"
 site = "https://ubuntu.com/"
 forum = "https://discourse.ubuntu.com/"
 
@@ -254,7 +252,7 @@ arch = "x86_64"
 match = 'bazzite-deck-gnome-stable-live-amd64\.iso'
 fixed_name = true
 samples = ["bazzite-deck-gnome-stable-live-amd64.iso"]
-size = 8435314688
+size = 8831348736
 popular = true
 page = "https://bazzite.gg/"
 category = "gaming"
@@ -359,8 +357,6 @@ size = 2927861760
 page = "https://ubuntu.com/download/server"
 category = "server"
 family = "ubuntu"
-icon = "ubuntu"
-icon_color = "#E95420"
 site = "https://ubuntu.com/server"
 forum = "https://discourse.ubuntu.com/"
 
@@ -536,8 +532,6 @@ size = 526973752
 page = "https://ubuntu.com/download/iot"
 category = "server"
 family = "ubuntu-core"
-icon = "ubuntu"
-icon_color = "#E95420"
 site = "https://ubuntu.com/core"
 forum = "https://forum.snapcraft.io/"
 fixup = "extract"
@@ -562,8 +556,6 @@ size = 414236656
 page = "https://ubuntu.com/download/raspberry-pi-core"
 category = "boards"
 family = "ubuntu-core"
-icon = "ubuntu"
-icon_color = "#E95420"
 site = "https://ubuntu.com/core"
 forum = "https://forum.snapcraft.io/"
 fixup = "extract"
@@ -588,8 +580,6 @@ size = 503153704
 page = "https://ubuntu.com/download/iot"
 category = "server"
 family = "ubuntu-core"
-icon = "ubuntu"
-icon_color = "#E95420"
 site = "https://ubuntu.com/core"
 forum = "https://forum.snapcraft.io/"
 fixup = "extract"
@@ -613,8 +603,6 @@ size = 238129880
 page = "https://ubuntu.com/download/raspberry-pi-core"
 category = "boards"
 family = "ubuntu-core"
-icon = "ubuntu"
-icon_color = "#E95420"
 site = "https://ubuntu.com/core"
 forum = "https://forum.snapcraft.io/"
 fixup = "extract"
@@ -1000,6 +988,8 @@ samples = ["MX-23.3_x32.iso", "MX-23.6_386.iso"]
 # goes to the folder that holds the newest 32-bit one. It names a version:
 # move it when endoflife.date's cycle 23 moves past 23.6.
 page = "https://sourceforge.net/projects/mx-linux/files/Old/MX-23.6/Xfce/"
+# find: isoshelf learned it in v0.8.3; the maintainer found this file by hand.
+find = "The 32-bit ISO is MX-{version}_386.iso, in that version's Xfce folder."
 category = "desktop"
 family = "mx-linux"
 icon = "mxlinux"
@@ -1120,8 +1110,6 @@ samples = ["Win11_English_x64.iso", "Win11_23H2_English_x64v2.iso", "Windows11.i
 page = "https://www.microsoft.com/software-download/windows11"
 category = "windows"
 family = "windows"
-icon = "windows11"
-icon_color = "#0078D4"
 forum = "https://answers.microsoft.com/en-us/windows"
 
 [entry.source]
@@ -1137,8 +1125,6 @@ caution = "A preview build: it stops working when the build expires, and isn't m
 page = "https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso"
 category = "windows"
 family = "windows"
-icon = "windows11"
-icon_color = "#0078D4"
 forum = "https://answers.microsoft.com/en-us/windows"
 
 [entry.source]
@@ -1154,8 +1140,6 @@ caution = "Microsoft ended support for Windows 10 on 14 October 2025: no more se
 page = "https://www.microsoft.com/software-download/windows10"
 category = "windows"
 family = "windows"
-icon = "windows"
-icon_color = "#0078D4"
 forum = "https://answers.microsoft.com/en-us/windows"
 
 [entry.source]
@@ -1231,8 +1215,6 @@ samples = ["nhos-1.2.8.img"]
 page = "https://www.nicehash.com/nhos"
 category = "other"
 family = "nicehash"
-icon = "nicehash"
-icon_color = "#FBC342"
 site = "https://www.nicehash.com/"
 
 [entry.source]
@@ -1265,8 +1247,6 @@ caution = "An unofficial modification of Windows, not made or supported by Micro
 page = "https://atlasos.net/"
 category = "windows"
 family = "atlas"
-icon = "atlasos"
-icon_color = "#1A91FF"
 site = "https://atlasos.net/"
 
 [entry.source]
@@ -1601,7 +1581,7 @@ name = "openSUSE Tumbleweed"
 arch = "x86_64"
 match = 'openSUSE-Tumbleweed-DVD-x86_64-Snapshot(?P<version>\d{8})-Media\.iso'
 samples = ["openSUSE-Tumbleweed-DVD-x86_64-Snapshot20260916-Media.iso"]
-size = 4651483136
+size = 4654628864
 popular = true
 page = "https://get.opensuse.org/tumbleweed/"
 category = "desktop"
@@ -1629,7 +1609,7 @@ name = "Clonezilla Live (stable)"
 arch = "x86_64"
 match = 'clonezilla-live-(?P<version>\d+(?:\.\d+)*-\d+)-amd64\.iso'
 samples = ["clonezilla-live-3.3.3-15-amd64.iso"]
-size = 572522496
+size = 505413632
 popular = true
 page = "https://clonezilla.org/downloads.php"
 category = "rescue"
@@ -1937,7 +1917,7 @@ name = "Nobara (Steam Handheld)"
 arch = "x86_64"
 match = 'Nobara-\d+-Steam-Handheld-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
 samples = ["Nobara-44-Steam-Handheld-2026-09-02.iso"]
-size = 9412202496
+size = 9370970112
 page = "https://nobaraproject.org/download.html"
 category = "gaming"
 family = "nobara"
