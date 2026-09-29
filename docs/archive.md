@@ -7,6 +7,25 @@ numbers and file names are as they were at the time.
 
 ## From TODO.md
 
+### v0.8.8: Settings in groups, the archive folds, the top bar complete
+
+*(released 2026-09-29)*, from the maintainer's own use: the Archive was always
+open while History folded; Tools (and Usage) weren't in the top bar; the
+version in Settings didn't say what it changed; and Settings wanted grouping.
+They picked six groups with an index, Empty archive inside the fold, and
+What's new as a link to the release notes. What was learned:
+- **On a server the folder was in Settings twice**: the v0.7.0 "This folder"
+  group and the older "The folder isoshelf is watching" row. Regrouping
+  found it.
+- **The groups live with their controls now** (`thisfolder.js`, `access.js`,
+  `selfupdate.js`), and `settingGroups()` is a function so that groups from
+  scripts loaded after `settinglist.js` exist when the panel draws.
+- **Unfolding from the top bar** opens only a section's own `<details>`
+  (`:scope > details`), because opening the first one found is what once
+  opened the Filter menu by itself.
+- A closed `<details>` still reports sizes for what is inside it, so a
+  script can't tell by measuring whether something is showing; look.
+
 ### v0.8.7: the data race in the page's state (found 2026-09-29)
 
 `go test -race ./internal/web/` failed now and then on `main`: a scan's
@@ -570,7 +589,15 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.6 and older
+## From STATUS.md: releases v0.8.7 and older
+
+### v0.8.7 (2026-09-29)
+
+- **A crash fixed**: a scan handed the page its own working records, then
+  went on writing hashes into them while the page read them. Go could stop
+  isoshelf with "concurrent map iteration and map write", and `go test
+  -race` caught it now and then. The page gets a copy now;
+  `internal/inventory` has a test that fails every time on the old code.
 
 ### v0.8.6 (2026-09-29)
 

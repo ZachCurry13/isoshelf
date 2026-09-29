@@ -11,10 +11,13 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: item 8, AtlasOS recognized but not listed, and item 9, logos by
-trademark policy.** Item 8 needs a catalog field, so it waits for the same
-reason item 5's notes do (see item 5) and should go into the catalog with
-them. Then the list under *After those*. Finished work is in
+**Next: the catalog update** the maintainer asked for on 2026-09-29, now
+that the network works from here (see `docs/HANDOFF.md`): [#6] (the Fedora
+entries stop pinning a release number), sizes refreshed from the live
+answers, item 5's first note (MX Linux's 32-bit ISO; `find` has been out
+since v0.8.3), and item 9, logos by policy. Item 8's field, `unlisted`,
+shipped in v0.8.8; AtlasOS gets it a release or two later, once older copies
+no longer matter. Then the list under *After those*. Finished work is in
 `docs/archive.md`.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
@@ -64,7 +67,10 @@ wrongness that costs trust once somebody notices.
    after v0.8.3 has been the latest. MX Linux's 32-bit ISO is the first:
    "The 32-bit ISO is MX-{version}_386.iso, in the Xfce folder." The weekly
    catalog job can add the rest, read from each project's own download page.
-8. **AtlasOS: recognized, not listed.** "AtlasOS (archival ISO)" is in the
+8. **AtlasOS: recognized, not listed.** The field is `unlisted = true`
+   (shipped in v0.8.8: Add images leaves the entry out, What is this? still
+   offers it); set it on AtlasOS once copies older than v0.8.8 no longer
+   matter. "AtlasOS (archival ISO)" is in the
    built-in catalog with a logo, so it appears under Add images for everyone.
    AtlasOS itself moved from handing out modified Windows images to a
    playbook applied to your own Windows. Keep recognizing the file; stop

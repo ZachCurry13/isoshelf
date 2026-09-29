@@ -93,11 +93,12 @@ And the rest:
 - **What will fit.** Every catalog image shows about how big its download is,
   and the folder shows the room left, counting the queue, so an image too big
   says so before it starts.
-- **Settings, if you want them.** One searchable panel: theme, contrast, text
-  size, motion, what happens to the files updates replace, checking and
-  updating by itself, where each folder's records are kept, and who can sign
-  in when it runs on your network. The defaults are the sensible ones, and
-  *Reset to defaults* keeps your folders.
+- **Settings, if you want them.** One searchable panel in six groups, with
+  a link to each along the top: this folder and where its records are kept,
+  updates and what happens to the files they replace, sign-in and other
+  isoshelfs, the list of images, how it looks, and isoshelf itself - its
+  version and what that version changed. The defaults are the sensible
+  ones, and *Reset to defaults* keeps your folders.
 - **Your folders, remembered.** The folder chooser lists the ones you've used,
   with when you last looked and how many images each held, even when the
   drive isn't plugged in. *Forget* takes one off the list without touching it.
