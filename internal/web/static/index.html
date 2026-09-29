@@ -22,6 +22,7 @@
 <script src="/static/dismiss.js" defer></script>
 <script src="/static/duplicates.js" defer></script>
 <script src="/static/folders.js" defer></script>
+<script src="/static/thisfolder.js" defer></script>
 <script src="/static/archive.js" defer></script>
 <script src="/static/settings.js" defer></script>
 <script src="/static/settinglist.js" defer></script>
@@ -54,6 +55,8 @@
   <a href="#more" id="jump-more">Add images</a>
   <a href="#archive" id="jump-archive">Archive</a>
   <a href="#history" id="jump-history">History</a>
+  <a href="#usage" id="jump-usage">Usage</a>
+  <a href="#tools" id="jump-tools">Tools</a>
 </nav>
 
 <main>
@@ -221,15 +224,19 @@
 
   <!-- Files isoshelf set aside: still on the drive, still using space. -->
   <section class="card more" id="archive" hidden>
-    <div class="archive-head">
-      <div>
+    <!-- Folded like History (v0.8.8): one line until it's opened, and
+         emptying it is always a second, deliberate step. -->
+    <details id="archive-details">
+      <summary>
         <span class="more-title">Archive</span>
         <span class="muted" id="archive-count"></span>
+      </summary>
+      <div class="archive-head">
+        <p class="muted more-hint">Files isoshelf set aside instead of deleting. They still use space in this folder until you empty the archive, and you can restore any of them.</p>
+        <button type="button" class="btn small" id="archive-empty">Empty archive</button>
       </div>
-      <button type="button" class="btn small" id="archive-empty">Empty archive</button>
-    </div>
-    <p class="muted more-hint">Files isoshelf set aside instead of deleting. They still use space in this folder until you empty the archive, and you can restore any of them.</p>
-    <ul class="catalog" id="archive-list"></ul>
+      <ul class="catalog" id="archive-list"></ul>
+    </details>
   </section>
 
   <!-- Images that are gone: a record only, with a way to get them back. -->
@@ -327,6 +334,7 @@
   </header>
   <div class="settings-find">
     <input type="search" id="settings-search" placeholder="Search settings…" aria-label="Search settings">
+    <nav class="settings-index" id="settings-index" aria-label="Settings groups"></nav>
   </div>
   <div class="details-body" id="settings-body"></div>
   <footer class="settings-foot">

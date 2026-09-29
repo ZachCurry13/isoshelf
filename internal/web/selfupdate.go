@@ -61,6 +61,15 @@ type selfUpdate struct {
 
 var releaseVersion = regexp.MustCompile(`^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?$`)
 
+// releaseNotes is the page about what version changed: a release's own
+// notes, or the changelog for a development build, which has none.
+func releaseNotes(version string) string {
+	if releaseVersion.MatchString(version) {
+		return "https://github.com/" + appupdate.Repo + "/releases/tag/" + version
+	}
+	return "https://github.com/" + appupdate.Repo + "/blob/main/CHANGELOG.md"
+}
+
 // selfUpdateWhyNot says why this isoshelf can't update itself, or "". Asked
 // once at start and again when somebody presses the button: it tries to
 // write a file, which is too much to do twice a second.

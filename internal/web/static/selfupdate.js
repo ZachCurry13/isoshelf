@@ -123,3 +123,63 @@ function selfUpdateNote() {
   const u = (state && state.self_update) || {};
   return u.can ? "" : u.why || "";
 }
+
+// ---- isoshelf itself, in Settings ------------------------------------------
+
+// The version and what it changed, whether to hear about new ones, where
+// isoshelf keeps its own files, and reporting a bug (v0.8.8 put these in one
+// group; they were split between "Checking for updates", "Where things are"
+// and "Help").
+const SELF_SETTINGS = {
+  title: "isoshelf itself",
+  short: "isoshelf",
+  settings: [
+    {
+      name: "Version",
+      hint: "The version of isoshelf you are running, and what it changed.",
+      words: "version about update release changelog notes what's new news",
+      control: () => el("div", { class: "setting-controls" },
+        el("div", {}, (state && state.version) || "unknown"),
+        state && state.release_notes
+          ? el("a", { class: "btn small", href: state.release_notes, target: "_blank", rel: "noopener noreferrer" },
+            "What's new")
+          : null,
+        state && state.app_update
+          ? el("a", { class: "btn small", href: state.app_update.url, target: "_blank", rel: "noopener noreferrer" },
+            `isoshelf ${state.app_update.latest} is available · What's new in it`)
+          : null),
+    },
+    {
+      name: "Tell me about new isoshelf versions",
+      fields: ["app_update_check"],
+      hint: "Checks GitHub for a newer isoshelf and says so in the top bar. Nothing " +
+        "about you is sent, and nothing is installed until you press Update now.",
+      words: "isoshelf version update release new notify github self upgrade restart",
+      control: () => switchRow("Tell me about new isoshelf versions", state && state.app_update_check,
+        (on) => ({ app_update_check: on })),
+      note: () => selfUpdateNote(),
+    },
+    {
+      name: "isoshelf's own folder",
+      hint: "Its settings, its copy of the image list, and its logs.",
+      words: "config folder settings where files portable",
+      available: () => state && state.config_dir,
+      control: () => el("div", {},
+        el("div", { class: "file" }, state.config_dir),
+        state.portable ? el("div", { class: "muted" }, "Running portable: isoshelf keeps everything on the drive it's on.") : null),
+    },
+    {
+      name: "Report a bug",
+      hint: "Shows the details, lets you copy them, and opens GitHub's form. " +
+        "Nothing is sent until you press submit.",
+      words: "bug problem issue report help support broken",
+      available: () => state && state.report_url,
+      control: () => el("div", { class: "setting-controls" },
+        el("button", {
+          type: "button", class: "btn small",
+          onclick: () => reportProblem("", ""),
+        }, "Report a bug"),
+        el("a", { class: "btn small", href: projectURL(), target: "_blank", rel: "noopener noreferrer" }, "The project")),
+    },
+  ],
+};

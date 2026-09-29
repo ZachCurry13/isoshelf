@@ -93,7 +93,7 @@ function pastItem(item, onDisk) {
 function renderJump() {
   const images = state.report ? state.report.items.length : 0;
   $("jump-images").textContent = images ? `Your images (${images})` : "Your images";
-  const missing = catalog ? catalog.filter((e) => !e.on_target).length : 0;
+  const missing = catalog ? catalog.filter((e) => !e.on_target && !e.unlisted).length : 0;
   $("jump-more").textContent = missing ? `Add images (${missing})` : "Add images";
   const archived = state.removed ? state.removed.files : 0;
   $("jump-archive").hidden = !archived;

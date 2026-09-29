@@ -22,6 +22,9 @@ type catalogEntryJSON struct {
 	Icon      string `json:"icon,omitempty"`
 	IconColor string `json:"icon_color,omitempty"`
 	OnTarget  bool   `json:"on_target"`
+	// Unlisted images are recognized but not offered in Add images; What is
+	// this? still lists them, so a file can be named as one.
+	Unlisted bool `json:"unlisted,omitempty"`
 }
 
 func (s *Server) getCatalog(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +47,7 @@ func (s *Server) getCatalog(w http.ResponseWriter, r *http.Request) {
 			ID: e.ID, Name: e.Name, Arch: e.Arch, Size: e.Size, Popular: e.Popular,
 			Updates: e.Updates(), Page: e.Page,
 			Site: e.Site, Forum: e.Forum, Category: e.Category, Family: e.Family,
-			Icon: e.Icon, IconColor: e.IconColor, OnTarget: onTarget[e.ID],
+			Icon: e.Icon, IconColor: e.IconColor, OnTarget: onTarget[e.ID], Unlisted: e.Unlisted,
 		})
 	}
 	slices.SortFunc(entries, func(a, b catalogEntryJSON) int {

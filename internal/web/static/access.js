@@ -171,3 +171,55 @@ async function shareImages(on) {
     showNotice(err.message, true);
   }
 }
+
+// ---- Sign-in and other isoshelfs, in Settings -------------------------------
+
+// Who can get in, copying from the isoshelf on your NAS, and letting others
+// copy from this one (v0.8.8 put them in one group; they sat under "Where
+// things are" beside the folder and its records).
+const NETWORK_SETTINGS = {
+  title: "Sign-in and other isoshelfs",
+  short: "Other isoshelfs",
+  settings: [
+    {
+      name: "Sign-in",
+      hint: "One username and password for this isoshelf. Once set, it is the only " +
+        "way in - the link isoshelf prints when it starts stops working.",
+      words: "login password username sign in out account security who access",
+      available: () => state && state.login && state.login.can_set,
+      control: () => loginControl(),
+      note: () => (state && state.login && state.login.user)
+        ? `Signed in as ${state.login.user}. Forgotten the password? Run “isoshelf password” ` +
+          "on the machine isoshelf runs on, or set ISOSHELF_USERNAME and ISOSHELF_PASSWORD and restart it."
+        : "Nobody has set one yet, so anyone who can reach this address can use isoshelf.",
+    },
+    {
+      name: "Copy from another isoshelf first",
+      hint: "If the isoshelf on your NAS already has an image, take it from there " +
+        "instead of downloading it again over the internet.",
+      words: "local network nas peer server copy share fast lan source",
+      control: () => peerControl(),
+      note: () => peerNote(),
+    },
+    {
+      name: "Share this folder with other isoshelfs",
+      // Only a server can be reached by another isoshelf: a desktop or
+      // portable one answers this computer alone, so offering to share from
+      // it was a switch that could never do anything.
+      available: () => state && state.server,
+      fields: ["share"],
+      hint: "Offers the images in this folder to another isoshelf on your network that " +
+        "signs in. Off unless you turn it on.",
+      words: "share serve local network nas peer host offer",
+      control: () => switchRow("Share this folder with other isoshelfs",
+        state && state.peer && state.peer.sharing, null, shareImages),
+      note: () => (state && state.peer && state.peer.sharing)
+        ? "Anyone who can sign in to this isoshelf can copy whole images from it. Scans " +
+          "also hash every image now, which the first one after turning this on will spend " +
+          "time doing - that hash is how another isoshelf asks for a particular file. " +
+          "The licenses of the images you share are yours to mind, as with anything else " +
+          "you share on your network."
+        : "",
+    },
+  ],
+};
