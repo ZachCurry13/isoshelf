@@ -73,8 +73,9 @@ type Options struct {
 	// Progress, if not nil, is called as the run moves along.
 	Progress func(Progress)
 	// Interim, if not nil, is handed the result as soon as the folder has
-	// been listed, before hashing, which is the slow part. The same Result
-	// is filled in further and returned at the end.
+	// been listed, before hashing, which is the slow part. It is a copy the
+	// caller may keep and read while the run goes on; the finished result
+	// is what Run returns.
 	Interim func(*Result)
 }
 
@@ -138,7 +139,12 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	// numbers fill in behind it.
 	out.Report = check.Offline(res, st, opts.Catalog)
 	if opts.Interim != nil {
-		opts.Interim(out)
+		// A copy, not this run's own state: the caller keeps what it is
+		// handed and reads it while the run goes on writing hashes and
+		// answers into st. Handing over st itself was a data race - the
+		// page read records mid-write.
+		snap := st.Clone()
+		opts.Interim(&Result{State: snap, Scan: res, Report: check.Offline(res, snap, opts.Catalog)})
 	}
 
 	if !opts.NoHash {

@@ -6,6 +6,17 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.7] - 2026-09-29
+
+### Fixed
+- **isoshelf could crash if the page refreshed while a scan was working out
+  checksums.** A scan showed the page what it had found before its slow
+  part, then went on filling in the same records the page was reading, with
+  nothing to keep the two apart. Usually nothing happened; now and then Go
+  stopped the program with "concurrent map iteration and map write". The
+  page now gets its own copy, and the scan's finished result replaces it
+  when the scan ends.
+
 ## [v0.8.6] - 2026-09-29
 
 ### Added
