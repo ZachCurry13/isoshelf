@@ -226,18 +226,17 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.6 (2026-09-29)
+## Latest change: v0.8.7 (2026-09-29)
 
-- **Usage** (the maintainer asked for "a usage page that shows weekly usage
-  and other information about the system", and chose it inside isoshelf over
-  their Claude usage or GitHub numbers): a folded section with the last 8
-  weeks - arrived, left, scans, a bar per week - and the facts about this
-  isoshelf. Worked out from the records already kept, nothing new stored,
-  except that an image leaving now keeps `Arrived`.
-- **Next:** unchanged - items 8 and 9, then [#4] and the rest of *After
-  those* in `TODO.md`.
+- **A crash fixed**: a scan handed the page its own working records, then
+  went on writing hashes into them while the page read them. Go could stop
+  isoshelf with "concurrent map iteration and map write", and `go test
+  -race` caught it now and then. The page gets a copy now;
+  `internal/inventory` has a test that fails every time on the old code.
+- **Next:** items 8 and 9, then [#4] and the rest of *After those* in
+  `TODO.md`.
 
-Earlier releases, v0.8.5 back to the start, are written up in
+Earlier releases, v0.8.6 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

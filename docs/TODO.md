@@ -14,21 +14,8 @@ to them by number; a gap in the numbering is an item in the archive.
 **Next: item 8, AtlasOS recognized but not listed, and item 9, logos by
 trademark policy.** Item 8 needs a catalog field, so it waits for the same
 reason item 5's notes do (see item 5) and should go into the catalog with
-them. Then the list under *After those*. v0.7.0 to v0.8.4 are in
+them. Then the list under *After those*. Finished work is in
 `docs/archive.md`.
-
-**Found 2026-09-29, before anything else: a data race in the page's state.**
-`go test -race ./internal/web/` fails on `main` now and then (6 reports in
-two runs; `TestForgettingAFolder` and `TestRecordsAlreadyThereAreSaidBeforeAndAfter`
-among the tests that trip it). A scan hashes files through
-`inventory` -> `State.HashFiles` -> `setHash`, writing the folder's `State`
-without `s.mu`, while `/api/state` reads the same `State` under `s.mu`
-(`stateLocked` -> `State.Pinned`). CI runs `-race`, so this is a red build
-waiting to happen, and in the program itself a page refresh during a scan
-can read a map mid-write. Fix the ownership, not the test: the scan should
-hash into its own copy and merge it back under the lock, the way a scan's
-save already goes through `SaveOnto`. `/api/usage` (v0.8.6) reads the same
-`State` under the same lock, so the fix covers it too.
 
 **Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
 number. This is the least 1.0 thing in the repository: when Fedora 45 ships,

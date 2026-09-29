@@ -7,6 +7,29 @@ numbers and file names are as they were at the time.
 
 ## From TODO.md
 
+### v0.8.7: the data race in the page's state (found 2026-09-29)
+
+`go test -race ./internal/web/` failed now and then on `main`: a scan's
+`State.HashFiles` wrote the folder's `State` while `/api/state` read it under
+`s.mu`. The cause was narrower than the TODO entry guessed. `inventory.Run`
+handed its own working `State` and `Report` to `Interim`, the server kept
+them as `s.st` and `s.report`, and the run went on hashing, checking and
+`MarkChecked` into the same maps without the lock. The fix is one copy at the
+handover: `Interim` gets `st.Clone()` and a report built from it, and the
+run's finished result replaces them when it ends, as before. What was learned:
+
+- **It was a crash, not only a race report.** Without `-race`, the new test in
+  `internal/inventory` stops the program with "fatal error: concurrent map
+  iteration and map write". That is what a page refresh during a scan could
+  do to a running isoshelf, and probably what an unrelated web test tripped
+  over once (it panicked in 0.26 s and passed on every rerun).
+- **Reproduce it on purpose before fixing.** The web tests hit it one run in
+  several; `TestInterimIsTheCallersOwnCopy` reads what `Interim` handed over
+  for as long as the run hashes, and fails every time on the old code.
+- **"Hash into a copy and merge back", as TODO proposed, wasn't needed.** The
+  run already saves through `SaveOnto`; only the early handover shared memory.
+
+
 ### What v0.5.0 held
 
 **What v0.5.0 held, decided 2026-09-23** (the maintainer: "I want to make
@@ -547,7 +570,18 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.5 and older
+## From STATUS.md: releases v0.8.6 and older
+
+### v0.8.6 (2026-09-29)
+
+- **Usage** (the maintainer asked for "a usage page that shows weekly usage
+  and other information about the system", and chose it inside isoshelf over
+  their Claude usage or GitHub numbers): a folded section with the last 8
+  weeks - arrived, left, scans, a bar per week - and the facts about this
+  isoshelf. Worked out from the records already kept, nothing new stored,
+  except that an image leaving now keeps `Arrived`.
+- **Next:** unchanged - items 8 and 9, then [#4] and the rest of *After
+  those* in `TODO.md`.
 
 ### v0.8.5 (2026-09-24)
 
