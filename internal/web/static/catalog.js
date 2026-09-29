@@ -106,11 +106,12 @@ async function renderCatalog() {
     renderTodo();
   }
   loadServerFiles();
-  const missing = catalog.filter((e) => !e.on_target);
+  // An unlisted image is recognized, never offered (TODO item 8).
+  const missing = catalog.filter((e) => !e.on_target && !e.unlisted);
   $("more-count").textContent = plural(missing.length, "image");
   // Images added from here stay listed, ticked, until the downloads are
   // cleared, so the button that was clicked says how it went.
-  const listed = catalog.filter((e) => !e.on_target || (jobFor(e.id) || {}).where === "done");
+  const listed = catalog.filter((e) => (!e.on_target && !e.unlisted) || (jobFor(e.id) || {}).where === "done");
 
   const shown = filterCatalog(listed);
   const list = $("catalog");

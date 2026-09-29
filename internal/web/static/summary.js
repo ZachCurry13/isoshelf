@@ -104,13 +104,30 @@ function summaryPart(n, word, tone, onclick, notes) {
   }, el("b", {}, String(n)), ` ${word}`);
 }
 
-// jumpTo scrolls to a part of the page. It used to open the first <details>
-// in it as well, from when the archive folded away; the archive doesn't any
-// more, and the first one in the list is the Filter menu, which it opened
-// every time a count was clicked.
+// jumpTo scrolls to a part of the page, unfolding it first if it folds.
 function jumpTo(id) {
+  openSection(id);
   $(id).scrollIntoView({ behavior: "smooth", block: "start" });
 }
+
+// openSection unfolds a part of the page that folds away - the archive,
+// history, usage, tools - by its own <details>, never one inside it. It once
+// opened the first <details> it found, and in the list of images that is the
+// Filter menu, which opened every time a count was clicked.
+function openSection(id) {
+  const section = $(id);
+  const folded = section && section.querySelector(":scope > details");
+  if (folded) folded.open = true;
+}
+
+// The bar at the top unfolds what it jumps to (v0.8.8); the link itself does
+// the scrolling, as any link to a part of a page does.
+document.addEventListener("DOMContentLoaded", () => {
+  $("jump").addEventListener("click", (e) => {
+    const link = e.target.closest("a[href^='#']");
+    if (link) openSection(link.getAttribute("href").slice(1));
+  });
+});
 
 // showOnly filters the list down to one status, as a chip you can remove.
 function showOnly(status) {

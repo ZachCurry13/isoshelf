@@ -6,6 +6,27 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.8] - 2026-09-29
+
+### Changed
+- **Settings in six groups**, with a link to each along the top: This
+  folder, Updates, Sign-in and other isoshelfs, The list of images, How it
+  looks, and isoshelf itself. On a server the folder used to be listed
+  twice; it is listed once now.
+- **The Archive folds** like History, its heading saying how many files
+  and how much space they take. Empty archive is inside, so emptying it is
+  always a second step.
+- **Usage and Tools are in the top bar**, and every link there opens the
+  part of the page it jumps to if that part is folded.
+
+### Added
+- **What's new**, beside the version in Settings: that version's release
+  notes. When a newer isoshelf is out, its notice links to what that one
+  changed too.
+- The list of images can mark an image as recognized but not offered in Add
+  images. AtlasOS will be the first, in a later update to the list: copies
+  of isoshelf older than this one would refuse a list using it.
+
 ## [v0.8.7] - 2026-09-29
 
 This release also carries everything in v0.8.6, which was never published

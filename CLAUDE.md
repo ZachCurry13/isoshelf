@@ -20,7 +20,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
   `origin.js` (where a file came from, and Check it), `fromserver.js`
   (copying from your server), `dismiss.js` (dismissing an update),
   `duplicates.js` (copies of one image),
-  `folders.js`,
+  `folders.js`, `thisfolder.js` (the This folder group in Settings),
   `archive.js`, `settings.js` (the panel), `settinglist.js` (what each
   setting is), `access.js` (sign-in and sharing), `records.js` (where a
   folder's records live), `upload.js`, `report.js`, `selfupdate.js`

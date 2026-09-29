@@ -104,6 +104,11 @@ type Entry struct {
 	// catalog may only use it once older copies no longer matter, because
 	// they refuse a catalog with a field they don't know.
 	Find string `toml:"find"`
+	// Unlisted keeps an image out of Add images while still recognizing its
+	// file (v0.8.8, TODO item 8): AtlasOS, which moved from handing out
+	// modified Windows images to a playbook applied to your own. Like Find,
+	// the built-in catalog uses it only once older copies no longer matter.
+	Unlisted bool `toml:"unlisted"`
 	// Popular marks images that turn up in public "best of" round-ups. It is
 	// a hand-picked hint for sorting, dated in docs/catalog-sources.md, not a
 	// rating and not a count of anything users did.

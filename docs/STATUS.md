@@ -184,6 +184,16 @@ the archive timer and the update scheduler "next" after all three shipped.
 - Sharing belongs to servers only; the Settings footer says where settings
   really are.
 
+## Decided 2026-09-29 (the maintainer, on the page and Settings)
+
+- **Settings in six groups with an index** along the top (over folding
+  groups or a side list): This folder, Updates, Sign-in and other isoshelfs,
+  The list of images, How it looks, isoshelf itself.
+- **The Archive folds**, Empty archive inside; **Usage and Tools** in the
+  top bar; **What's new** links to the release notes rather than showing
+  them inside isoshelf.
+- **The catalog wants updating** too: Fedora, sizes, the first notes, logos.
+
 ## Decided 2026-09-24, later (the maintainer, on pulling from the server)
 
 - **Checking a file is only ever done when asked** - "A lot of times I just
@@ -226,17 +236,17 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.7 (2026-09-29)
+## Latest change: v0.8.8 (2026-09-29)
 
-- **A crash fixed**: a scan handed the page its own working records, then
-  went on writing hashes into them while the page read them. Go could stop
-  isoshelf with "concurrent map iteration and map write", and `go test
-  -race` caught it now and then. The page gets a copy now;
-  `internal/inventory` has a test that fails every time on the old code.
-- **Next:** items 8 and 9, then [#4] and the rest of *After those* in
-  `TODO.md`.
+- **Settings in six groups** with an index along the top, the folder listed
+  once on a server, and **What's new** beside the version.
+- **The Archive folds** like History; **Usage and Tools** join the top bar,
+  and its links open what they jump to.
+- The catalog learns `unlisted` (item 8), for AtlasOS later.
+- **Next:** the catalog update: [#6] Fedora, sizes, item 5's first note,
+  item 9's logos.
 
-Earlier releases, v0.8.6 back to the start, are written up in
+Earlier releases, v0.8.7 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

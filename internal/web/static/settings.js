@@ -3,10 +3,11 @@
 // Settings: one place for everything isoshelf lets you change, kept apart
 // from the page itself so neither file grows past reading.
 //
-// Each setting is written down once, in SETTING_GROUPS: its name, a line
-// saying what it does, the words someone might search for, and the control
-// that changes it. The panel is drawn from that list, so a new setting is one
-// entry rather than markup in three places.
+// Each setting is written down once, in its group (settingGroups in
+// settinglist.js): its name, a line saying what it does, the words someone
+// might search for, and the control that changes it. The panel is drawn from
+// those, so a new setting is one entry rather than markup in three places. A
+// row of links along the top jumps to each group (v0.8.8).
 
 let settingsOpen = false;
 // lastLook is what was last put on the page, so the look isn't reapplied
@@ -138,16 +139,24 @@ function renderSettings(force) {
   const body = $("settings-body");
   body.replaceChildren();
   let shown = 0;
-  for (const group of SETTING_GROUPS) {
+  const index = [];
+  for (const group of settingGroups()) {
     const rows = group.settings
       .filter((setting) => !setting.available || setting.available())
       .filter((setting) => matches(setting, group, find))
       .map((setting) => settingRow(setting));
     if (!rows.length) continue;
     shown += rows.length;
-    body.append(el("section", { class: "setting-group" },
-      el("h3", {}, group.title), rows));
+    const section = el("section", { class: "setting-group" }, el("h3", {}, group.title), rows);
+    body.append(section);
+    index.push(el("button", {
+      type: "button", class: "linkish",
+      onclick: () => section.scrollIntoView({ block: "start", behavior: "smooth" }),
+    }, group.short || group.title));
   }
+  // Only groups with something showing are listed: a search narrows both.
+  $("settings-index").replaceChildren(...index);
+  $("settings-index").hidden = index.length < 2;
   if (!shown) {
     body.append(el("p", { class: "muted" }, `Nothing in Settings matches “${$("settings-search").value.trim()}”.`));
   }

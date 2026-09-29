@@ -820,7 +820,10 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   read the folder again and ask every project again. Scanning without going
   online is what turning the setting off does, not a second button.
 - The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
-  images, Archive, History. Above the list, one line says what wants doing
+  images, Archive, History, Usage and Tools (the last two since v0.8.8).
+  A link unfolds the part it jumps to (`openSection` in `summary.js`, which
+  opens only that part's own `<details>` - never one inside it, which is
+  how the Filter menu once opened by itself). Above the list, one line says what wants doing
   (`renderTodo` in `summary.js`, v0.7.0; it was a card for each until then):
   `41 updates · 13 older · 3 unrecognized · Archive 20.9 GB [Update 31]`.
   Each count shows exactly those images; Update all is the one button. The list is a favorite star and four columns - image (file,
@@ -889,7 +892,12 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
     morning's answers says this morning.
 - **Settings** (v0.3.1) is one panel, opened from the top bar and closed with
   Escape, holding everything isoshelf lets a person change. Each setting is
-  one entry in `SETTING_GROUPS` (`internal/web/static/settinglist.js`): its name,
+  one entry in its group, and `settingGroups()` (`settinglist.js`) puts the
+  groups in order: This folder (`thisfolder.js`), Updates, Sign-in and other
+  isoshelfs (`access.js`), The list of images, How it looks, and isoshelf
+  itself (`selfupdate.js`), with a row of links along the top that jumps to
+  each (v0.8.8, the maintainer's pick; the folder had been listed twice on a
+  server). An entry holds its name,
   a line saying what it does, the words a search should find it by, and the
   control. The search box matches all of those, so nothing has to be listed
   twice. Settings and the details panel share a place on the screen, so
@@ -933,7 +941,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   `origin.js` (where each file came from, and Check it), `fromserver.js`
   (copying from your server in Add images), `dismiss.js` (dismissing an
   update for a while or for good), `duplicates.js` (copies of one image),
-  `folders.js` (the chooser), `archive.js`, `settings.js` (the Settings
+  `folders.js` (the chooser), `thisfolder.js` (This folder in Settings), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
   (dragging a file onto the page, or picking one), `selfupdate.js` (isoshelf
@@ -949,7 +957,11 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   the name.
 - **Archive** lists files still in `.isoshelf/removed`, with Restore;
   **History** lists images that have left, with Download again for catalog
-  ones.
+  ones. Both fold (the archive since v0.8.8), their headings saying how many
+  and how much; Empty archive is inside, so emptying is a second step.
+- **What's new** (v0.8.8): the version in Settings links to its release
+  notes (`releaseNotes`, a release's own page, or the changelog for a
+  development build), and a newer version's notice links to that version's.
 - **Usage** (v0.8.6, `usage.go`, `state/usage.go`, `static/usage.js`) is a
   folded section: the last 8 weeks, Monday to Sunday where isoshelf runs,
   with what arrived by `Origin.How` (or `PlacedAt` for downloads older than
