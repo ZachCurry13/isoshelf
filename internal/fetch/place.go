@@ -36,6 +36,7 @@ func (c *Client) place(ctx context.Context, req Request, part, final, url string
 			return nil, err
 		}
 		result.Verified = true
+		result.Weak = req.Checksum.Algorithm.Weak()
 	}
 
 	progress(Progress{Stage: Placing, Filename: req.Filename, Done: st.size, Total: st.size, URL: url})

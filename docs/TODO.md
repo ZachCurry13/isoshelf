@@ -18,7 +18,10 @@ its checksum named through a group in `file` ([#6]: `file =
 `manifest = "Fedora-Workstation-{version}-{compose}-x86_64-CHECKSUM"`, base
 on `{cycle}`; check it with `record` before committing), `icon = "disc"` on
 the Ubuntu, Windows, Windows 11, AtlasOS and NiceHash entries (item 9), and
-`unlisted = true` on AtlasOS (item 8). Meanwhile, item 9's other half:
+`unlisted = true` on AtlasOS (item 8), and - once v0.8.10 has been out as
+long - PikaOS, BigLinux and AnduinOS as downloads (the maintainer,
+2026-10-05: MD5-only images download, marked weak; v0.8.10 makes that safe,
+and reads AnduinOS's nameless checksum). Meanwhile, item 9's other half:
 checking every remaining logo against its project's own rules. Item 8's field, `unlisted`,
 shipped in v0.8.8; AtlasOS gets it a release or two later, once older copies
 no longer matter. Then the list under *After those*. Finished work is in

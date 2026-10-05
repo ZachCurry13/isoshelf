@@ -64,6 +64,9 @@ type Checksum struct {
 var (
 	gnuLine = regexp.MustCompile(`^([0-9a-fA-F]+)\s+\*?(.+)$`)
 	bsdLine = regexp.MustCompile(`^(MD5|SHA-?1|SHA-?256|SHA-?512)\s*\((.+)\)\s*=\s*([0-9a-fA-F]+)$`)
+	// namelessLine is a checksum file for one image that doesn't say which:
+	// "SHA256: <hash>" (AnduinOS), or the hash alone (v0.8.10).
+	namelessLine = regexp.MustCompile(`^(?:(MD5|SHA-?1|SHA-?256|SHA-?512)\s*:\s*)?([0-9a-fA-F]+)$`)
 )
 
 // ParseManifest reads checksum lines in GNU form ("<hash>  <file>" or
@@ -102,6 +105,13 @@ func ParseManifest(data []byte) []Checksum {
 			}
 			continue
 		}
+		if m := namelessLine.FindStringSubmatch(line); m != nil {
+			algo, ok := hexLength[len(m[2])]
+			if named := Algorithm(strings.ToLower(strings.ReplaceAll(m[1], "-", ""))); ok && (m[1] == "" || named == algo) {
+				out = append(out, Checksum{Algorithm: algo, Hex: strings.ToLower(m[2])})
+			}
+			continue
+		}
 		if m := gnuLine.FindStringSubmatch(line); m != nil {
 			if algo, ok := hexLength[len(m[1])]; ok {
 				out = append(out, Checksum{Name: baseName(m[2]), Algorithm: algo, Hex: strings.ToLower(m[1])})
@@ -116,7 +126,9 @@ func Strongest(checksums []Checksum, name string) (Checksum, bool) {
 	var best Checksum
 	found := false
 	for _, c := range checksums {
-		if c.Name == name && (!found || c.Algorithm.strength() > best.Algorithm.strength()) {
+		// A checksum with no name is a file of its own for one image, read
+		// because that image was asked about; it is that image's.
+		if (c.Name == name || c.Name == "") && (!found || c.Algorithm.strength() > best.Algorithm.strength()) {
 			best, found = c, true
 		}
 	}

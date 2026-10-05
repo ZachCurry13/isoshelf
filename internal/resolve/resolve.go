@@ -109,7 +109,13 @@ func Resolve(ctx context.Context, client *remote.Client, e *catalog.Entry, rel *
 			for _, c := range checksums {
 				names = append(names, c.Name)
 			}
-			if a.Filename = newest(names, fileRE); a.Filename == "" {
+			a.Filename = newest(names, fileRE)
+			// A checksum file that names no file (v0.8.10) leaves the name to
+			// what the listing matched, when that was the image itself.
+			if name := path.Base(rel.Matched); a.Filename == "" && rel.Matched != "" && fileRE.MatchString(name) {
+				a.Filename = name
+			}
+			if a.Filename == "" {
 				return nil, fmt.Errorf("no file matching %q in %s", fileRE, manifestURL)
 			}
 		}

@@ -146,6 +146,10 @@ func unverifiedNote(res *update.Result, err error) string {
 	switch {
 	case err != nil || res == nil || res.Verified:
 		return ""
+	case res.Weak && len(res.Kept) > 0:
+		return "This project publishes only an MD5 or SHA-1 checksum. It matched, so the download isn't damaged, but it can't show the file is the one the project made. Your old file was kept - remove it once you're happy with the new one."
+	case res.Weak:
+		return "This project publishes only an MD5 or SHA-1 checksum. It matched, so the download isn't damaged, but it can't show the file is the one the project made."
 	case len(res.Kept) > 0:
 		return "This project publishes no checksum, so isoshelf couldn't verify the download. Your old file was kept - remove it once you're happy with the new one."
 	default:

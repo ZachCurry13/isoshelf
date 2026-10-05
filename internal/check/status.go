@@ -66,6 +66,7 @@ func decide(it *Item, rel *source.Release, art *resolve.Artifact, err error, rec
 		return
 	}
 	it.EOL = fileCycleEOL(e, rel, it.Version)
+	it.WeakChecksum = art != nil && art.Checksum != nil && art.Checksum.Algorithm.Weak()
 	// Whatever its name, a file whose hash is the one the project publishes
 	// is that release.
 	if recorded != "" && art != nil && art.Checksum != nil && art.Checksum.Algorithm == verify.SHA256 &&

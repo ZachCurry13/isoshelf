@@ -7,6 +7,21 @@ numbers and file names are as they were at the time.
 
 ## From TODO.md
 
+### v0.8.10: weak checksums, and the first catch-up from the wish list (2026-10-05)
+
+The wish list's first three were researched on each project's own site.
+What was learned:
+- **Some sites refuse curl's default name but answer isoshelf's** (PikaOS,
+  BigLinux: 403 to curl, 200 to `isoshelf/...`). Try with isoshelf's own user
+  agent before ruling a project out; that is what isoshelf sends, so it is
+  not getting round anything.
+- **`Algorithm.Weak` existed and nothing called it**, so an MD5 match counted
+  as proof, against the design. No built-in entry relied on MD5 alone, which
+  is why it went unnoticed until PikaOS and BigLinux, which publish nothing
+  stronger.
+- **A checksum file can name nothing** (AnduinOS: `SHA256: <hash>`); the
+  image's name then comes from what the listing matched.
+
 ### v0.8.9 and catalog revision 2026092901: the catalog update (2026-09-29 to 10-05)
 
 The maintainer asked for the catalog to be updated. The part safe for every
@@ -609,7 +624,16 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.8 and older
+## From STATUS.md: releases v0.8.9 and older
+
+### v0.8.9 (2026-10-05)
+
+- **A checksum name may use a named group from the file pattern** ([#6]),
+  so Fedora can follow its newest release in a later catalog update.
+- **A plain disc** for images whose logo can't be shown (item 9); the five
+  removed logos no longer ship.
+- Catalog revision 2026092901 (2026-09-29, no release needed): sizes
+  refreshed, MX's where-to-find note, five logos off.
 
 ### v0.8.8 (2026-09-29)
 
