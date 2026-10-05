@@ -64,7 +64,15 @@ func Resolve(ctx context.Context, client *remote.Client, e *catalog.Entry, rel *
 	}
 
 	a := &Artifact{}
-	if spec.Manifest == "" || slices.Contains(catalog.Placeholders(spec.Manifest), "file") {
+	// The file is found first when the checksum's name depends on it: its
+	// whole name ({file}), or a named group in artifact.file (v0.8.9, #6 -
+	// Fedora's checksum is named after a compose only the file name has).
+	groups := fileRE.SubexpNames()
+	needFile := spec.Manifest == ""
+	for _, p := range catalog.Placeholders(spec.Manifest) {
+		needFile = needFile || p == "file" || slices.Contains(groups, p)
+	}
+	if needFile {
 		// A listing that matched the whole filename has already said which
 		// file it is, which matters where the download folder can't be
 		// listed. Otherwise the folder is read to find it.
@@ -74,6 +82,13 @@ func Resolve(ctx context.Context, client *remote.Client, e *catalog.Entry, rel *
 			return nil, err
 		}
 		vars["file"] = a.Filename
+		if m := fileRE.FindStringSubmatch(a.Filename); m != nil {
+			for i, name := range groups {
+				if name != "" {
+					vars[name] = m[i]
+				}
+			}
+		}
 	}
 
 	if spec.Manifest != "" {

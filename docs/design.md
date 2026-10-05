@@ -350,7 +350,12 @@ alone is not an update.
   check-only entries.
 - Placeholders: `{version}` everywhere, `{cycle}` for endoflife, `{tag}` for
   github, `{file}` (the resolved filename) only in `manifest` and `sig`. Values
-  are regex-escaped inside `file`.
+  are regex-escaped inside `file`. Since v0.8.9 `manifest` and `sig` may also
+  use any named group in `file` (`FileGroups`): the file is found in the
+  folder first and the group's text filled in, which is how a checksum named
+  after something only the file name carries (Fedora's compose, `44-1.7`) is
+  reached (#6). Older copies refuse a placeholder they don't know, so the
+  built-in catalog waits a release before using one.
 - A fixed-name entry that isn't manual needs a published checksum
   (`artifact.manifest` or a GitHub `asset`), since that is how updates show up.
 - `[keys.<name>]`: `file` (armored key, relative to the catalog file) and
@@ -950,8 +955,12 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   prefilled bug report). They were one 2,544-line
   `app.js` until v0.3.1; the split is what keeps changing one corner from
   meaning reading all of it.
-- Logos: 21 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
-  with `go run ./internal/web/logos/fetch`. `/logo/{slug}` serves those, then
+- Logos: 16 ship in `internal/web/static/logos` (Simple Icons, CC0), refreshed
+  with `go run ./internal/web/logos/fetch`, plus `disc.svg`, a plain disc
+  isoshelf draws itself (`logos.Disc`, v0.8.9) for an image whose project's
+  logo can't be shown here: a logo is shown only where the project's own
+  rules allow it (TODO item 9). The disc is never fetched, and the fetcher
+  skips it. `/logo/{slug}` serves those, then
   ones fetched earlier from `<config>/logos`, then fetches from the CDN once
   and remembers misses. Entries without one get colored initials, drawn from
   the name.

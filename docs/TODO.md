@@ -11,11 +11,15 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: the rest of the catalog update** the maintainer asked for on
-2026-09-29. Done in catalog revision 2026092901: sizes refreshed from the
-live answers, item 5's first note, and item 9 begun (five logos off). Left:
-[#6], which needs isoshelf to find a checksum file by pattern first (as the
-issue suggests), and item 9's disc and the other logos' policies. Item 8's field, `unlisted`,
+**Next: the catalog's second step, once v0.8.9 has been out a release or
+so** (older copies refuse what it adds): Fedora on the endoflife source with
+its checksum named through a group in `file` ([#6]: `file =
+'Fedora-Workstation-Live-{version}-(?P<compose>[\d.]+)\.x86_64\.iso'`,
+`manifest = "Fedora-Workstation-{version}-{compose}-x86_64-CHECKSUM"`, base
+on `{cycle}`; check it with `record` before committing), `icon = "disc"` on
+the Ubuntu, Windows, Windows 11, AtlasOS and NiceHash entries (item 9), and
+`unlisted = true` on AtlasOS (item 8). Meanwhile, item 9's other half:
+checking every remaining logo against its project's own rules. Item 8's field, `unlisted`,
 shipped in v0.8.8; AtlasOS gets it a release or two later, once older copies
 no longer matter. Then the list under *After those*. Finished work is in
 `docs/archive.md`.
@@ -217,6 +221,11 @@ Then:
 
 ## Worth knowing before you start
 
+- **`TestAnUpdatedProgramComesBackOnTheSamePort` can time out under load.**
+  It builds and starts the real program and waits 30 seconds for it; with
+  every package testing at once on a busy Windows machine it once took
+  longer (2026-10-05), and passed in 6 seconds run alone. Rerun it alone
+  (`go test ./cmd/isoshelf/ -run SamePort -count=1`) before believing it.
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
   `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,

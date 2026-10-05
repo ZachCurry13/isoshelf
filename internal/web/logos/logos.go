@@ -5,7 +5,9 @@
 // initials drawn by the page.
 //
 // The logos come from Simple Icons (CC0 1.0). They are used to identify the
-// projects they belong to, and their trademarks stay with their owners.
+// projects they belong to, and their trademarks stay with their owners. A
+// logo is only shown where the project's own rules allow it; where they
+// don't, or aren't clear, the catalog names Disc instead.
 package logos
 
 import (
@@ -31,6 +33,11 @@ func SourceURL(slug string) string {
 	return "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/" + slug + ".svg"
 }
 
+// Disc is the plain disc isoshelf draws itself (v0.8.9, TODO item 9), for an
+// image whose project's logo can't be shown here. It ships with isoshelf and
+// is never fetched: Simple Icons has nothing by that name to fetch.
+const Disc = "disc"
+
 // Store serves logos from the ones built in, then the ones fetched earlier,
 // and fetches anything still missing.
 type Store struct {
@@ -55,6 +62,9 @@ func (s *Store) Get(ctx context.Context, slug string) ([]byte, error) {
 		if data, err := fs.ReadFile(s.Builtin, slug+".svg"); err == nil {
 			return data, nil
 		}
+	}
+	if slug == Disc {
+		return nil, ErrNoLogo // drawn by isoshelf, never fetched
 	}
 	if s.CacheDir == "" {
 		return nil, ErrNoLogo

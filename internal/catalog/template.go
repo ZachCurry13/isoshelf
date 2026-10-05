@@ -3,6 +3,7 @@ package catalog
 import (
 	"fmt"
 	"regexp"
+	"slices"
 	"strings"
 )
 
@@ -81,4 +82,22 @@ func WholeRegexp(expr string) (*regexp.Regexp, error) {
 		return nil, err
 	}
 	return regexp.Compile(`^(?:` + expr + `)$`)
+}
+
+// FileGroups returns the named groups in an artifact.file pattern. A
+// checksum or signature name may use them once the file is found (v0.8.9,
+// #6): Fedora names its checksum file after a compose number that only the
+// image's own name carries.
+func FileGroups(file string) []string {
+	re, err := ExpandRegexp(file, sampleValues)
+	if err != nil {
+		return nil
+	}
+	var names []string
+	for _, n := range re.SubexpNames() {
+		if n != "" && !slices.Contains(names, n) {
+			names = append(names, n)
+		}
+	}
+	return names
 }

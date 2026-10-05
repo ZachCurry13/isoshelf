@@ -236,17 +236,18 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.8 (2026-09-29)
+## Latest change: v0.8.9 (2026-10-05)
 
-- **Settings in six groups** with an index along the top, the folder listed
-  once on a server, and **What's new** beside the version.
-- **The Archive folds** like History; **Usage and Tools** join the top bar,
-  and its links open what they jump to.
-- The catalog learns `unlisted` (item 8), for AtlasOS later.
-- **Next:** the catalog update: [#6] Fedora, sizes, item 5's first note,
-  item 9's logos.
+- **A checksum name may use a named group from the file pattern** ([#6]),
+  so Fedora can follow its newest release in a later catalog update.
+- **A plain disc** for images whose logo can't be shown (item 9); the five
+  removed logos no longer ship.
+- Catalog revision 2026092901 (2026-09-29, no release needed): sizes
+  refreshed, MX's where-to-find note, five logos off.
+- **Next:** the catalog's second step once v0.8.9 has been out a while:
+  Fedora, the disc, AtlasOS unlisted.
 
-Earlier releases, v0.8.7 back to the start, are written up in
+Earlier releases, v0.8.8 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

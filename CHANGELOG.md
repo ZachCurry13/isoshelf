@@ -6,6 +6,25 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.9] - 2026-10-05
+
+### Added
+- **The list of images can name a checksum file after part of the image's
+  own name.** Fedora names its checksum after the build (`44-1.7`), which
+  nothing else reports, so its entries have had to be moved to each new
+  release by hand ([#6](https://github.com/ZachCurry13/isoshelf/issues/6)).
+  With this, a later update to the list lets them follow the newest Fedora
+  by themselves. Copies of isoshelf older than this one would refuse a list
+  that used it, so the list waits a little before it does.
+- **A plain disc**, for images whose project's logo can't be shown here.
+  The list of images starts using it in a later update; until then those
+  images show their initials, as they have since the list stopped naming
+  their logos.
+
+### Removed
+- The Ubuntu, Windows, Windows 11, AtlasOS and NiceHash logos no longer ship
+  inside isoshelf. The list of images stopped naming them on 2026-09-29.
+
 ## [v0.8.8] - 2026-09-29
 
 ### Changed
