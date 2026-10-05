@@ -94,6 +94,9 @@ type Item struct {
 	// Matched is the address of the published checksum the file's hash
 	// equals, found by this check. It is how a file becomes proven.
 	Matched string
+	// WeakChecksum says the project publishes only an MD5 or SHA-1, which
+	// can't prove a file is the project's (v0.8.10).
+	WeakChecksum bool
 }
 
 // Report is the state of every image on a target.

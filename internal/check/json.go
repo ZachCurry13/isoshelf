@@ -72,6 +72,9 @@ type ItemJSON struct {
 	// SHA256 is the file's hash when it has one, which is how the page tells
 	// two copies are one file (v0.8.4).
 	SHA256 string `json:"sha256,omitempty"`
+	// WeakChecksum says the project publishes only an MD5 or SHA-1, so no
+	// file can be proven to be its own (v0.8.10).
+	WeakChecksum bool `json:"weak_checksum,omitempty"`
 }
 
 // TrashJSON is a trash folder and the space it uses.
@@ -104,6 +107,7 @@ func (r *Report) JSON() ReportJSON {
 			Latest: it.Latest, LatestFile: it.LatestFile, Note: it.Note,
 			Modified: it.ModTime, Added: it.Added, Placed: it.Placed, Release: it.Release,
 			Origin: it.Origin, Before: it.Before, Hashed: it.Hashed, Matched: it.Matched, SHA256: it.SHA256,
+			WeakChecksum: it.WeakChecksum,
 		}
 		if e := it.Entry; e != nil {
 			j.Entry, j.Arch, j.Page, j.Updates = e.ID, e.Arch, e.Page, e.Updates()

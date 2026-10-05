@@ -83,8 +83,10 @@ type Result struct {
 	Version string
 	Size    int64
 	SHA256  string
-	// Verified is false when the project publishes no checksum.
+	// Verified is false when the project publishes no checksum, or only an
+	// MD5 or SHA-1, which Weak then says.
 	Verified bool
+	Weak     bool
 	URL      string
 	// Removed lists the old files that were moved aside or deleted.
 	Removed []string
@@ -163,7 +165,10 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	// of the user's own, or a GitHub release from before GitHub published
 	// digests, can lack one. An old file with the same name can't stay where
 	// it is, so it is archived, which can be undone, and never deleted.
-	unverified := artifact.Checksum == nil
+	// A checksum that is only MD5 or SHA-1 counts the same (v0.8.10): it is
+	// still checked, so a damaged download is thrown away, but it proves
+	// nothing about the file being the one the project made.
+	unverified := artifact.Checksum == nil || artifact.Checksum.Algorithm.Weak()
 	beforeRemoval := opts.Removal
 	if unverified {
 		beforeRemoval = MoveAside
@@ -211,7 +216,8 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}
 	result := &Result{
 		File: placeAs, Version: version, Size: downloaded.Size,
-		SHA256: downloaded.SHA256, Verified: downloaded.Verified, URL: downloaded.URL,
+		SHA256: downloaded.SHA256, Verified: downloaded.Verified && !downloaded.Weak, Weak: downloaded.Weak,
+		URL: downloaded.URL,
 	}
 	if replaced != "" {
 		result.Removed = append(result.Removed, replaced)
@@ -271,7 +277,7 @@ func originOf(got *fetch.Result, artifact *resolve.Artifact, near []string, now 
 	if slices.Contains(near, got.URL) {
 		o.How = state.OriginCopy
 	}
-	if got.Verified {
+	if got.Verified && !got.Weak {
 		o.Checked, o.CheckedAt = artifact.ChecksumURL, now.UTC()
 	}
 	return o

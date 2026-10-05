@@ -77,6 +77,10 @@ type Result struct {
 	// Verified is true when a published checksum matched. False means the
 	// project publishes none, so the file is "unverified".
 	Verified bool
+	// Weak is set when the checksum that matched is MD5 or SHA-1 (v0.8.10):
+	// it catches a damaged download, not a deliberately changed one, so the
+	// caller treats the file as one nothing proved.
+	Weak bool
 	// URL is where the file came from.
 	URL string
 	// Resumed reports whether an earlier, unfinished download was continued.
