@@ -7,6 +7,26 @@ numbers and file names are as they were at the time.
 
 ## From TODO.md
 
+### v0.8.9 and catalog revision 2026092901: the catalog update (2026-09-29 to 10-05)
+
+The maintainer asked for the catalog to be updated. The part safe for every
+installed copy went out as catalog revision 2026092901 with no release:
+`record -sizes` answered for all 69 entries it asks about, four sizes had
+drifted, MX's 32-bit entry got its `find` note, and five entries stopped
+naming their logos. v0.8.9 then shipped what the rest needs: named groups
+from `file` in checksum names (#6) and the plain disc (item 9). What was
+learned:
+- **The refresh moves the tests.** Re-recording replaces the answers
+  `TestSampleDrive` and `TestLatestRecorded` replay, and both pin the newest
+  versions, so they change with every real release a project makes.
+- **Validation expands names with sample values**, so a new placeholder
+  needs one there too, or the check fails on a perfectly good entry.
+- **Older copies refuse an unknown placeholder**, exactly as they refuse an
+  unknown field, so Fedora's switch waits like `find` and `unlisted` did.
+- A CATALOG-CHANGES entry must claim only what was checked: "these
+  projects' rules don't allow it" was written, then cut back to "strict or
+  unclear", because nobody had read all five policies yet.
+
 ### v0.8.8: Settings in groups, the archive folds, the top bar complete
 
 *(released 2026-09-29)*, from the maintainer's own use: the Archive was always
@@ -589,7 +609,15 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.7 and older
+## From STATUS.md: releases v0.8.8 and older
+
+### v0.8.8 (2026-09-29)
+
+- **Settings in six groups** with an index along the top, the folder listed
+  once on a server, and **What's new** beside the version.
+- **The Archive folds** like History; **Usage and Tools** join the top bar,
+  and its links open what they jump to.
+- The catalog learns `unlisted` (item 8), for AtlasOS later.
 
 ### v0.8.7 (2026-09-29)
 
