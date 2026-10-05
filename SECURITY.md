@@ -31,7 +31,9 @@ broken is a security report, not a feature request.
 - **Nothing is replaced before the new file is verified.** The order is
   download, verify, rename into place, and only then deal with the old file —
   and only if you chose replacing.
-- **A download nobody can verify never replaces anything by itself.**
+- **A download nobody can verify never replaces anything by itself.** Nor
+  does one that only an MD5 or SHA-1 vouches for: those still catch a
+  damaged download, but they can't show a file is the one the project made.
 - **A file is only called checked when it was.** Each file's records say
   where it came from and, when its hash matched a checksum the project
   publishes, which checksum and when. Nothing else marks a file checked —

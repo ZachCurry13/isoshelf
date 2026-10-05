@@ -184,6 +184,15 @@ the archive timer and the update scheduler "next" after all three shipped.
 - Sharing belongs to servers only; the Settings footer says where settings
   really are.
 
+## Decided 2026-10-05 (the maintainer)
+
+- **MD5-only images download, marked weak**, rather than staying
+  check-only: checked, never replacing anything, never called verified.
+- **Usage is folded away**: History becomes a timeline of what arrived, was
+  updated and left; the facts about isoshelf move to Settings.
+- **The catalog catches up** three wish-list images at a time, as decided
+  on 2026-09-18, plus requests; the two old branches are deleted.
+
 ## Decided 2026-09-29 (the maintainer, on the page and Settings)
 
 - **Settings in six groups with an index** along the top (over folding
@@ -236,18 +245,19 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.9 (2026-10-05)
+## Latest change: v0.8.10 (2026-10-05)
 
-- **A checksum name may use a named group from the file pattern** ([#6]),
-  so Fedora can follow its newest release in a later catalog update.
-- **A plain disc** for images whose logo can't be shown (item 9); the five
-  removed logos no longer ship.
-- Catalog revision 2026092901 (2026-09-29, no release needed): sizes
-  refreshed, MX's where-to-find note, five logos off.
-- **Next:** the catalog's second step once v0.8.9 has been out a while:
-  Fedora, the disc, AtlasOS unlisted.
+- **Weak checksums are weak**: an MD5 or SHA-1 match still catches a
+  damaged download, but never replaces anything and is never called
+  checked. **Nameless checksum files** (AnduinOS) can be read.
+- Catalog revision 2026100501 (no release needed): Nobara Steam HTPC
+  (#79), AnduinOS, PikaOS and BigLinux check-only, five sizes.
+- The two old branches on GitHub are deleted (their last commits were
+  `eaa19f51` and `07cd17dc`).
+- **Next:** Usage folded into History and Settings (v0.8.11); then the
+  catalog's second step.
 
-Earlier releases, v0.8.8 back to the start, are written up in
+Earlier releases, v0.8.9 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

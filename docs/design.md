@@ -120,7 +120,14 @@ Every catalog entry runs through four stages:
    that redirects to another host is refused. Output:
    `Artifact{Filename, URLs, Size, Checksum}`.
 3. **Verifier** (`internal/verify`) - GNU (`hash  file`) and BSD
-   (`SHA256 (file) = hash`) manifests; MD5/SHA-1 count as weak integrity only.
+   (`SHA256 (file) = hash`) manifests, and since v0.8.10 a one-image file
+   that names nothing (`SHA256: hash`, or the hash alone), which belongs to
+   the image it was fetched for. MD5/SHA-1 count as weak integrity only, and
+   since v0.8.10 the code says so too: a weak match still blocks a damaged
+   download, but `fetch.Result.Weak` makes `update.Run` treat the file as
+   unverified (it never replaces anything), the record never calls it
+   checked, and the page explains (`weak_checksum`). The maintainer chose to
+   let MD5-only images download on those terms rather than stay check-only.
    Signatures are planned ([#5](https://github.com/ZachCurry13/isoshelf/issues/5)),
    not built: detached over manifest, clearsigned manifest, detached over the
    image, with armored keys whose fingerprints are pinned in the catalog.

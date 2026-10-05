@@ -6,6 +6,23 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.10] - 2026-10-05
+
+### Changed
+- **An MD5 or SHA-1 checksum is treated as weak.** A download that matches
+  one is still checked, so a damaged file is thrown away, but it is never
+  called verified and it never replaces or removes the file you already
+  have. Those checksums catch damage, not deliberate changes. isoshelf's
+  design always said this; until now the program didn't act on it.
+
+### Added
+- **Checksum files that don't name the file** - "SHA256: <hash>", or the
+  hash alone - can be read. AnduinOS publishes its checksums this way.
+
+The list of images makes PikaOS, BigLinux and AnduinOS downloadable in a
+later update, once copies older than this one no longer matter: they would
+treat an MD5 as proof, or fail to read AnduinOS's checksum.
+
 ## [v0.8.9] - 2026-10-05
 
 ### Added
