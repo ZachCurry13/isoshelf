@@ -1,0 +1,15 @@
+Parrot OS 7.4
+
+
+md5
+67937cfacadc11042acd47f1ddba5f7b  Parrot-home-7.4_amd64.iso
+cf8c39241660f79b22719e2330048565  Parrot-home-7.4_arm64.iso
+25c302df7f8b6089cb8629e4f67ac170  Parrot-home-tuned-7.4_amd64.iso
+a3ddddeb89af1768ff28d45dce5c6285  Parrot-security-7.4_amd64.iso
+06ebc833bea1fbf13084908eca9bb609  Parrot-security-7.4_arm64.iso
+8495734a82885a57a92a0fd9539fb9d4  Parrot-security-tuned-7.4_amd64.iso
+29b95d6a398f1f332f25a05016456f46  Parrot-spin-enlightenment-7.4_amd64.iso
+2051e2683d7a75077e6b3de2ed6b0383  Parrot-spin-htb-7.4_amd64.iso
+3a7cb13893c48105b6688973a40d5c98  Parrot-spin-lxqt-7.4_amd64.iso
+e3b9b025ad62a695eb1bd7c476b78359  Parrot-spin-mate-7.4_amd64.iso
+daac36aaa1eabc6854c18379aef81e32  Parrot-home-7.4_amd64.ova

@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026092901 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026100501 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -697,7 +697,7 @@ name = "Parrot OS Home"
 arch = "x86_64"
 match = 'Parrot-home-(?P<version>\d+\.\d+(?:\.\d+)?)_amd64\.iso'
 samples = ["Parrot-home-6.2_amd64.iso"]
-size = 4056121344
+size = 4165287936
 page = "https://www.parrotsec.org/download/"
 category = "security"
 family = "parrot"
@@ -722,7 +722,7 @@ name = "Parrot OS Security"
 arch = "x86_64"
 match = 'Parrot-security-(?P<version>\d+\.\d+(?:\.\d+)?)_amd64\.iso'
 samples = ["Parrot-security-7.3_amd64.iso"]
-size = 8555526144
+size = 8682078208
 page = "https://www.parrotsec.org/download/"
 category = "security"
 family = "parrot"
@@ -747,7 +747,7 @@ name = "Qubes OS"
 arch = "x86_64"
 match = 'Qubes-R(?P<version>\d+\.\d+(?:\.\d+)?)-x86_64\.iso'
 samples = ["Qubes-R4.2.0-x86_64.iso"]
-size = 8402513920
+size = 8459569152
 page = "https://www.qubes-os.org/downloads/"
 category = "security"
 family = "qubes"
@@ -1553,7 +1553,7 @@ name = "Arch Linux"
 arch = "x86_64"
 match = 'archlinux-(?P<version>\d{4}\.\d{2}\.\d{2})-x86_64\.iso'
 samples = ["archlinux-2026.09.01-x86_64.iso"]
-size = 1608286208
+size = 1640497152
 popular = true
 page = "https://archlinux.org/download/"
 category = "desktop"
@@ -1581,7 +1581,7 @@ name = "openSUSE Tumbleweed"
 arch = "x86_64"
 match = 'openSUSE-Tumbleweed-DVD-x86_64-Snapshot(?P<version>\d{8})-Media\.iso'
 samples = ["openSUSE-Tumbleweed-DVD-x86_64-Snapshot20260916-Media.iso"]
-size = 4654628864
+size = 4679794688
 popular = true
 page = "https://get.opensuse.org/tumbleweed/"
 category = "desktop"
@@ -1934,6 +1934,29 @@ file = 'Nobara-\d+-Steam-Handheld-{version}\.iso'
 manifest = "{file}.sha256sum"
 
 [[entry]]
+# Asked for in #79 (2026-10-02), from a file isoshelf didn't recognize.
+id = "nobara-steam-htpc"
+name = "Nobara (Steam HTPC)"
+arch = "x86_64"
+match = 'Nobara-\d+-Steam-HTPC-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+samples = ["Nobara-44-Steam-HTPC-2026-09-26.iso"]
+size = 9308694528
+page = "https://nobaraproject.org/download.html"
+category = "gaming"
+family = "nobara"
+site = "https://nobaraproject.org/"
+
+[entry.source]
+type = "listing"
+url = "https://nobaraproject.org/download.html"
+regex = 'Nobara-\d+-Steam-HTPC-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+
+[entry.artifact]
+base = "https://nobara-images.nobaraproject.org/"
+file = 'Nobara-\d+-Steam-HTPC-{version}\.iso'
+manifest = "{file}.sha256sum"
+
+[[entry]]
 id = "endeavouros"
 name = "EndeavourOS"
 arch = "x86_64"
@@ -1994,3 +2017,65 @@ forum = "https://discourse.nixos.org/"
 type = "endoflife"
 product = "nixos"
 channel = "latest"
+
+[[entry]]
+# From the wish list (2026-10-05). AnduinOS publishes a SHA-256 for each ISO
+# on its own site, but as a bare "SHA256: <hash>" line with no file name,
+# which isoshelf can't read yet; until it can, this entry checks for updates
+# and links to the download.
+id = "anduinos"
+name = "AnduinOS"
+arch = "x86_64"
+match = 'AnduinOS-(?P<version>\d+\.\d+\.\d+)-amd64\.iso'
+samples = ["AnduinOS-2.0.4-amd64.iso"]
+page = "https://www.anduinos.com/#download-links"
+category = "desktop"
+family = "anduinos"
+site = "https://www.anduinos.com/"
+
+[entry.source]
+type = "listing"
+url = "https://www.anduinos.com/"
+regex = 'AnduinOS-(?P<version>\d+\.\d+\.\d+)-amd64\.sha256'
+
+[[entry]]
+# From the wish list (2026-10-05). PikaOS publishes only an MD5 for each ISO,
+# which catches a broken download but not a changed one, so this entry checks
+# for updates and links to the download. One entry for every desktop: the
+# editions share a version.
+id = "pikaos"
+name = "PikaOS"
+arch = "x86_64"
+match = 'PikaOS-[A-Za-z]+-(?:NVIDIA-)?[A-Za-z]+-[\d.]+-amd64-v3-(?P<version>\d+\.\d+\.\d+-\d+)\.iso'
+samples = ["PikaOS-Nest-KDE-4.0-amd64-v3-26.08.20-4.iso", "PikaOS-Nest-NVIDIA-GNOME-4.0-amd64-v3-26.08.20-4.iso"]
+page = "https://pika-os.com/#editions"
+category = "gaming"
+family = "pikaos"
+site = "https://pika-os.com/"
+caution = "Built for x86-64-v3: it needs a processor with AVX2, roughly 2013 or later."
+
+[entry.source]
+type = "listing"
+url = "https://pika-os.com/"
+regex = 'PikaOS-[A-Za-z]+-[A-Za-z]+-[\d.]+-amd64-v3-(?P<version>\d+\.\d+\.\d+-\d+)\.iso'
+
+[[entry]]
+# From the wish list (2026-10-05). BigLinux publishes only an MD5 for each
+# ISO, so this entry checks for updates and links to the download. Each
+# release comes with three kernels (the "_k612" in the name); one entry
+# covers them, since they share the date that is the version.
+id = "biglinux"
+name = "BigLinux"
+arch = "x86_64"
+match = 'biglinux_(?P<version>\d{4}-\d{2}-\d{2})_k\d+\.iso'
+samples = ["biglinux_2026-10-03_k612.iso"]
+page = "https://www.biglinux.com.br/download/"
+category = "desktop"
+family = "biglinux"
+site = "https://www.biglinux.com.br/"
+forum = "https://forum.biglinux.com.br/"
+
+[entry.source]
+type = "listing"
+url = "https://iso.biglinux.com.br/downloads.html"
+regex = 'biglinux_(?P<version>\d{4}-\d{2}-\d{2})_k\d+\.iso'
