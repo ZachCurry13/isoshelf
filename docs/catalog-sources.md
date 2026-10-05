@@ -108,10 +108,7 @@ checked on the project's own site before it goes in. The weekly catalog job
 works from the top, up to three a week, takes each name off when it's added,
 and moves ruled-out ones to "Ruled out" with the reason.
 
-1. AnduinOS
-2. PikaOS
-3. BigLinux
-4. antiX
+1. antiX
 5. elementary OS
 6. Void Linux
 7. KDE neon
@@ -181,6 +178,18 @@ discontinued.
 ### Ruled out
 
 Nothing yet.
+
+### Added 2026-10-05, check-only for now
+
+- **AnduinOS**: SHA-256 on its own site, but as a bare `SHA256: <hash>` line
+  with no file name, which isoshelf can't read yet. Becomes a download once
+  it can.
+- **PikaOS** and **BigLinux**: only MD5 checksums, which catch a broken
+  download but not a changed one. Both sites refuse curl's default user
+  agent with 403 but answer isoshelf's. Waiting on the maintainer's decision
+  on MD5-only projects.
+- Also seen: Nobara's page lists a plain KDE edition the catalog doesn't
+  have yet.
 
 ## Entry metadata
 
@@ -270,7 +279,7 @@ check-only, with nothing to measure.
 | Raspberry Pi OS (desktop, Lite), 64-bit | listing of the dated `images/` folder | `{file}.sha256` next to each image | Written to a card, not booted from a menu, so kept as `.img.xz`. The checksum file is `.sha256`; there are `.sha1` files too. |
 | Home Assistant OS (Pi 5, x86-64) | github `home-assistant/operating-system` | asset digest | |
 | Omarchy | listing of `omarchy.org` | `iso.omarchy.org/omarchy-{version}.iso.sha256` | |
-| Nobara (Official, GNOME, Steam Handheld) | listing of `nobaraproject.org/download.html` | `{file}.sha256sum` | Dated releases. The image server can't be listed, so the exact filename comes from what the listing matched on the download page. The checksum files name the image `./Nobara-…`, which the parser handles. The old address `/download-nobara/` redirects. |
+| Nobara (Official, GNOME, Steam Handheld, Steam HTPC) | listing of `nobaraproject.org/download.html` | `{file}.sha256sum` | Dated releases. The image server can't be listed, so the exact filename comes from what the listing matched on the download page. The checksum files name the image `./Nobara-…`, which the parser handles. The old address `/download-nobara/` redirects. |
 | NixOS (graphical) | endoflife `nixos` | — (check-only) | The `latest-` images redirect to a versioned folder named after a build (`26.05.9989.ecc58f32d106`), and catalog addresses must be final. |
 
 Link-only for now, because checksums aren't on the project's own site:

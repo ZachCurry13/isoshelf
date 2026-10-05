@@ -364,7 +364,7 @@ alone is not an update.
   sample filename matches exactly one entry. Every problem is reported at once.
 - Scope: the sample drive is only an example. The default catalog should cover
   common and trending images (desktop, server/homelab, rescue tools), so users
-  can add images that aren't on their target yet. It has 86 entries: the
+  can add images that aren't on their target yet. It has 90 entries: the
   sample drive, the maintainer's Proxmox folder, the images people ask for
   first, and what people are talking about. Anything worth knowing goes in,
   even when isoshelf can't download it: an entry with only a page link still

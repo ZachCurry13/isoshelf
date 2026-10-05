@@ -1,0 +1,2932 @@
+<!DOCTYPE html>
+<html lang="en-US"
+      dir="ltr"
+      data-bs-theme="light"
+      data-layout="fluid"
+      data-sidebar-theme="default"
+      data-sidebar-position="left"
+      data-sidebar-behavior="sticky">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Open Source &amp; Linux | AnduinOS</title>
+    <link rel="shortcut icon" href="/favicon.svg">
+    <link href="/UIStack/dist/css/app.css" rel="stylesheet">
+    
+    <meta name="description"
+          content="AnduinOS is a custom Ubuntu-based Linux distribution that offers a familiar and easy-to-use experience for anyone moving to Linux.">
+    <link rel="canonical" href="https://www.anduinos.com/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AnduinOS">
+    <meta property="og:title" content="Open Source &amp; Linux">
+    <meta property="og:description"
+          content="AnduinOS is a custom Ubuntu-based Linux distribution that offers a familiar and easy-to-use experience for anyone moving to Linux.">
+    <meta property="og:url" content="https://www.anduinos.com/">
+    <meta property="og:image" content="https://www.anduinos.com/sc.webp">
+    <meta property="og:image:secure_url" content="https://www.anduinos.com/sc.webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="2192">
+    <meta property="og:image:height" content="1233">
+    <meta property="og:image:alt" content="AnduinOS Main screenshot">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Open Source &amp; Linux">
+    <meta name="twitter:description"
+          content="AnduinOS is a custom Ubuntu-based Linux distribution that offers a familiar and easy-to-use experience for anyone moving to Linux.">
+    <meta name="twitter:image" content="https://www.anduinos.com/sc.webp">
+    <meta name="twitter:image:alt" content="AnduinOS Main screenshot">
+
+    <link rel="stylesheet" href="/css/site.css?v=LknFK0IJuIrf14LnmwvajBrk19h_0ena1WJo1KOEipI">
+
+</head>
+
+<body>
+<div class="wrapper">
+
+<div class="main">
+
+    <main class="contentp-0">
+        <div class="container-fluid p-0">
+            
+
+<!-- Ad Banner -->
+<div class="alert alert-dismissible fade show text-center mb-0 pt-2 pb-2 border-0 rounded-0 text-white" role="alert"
+    style="background-color: #2a4b77;">
+    <div class="container">
+        AnduinOS infrastructure is hosted on Vultr.
+        <button type="button" class="btn btn-link alert-link p-0 ms-1 text-white align-baseline"
+                data-bs-toggle="modal" data-bs-target="#vultr-referral-modal">
+            Get $300 in Vultr credits
+        </button>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="padding: .8rem"></button>
+</div>
+
+<div class="modal fade" id="vultr-referral-modal" tabindex="-1" aria-labelledby="vultr-referral-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="vultr-referral-modal-title">Continue to Vultr</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                This is a referral link. If you become a paying Vultr customer, we may receive a referral reward at no additional cost to you.
+            </div>
+            <div class="modal-footer">
+                <a href="https://www.vultr.com/?ref=9692114-9J" rel="sponsored" class="btn btn-primary">
+                    Go to Vultr
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark landing-navbar">
+    <div class="container">
+        <a class="navbar-brand landing-brand text-white" href="/">
+            <img src="https://www.anduinos.com/download/project-logo/anduinos_%E6%AF%9B%E7%8E%BB%E7%92%83%E7%AB%8B%E4%BD%93logo-96px.svg" alt="AnduinOS logo" style="width: 24px; height: 24px; margin-right: 5px" />AnduinOS</a>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item d-none d-md-inline-block">
+                <a class="nav-link active text-lg px-lg-3" href="https://docs.anduinos.com">Docs</a>
+            </li>
+            <li class="nav-item d-none d-md-inline-block">
+                <a class="nav-link active text-lg px-lg-3" href="https://news.aiursoft.com">News</a>
+            </li>
+            <li class="nav-item d-none d-md-inline-block">
+                <a class="nav-link active text-lg px-lg-3" href="/Container.html">Container</a>
+            </li>
+            <li class="nav-item d-none d-md-inline-block">
+                <a class="nav-link active text-lg px-lg-3"
+                   href="https://github.com/aiursoftweb/anduinos-2">Source Code</a>
+            </li>
+            <li class="nav-item d-none d-md-inline-block">
+                <a class="nav-link active text-lg px-lg-3"
+                   href="https://github.com/Anduin2017/AnduinOS/discussions">Community</a>
+            </li>
+        </ul>
+        <a href="/#download-links" class="btn btn-lg btn-success btn-pill my-2 my-sm-0 ms-3">
+            <i class="fa-solid fa-download me-1"></i>Download AnduinOS</a>
+        <a href="https://ko-fi.com/anduinxue/goal?g=0" target="_blank" rel="noreferer"
+           class="btn btn-lg btn-primary btn-pill my-2 my-sm-0 ms-3">
+            <i class="fa-solid fa-money-bill me-1"></i>Donate</a>
+    </div>
+</nav>
+
+
+<section class="landing-intro text-bg-dark pt-5 pt-lg-6 pb-5 pb-lg-7">
+    <div class="landing-intro-content container h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-lg-5 mx-auto">
+                <span class="badge badge-subtle-primary p-1">Open Source</span>
+                <span class="badge badge-subtle-primary p-1">Free</span>
+                <span class="badge badge-subtle-primary p-1">GPL-v3 License</span>
+                <h1 id="main-slogan" class="my-4 text-white" style="font-size: 3rem;">
+                    <span class='text-primary'>AnduinOS</span> is Ubuntu's package base + <span class='text-primary'>Flatpak</span> app experience
+                </h1>
+                <p class="text-lg text-white-50">AnduinOS is a custom Ubuntu-based Linux distribution that offers a familiar and easy-to-use experience for anyone moving to Linux.</p>
+
+                <div class="my-4">
+                    <span class="badge badge-subtle-primary p-1">v2.0.4</span>
+                </div>
+                <div class="my-4 d-flex gap-2 flex-wrap">
+                    <a class="btn btn-primary btn-lg btn-pill" href="#download-links">Download</a>
+                    <a href="https://docs.anduinos.com" target="_blank"
+                       class="btn btn-outline-primary btn-lg btn-pill">Docs</a>
+                </div>
+                <div class="my-4">
+                    <a href="/HistoryBuilds.html" class="">
+                        Historical versions
+                    </a>
+                    <a href="https://docs.anduinos.com/CHANGELOG.html" target="_blank"
+                       class="ms-2">
+                        Change Log
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-7 d-none d-lg-flex mx-auto text-center">
+                <div class="landing-intro-screenshot">
+                    <img src="sc.webp" alt="AnduinOS Main screenshot" class="img-fluid"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-6">
+    <div class="container">
+        <div class="mb-5 text-center">
+            <span class="text-uppercase text-primary text-sm fw-medium mb-1 d-block">Reasons</span>
+            <h2 class="h1">Why choose AnduinOS?</h2>
+            <p class="text-muted fs-lg">Smaller image, friendly interface, unbeatable performance, safe and secure.
+            </p>
+        </div>
+        <div class="row text-start">
+            <div class="col-12 col-md-4">
+                <div class="d-flex align-items-start py-3">
+                    <div class="landing-feature">
+                        <i data-lucide="sliders"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">Ready to use</h4>
+                        <p class="fs-lg">The ISO is just 2.38 GB in size. Like Ubuntu, AnduinOS is simple to install and meets your daily needs without additional configuration or complicated operations.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex align-items-start py-3">
+                    <div class="landing-feature">
+                        <i data-lucide="smartphone"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">Friendly interface</h4>
+                        <p class="fs-lg">The GNOME-based desktop environment has a beautiful interface and intuitive human-computer interactions that fit user habits, allowing you to quickly get started with AnduinOS without a steep learning curve.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex align-items-start py-3">
+                    <div class="landing-feature">
+                        <i data-lucide="mail"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">Root and privacy</h4>
+                        <p class="fs-lg">Privacy is no longer optional. It's essential. AnduinOS is designed to gather nothing from you. We don't track you. We don't profile you. We don't target you. You remain anonymous to the system.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex align-items-start py-3">
+                    <div class="landing-feature">
+                        <i data-lucide="chrome"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">Ecological perfection</h4>
+                        <p class="fs-lg">AnduinOS is based on Ubuntu's package base. It's compatible with most of the apt packages from Ubuntu. It's a perfect combination of experience and ecology.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex align-items-start py-3">
+                    <div class="landing-feature">
+                        <i data-lucide="code"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">Open Source</h4>
+                        <p class="fs-lg">AnduinOS is an open-source project. Following the GPL-v3 license, you can view the source code, modify it, and redistribute it. It's free and will always be free.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="d-flex align-items-start py-3">
+                    <div class="landing-feature">
+                        <i data-lucide="download-cloud"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">Containerized</h4>
+                        <p class="fs-lg">Graphical applications are installed via Flatpak, and keep themselves separate from the base system (Since 1.3). They also allow for fine-grained control over their permissions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-white" id="download-links">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-xl-10 col-xxl-10 mx-auto">
+                <div class="mb-4 text-center">
+                    <span
+                        class="text-uppercase text-primary text-sm fw-medium mb-1 d-block">Versions</span>
+                    <h2 class="h1">Choose your AnduinOS version</h2>
+                    <p class="text-muted fs-lg">AnduinOS is available in <a
+                            href="/HistoryBuilds.html">two version branches</a>: LTS and Standard.
+                        The LTS version is recommended for users need a stable long-term support, while the Standard version is recommended for users with newer devices and want to explore the latest features.
+                    </p>
+                </div>
+                <div class="row py-4">
+                        <div class="col-sm-3 mb-5 mb-md-0">
+                            <div class="card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="mb-4">
+                                        <i class="fas fa-arrow-circle-up fa-3x text-primary mb-3"></i>
+                                        <h5>Upgrading from 1.x?</h5>
+                                    </div>
+                                    <p class="text-muted">Migration guides and tips for users coming from AnduinOS 1.x.</p>
+                                    <div class="mt-3">
+                                        <a href="/MigrateFrom1x.html" class="btn btn-outline-primary btn-pill">
+                                            Learn more
+                                        </a>
+                                    </div>
+                                    <div class="mt-auto pt-4">
+                                        <hr class="text-muted opacity-25" />
+                                        <small class="text-muted">Looking for older versions?</small>
+                                        <a href="/HistoryBuilds.html" class="btn btn-sm btn-link text-primary d-block mt-1">
+                                            Historical Builds <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 mb-5 mb-md-0">
+                            <div class="card text-center h-100 middle-card">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="mb-4">
+                                        <h5>Resolute Raccoon</h5>
+                                        <span class="display-2">
+                                            2.0
+                                        </span><br/>
+                                        <span class="d-inline-flex gap-2 mt-2">
+                                            <span class="badge bg-primary">LTS</span>
+                                            <span class="badge bg-success">Recommended</span>
+                                        </span>
+                                    </div>
+
+                                    <h6 class="mt-3">Includes:</h6>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">Support till Apr 2031</li>
+									<li class="mb-2">GNOME 50</li>
+                                        <li class="mb-2">Ubuntu 26.04 packages</li>
+                                        <li class="mb-2">Linux kernel 7.0</li>
+                                        <li class="mb-2">Released on 2026.06.30</li>
+                                        <li class="mb-2">
+                                            Latest version 2.0.4
+                                        </li>
+                                    </ul>
+
+                                    <div class="mt-auto">
+                                        <button type="button"
+                                                class="btn btn-lg btn-pill btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#download-modal"
+                                                data-version="2.0"
+                                                data-latest="2.0.4"
+                                                data-size="2.38 GB">
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3 mb-5 mb-md-0">
+                            <div class="card text-center h-100">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="mb-4">
+                                        <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                                        <h5>AnduinOS Enterprise</h5>
+                                    </div>
+                                    <ul class="list-unstyled text-start px-3">
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Custom branding</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Cluster management</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Rapid deployment</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>7×24 on-call support where contracted</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Kiosk device customization</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Private package repository</li>
+                                    </ul>
+                                    <p class="text-muted small">Enterprise deployment, management integrations, and support are scoped in your service agreement. AnduinOS 2.0 standard support ends in April 2031 for both editions.</p>
+                                    <div class="mt-auto">
+                                        <a href="https://www.aiursoft.com/anduinos"
+                                           target="_blank"
+                                           class="btn btn-lg btn-pill btn-outline-primary">
+                                            Learn more
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-6">
+    <div class="container position-relative z-3">
+        <div class="row">
+            <div class="col-md-12 mx-auto text-center">
+                <div class="row">
+                    <div class="col-lg-10 col-xl-9 mx-auto">
+                        <div class="mb-4">
+                            <span
+                                class="text-uppercase text-primary text-sm fw-medium mb-1 d-block">Usage</span>
+                            <h2 class="h1 mb-3">With AnduinOS, you can do more</h2>
+                            <p class="text-muted fs-lg">
+                                Everything you do on Ubuntu, you can do it on AnduinOS. You can use it as a daily operating system, a development environment, a server, or a learning tool. It's up to you.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 py-3">
+                        <img gallery src="scs/watch_comp.webp" class="img-fluid rounded-3 landing-img" loading="lazy"
+                             alt="Watching Youtube Videos on AnduinOS"/>
+                        <h4 class="mt-3">Browsing</h4>
+                    </div>
+                    <div class="col-md-4 py-3">
+                        <img gallery src="scs/steam_comp.webp" class="img-fluid rounded-3 landing-img" loading="lazy"
+                             alt="Steam Playing Games on AnduinOS"/>
+                        <h4 class="mt-3">Gaming <sup><small
+                                    class="badge badge-subtle-primary">With Steam</small></sup></h4>
+                    </div>
+                    <div class="col-md-4 py-3">
+                        <img gallery src="scs/build_comp.webp" class="img-fluid rounded-3 landing-img" loading="lazy"
+                             alt="Writing Code on AnduinOS"/>
+                        <h4 class="mt-3">Build</h4>
+                    </div>
+                    <div class="col-md-4 py-3">
+                        <img gallery src="scs/office_comp.webp" class="img-fluid rounded-3 landing-img" loading="lazy"
+                             alt="Working on mail and chat on AnduinOS"/>
+                        <h4 class="mt-3">Work</h4>
+                    </div>
+                    <div class="col-md-4 py-3">
+                        <img gallery src="scs/serve_comp.webp" class="img-fluid rounded-3 landing-img" loading="lazy"
+                             alt="Hosting a server on AnduinOS"/>
+                        <h4 class="mt-3">Serve</h4>
+                    </div>
+                    <div class="col-md-4 py-3">
+                        <img gallery src="scs/blender_comp.webp" class="img-fluid rounded-3 landing-img" loading="lazy"
+                             alt="Editing blender 3D model on AnduinOS"/>
+                        <h4 class="mt-3">Editing</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="iglmodal" class="iglmodal">
+    <span class="close">&times;</span>
+    <img class="iglmodal-content" id="iglmodal-img" alt="Image preview" src="#"/>
+</div>
+
+<section class="position-relative py-6 overflow-hidden" style="background-color: #0b0d14;">
+    <svg class="position-absolute top-0 start-0 w-100 h-100 opacity-10" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none; z-index: 0;">
+        <g stroke="#0ea5e9" stroke-width="0.5" opacity="0.3">
+            <path d="M 0 100 L 800 100 M 0 200 L 800 200 M 0 300 L 800 300 M 0 400 L 800 400 M 0 500 L 800 500" />
+            <path d="M 100 0 L 100 600 M 200 0 L 200 600 M 300 0 L 300 600 M 400 0 L 400 600 M 500 0 L 500 600 M 600 0 L 600 600 M 700 0 L 700 600" />
+        </g>
+    </svg>
+
+    <div class="container position-relative z-2">
+        <div class="text-center mb-5">
+            <h2 class="display-4 fw-bold text-white">AnduinOS</h2>
+            <p class="lead text-gray-400">Built on a rock-solid foundation. Designed for everyone.</p>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-5">
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">Familiar UX</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">2.38 GB</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">Live Boot</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">LTS Support</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">Without Snap</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">Free Software</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">NVIDIA Graphics Support</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">Secure Boot</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">Ubuntu Base</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">Wayland Ready</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">HDR Support</span>
+            <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">ARM64 Support</span>
+            <a href="https://docs.anduinos.com/Applications/Development/Why-AI/Why-AI.html" target="_blank" class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill text-decoration-none">Edge AI</a>
+            <a href="https://apkg.aiursoft.com" target="_blank" class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill text-decoration-none">Declarative Built</a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card bg-dark-glass border-white-10 h-100">
+                    <div class="card-header bg-transparent border-white-10 pt-4">
+                        <h4 class="mb-0 text-white">Technical Specifications</h4>
+                    </div>
+                    <div class="card-body pt-0">
+                        <table class="table table-borderless mb-0">
+                            <tbody>
+                                <tr><td class="text-gray-500 ps-0" style="width: 40%;">Release Date</td><td class="text-white fw-semibold pe-0">2026-10-03</td></tr>
+                                <tr><td class="text-gray-500 ps-0">End of Support</td><td class="text-white fw-semibold pe-0">April 2031</td></tr>
+                                <tr><td class="text-gray-500 ps-0">Image Size</td><td class="text-white fw-semibold pe-0">2.38 GB</td></tr>
+                                <tr><td class="text-gray-500 ps-0">Linux Kernel</td><td class="text-white fw-semibold pe-0">7.0.0</td></tr>
+                                <tr><td class="text-gray-500 ps-0">Desktop Environment</td><td class="text-white fw-semibold pe-0">GNOME 50</td></tr>
+                                <tr><td class="text-gray-500 ps-0">Display Server</td><td class="text-white fw-semibold pe-0">Wayland</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="collapse" id="advancedSpecs">
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                    <tr><td class="text-gray-500 ps-0" style="width: 40%;">UI Toolkit</td><td class="text-white fw-semibold pe-0">GTK4</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Package Manager</td><td class="text-white fw-semibold pe-0">apt</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Package Format</td><td class="text-white fw-semibold pe-0">deb + Flatpak</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Architecture</td><td class="text-white fw-semibold pe-0">x86_64 / ARM64</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Init System</td><td class="text-white fw-semibold pe-0">systemd</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Default Filesystem</td><td class="text-white fw-semibold pe-0">Btrfs (ext4 optional)</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Memory Compression</td><td class="text-white fw-semibold pe-0">ZRAM</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Default Browser</td><td class="text-white fw-semibold pe-0">Firefox</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-sm btn-outline-light rounded-pill mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#advancedSpecs" aria-expanded="false">
+                            <i data-lucide="chevron-down" class="me-1" style="width: 14px; height: 14px;"></i>Advanced
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card bg-dark-glass border-white-10 h-100">
+                    <div class="card-header bg-transparent border-white-10 pt-4">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h4 class="mb-0 text-white">System Requirements</h4>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button class="btn btn-outline-light rounded-pill active" type="button"
+                                        data-requirement-panel="minReqs">
+                                    Minimum
+                                </button>
+                                <button class="btn btn-outline-light rounded-pill" type="button"
+                                        data-requirement-panel="recReqs">
+                                    Recommended
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="collapse show" id="minReqs">
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                    <tr><td class="text-gray-500 ps-0" style="width: 40%;">Architecture</td><td class="text-white fw-semibold pe-0">x86_64 / ARM64</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Firmware</td><td class="text-white fw-semibold pe-0">UEFI or BIOS</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Processor</td><td class="text-white fw-semibold pe-0">2 GHz</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">RAM</td><td class="text-white fw-semibold pe-0">4 GB</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Disk Space</td><td class="text-white fw-semibold pe-0">25 GiB</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Screen</td><td class="text-white fw-semibold pe-0">1024 × 768</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Ports</td><td class="text-white fw-semibold pe-0">USB or DVD</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="collapse" id="recReqs">
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                    <tr><td class="text-gray-500 ps-0" style="width: 40%;">Architecture</td><td class="text-white fw-semibold pe-0">x86_64 / ARM64</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Firmware</td><td class="text-white fw-semibold pe-0">UEFI with Secure Boot</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Processor</td><td class="text-white fw-semibold pe-0">2.5 GHz quad-core</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">RAM</td><td class="text-white fw-semibold pe-0">8 GB</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Disk Space</td><td class="text-white fw-semibold pe-0">50 GiB</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Screen</td><td class="text-white fw-semibold pe-0">2560 × 1440 27 inch</td></tr>
+                                    <tr><td class="text-gray-500 ps-0">Internet</td><td class="text-white fw-semibold pe-0">Internet access</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3 p-3 bg-dark-glass rounded-3 text-center text-gray-400 small border-white-10 border">
+                            <i data-lucide="info" class="me-1" style="width: 14px; height: 14px;"></i>
+                            Compatible with most x86 PCs and ARM64 UEFI devices.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="text-center mt-5">
+            <a id="compare-distributions-link" class="btn btn-lg btn-outline-info rounded-pill px-4" href="/Compare.html">
+                <i data-lucide="scale" class="me-2" style="width: 18px; height: 18px;"></i>
+                Compare with Zorin OS, Linux Mint or Ubuntu
+                <i data-lucide="arrow-right" class="ms-2" style="width: 18px; height: 18px;"></i>
+            </a>
+            <p class="text-gray-500 small mt-2 mb-0">Compare defaults, integration depth and architecture choices.</p>
+        </div>
+        </div>
+    </div>
+</section>
+
+<section class="ai-section position-relative w-100 overflow-hidden d-flex align-items-center">
+
+    <div class="ai-immersive-bg">
+        <div class="togo-cyber-animation w-100 mx-auto position-relative" style="max-width: 1000px;aspect-ratio: 16/11;margin-top: 60px;">
+          <style>
+            .cyber-grid {
+              stroke: rgba(56, 189, 248, 0.05);
+              stroke-width: 1;
+            }
+            .laptop-lid {
+              transform-origin: 400px 312px;
+              transform-style: preserve-3d;
+              animation: lidOpen 12s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+            }
+            /* 新增：B 面（屏幕侧）的内容隐现控制，解决纸片人穿模问题 */
+            .screen-b-cover {
+              animation: bCoverFade 12s infinite;
+            }
+            .usb-stick {
+              animation: usbPlug 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            }
+            .screen-content {
+              animation: screenBoot 12s ease-out infinite;
+            }
+            .screen-logo {
+              animation: logoBoot 12s ease-out infinite;
+              transform-origin: 400px 196px;
+            }
+            .status-light {
+              animation: blink 12s infinite;
+            }
+            .typing-text {
+              animation: typeFade 12s infinite;
+            }
+            .desktop-shot {
+              animation: desktopBoot 12s ease-out infinite;
+              transform-origin: 400px 196px;
+            }
+
+            /* --- 物理级透视翻盖动画 --- */
+            @keyframes lidOpen {
+              /* -45deg 完美趴平在键盘上 */
+              0% { transform: perspective(1200px) rotateX(-45deg); }
+              4% { transform: perspective(1200px) rotateX(-45deg); animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+              /* 掀开时后仰到 2deg */
+              12% { transform: perspective(1200px) rotateX(0deg); }
+              82% { transform: perspective(1200px) rotateX(0deg); animation-timing-function: ease-in; }
+              86% { transform: perspective(1200px) rotateX(-45deg); }
+              100% { transform: perspective(1200px) rotateX(-45deg); }
+            }
+
+            /* 伴随翻盖，B 面（屏幕内容）在合盖时隐身，露出底层的 A 面金属外壳 */
+            @keyframes bCoverFade {
+              0%, 6% { opacity: 0; }
+              10%, 82% { opacity: 1; }
+              86%, 100% { opacity: 0; }
+            }
+
+            /* U盘 X 轴滑动，完美对接左侧斜边 (X≈156) */
+            @keyframes usbPlug {
+              0%, 11% { transform: translateX(-40px); opacity: 0; }
+              14% { opacity: 1; }
+              18%, 78% { transform: translateX(-3px); opacity: 1; }
+              82% { opacity: 1; }
+              85%, 100% { transform: translateX(-40px); opacity: 0; }
+            }
+            @keyframes screenBoot {
+              0%, 21% { fill: #050505; }
+              22%, 24% { fill: url(#screen-glow); }
+              81%, 100% { fill: #050505; }
+            }
+            @keyframes logoBoot {
+              0%, 24% { opacity: 0; transform: scale(0.9); }
+              27%, 40% { opacity: 1; transform: scale(1); }
+              42%, 100% { opacity: 0; transform: scale(0.9); }
+            }
+            @keyframes blink {
+              0%, 18% { fill: #333; }
+              19%, 78% { fill: #0ea5e9; }
+              79%, 100% { fill: #333; }
+            }
+            @keyframes typeFade {
+              0%, 25% { opacity: 0; }
+              28%, 40% { opacity: 0.8; }
+              42%, 100% { opacity: 0; }
+            }
+            @keyframes desktopBoot {
+              0%, 43% { opacity: 0; transform: scale(0.95); }
+              46%, 80% { opacity: 1; transform: scale(1); }
+              81%, 100% { opacity: 0; transform: scale(0.95); }
+            }
+          </style>
+
+          <svg viewBox="0 0 800 450" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="screen-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0a1628" />
+                <stop offset="50%" stop-color="#0d1f3c" />
+                <stop offset="100%" stop-color="#050d18" />
+              </linearGradient>
+
+              <linearGradient id="metal-cover" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#1e293b" />
+                <stop offset="100%" stop-color="#0f172a" />
+              </linearGradient>
+
+              <filter id="neon" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+
+              <clipPath id="screen-clip">
+                <rect x="190" y="78" width="420" height="236" rx="4" />
+              </clipPath>
+            </defs>
+
+            <rect width="800" height="450" fill="transparent" />
+
+            <g class="cyber-grid">
+              <path d="M 0 100 L 800 100 M 0 200 L 800 200 M 0 300 L 800 300 M 0 400 L 800 400" />
+              <path d="M 100 0 L 100 450 M 200 0 L 200 450 M 300 0 L 300 450 M 400 0 L 400 450 M 500 0 L 500 450 M 600 0 L 600 450 M 700 0 L 700 450" />
+            </g>
+
+            <g class="laptop-base">
+              <path d="M 180 312 L 620 312 L 685 420 L 115 420 Z" fill="#0f172a" stroke="#1e293b" stroke-width="2" />
+              <path d="M 200 325 L 600 325 L 629 380 L 171 380 Z" fill="#020617" />
+
+              <line x1="194.7" y1="335" x2="605.3" y2="335" stroke="#0f172a" stroke-width="1.5" />
+              <line x1="188.8" y1="346" x2="611.2" y2="346" stroke="#0f172a" stroke-width="2" />
+              <line x1="182.4" y1="358" x2="617.6" y2="358" stroke="#0f172a" stroke-width="2.5" />
+              <line x1="175.5" y1="371" x2="624.5" y2="371" stroke="#0f172a" stroke-width="3" />
+
+              <line x1="400" y1="325" x2="400" y2="380" stroke="#0f172a" stroke-width="1.5" />
+              <line x1="350" y1="325" x2="342.7" y2="380" stroke="#0f172a" stroke-width="1.5" />
+              <line x1="450" y1="325" x2="457.3" y2="380" stroke="#0f172a" stroke-width="1.5" />
+              <line x1="300" y1="325" x2="285.3" y2="380" stroke="#0f172a" stroke-width="1.5" />
+              <line x1="500" y1="325" x2="514.7" y2="380" stroke="#0f172a" stroke-width="1.5" />
+              <line x1="250" y1="325" x2="228" y2="380" stroke="#0f172a" stroke-width="1.5" />
+              <line x1="550" y1="325" x2="572" y2="380" stroke="#0f172a" stroke-width="1.5" />
+
+              <path d="M 340 388 L 460 388 L 463.7 415 L 336.3 415 Z" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
+              <path d="M 115 420 L 685 420 L 685 424 C 685 428 680 430 670 430 L 130 430 C 120 430 115 428 115 424 Z" fill="#020617" />
+              <path d="M 130 430 L 670 430" stroke="#0ea5e9" stroke-width="2" filter="url(#neon)" opacity="0.8" />
+            </g>
+
+            <rect x="300" y="310" width="200" height="4" rx="2" fill="#020617" />
+
+            <g class="laptop-lid">
+              <rect x="180" y="68" width="440" height="248" rx="10" fill="url(#metal-cover)" stroke="#1e293b" stroke-width="2" />
+              <path d="M 182 70 L 618 70 C 622 70 626 74 626 78 L 626 120 L 182 120 Z" fill="rgba(255,255,255,0.02)" />
+
+              <g class="screen-b-cover">
+                <rect x="180" y="68" width="440" height="248" rx="10" fill="#0f172a" stroke="#334155" stroke-width="2" />
+                <rect class="screen-content" x="190" y="78" width="420" height="236" rx="4" fill="#050505" />
+
+                <g class="screen-logo">
+                  <image href="/logo.svg" x="360" y="156" width="80" height="80" />
+                  <text x="400" y="266" fill="#ffffff" font-family="system-ui, sans-serif" font-weight="700" font-size="24" text-anchor="middle" letter-spacing="1">AnduinOS</text>
+
+                  <g class="typing-text">
+                    <text x="200" y="106" fill="#0ea5e9" font-family="monospace" font-size="10">Booting kernel 7.0...</text>
+                    <text x="200" y="121" fill="#0ea5e9" font-family="monospace" font-size="10">Mounting overlayfs... [OK]</text>
+                    <text x="200" y="136" fill="#0ea5e9" font-family="monospace" font-size="10">Setting locale fr_FR.UTF-8... [OK]</text>
+                  </g>
+                </g>
+
+                <image class="desktop-shot" href="/sc.webp" x="190" y="78" width="420" height="236" preserveAspectRatio="xMidYMid slice" clip-path="url(#screen-clip)" />
+              </g>
+            </g>
+
+            <g class="usb-stick">
+              <path d="M 160 348 L 175 348 L 175 354 L 160 354 Z" fill="#cbd5e1" />
+              <path d="M 160 349 L 175 349 L 175 351 L 160 351 Z" fill="#94a3b8" />
+              
+              <rect x="100" y="345" width="60" height="12" rx="2" fill="#0f172a" stroke="#0ea5e9" stroke-width="1.5" filter="url(#neon)" />
+              <circle cx="150" cy="351" r="2" class="status-light" filter="url(#neon)" />
+              <text x="108" y="353" fill="#475569" font-family="sans-serif" font-size="7" font-weight="bold" letter-spacing="1">LIVE USB</text>
+            </g>
+          </svg>
+        </div>
+        <div class="bg-overlay"></div>
+    </div>
+
+    <div class="container position-relative z-2 py-5">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-6 col-md-12">
+
+                <div class="mb-5 text-start ps-lg-4">
+                    <div class="d-inline-flex align-items-center px-3 py-1 mb-3 rounded-pill border border-white-10 bg-dark-glass-sm backdrop-blur">
+                        <span class="text-info me-2"><i class="fas fa-usb"></i></span>
+                        <span class="text-gray-300 small fw-medium text-uppercase tracking-wider">The Ultimate Swiss Army Knife</span>
+                    </div>
+                    <h2 class="display-4 fw-bold text-white mb-3">
+                        Your Entire PC.<br><span class="text-primary">In Your Pocket.</span>
+                    </h2>
+                    <p class="lead text-gray-400 fs-5">
+                        Burn our ultra-compact 2.38 GB ISO to any USB drive and carry a complete, modern Linux workstation on your keychain. Boot into a fully hardware-accelerated desktop in just 10 seconds.
+                    </p>
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2"><i class="fas fa-floppy-disk me-1"></i> Persistent on USB</span>
+                        <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2"><i class="fas fa-language me-1"></i> Multi-language Ready</span>
+                        <span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2"><i class="fas fa-bolt me-1"></i> No Installation Needed</span>
+                    </div>
+                </div>
+
+                <div class="row g-3 ps-lg-4">
+
+                    <div class="col-md-6">
+                        <div class="card bg-dark-glass border-white-10 h-100 hover-lift">
+                            <div class="card-body p-4">
+                                <div class="icon-box-sm bg-danger-subtle text-danger rounded-3 me-3 mb-3">
+                                    <i class="fas fa-truck-medical fa-lg"></i>
+                                </div>
+                                <h5 class="fw-bold text-white fs-6">The Rescuer</h5>
+                                <p class="text-gray-400 mb-0 lh-sm">Disk corrupted? Forgot your password? Boot AnduinOS in seconds to instantly browse the web, recover your files, and securely extract your crucial data.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card bg-dark-glass border-white-10 h-100 hover-lift">
+                            <div class="card-body p-4">
+                                <div class="icon-box-sm bg-success-subtle text-success rounded-3 me-3 mb-3">
+                                    <i class="fas fa-briefcase fa-lg"></i>
+                                </div>
+                                <h5 class="fw-bold text-white fs-6">The Showroom</h5>
+                                <p class="text-gray-400 mb-0 lh-sm">Select Persistent Mode to save your apps and files to the USB. Plug it into any machine to present your perfectly tailored environment, shortcuts, and Fluent UI.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-white">
+    <div class="container-fluid">
+        <div class="app-wall-container">
+            <div class="app-wall-foreground">
+                <div class="col-lg-10 col-xl-9 mx-auto">
+                    <div class="mb-4">
+                        <h2 class="h1 mb-3">A Universe of Applications at Your Fingertips.</h2>
+                        <p class="text-muted fs-lg">
+                            Most of the software you rely on runs perfectly on AnduinOS, alongside thousands of powerful, free, and open-source alternatives. AnduinOS provides instant, integrated access to the massive libraries of Flatpak and Ubuntu, making your perfect workflow just a click away.
+                            <a href="https://flathub.org/apps" target="_blank">Start exploring on Flathub now</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-wall-scroller">
+                <div class="app-wall-grid">
+                        <div class="app-icon-wrapper" data-name="Factorio">
+                            <img src="/img/apps/factorio.svg" alt="Factorio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="XMind">
+                            <img src="/img/apps/xmind.svg" alt="XMind" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="BleachBit">
+                            <img src="/img/apps/bleachbit.svg" alt="BleachBit" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Syncthing-GTK">
+                            <img src="/img/apps/syncthing-gtk.svg" alt="Syncthing-GTK" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GNOME Boxes">
+                            <img src="/img/apps/gnome-boxes.svg" alt="GNOME Boxes" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DingTalk">
+                            <img src="/img/apps/dingtalk.svg" alt="DingTalk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="7-Zip">
+                            <img src="/img/apps/7zip.svg" alt="7-Zip" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Timeshift">
+                            <img src="/img/apps/timeshift.svg" alt="Timeshift" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RStudio">
+                            <img src="/img/apps/rstudio.svg" alt="RStudio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="0 A.D.">
+                            <img src="/img/apps/0ad.svg" alt="0 A.D." loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VeraCrypt">
+                            <img src="/img/apps/veracrypt.svg" alt="VeraCrypt" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="FreeTube">
+                            <img src="/img/apps/freetube.svg" alt="FreeTube" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Git">
+                            <img src="/img/apps/git.svg" alt="Git" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="KeePassXC">
+                            <img src="/img/apps/keepassxc.svg" alt="KeePassXC" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="EasyTAG">
+                            <img src="/img/apps/easytag.svg" alt="EasyTAG" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VirtualBox">
+                            <img src="/img/apps/virtualbox.svg" alt="VirtualBox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LastPass">
+                            <img src="/img/apps/lastpass.svg" alt="LastPass" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GnuCash">
+                            <img src="/img/apps/gnucash-icon.svg" alt="GnuCash" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Anki">
+                            <img src="/img/apps/anki.svg" alt="Anki" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Slack">
+                            <img src="/img/apps/slack.svg" alt="Slack" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="KiCad">
+                            <img src="/img/apps/kicad.svg" alt="KiCad" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MPV">
+                            <img src="/img/apps/mpv.svg" alt="MPV" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jellyfin">
+                            <img src="/img/apps/jellyfin.svg" alt="Jellyfin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Liferea">
+                            <img src="/img/apps/liferea.svg" alt="Liferea" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DBeaver">
+                            <img src="/img/apps/dbeaver.svg" alt="DBeaver" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Element">
+                            <img src="/img/apps/element-desktop.svg" alt="Element" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="digiKam">
+                            <img src="/img/apps/digikam.svg" alt="digiKam" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Calc">
+                            <img src="/img/apps/libreoffice-calc.svg" alt="LibreOffice Calc" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Simple Screen Recorder">
+                            <img src="/img/apps/simplescreenrecorder.svg" alt="Simple Screen Recorder" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Heroic Games Launcher">
+                            <img src="/img/apps/heroic.svg" alt="Heroic Games Launcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Neovim">
+                            <img src="/img/apps/neovim.svg" alt="Neovim" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Discord">
+                            <img src="/img/apps/discord.svg" alt="Discord" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Krusader">
+                            <img src="/img/apps/krusader-user.svg" alt="Krusader" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="IntelliJ IDEA">
+                            <img src="/img/apps/idea.svg" alt="IntelliJ IDEA" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Remmina">
+                            <img src="/img/apps/remmina.svg" alt="Remmina" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Yuzu">
+                            <img src="/img/apps/yuzu.svg" alt="Yuzu" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Logseq">
+                            <img src="/img/apps/logseq.svg" alt="Logseq" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Postman">
+                            <img src="/img/apps/postman.svg" alt="Postman" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MuseScore">
+                            <img src="/img/apps/musescore.svg" alt="MuseScore" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Atom">
+                            <img src="/img/apps/atom.svg" alt="Atom" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Anbox">
+                            <img src="/img/apps/anbox.svg" alt="Anbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Rider">
+                            <img src="/img/apps/rider.svg" alt="Rider" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="PyCharm">
+                            <img src="/img/apps/pycharm.svg" alt="PyCharm" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Zotero">
+                            <img src="/img/apps/zotero.svg" alt="Zotero" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Sublime Text">
+                            <img src="/img/apps/sublime-text.svg" alt="Sublime Text" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Stacer">
+                            <img src="/img/apps/stacer.svg" alt="Stacer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="CLion">
+                            <img src="/img/apps/clion.svg" alt="CLion" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Audacious">
+                            <img src="/img/apps/audacious.svg" alt="Audacious" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Shotcut">
+                            <img src="/img/apps/shotcut.svg" alt="Shotcut" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="UNetbootin">
+                            <img src="/img/apps/unetbootin.svg" alt="UNetbootin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Waterfox">
+                            <img src="/img/apps/waterfox.svg" alt="Waterfox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Brave">
+                            <img src="/img/apps/brave.svg" alt="Brave" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Clementine">
+                            <img src="/img/apps/clementine.svg" alt="Clementine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Obsidian">
+                            <img src="/img/apps/obsidian.svg" alt="Obsidian" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LocalSend">
+                            <img src="/img/apps/localsend.svg" alt="LocalSend" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Meld">
+                            <img src="/img/apps/meld.svg" alt="Meld" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RubyMine">
+                            <img src="/img/apps/rubymine.svg" alt="RubyMine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WeChat">
+                            <img src="/img/apps/wechat.svg" alt="WeChat" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Eclipse">
+                            <img src="/img/apps/eclipse.svg" alt="Eclipse" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Thunderbird">
+                            <img src="/img/apps/thunderbird.svg" alt="Thunderbird" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Caffeine">
+                            <img src="/img/apps/caffeine.svg" alt="Caffeine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GoLand">
+                            <img src="/img/apps/goland.svg" alt="GoLand" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Zoom">
+                            <img src="/img/apps/zoom.svg" alt="Zoom" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="pgAdmin">
+                            <img src="/img/apps/pgadmin.svg" alt="pgAdmin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Prism Launcher">
+                            <img src="/img/apps/prismlauncher.svg" alt="Prism Launcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Geany">
+                            <img src="/img/apps/geany.svg" alt="Geany" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Bitwig Studio">
+                            <img src="/img/apps/bitwig-studio.svg" alt="Bitwig Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dropbox">
+                            <img src="/img/apps/dropbox.svg" alt="Dropbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Alacritty">
+                            <img src="/img/apps/alacritty.svg" alt="Alacritty" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Cheese">
+                            <img src="/img/apps/cheese.svg" alt="Cheese" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WhatsApp">
+                            <img src="/img/apps/whatsapp.svg" alt="WhatsApp" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Figma">
+                            <img src="/img/apps/figma.svg" alt="Figma" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DOSBox">
+                            <img src="/img/apps/dosbox.svg" alt="DOSBox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Kdenlive">
+                            <img src="/img/apps/kdenlive.svg" alt="Kdenlive" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="TeamViewer">
+                            <img src="/img/apps/teamviewer.svg" alt="TeamViewer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VMware Workstation">
+                            <img src="/img/apps/vmware-workstation.svg" alt="VMware Workstation" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Joplin">
+                            <img src="/img/apps/joplin.svg" alt="Joplin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DataGrip">
+                            <img src="/img/apps/datagrip.svg" alt="DataGrip" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="K3b">
+                            <img src="/img/apps/k3b.svg" alt="K3b" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Flatseal">
+                            <img src="/img/apps/flatseal.svg" alt="Flatseal" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="File Roller">
+                            <img src="/img/apps/file-roller.svg" alt="File Roller" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="bauh">
+                            <img src="/img/apps/bauh.svg" alt="bauh" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Signal">
+                            <img src="/img/apps/signal-desktop.svg" alt="Signal" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GNS3">
+                            <img src="/img/apps/gns3.svg" alt="GNS3" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Arduino IDE">
+                            <img src="/img/apps/arduino.svg" alt="Arduino IDE" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="AnyDesk">
+                            <img src="/img/apps/anydesk.svg" alt="AnyDesk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Ardour">
+                            <img src="/img/apps/ardour.svg" alt="Ardour" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Vivaldi">
+                            <img src="/img/apps/vivaldi.svg" alt="Vivaldi" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WebStorm">
+                            <img src="/img/apps/webstorm.svg" alt="WebStorm" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Wireshark">
+                            <img src="/img/apps/wireshark.svg" alt="Wireshark" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Fritzing">
+                            <img src="/img/apps/fritzing.svg" alt="Fritzing" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Virt-Manager">
+                            <img src="/img/apps/virt-manager.svg" alt="Virt-Manager" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Scribus">
+                            <img src="/img/apps/scribus.svg" alt="Scribus" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VLC">
+                            <img src="/img/apps/vlc.svg" alt="VLC" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Pidgin">
+                            <img src="/img/apps/pidgin.svg" alt="Pidgin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MySQL Workbench">
+                            <img src="/img/apps/mysql-workbench.svg" alt="MySQL Workbench" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Impress">
+                            <img src="/img/apps/libreoffice-impress.svg" alt="LibreOffice Impress" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Firefox">
+                            <img src="/img/apps/firefox.svg" alt="Firefox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Typora">
+                            <img src="/img/apps/typora.svg" alt="Typora" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Notion">
+                            <img src="/img/apps/notion.svg" alt="Notion" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Skype">
+                            <img src="/img/apps/skype.svg" alt="Skype" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Mixxx">
+                            <img src="/img/apps/mixxx.svg" alt="Mixxx" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Barrier">
+                            <img src="/img/apps/barrier.svg" alt="Barrier" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Writer">
+                            <img src="/img/apps/libreoffice-writer.svg" alt="LibreOffice Writer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Telegram">
+                            <img src="/img/apps/telegram.svg" alt="Telegram" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RetroArch">
+                            <img src="/img/apps/retroarch.svg" alt="RetroArch" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Darktable">
+                            <img src="/img/apps/darktable.svg" alt="Darktable" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Bitwarden">
+                            <img src="/img/apps/bitwarden.svg" alt="Bitwarden" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="ScummVM">
+                            <img src="/img/apps/scummvm.svg" alt="ScummVM" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Android Studio">
+                            <img src="/img/apps/android-studio.svg" alt="Android Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WPS Office">
+                            <img src="/img/apps/wps-office-kingsoft.svg" alt="WPS Office" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Audacity">
+                            <img src="/img/apps/audacity.svg" alt="Audacity" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jupyter">
+                            <img src="/img/apps/jupyter.svg" alt="Jupyter" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Krita">
+                            <img src="/img/apps/calligrakrita.svg" alt="Krita" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Todoist">
+                            <img src="/img/apps/todoist.svg" alt="Todoist" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Clash Verge">
+                            <img src="/img/apps/clash-verge.svg" alt="Clash Verge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VSCodium">
+                            <img src="/img/apps/vscodium.svg" alt="VSCodium" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Balean Etcher">
+                            <img src="/img/apps/etcher.svg" alt="Balean Etcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Steam">
+                            <img src="/img/apps/steam.svg" alt="Steam" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Minecraft">
+                            <img src="/img/apps/minecraft.svg" alt="Minecraft" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Okular">
+                            <img src="/img/apps/okular.svg" alt="Okular" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Google Chrome">
+                            <img src="/img/apps/google-chrome.svg" alt="Google Chrome" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreCAD">
+                            <img src="/img/apps/librecad.svg" alt="LibreCAD" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Disk Usage Analyzer">
+                            <img src="/img/apps/baobab.svg" alt="Disk Usage Analyzer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dolphin Emulator">
+                            <img src="/img/apps/dolphin-emu.svg" alt="Dolphin Emulator" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GitKraken">
+                            <img src="/img/apps/gitkraken.svg" alt="GitKraken" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Code::Blocks">
+                            <img src="/img/apps/codeblocks.svg" alt="Code::Blocks" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Vim">
+                            <img src="/img/apps/vim.svg" alt="Vim" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Diagrams.net">
+                            <img src="/img/apps/draw-io.svg" alt="Diagrams.net" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice">
+                            <img src="/img/apps/libreoffice.svg" alt="LibreOffice" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Baidu Netdisk">
+                            <img src="/img/apps/baidunetdisk.svg" alt="Baidu Netdisk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Emacs">
+                            <img src="/img/apps/emacs.svg" alt="Emacs" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="OpenShot">
+                            <img src="/img/apps/openshot.svg" alt="OpenShot" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="qBittorrent">
+                            <img src="/img/apps/qbittorrent.svg" alt="qBittorrent" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jami">
+                            <img src="/img/apps/jami.svg" alt="Jami" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Opera">
+                            <img src="/img/apps/opera.svg" alt="Opera" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="D&#xE9;j&#xE0; Dup">
+                            <img src="/img/apps/deja-dup.svg" alt="D&#xE9;j&#xE0; Dup" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="aMule">
+                            <img src="/img/apps/amule.svg" alt="aMule" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="OBS Studio">
+                            <img src="/img/apps/obs.svg" alt="OBS Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GitHub">
+                            <img src="/img/apps/github.svg" alt="GitHub" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Flameshot">
+                            <img src="/img/apps/flameshot.svg" alt="Flameshot" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Insomnia">
+                            <img src="/img/apps/insomnia.svg" alt="Insomnia" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dia">
+                            <img src="/img/apps/dia.svg" alt="Dia" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LMMS">
+                            <img src="/img/apps/lmms.svg" alt="LMMS" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QQ Music">
+                            <img src="/img/apps/qqmusic.svg" alt="QQ Music" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Transmission">
+                            <img src="/img/apps/transmission.svg" alt="Transmission" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WPS Office">
+                            <img src="/img/apps/wps-office-wpsmain.svg" alt="WPS Office" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Beyond Compare">
+                            <img src="/img/apps/bcompare.svg" alt="Beyond Compare" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Blender">
+                            <img src="/img/apps/blender.svg" alt="Blender" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Java">
+                            <img src="/img/apps/java.svg" alt="Java" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Calibre">
+                            <img src="/img/apps/calibre-gui.svg" alt="Calibre" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Master PDF Editor">
+                            <img src="/img/apps/masterpdfeditor.svg" alt="Master PDF Editor" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Qt Creator">
+                            <img src="/img/apps/qtcreator.svg" alt="Qt Creator" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GParted">
+                            <img src="/img/apps/gparted.svg" alt="GParted" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Chromium">
+                            <img src="/img/apps/chromium.svg" alt="Chromium" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GUFW">
+                            <img src="/img/apps/gufw.svg" alt="GUFW" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Google Earth">
+                            <img src="/img/apps/google-earth.svg" alt="Google Earth" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Deluge">
+                            <img src="/img/apps/deluge.svg" alt="Deluge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Spotify">
+                            <img src="/img/apps/spotify-client.svg" alt="Spotify" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Visual Studio Code">
+                            <img src="/img/apps/visual-studio-code.svg" alt="Visual Studio Code" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="AbiWord">
+                            <img src="/img/apps/abiword.svg" alt="AbiWord" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Rhythmbox">
+                            <img src="/img/apps/rhythmbox.svg" alt="Rhythmbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Docker">
+                            <img src="/img/apps/docker.svg" alt="Docker" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Python">
+                            <img src="/img/apps/python.svg" alt="Python" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DeaDBeeF">
+                            <img src="/img/apps/deadbeef.svg" alt="DeaDBeeF" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Aegisub">
+                            <img src="/img/apps/aegisub.svg" alt="Aegisub" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Kodi">
+                            <img src="/img/apps/kodi.svg" alt="Kodi" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="gPodder">
+                            <img src="/img/apps/gpodder.svg" alt="gPodder" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QGIS">
+                            <img src="/img/apps/qgis.svg" alt="QGIS" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="HandBrake">
+                            <img src="/img/apps/hb-icon.svg" alt="HandBrake" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Inkscape">
+                            <img src="/img/apps/inkscape.svg" alt="Inkscape" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Microsoft Edge">
+                            <img src="/img/apps/microsoft-edge.svg" alt="Microsoft Edge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QQ">
+                            <img src="/img/apps/qq.svg" alt="QQ" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Simplenote">
+                            <img src="/img/apps/simplenote.svg" alt="Simplenote" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dota 2">
+                            <img src="/img/apps/dota2.svg" alt="Dota 2" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="FileZilla">
+                            <img src="/img/apps/filezilla.svg" alt="FileZilla" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GIMP">
+                            <img src="/img/apps/gimp.svg" alt="GIMP" loading="lazy" />
+                        </div>
+                </div>
+
+                <div class="app-wall-grid" aria-hidden="true">
+                        <div class="app-icon-wrapper" data-name="Factorio">
+                            <img src="/img/apps/factorio.svg" alt="Factorio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="XMind">
+                            <img src="/img/apps/xmind.svg" alt="XMind" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="BleachBit">
+                            <img src="/img/apps/bleachbit.svg" alt="BleachBit" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Syncthing-GTK">
+                            <img src="/img/apps/syncthing-gtk.svg" alt="Syncthing-GTK" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GNOME Boxes">
+                            <img src="/img/apps/gnome-boxes.svg" alt="GNOME Boxes" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DingTalk">
+                            <img src="/img/apps/dingtalk.svg" alt="DingTalk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="7-Zip">
+                            <img src="/img/apps/7zip.svg" alt="7-Zip" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Timeshift">
+                            <img src="/img/apps/timeshift.svg" alt="Timeshift" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RStudio">
+                            <img src="/img/apps/rstudio.svg" alt="RStudio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="0 A.D.">
+                            <img src="/img/apps/0ad.svg" alt="0 A.D." loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VeraCrypt">
+                            <img src="/img/apps/veracrypt.svg" alt="VeraCrypt" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="FreeTube">
+                            <img src="/img/apps/freetube.svg" alt="FreeTube" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Git">
+                            <img src="/img/apps/git.svg" alt="Git" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="KeePassXC">
+                            <img src="/img/apps/keepassxc.svg" alt="KeePassXC" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="EasyTAG">
+                            <img src="/img/apps/easytag.svg" alt="EasyTAG" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VirtualBox">
+                            <img src="/img/apps/virtualbox.svg" alt="VirtualBox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LastPass">
+                            <img src="/img/apps/lastpass.svg" alt="LastPass" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GnuCash">
+                            <img src="/img/apps/gnucash-icon.svg" alt="GnuCash" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Anki">
+                            <img src="/img/apps/anki.svg" alt="Anki" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Slack">
+                            <img src="/img/apps/slack.svg" alt="Slack" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="KiCad">
+                            <img src="/img/apps/kicad.svg" alt="KiCad" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MPV">
+                            <img src="/img/apps/mpv.svg" alt="MPV" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jellyfin">
+                            <img src="/img/apps/jellyfin.svg" alt="Jellyfin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Liferea">
+                            <img src="/img/apps/liferea.svg" alt="Liferea" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DBeaver">
+                            <img src="/img/apps/dbeaver.svg" alt="DBeaver" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Element">
+                            <img src="/img/apps/element-desktop.svg" alt="Element" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="digiKam">
+                            <img src="/img/apps/digikam.svg" alt="digiKam" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Calc">
+                            <img src="/img/apps/libreoffice-calc.svg" alt="LibreOffice Calc" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Simple Screen Recorder">
+                            <img src="/img/apps/simplescreenrecorder.svg" alt="Simple Screen Recorder" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Heroic Games Launcher">
+                            <img src="/img/apps/heroic.svg" alt="Heroic Games Launcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Neovim">
+                            <img src="/img/apps/neovim.svg" alt="Neovim" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Discord">
+                            <img src="/img/apps/discord.svg" alt="Discord" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Krusader">
+                            <img src="/img/apps/krusader-user.svg" alt="Krusader" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="IntelliJ IDEA">
+                            <img src="/img/apps/idea.svg" alt="IntelliJ IDEA" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Remmina">
+                            <img src="/img/apps/remmina.svg" alt="Remmina" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Yuzu">
+                            <img src="/img/apps/yuzu.svg" alt="Yuzu" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Logseq">
+                            <img src="/img/apps/logseq.svg" alt="Logseq" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Postman">
+                            <img src="/img/apps/postman.svg" alt="Postman" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MuseScore">
+                            <img src="/img/apps/musescore.svg" alt="MuseScore" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Atom">
+                            <img src="/img/apps/atom.svg" alt="Atom" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Anbox">
+                            <img src="/img/apps/anbox.svg" alt="Anbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Rider">
+                            <img src="/img/apps/rider.svg" alt="Rider" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="PyCharm">
+                            <img src="/img/apps/pycharm.svg" alt="PyCharm" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Zotero">
+                            <img src="/img/apps/zotero.svg" alt="Zotero" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Sublime Text">
+                            <img src="/img/apps/sublime-text.svg" alt="Sublime Text" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Stacer">
+                            <img src="/img/apps/stacer.svg" alt="Stacer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="CLion">
+                            <img src="/img/apps/clion.svg" alt="CLion" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Audacious">
+                            <img src="/img/apps/audacious.svg" alt="Audacious" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Shotcut">
+                            <img src="/img/apps/shotcut.svg" alt="Shotcut" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="UNetbootin">
+                            <img src="/img/apps/unetbootin.svg" alt="UNetbootin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Waterfox">
+                            <img src="/img/apps/waterfox.svg" alt="Waterfox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Brave">
+                            <img src="/img/apps/brave.svg" alt="Brave" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Clementine">
+                            <img src="/img/apps/clementine.svg" alt="Clementine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Obsidian">
+                            <img src="/img/apps/obsidian.svg" alt="Obsidian" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LocalSend">
+                            <img src="/img/apps/localsend.svg" alt="LocalSend" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Meld">
+                            <img src="/img/apps/meld.svg" alt="Meld" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RubyMine">
+                            <img src="/img/apps/rubymine.svg" alt="RubyMine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WeChat">
+                            <img src="/img/apps/wechat.svg" alt="WeChat" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Eclipse">
+                            <img src="/img/apps/eclipse.svg" alt="Eclipse" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Thunderbird">
+                            <img src="/img/apps/thunderbird.svg" alt="Thunderbird" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Caffeine">
+                            <img src="/img/apps/caffeine.svg" alt="Caffeine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GoLand">
+                            <img src="/img/apps/goland.svg" alt="GoLand" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Zoom">
+                            <img src="/img/apps/zoom.svg" alt="Zoom" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="pgAdmin">
+                            <img src="/img/apps/pgadmin.svg" alt="pgAdmin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Prism Launcher">
+                            <img src="/img/apps/prismlauncher.svg" alt="Prism Launcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Geany">
+                            <img src="/img/apps/geany.svg" alt="Geany" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Bitwig Studio">
+                            <img src="/img/apps/bitwig-studio.svg" alt="Bitwig Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dropbox">
+                            <img src="/img/apps/dropbox.svg" alt="Dropbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Alacritty">
+                            <img src="/img/apps/alacritty.svg" alt="Alacritty" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Cheese">
+                            <img src="/img/apps/cheese.svg" alt="Cheese" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WhatsApp">
+                            <img src="/img/apps/whatsapp.svg" alt="WhatsApp" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Figma">
+                            <img src="/img/apps/figma.svg" alt="Figma" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DOSBox">
+                            <img src="/img/apps/dosbox.svg" alt="DOSBox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Kdenlive">
+                            <img src="/img/apps/kdenlive.svg" alt="Kdenlive" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="TeamViewer">
+                            <img src="/img/apps/teamviewer.svg" alt="TeamViewer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VMware Workstation">
+                            <img src="/img/apps/vmware-workstation.svg" alt="VMware Workstation" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Joplin">
+                            <img src="/img/apps/joplin.svg" alt="Joplin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DataGrip">
+                            <img src="/img/apps/datagrip.svg" alt="DataGrip" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="K3b">
+                            <img src="/img/apps/k3b.svg" alt="K3b" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Flatseal">
+                            <img src="/img/apps/flatseal.svg" alt="Flatseal" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="File Roller">
+                            <img src="/img/apps/file-roller.svg" alt="File Roller" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="bauh">
+                            <img src="/img/apps/bauh.svg" alt="bauh" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Signal">
+                            <img src="/img/apps/signal-desktop.svg" alt="Signal" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GNS3">
+                            <img src="/img/apps/gns3.svg" alt="GNS3" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Arduino IDE">
+                            <img src="/img/apps/arduino.svg" alt="Arduino IDE" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="AnyDesk">
+                            <img src="/img/apps/anydesk.svg" alt="AnyDesk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Ardour">
+                            <img src="/img/apps/ardour.svg" alt="Ardour" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Vivaldi">
+                            <img src="/img/apps/vivaldi.svg" alt="Vivaldi" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WebStorm">
+                            <img src="/img/apps/webstorm.svg" alt="WebStorm" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Wireshark">
+                            <img src="/img/apps/wireshark.svg" alt="Wireshark" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Fritzing">
+                            <img src="/img/apps/fritzing.svg" alt="Fritzing" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Virt-Manager">
+                            <img src="/img/apps/virt-manager.svg" alt="Virt-Manager" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Scribus">
+                            <img src="/img/apps/scribus.svg" alt="Scribus" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VLC">
+                            <img src="/img/apps/vlc.svg" alt="VLC" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Pidgin">
+                            <img src="/img/apps/pidgin.svg" alt="Pidgin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MySQL Workbench">
+                            <img src="/img/apps/mysql-workbench.svg" alt="MySQL Workbench" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Impress">
+                            <img src="/img/apps/libreoffice-impress.svg" alt="LibreOffice Impress" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Firefox">
+                            <img src="/img/apps/firefox.svg" alt="Firefox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Typora">
+                            <img src="/img/apps/typora.svg" alt="Typora" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Notion">
+                            <img src="/img/apps/notion.svg" alt="Notion" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Skype">
+                            <img src="/img/apps/skype.svg" alt="Skype" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Mixxx">
+                            <img src="/img/apps/mixxx.svg" alt="Mixxx" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Barrier">
+                            <img src="/img/apps/barrier.svg" alt="Barrier" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Writer">
+                            <img src="/img/apps/libreoffice-writer.svg" alt="LibreOffice Writer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Telegram">
+                            <img src="/img/apps/telegram.svg" alt="Telegram" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RetroArch">
+                            <img src="/img/apps/retroarch.svg" alt="RetroArch" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Darktable">
+                            <img src="/img/apps/darktable.svg" alt="Darktable" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Bitwarden">
+                            <img src="/img/apps/bitwarden.svg" alt="Bitwarden" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="ScummVM">
+                            <img src="/img/apps/scummvm.svg" alt="ScummVM" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Android Studio">
+                            <img src="/img/apps/android-studio.svg" alt="Android Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WPS Office">
+                            <img src="/img/apps/wps-office-kingsoft.svg" alt="WPS Office" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Audacity">
+                            <img src="/img/apps/audacity.svg" alt="Audacity" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jupyter">
+                            <img src="/img/apps/jupyter.svg" alt="Jupyter" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Krita">
+                            <img src="/img/apps/calligrakrita.svg" alt="Krita" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Todoist">
+                            <img src="/img/apps/todoist.svg" alt="Todoist" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Clash Verge">
+                            <img src="/img/apps/clash-verge.svg" alt="Clash Verge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VSCodium">
+                            <img src="/img/apps/vscodium.svg" alt="VSCodium" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Balean Etcher">
+                            <img src="/img/apps/etcher.svg" alt="Balean Etcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Steam">
+                            <img src="/img/apps/steam.svg" alt="Steam" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Minecraft">
+                            <img src="/img/apps/minecraft.svg" alt="Minecraft" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Okular">
+                            <img src="/img/apps/okular.svg" alt="Okular" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Google Chrome">
+                            <img src="/img/apps/google-chrome.svg" alt="Google Chrome" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreCAD">
+                            <img src="/img/apps/librecad.svg" alt="LibreCAD" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Disk Usage Analyzer">
+                            <img src="/img/apps/baobab.svg" alt="Disk Usage Analyzer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dolphin Emulator">
+                            <img src="/img/apps/dolphin-emu.svg" alt="Dolphin Emulator" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GitKraken">
+                            <img src="/img/apps/gitkraken.svg" alt="GitKraken" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Code::Blocks">
+                            <img src="/img/apps/codeblocks.svg" alt="Code::Blocks" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Vim">
+                            <img src="/img/apps/vim.svg" alt="Vim" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Diagrams.net">
+                            <img src="/img/apps/draw-io.svg" alt="Diagrams.net" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice">
+                            <img src="/img/apps/libreoffice.svg" alt="LibreOffice" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Baidu Netdisk">
+                            <img src="/img/apps/baidunetdisk.svg" alt="Baidu Netdisk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Emacs">
+                            <img src="/img/apps/emacs.svg" alt="Emacs" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="OpenShot">
+                            <img src="/img/apps/openshot.svg" alt="OpenShot" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="qBittorrent">
+                            <img src="/img/apps/qbittorrent.svg" alt="qBittorrent" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jami">
+                            <img src="/img/apps/jami.svg" alt="Jami" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Opera">
+                            <img src="/img/apps/opera.svg" alt="Opera" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="D&#xE9;j&#xE0; Dup">
+                            <img src="/img/apps/deja-dup.svg" alt="D&#xE9;j&#xE0; Dup" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="aMule">
+                            <img src="/img/apps/amule.svg" alt="aMule" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="OBS Studio">
+                            <img src="/img/apps/obs.svg" alt="OBS Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GitHub">
+                            <img src="/img/apps/github.svg" alt="GitHub" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Flameshot">
+                            <img src="/img/apps/flameshot.svg" alt="Flameshot" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Insomnia">
+                            <img src="/img/apps/insomnia.svg" alt="Insomnia" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dia">
+                            <img src="/img/apps/dia.svg" alt="Dia" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LMMS">
+                            <img src="/img/apps/lmms.svg" alt="LMMS" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QQ Music">
+                            <img src="/img/apps/qqmusic.svg" alt="QQ Music" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Transmission">
+                            <img src="/img/apps/transmission.svg" alt="Transmission" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WPS Office">
+                            <img src="/img/apps/wps-office-wpsmain.svg" alt="WPS Office" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Beyond Compare">
+                            <img src="/img/apps/bcompare.svg" alt="Beyond Compare" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Blender">
+                            <img src="/img/apps/blender.svg" alt="Blender" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Java">
+                            <img src="/img/apps/java.svg" alt="Java" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Calibre">
+                            <img src="/img/apps/calibre-gui.svg" alt="Calibre" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Master PDF Editor">
+                            <img src="/img/apps/masterpdfeditor.svg" alt="Master PDF Editor" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Qt Creator">
+                            <img src="/img/apps/qtcreator.svg" alt="Qt Creator" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GParted">
+                            <img src="/img/apps/gparted.svg" alt="GParted" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Chromium">
+                            <img src="/img/apps/chromium.svg" alt="Chromium" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GUFW">
+                            <img src="/img/apps/gufw.svg" alt="GUFW" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Google Earth">
+                            <img src="/img/apps/google-earth.svg" alt="Google Earth" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Deluge">
+                            <img src="/img/apps/deluge.svg" alt="Deluge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Spotify">
+                            <img src="/img/apps/spotify-client.svg" alt="Spotify" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Visual Studio Code">
+                            <img src="/img/apps/visual-studio-code.svg" alt="Visual Studio Code" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="AbiWord">
+                            <img src="/img/apps/abiword.svg" alt="AbiWord" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Rhythmbox">
+                            <img src="/img/apps/rhythmbox.svg" alt="Rhythmbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Docker">
+                            <img src="/img/apps/docker.svg" alt="Docker" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Python">
+                            <img src="/img/apps/python.svg" alt="Python" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DeaDBeeF">
+                            <img src="/img/apps/deadbeef.svg" alt="DeaDBeeF" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Aegisub">
+                            <img src="/img/apps/aegisub.svg" alt="Aegisub" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Kodi">
+                            <img src="/img/apps/kodi.svg" alt="Kodi" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="gPodder">
+                            <img src="/img/apps/gpodder.svg" alt="gPodder" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QGIS">
+                            <img src="/img/apps/qgis.svg" alt="QGIS" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="HandBrake">
+                            <img src="/img/apps/hb-icon.svg" alt="HandBrake" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Inkscape">
+                            <img src="/img/apps/inkscape.svg" alt="Inkscape" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Microsoft Edge">
+                            <img src="/img/apps/microsoft-edge.svg" alt="Microsoft Edge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QQ">
+                            <img src="/img/apps/qq.svg" alt="QQ" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Simplenote">
+                            <img src="/img/apps/simplenote.svg" alt="Simplenote" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dota 2">
+                            <img src="/img/apps/dota2.svg" alt="Dota 2" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="FileZilla">
+                            <img src="/img/apps/filezilla.svg" alt="FileZilla" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GIMP">
+                            <img src="/img/apps/gimp.svg" alt="GIMP" loading="lazy" />
+                        </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="ai-section position-relative w-100 overflow-hidden d-flex align-items-center">
+    
+    <div class="ai-immersive-bg">
+        <div class="bg-image-wrapper">
+             <img src="/images/ainative.webp" alt="AI Native Environment" class="img-fluid object-fit-cover w-100 h-100">
+        </div>
+        <div class="bg-overlay"></div>
+    </div>
+
+    <div class="container position-relative z-2 py-5">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-6 col-md-12">
+                
+                <div class="mb-5 text-start ps-lg-4">
+                    <div class="d-inline-flex align-items-center px-3 py-1 mb-3 rounded-pill border border-white-10 bg-dark-glass-sm backdrop-blur">
+                        <span class="text-info me-2"><i class="fas fa-microchip"></i></span>
+                        <span class="text-gray-300 small fw-medium text-uppercase tracking-wider">AI-Native Environment</span>
+                    </div>
+                    <h2 class="display-4 fw-bold text-white mb-3">
+                        <span class="text-primary">Premier</span><br>
+                        AI Tool Environment
+                    </h2>
+                    <p class="lead text-gray-400 fs-5">
+                        Built for the era of large models. Native Shell, native Docker, and an unrestrained Python experience.
+                    </p>
+                    <div class="mt-4">
+                        <a href="https://docs.anduinos.com/Applications/Code-Editors/Claude-Code/Claude-Code.html" target="_blank" class="btn btn-primary btn-pill">
+                            Install Claude Code (Recommended)
+                        </a>
+                        <a href="https://docs.anduinos.com/Applications/Code-Editors/Copilot-CLI/Copilot-CLI.html" target="_blank" class="btn btn-outline-primary btn-pill ms-2">
+                            Install Copilot CLI
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row g-3 ps-lg-4">
+                    
+                    <div class="col-md-6">
+                        <div class="card bg-dark-glass border-white-10 h-100 hover-lift">
+                            <div class="card-body p-4">
+                                <div class="icon-box-sm bg-warning-subtle text-warning rounded-3 me-3 mb-3">
+                                    <i class="fab fa-python fa-lg"></i>
+                                </div>
+                                <h5 class="fw-bold text-white fs-6">First-class Python</h5>
+                                <p class="text-gray-400 mb-0 lh-sm"> Natively pre-installed, system-level integration, out-of-the-box.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a href="https://docs.anduinos.com/Applications/Development/Docker/Docker.html" target="_blank" class="card bg-dark-glass border-white-10 h-100 hover-lift text-decoration-none">
+                            <div class="card-body p-4">
+                                <div class="icon-box-sm bg-primary-subtle text-primary rounded-3 me-3 mb-3">
+                                    <i class="fab fa-docker fa-lg"></i>
+                                </div>
+                                <h5 class="fw-bold text-white fs-6">Docker</h5>
+                                <p class="text-gray-400 mb-0 lh-sm"> One-click deployment, native GPU passthrough support, container development has never been easier.</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="card bg-dark-glass border-white-10 h-100 hover-lift">
+                            <div class="card-body p-4 d-flex align-items-center">
+                                <div class="icon-box-sm bg-white-10 text-white rounded-3 me-3">
+                                    <i class="fas fa-terminal"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold text-white mb-1 fs-6"> Native Shell Experience</h5>
+                                    <p class="text-gray-400 mb-0">Zsh, PowerShell, Bash - Seamlessly compatible with all dotfiles</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="card bg-dark-glass border-white-10 h-100 hover-lift text-center py-2">
+                            <div class="card-body p-2">
+                                <i class="fab fa-ubuntu text-danger mb-2 fs-5"></i>
+                                <div class="text-gray-300 fw-bold" style="font-size: 0.75rem">Ubuntu</div>
+                                <div class="text-gray-500">The base environment AI knows best</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card bg-dark-glass border-white-10 h-100 hover-lift text-center py-2">
+                            <div class="card-body p-2">
+                                <i class="fas fa-unlock text-success mb-2 fs-5"></i>
+                                <div class="text-gray-300 fw-bold" style="font-size: 0.75rem">Unsigned</div>
+                                <div class="text-gray-500">No execution signing or modification restrictions</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card bg-dark-glass border-white-10 h-100 hover-lift text-center py-2">
+                            <div class="card-body p-2">
+                                <i class="fas fa-robot text-info mb-2 fs-5"></i>
+                                <div class="text-gray-300 fw-bold" style="font-size: 0.75rem">AI Fix</div>
+                                <div class="text-gray-500">Use natural language AI to automatically fix system and environment issues</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-6">
+    <div class="container-fluid">
+        <div class="mb-5 text-center">
+            <span class="text-uppercase text-primary text-sm fw-medium mb-1 d-block">Reviews</span>
+            <h2 class="h1">What users are saying</h2>
+            <p class="text-muted fs-lg">Here's what some of our 2000+ users have to say about working with AnduinOS.
+            </p>
+        </div>
+        <div class="d-flex flex-nowrap overflow-auto review-scroll container" style="scrollbar-width: thin; max-width:1770px">
+            <div class="flex-shrink-0 me-3" style="max-width: 435px;">
+                <blockquote class="landing-quote card border">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div>
+                                <a href="https://www.linkedin.com/in/johnathon-horner-0513bb193/" target="_blank">
+                                    <img src="ava/johnathon.webp" width="48" height="48"
+                                         alt="User Johnathon's avatar" loading="lazy"/>
+                                </a>
+                            </div>
+                            <div class="ps-3">
+                                <h5 class="mb-1 mt-2">Johnathon Horner</h5><small
+                                    class="d-block text-muted h5 fw-normal">Composer, Producer, and Audio Engineer</small>
+                            </div>
+                        </div>
+                        <p class="lead mb-2">...if you're considering taking back your privacy and switching to Linux, Anduin OS is the perfect place to start your journey. It's clean, it's simple, and the transition is seamless. Anduin OS wasn't designed for the tech nerd. It was designed specifically for YOU. Make the switch. You won't regret it.</p>
+
+                        <div class="landing-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+
+            <div class="flex-shrink-0 me-3" style="max-width: 290px;">
+                <blockquote class="landing-quote card border">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div>
+                                <a href="https://www.linkedin.com/in/marco-neumann-fisi/" target="_blank">
+                                    <img src="ava/marco-neumann.webp" width="48" height="48"
+                                         alt="User Marco Neumann's avatar" loading="lazy"/>
+                                </a>
+                            </div>
+                            <div class="ps-3">
+                                <h5 class="mb-1 mt-2">Marco Neumann</h5>
+                                <small
+                                    class="d-block text-muted h5 fw-normal">System Integrator</small>
+                            </div>
+                        </div>
+                        <p class="lead mb-2">AnduinOS is by far the best Linux distribution for Windows users I've encountered. It feels familiar like Windows 11 while retaining its own identity, and its thoughtful design is truly impressive.</p>
+
+                        <div class="landing-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+
+            <div class="flex-shrink-0 me-3" style="max-width: 240px;">
+                <blockquote class="landing-quote card border">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div>
+                                <a href="https://github.com/vinceliuice" target="_blank">
+                                    <img src="ava/vinceliuice.webp" width="48" height="48"
+                                         alt="User vinceliuice's avatar" loading="lazy"/>
+                                </a>
+                            </div>
+                            <div class="ps-3">
+                                <h5 class="mb-1 mt-2">Vince</h5>
+                                <small
+                                    class="d-block text-muted h5 fw-normal">Designer</small>
+                            </div>
+                        </div>
+                        <p class="lead mb-2">AnduinOS has a clean, beautiful modern design, user-friendly interface, among so many distributions, this is the choice you can't miss. Trust me!!!</p>
+
+                        <div class="landing-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+
+            <div class="flex-shrink-0 me-3" style="max-width: 285px;">
+                <blockquote class="landing-quote card border">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div>
+                                <a href="https://yuyuyuyublog.aiursoft.com/" target="_blank">
+                                    <img src="ava/yuyuyuyu.webp" width="48" height="48" alt="User yuyuyuyu's avatar"
+                                         loading="lazy"/>
+                                </a>
+                            </div>
+                            <div class="ps-3">
+                                <h5 class="mb-1 mt-2">Yuyuyuyu</h5>
+                                <small
+                                    class="d-block text-muted h5 fw-normal">Lead Developer</small>
+                            </div>
+                        </div>
+                        <p class="lead mb-2">AnduinOS has breathed new life into my Surface Go, which I previously thought was useless. Surprisingly, it runs much smoother than Windows. All the features work perfectly!</p>
+
+                        <div class="landing-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+
+            <div class="flex-shrink-0 me-3" style="max-width: 360px;">
+                <blockquote class="landing-quote card border">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div>
+                                <a href="https://aimer.aiursoft.com/en/" target="_blank">
+                                    <img src="ava/aimer.webp" width="48" height="48" alt="User Aimer's avatar"
+                                         loading="lazy"/>
+                                </a>
+                            </div>
+                            <div class="ps-3">
+                                <h5 class="mb-1 mt-2">Aimer</h5>
+                                <small
+                                    class="d-block text-muted h5 fw-normal">Developer</small>
+                            </div>
+                        </div>
+                        <p class="lead mb-2">AnduinOS is your final Linux distribution! It's built for developers and is lightweight yet still powerful. With its well-constructed themes and shortcuts, Windows users can smoothly transition to AnduinOS and forget about setting up your system.</p>
+
+                        <div class="landing-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+
+            <div class="flex-shrink-0 me-3" style="max-width: 250px;">
+                <blockquote class="landing-quote card border">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div>
+                                <a href="https://cody.aiursoft.com/" target="_blank">
+                                    <img src="ava/coderay.webp" width="48" height="48" loading="lazy"
+                                         alt="User Cody Ray's avatar"/>
+                                </a>
+                            </div>
+                            <div class="ps-3">
+                                <h5 class="mb-1 mt-2">Cody Ray</h5>
+                                <small
+                                    class="d-block text-muted h5 fw-normal">Developer</small>
+                            </div>
+                        </div>
+                        <p class="lead mb-2">AnduinOS has profoundly streamlined my life and work processes, solidifying its position as my preferred Linux distribution for everyday use!</p>
+
+                        <div class="landing-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+
+            <div class="flex-shrink-0 me-3" style="max-width: 290px;">
+                <blockquote class="landing-quote card border">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div>
+                                <a href="https://www.linkedin.com/in/arne-rohloff-a14747350/" target="_blank">
+                                    <img src="ava/arne.webp" width="48" height="48"
+                                         alt="User Arne's avatar" loading="lazy"/>
+                                </a>
+                            </div>
+                            <div class="ps-3">
+                                <h5 class="mb-1 mt-2">Arne Rohloff</h5><small
+                                    class="d-block text-muted h5 fw-normal">Student</small>
+                            </div>
+                        </div>
+                        <p class="lead mb-2">AnduinOS took less than half an hour to install and set up with all my applications and tools. If you're looking for a clean, stress-free Linux desktop experience, you are in the right place.</p>
+
+                        <div class="landing-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="position-relative py-6 overflow-hidden" style="background: linear-gradient(135deg, #0a0e17 0%, #0d1520 50%, #0a1118 100%);">
+	<svg class="position-absolute top-0 start-0 w-100 h-100" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="pointer-events: none; z-index: 0;">
+		<g stroke="rgba(56, 189, 248, 0.05)" stroke-width="0.4">
+			<path d="M 0 100 L 800 100 M 0 200 L 800 200 M 0 300 L 800 300 M 0 400 L 800 400 M 0 500 L 800 500" />
+			<path d="M 100 0 L 100 600 M 200 0 L 200 600 M 300 0 L 300 600 M 400 0 L 400 600 M 500 0 L 500 600 M 600 0 L 600 600 M 700 0 L 700 600" />
+		</g>
+	</svg>
+
+	<div class="container position-relative z-2">
+		<div class="text-center mb-5">
+			<span class="text-uppercase text-primary text-sm fw-medium mb-2 d-block">All-in-Latest</span>
+			<h2 class="display-5 fw-bold text-white mb-2">Developer's Dream, <span style="background: linear-gradient(135deg, #0ea5e9, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">AI's Ideal.</span></h2>
+			<p class="text-gray-400 fs-lg mb-0">Bleeding-edge kernel, toolchains, and drivers — all pre-configured, zero friction. No Snap, no legacy dead weight, no compromises.</p>
+		</div>
+
+		<div class="row g-4">
+			<div class="col-lg-6">
+				<div class="card bg-dark-glass border-white-10 h-100" style="border-left: 3px solid #0ea5e9;">
+					<div class="card-body p-4">
+						<div class="d-flex align-items-center gap-3 mb-4">
+							<div class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 48px; height: 48px; background: linear-gradient(135deg, #0ea5e9, #8b5cf6);">
+								<i data-lucide="terminal" class="text-white" style="width: 24px; height: 24px;"></i>
+							</div>
+							<div>
+								<h4 class="text-white mb-0">Developer's Dream</h4>
+								<small class="text-gray-400">All languages. One OS. Zero setup.</small>
+							</div>
+						</div>
+
+						<div class="bg-black rounded-3 p-3 mb-4 font-monospace" style="font-size: 0.82rem; border: 1px solid rgba(255,255,255,0.06);">
+							<div class="d-flex gap-2 mb-3">
+								<span class="rounded-circle bg-danger" style="width: 10px; height: 10px;"></span>
+								<span class="rounded-circle bg-warning" style="width: 10px; height: 10px;"></span>
+								<span class="rounded-circle bg-success" style="width: 10px; height: 10px;"></span>
+								<small class="text-gray-500 ms-2">developer@anduinos ~</small>
+							</div>
+							<div class="mb-1"><span class="text-success">$</span> <span class="text-white">sudo apt install build-essential cargo python3-pip</span></div>
+							<div class="text-gray-500 small mb-2">Reading package lists... Done. 0 upgraded, 142 newly installed.</div>
+							<div class="mb-1"><span class="text-success">$</span> <span class="text-white">cat data.csv | python3 analyze.py | cargo run -- plot</span></div>
+							<div class="text-info small mb-1">⚡ Python → Rust → PNG. One pipe. Zero RPC.</div>
+							<div class="mb-1"><span class="text-success">$</span> <span class="text-white">g++ -std=c++20 -O3 daemon.cpp -o daemon</span></div>
+							<div class="mb-1"><span class="text-success">$</span> <span class="text-white">bash deploy.sh && ./daemon &</span></div>
+							<div class="text-gray-500 small mb-2">C++ daemon + Bash orchestration. 3 seconds flat.</div>
+							<div class="mb-1"><span class="text-success">$</span> <span class="text-white">docker compose up -d</span></div>
+							<div class="text-gray-500 small">✓ Containerized. Portable. Done.</div>
+						</div>
+
+						<div class="d-flex flex-wrap gap-2">
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								<i class="fas fa-code me-1" style="color:#0ea5e9;"></i> C++ gcc 15
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								🦀 Rust 1.92
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								🐍 Python 3.14
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								🔵 Go
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								⚡ Zig
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								☕ Java
+								</span>
+								<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+									🔮 Kotlin
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								<i class="fab fa-php me-1" style="color:#777BB4;"></i> PHP
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								💎 Ruby
+								</span>
+								<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+									🌙 Lua
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								<i class="fab fa-node-js me-1" style="color:#68A063;"></i> Node.js
+								</span>
+								<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+									🔷 TypeScript
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								λ Haskell
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								<i class="fab fa-microsoft me-1" style="color:#512BD4;"></i> .NET 10
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								<i class="fas fa-microchip me-1" style="color:#76B900;"></i> CUDA
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								🐍 Anaconda
+								</span>
+								<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+									📊 R
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								<i class="fab fa-docker me-1"></i> Docker
+								</span>
+								<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+									🐘 PostgreSQL
+								</span>
+								<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+									🔴 Redis
+								</span>
+								<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+									🟢 NGINX
+								</span>
+								<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+									<i class="fas fa-code-branch me-1" style="color:#f05133;"></i> Git
+							</span>
+							<span class="badge bg-dark-glass border-white-10 text-gray-300 px-3 py-2 rounded-pill">
+								<i data-lucide="terminal" style="width: 13px; height: 13px;" class="me-1"></i> GNU Bash
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+				<div class="card bg-dark-glass border-white-10 h-100" style="border-left: 3px solid #0ea5e9;">
+					<div class="card-body p-4">
+						<div class="d-flex align-items-center gap-3 mb-4">
+							<div class="d-inline-flex align-items-center justify-content-center rounded-3" style="width: 48px; height: 48px; background: linear-gradient(135deg, #0ea5e9, #8b5cf6);">
+								<i data-lucide="sparkles" class="text-white" style="width: 24px; height: 24px;"></i>
+							</div>
+							<div>
+								<h4 class="text-white mb-0">Ideal Toolset</h4>
+								<small class="text-gray-400">Modern infrastructure. Dual architecture. Production ready.</small>
+							</div>
+						</div>
+
+						<div class="row g-3 mb-4">
+							<div class="col-6">
+								<div class="bg-dark rounded-3 p-3 h-100" style="border: 1px solid rgba(255,255,255,0.06);">
+									<div class="text-primary mb-1"><i data-lucide="cpu" style="width: 16px; height: 16px;"></i></div>
+									<h6 class="text-white mb-1 small fw-semibold">ARM64 + AMD64</h6>
+									<small class="text-gray-500">x86_64 + ARM64. Two ISOs. One experience.</small>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="bg-dark rounded-3 p-3 h-100" style="border: 1px solid rgba(255,255,255,0.06);">
+									<div class="text-success mb-1"><i data-lucide="shield-check" style="width: 16px; height: 16px;"></i></div>
+									<h6 class="text-white mb-1 small fw-semibold">Secure Boot</h6>
+									<small class="text-gray-500">Signed kernel & drivers. No MOK enrollment nightmares.</small>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="bg-dark rounded-3 p-3 h-100" style="border: 1px solid rgba(255,255,255,0.06);">
+									<div class="text-info mb-1"><i data-lucide="monitor" style="width: 16px; height: 16px;"></i></div>
+									<h6 class="text-white mb-1 small fw-semibold">GTK4 + libadwaita</h6>
+									<small class="text-gray-500">Modern, responsive, GPU-accelerated. No legacy GTK3 cruft.</small>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="bg-dark rounded-3 p-3 h-100" style="border: 1px solid rgba(255,255,255,0.06);">
+									<div class="text-warning mb-1"><i data-lucide="container" style="width: 16px; height: 16px;"></i></div>
+									<h6 class="text-white mb-1 small fw-semibold">KVM + Docker</h6>
+									<small class="text-gray-500">Native virtualization. Containers without a VM inside a VM.</small>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="bg-dark rounded-3 p-3 h-100" style="border: 1px solid rgba(255,255,255,0.06);">
+									<div class="mb-1" style="color: #f59e0b;"><i data-lucide="sun" style="width: 16px; height: 16px;"></i></div>
+									<h6 class="text-white mb-1 small fw-semibold">Wayland + HDR</h6>
+									<small class="text-gray-500">Pure Wayland. No X11 fallback. HDR out of the box.</small>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="bg-dark rounded-3 p-3 h-100" style="border: 1px solid rgba(255,255,255,0.06);">
+									<div class="mb-1" style="color: #a855f7;"><i data-lucide="sparkles" style="width: 16px; height: 16px;"></i></div>
+									<h6 class="text-white mb-1 small fw-semibold">Edge AI</h6>
+									<small class="text-gray-500"><code class="text-gray-300">sudo apt install anduinos-why-ai</code> — local LLM, one command away.</small>
+								</div>
+							</div>
+						</div>
+
+						<div class="p-3 rounded-3 d-flex align-items-center gap-2" style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.2);">
+							<i data-lucide="zap" class="text-primary" style="width: 16px; height: 16px; flex-shrink: 0;"></i>
+							<small class="text-gray-300">AI agents can SSH in, install packages, edit configs, and debug — natively. No API wrappers. No sandboxed filesystem. Just real Linux.</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="py-6 bg-white">
+    <div class="container">
+        <div class="row text-start">
+            <div class="col-12 col-md-3">
+                <div class="d-flex align-items-start py-3">
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">
+                            <a href="https://www.windowscentral.com/software-apps/a-microsoft-engineer-made-a-linux-distro-thats-like-a-comfort-blanket-to-ex-windows-users"
+                               target="_blank">Windows Central</a>
+                        </h4>
+                        <p class="fs-lg">...it's pretty spectacular. It's also quite possibly one of the friendliest Linux distros I've tried when it comes to folks who may well be moving over from Windows.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="d-flex align-items-start py-3">
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">
+                            <a href="https://www.zdnet.com/article/this-windows-11-like-linux-distribution-is-aimed-squarely-at-developers/"
+                               target="_blank">ZDNet</a>
+                        </h4>
+                        <p class="fs-lg">In fact, this is one of those "set-it-and-forget-it" distributions that makes using Linux a delight. It's intuitive, simple to use, and well-designed.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="d-flex align-items-start py-3">
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">
+                            <a href="https://betanews.com/2025/05/01/say-no-thanks-microsoft-windows-11-and-yes-please-to-anduinos-1-3/"
+                               target="_blank">BetaNews</a>
+                        </h4>
+                        <p class="fs-lg">The OS continues to focus on ease of use, especially for those users moving over from Windows.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="d-flex align-items-start py-3">
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0">
+                            <a href="https://www.neowin.net/news/the-sole-maintainer-of-linux-distribution-anduinos-turns-out-to-be-a-microsoft-employee/"
+                               target="_blank">Neowin</a>
+                        </h4>
+                        <p class="fs-lg">Linux stands as a good option to keep computers running, and if you want something that looks similar to Windows, then AnduinOS is worth checking out.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="recommended-hardware" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2>AnduinOS recommended hardware</h2>
+                <p class="text-muted">Real devices, tested configurations, and practical installation guidance.</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <a class="card h-100 shadow-sm text-decoration-none text-body" aria-label="ASUS Ascent GX10" href="/hardware/asus-ascent-gx10">
+                                <img src="/download/hardware/gx10-self-shot-20260928.png?w=600"
+                                     class="card-img-top p-3" style="height:220px;object-fit:contain"
+                                     loading="lazy" alt="ASUS Ascent GX10" />
+                            <div class="card-body text-center">
+                                <h3 class="h5 mb-2">ASUS Ascent GX10</h3>
+                                    <p class="mb-0 text-muted">Reference price: US$ 5999</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <a class="card h-100 shadow-sm text-decoration-none text-body" aria-label="Microsoft Windows Dev Kit 2023" href="/hardware/microsoft-windows-dev-kit-2023">
+                                <img src="/download/hardware/microsoft-windows-dev-kit-2023-transparent-v2.png?w=600"
+                                     class="card-img-top p-3" style="height:220px;object-fit:contain"
+                                     loading="lazy" alt="Microsoft Windows Dev Kit 2023" />
+                            <div class="card-body text-center">
+                                <h3 class="h5 mb-2">Microsoft Windows Dev Kit 2023</h3>
+                                    <p class="mb-0 text-muted">Reference price: US$ 599</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <a class="card h-100 shadow-sm text-decoration-none text-body" aria-label="ASUS Zenbook S 14" href="/hardware/asus-zenbook-s-14-ux5406sa">
+                                <img src="/download/hardware/asus-zenbook-s-14-ux5406sa-white.png?w=600"
+                                     class="card-img-top p-3" style="height:220px;object-fit:contain"
+                                     loading="lazy" alt="ASUS Zenbook S 14" />
+                            <div class="card-body text-center">
+                                <h3 class="h5 mb-2">ASUS Zenbook S 14</h3>
+                                    <p class="mb-0 text-muted">Reference price: US$ 1500</p>
+                            </div>
+                        </a>
+                    </div>
+            </div>
+            <div class="text-center mt-4">
+                <a class="btn btn-outline-primary" href="/Hardware">Browse all hardware</a>
+            </div>
+        </div>
+    </section>
+
+
+<section class="py-5">
+    <div class="container">
+        <div class="mb-5 text-center">
+            <span class="text-uppercase text-primary text-sm fw-medium mb-1 d-block">FAQ</span>
+            <h2 class="h1">Frequently asked questions</h2>
+            <p class="text-muted fs-lg">Here are some of the answers you might be looking for.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-9 col-lg-8 mx-auto">
+                <div class="accordion" id="accordionFaq">
+                    <div class="card border mb-3 shadow-none">
+                        <div class="card-header cursor-pointer" id="faqZero" data-bs-toggle="collapse"
+                             data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                            <h6 class="mb-0">
+                                Is it free to use AnduinOS?
+                            </h6>
+                        </div>
+                        <div id="collapseZero" class="collapse" aria-labelledby="faqOne"
+                             data-bs-parent="#accordionFaq">
+                            <div class="card-body py-3">
+                                Yes, AnduinOS is free to use. It is an open-source project that follows the GPL-v3 license. You can view the source code, modify it, and redistribute it. It's free and will always be free.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border mb-3 shadow-none">
+                        <div class="card-header cursor-pointer" id="faqOne" data-bs-toggle="collapse"
+                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <h6 class="mb-0">
+                                What kind of applications can I run on AnduinOS?
+                            </h6>
+                        </div>
+                        <div id="collapseOne" class="collapse" aria-labelledby="faqOne"
+                             data-bs-parent="#accordionFaq">
+                            <div class="card-body py-3">
+                                AnduinOS is based on Ubuntu's package base. Any software that runs on Ubuntu that can run on AnduinOS. You can run a variety of applications, including but not limited to: Linux apps, web apps, and even Windows apps using Wine.
+                                <br><br>
+                                AnduinOS uses Flatpak and Apkg to manage graphical applications. Flatpak provides sandboxed app deployment, while Apkg acts as a transparent apt server, seamlessly integrating with apt update and apt install workflows.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border mb-3 shadow-none">
+                        <div class="card-header cursor-pointer" id="faqTwo" data-bs-toggle="collapse"
+                             data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            <h6 class="mb-0">
+                                How can I search for solutions to problems?
+                            </h6>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="faqTwo"
+                             data-bs-parent="#accordionFaq">
+                            <div class="card-body py-3">
+                                On Ask Ubuntu, you can search for and ask about very common issues. Solutions for almost all AnduinOS issues are identical to those for Ubuntu. You can rely entirely on Ubuntu's documentation and expertise to resolve problems with AnduinOS.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border mb-3 shadow-none">
+                        <div class="card-header cursor-pointer" id="faqThree" data-bs-toggle="collapse"
+                             data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                            <h6 class="mb-0">
+                                Is there any support included?
+                            </h6>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="faqThree"
+                             data-bs-parent="#accordionFaq">
+                            <div class="card-body py-3">
+                                You have access to AnduinOS online support services via GitHub Discussions. Please contact us at <a
+                                    href="https://github.com/Anduin2017/AnduinOS/discussions">here</a>
+                                for any questions.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border mb-3 shadow-none">
+                        <div class="card-header cursor-pointer" id="faqFour" data-bs-toggle="collapse"
+                             data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                            <h6 class="mb-0">
+                                Who is behind AnduinOS?
+                            </h6>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="faqFour"
+                             data-bs-parent="#accordionFaq">
+                            <div class="card-body py-3">
+                                AnduinOS is an Aiursoft driven project, where AIURSOFT LIMITED is founded by Anduin.
+                                <a href="https://news.aiursoft.com/post/2025/5/6/story-behind-anduinos-a-letter-from-anduin"
+                                   target="_blank">Read more</a>.
+                                <br><br>
+                                Aiursoft is funded by user donations. We are grateful for your support. And you can <a
+                                    href="https://ko-fi.com/anduinxue/goal?g=0"
+                                    target="_blank">donate</a>
+                                to us.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border mb-3 shadow-none">
+                        <div class="card-header cursor-pointer" id="faqFive" data-bs-toggle="collapse"
+                             data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                            <h6 class="mb-0">
+                                How can I contact the AnduinOS team?
+                            </h6>
+                        </div>
+                        <div id="collapseFive" class="collapse" aria-labelledby="faqFive"
+                             data-bs-parent="#accordionFaq">
+                            <div class="card-body py-3">
+                                Please contact us with email at <a href="/cdn-cgi/l/email-protection#adc1c8ccc9c8dfdec5c4ddedccc4d8dfdec2cbd983cec2c0"><span class="__cf_email__" data-cfemail="09656c686d6c7b7a6160794968607c7b7a666f7d276a6664">[email&#160;protected]</span></a>
+                                for any questions. Please join our <a
+                                    href="https://discord.gg/YGBzvmyBrR">Discord channel</a>
+                                for community support.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-6">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-12 col-md-10 col-lg-9 col-xl-8 mx-auto">
+                <h2 class="h1 mb-3">
+                    Join our community and get involved with AnduinOS!
+                </h2>
+                <a href="https://discord.gg/YGBzvmyBrR" class="align-middle btn btn-primary btn-pill btn-lg mt-n1"
+                   target="_blank">
+                    <i class="fa-brands fa-discord"></i>
+                    <span class="ms-1">
+                            Join Discord channel
+                        </span>
+                </a>
+
+                <a href="https://github.com/Anduin2017/AnduinOS/discussions"
+                   class="align-middle btn btn-secondary btn-pill btn-lg mt-n1" target="_blank">
+                    <i class="fa-brands fa-github"></i>
+                    <span class="ms-1">
+                           Join Discussions
+                       </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="download-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="download-modal-title" class="modal-title">Download AnduinOS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card border mb-3 shadow-none">
+                    <div class="card-body">
+                        <h6 class="card-title mb-1">x86-64 ISO <small class="text-muted fw-normal">(Intel / AMD)</small></h6>
+                        <p class="card-text text-muted small mb-2">For most Intel and AMD computers.</p>
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <a href="/thankyou.html?download=amd64"
+                               class="btn btn-pill btn-primary">
+                                Direct (HTTP)
+                            </a>
+                            <a href="/thankyou.html?download=amd64-torrent"
+                               class="btn btn-sm btn-pill btn-outline-secondary">
+                                Torrent
+                            </a>
+                            <a id="amd64-checksum-link"
+                               href="https://cf.anduinos.com/AnduinOS-2.0.4-amd64.sha256"
+                               target="_blank"
+                               class="btn btn-sm btn-pill btn-outline-secondary">
+                                Checksum
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border mb-3 shadow-none">
+                    <div class="card-body">
+                        <h6 class="card-title mb-1">ARM64 ISO <small class="text-muted fw-normal">(Snapdragon / ARM SBCs)</small></h6>
+                        <p class="card-text text-muted small mb-2">For Snapdragon X laptops, Windows Dev Kit, and generic ARM64 UEFI devices.</p>
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <a href="/thankyou.html?download=arm64"
+                               class="btn btn-pill btn-primary">
+                                Direct (HTTP)
+                            </a>
+                            <a href="/thankyou.html?download=arm64-torrent"
+                               class="btn btn-sm btn-pill btn-outline-secondary">
+                                Torrent
+                            </a>
+                            <a id="arm64-checksum-link"
+                               href="https://cf.anduinos.com/AnduinOS-2.0.4-arm64.sha256"
+                               target="_blank"
+                               class="btn btn-sm btn-pill btn-outline-secondary">
+                                Checksum
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border mb-3 shadow-none">
+                    <div class="card-body">
+                        <h6 class="card-title mb-1">Container Edition</h6>
+                        <p class="card-text text-muted small mb-2">Run AnduinOS in Docker or Podman.</p>
+                        <a href="/Container.html"
+                           class="btn btn-pill btn-outline-success">
+                            Container
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <p class="text-muted">
+                        By downloading, you agree to our
+                        <a href="/terms.html">Terms of Service</a>
+                        and
+                        <a href="/privacy.html">Privacy Policy</a>
+                        .
+                    </p>
+                    <p class="text-muted">
+                        After downloading, you may want to learn how to
+                        <a href="https://docs.anduinos.com/Install/Download-AnduinOS.html">verify the checksum</a>
+                        and
+                        <a href="https://docs.anduinos.com/Install/Burn-A-USB-Stick.html">burn the ISO to a USB drive</a>
+                        .
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 col-lg-4">
+                <div class="mb-3">
+                    <img src="https://www.anduinos.com/download/project-logo/anduinos_%E6%AF%9B%E7%8E%BB%E7%92%83%E7%AB%8B%E4%BD%93logo-96px.svg" alt="AnduinOS logo" style="width: 24px; height: 24px;" loading="lazy" />
+                </div>
+                <p class="text-white-50">
+                    AnduinOS - a custom Ubuntu-based Linux distribution that offers a familiar and easy-to-use experience for anyone moving to Linux.
+                </p>
+                <div class="dropdown mt-3 mb-3">
+                    <form method="post" class="d-inline" action="/Culture/Set?returnUrl=%2F">
+                        <select name="culture" class="form-select form-select-sm w-auto auto-submit-select">
+                                <option value="en-US" selected="selected">
+                                    English (United States)
+                                </option>
+                                <option value="en-GB">
+                                    English (United Kingdom)
+                                </option>
+                                <option value="zh-CN">
+                                    &#x4E2D;&#x6587; (&#x4E2D;&#x56FD;&#x5927;&#x9646;)
+                                </option>
+                                <option value="zh-TW">
+                                    &#x4E2D;&#x6587; (&#x53F0;&#x7063;)
+                                </option>
+                                <option value="zh-HK">
+                                    &#x4E2D;&#x6587; (&#x9999;&#x6E2F;)
+                                </option>
+                                <option value="ja-JP">
+                                    &#x65E5;&#x672C;&#x8A9E; (&#x65E5;&#x672C;)
+                                </option>
+                                <option value="ko-KR">
+                                    &#xD55C;&#xAD6D;&#xC5B4; (&#xB300;&#xD55C;&#xBBFC;&#xAD6D;)
+                                </option>
+                                <option value="vi-VN">
+                                    Ti&#x1EBF;ng Vi&#x1EC7;t (Vi&#x1EC7;t Nam)
+                                </option>
+                                <option value="th-TH">
+                                    &#xE20;&#xE32;&#xE29;&#xE32;&#xE44;&#xE17;&#xE22; (&#xE1B;&#xE23;&#xE30;&#xE40;&#xE17;&#xE28;&#xE44;&#xE17;&#xE22;)
+                                </option>
+                                <option value="de-DE">
+                                    Deutsch (Deutschland)
+                                </option>
+                                <option value="fr-FR">
+                                    Fran&#xE7;ais (France)
+                                </option>
+                                <option value="es-ES">
+                                    Espa&#xF1;ol (Espa&#xF1;a)
+                                </option>
+                                <option value="ru-RU">
+                                    &#x420;&#x443;&#x441;&#x441;&#x43A;&#x438;&#x439; (&#x420;&#x43E;&#x441;&#x441;&#x438;&#x44F;)
+                                </option>
+                                <option value="it-IT">
+                                    Italiano (Italia)
+                                </option>
+                                <option value="pt-PT">
+                                    Portugu&#xEA;s (Portugal)
+                                </option>
+                                <option value="pt-BR">
+                                    Portugu&#xEA;s (Brasil)
+                                </option>
+                                <option value="ar-SA">
+                                    &#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629; (&#x627;&#x644;&#x645;&#x645;&#x644;&#x643;&#x629; &#x627;&#x644;&#x639;&#x631;&#x628;&#x64A;&#x629; &#x627;&#x644;&#x633;&#x639;&#x648;&#x62F;&#x64A;&#x629;)
+                                </option>
+                                <option value="nl-NL">
+                                    Nederlands (Nederland)
+                                </option>
+                                <option value="sv-SE">
+                                    Svenska (Sverige)
+                                </option>
+                                <option value="pl-PL">
+                                    Polski (Polska)
+                                </option>
+                                <option value="tr-TR">
+                                    T&#xFC;rk&#xE7;e (T&#xFC;rkiye)
+                                </option>
+                                <option value="ro-RO">
+                                    Rom&#xE2;n&#x103; (Rom&#xE2;nia)
+                                </option>
+                                <option value="da-DK">
+                                    Dansk (Danmark)
+                                </option>
+                                <option value="uk-UA">
+                                    &#x423;&#x43A;&#x440;&#x430;&#x457;&#x43D;&#x441;&#x44C;&#x43A;&#x430; (&#x423;&#x43A;&#x440;&#x430;&#x457;&#x43D;&#x430;)
+                                </option>
+                                <option value="id-ID">
+                                    Bahasa Indonesia (Indonesia)
+                                </option>
+                                <option value="fi-FI">
+                                    Suomi (Suomi)
+                                </option>
+                                <option value="hi-IN">
+                                    &#x939;&#x93F;&#x928;&#x94D;&#x926;&#x940; (&#x92D;&#x93E;&#x930;&#x924;)
+                                </option>
+                                <option value="el-GR">
+                                    &#x395;&#x3BB;&#x3BB;&#x3B7;&#x3BD;&#x3B9;&#x3BA;&#x3AC; (&#x395;&#x3BB;&#x3BB;&#x3AC;&#x3B4;&#x3B1;)
+                                </option>
+                        </select>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8CtbHLMiVuNHisLE5sEc1DO5uDqAAxfiL20tLK5dod3rNtMXAnhCEe0TiE98cs2NwVKlrwB1HRoS32F_Ae1puk8eimZioxBQDDUOIpzsd2LJ2fg7OJrNW-7AEi9JzD8vQHpjPDwEPSyvYDuCczKji1c" /></form>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-2 mb-3 mb-md-0">
+                <h4 class="text-light fs-5">Resources</h4>
+                <ul class="list-unstyled ps-0 mb-0 mt-3">
+                    <li class="mt-2">
+                        <a href="https://news.aiursoft.com" class="text-white-50">News</a>
+                    </li>
+                    <li class="mt-2">
+                        <a href="https://github.com/aiursoftweb/anduinos-2"
+                           class="text-white-50">Source Code</a>
+                    </li>
+                    <li class="mt-2">
+                        <a href="https://github.com/Anduin2017/AnduinOS/discussions"
+                           class="text-white-50">Community</a>
+                    </li>
+                    <li class="mt-2">
+                        <a href="https://docs.anduinos.com/index.html" class="text-white-50">Document</a>
+                    </li>
+                    <li class="mt-2">
+                        <a href="https://uptime.aiursoft.com/status/anduinos" class="text-white-50">Service Status</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-4 col-lg-2 mb-3 mb-md-0">
+                <h4 class="text-light fs-5">Reference</h4>
+                <ul class="list-unstyled ps-0 mb-0 mt-3">
+                    <li class="mt-2">
+                        <a href="https://flathub.org/home" class="text-white-50">Flathub</a>
+                    </li>
+                    <li class="mt-2">
+                        <a href="https://kernel.org/" class="text-white-50">Linux</a>
+                    </li>
+                    <li class="mt-2">
+                        <a href="https://ubuntu.com/desktop" class="text-white-50">Ubuntu</a>
+                    </li>
+                    <li class="mt-2">
+                        <a href="https://www.debian.org/devel/debian-desktop/"
+                           class="text-white-50">Debian Desktop</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-4 col-lg-2 mb-3 mb-md-0">
+                <h4 class="text-light fs-5">Legals</h4>
+                <ul class="list-unstyled ps-0 mb-0 mt-3">
+                    <li class="mt-2">
+                        <a href="https://github.com/aiursoftweb/anduinos-2/blob/master/LICENSE"
+                           class="text-white-50">License</a>
+                    </li>
+                    <li class="mt-2">
+                        <a href="https://github.com/aiursoftweb/anduinos-2/blob/master/OSS.md"
+                           class="text-white-50">Open Source</a>
+                    </li>
+                    <li class="mt-2">
+                        <a class="text-white-50" href="/privacy.html">Privacy Policy</a>
+                    </li>
+                    <li class="mt-2">
+                        <a class="text-white-50" href="/terms.html">Terms of Service</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-4 col-lg-2 mb-3 mb-md-0">
+                <h4 class="text-light fs-5">Social</h4>
+                <ul class="list-unstyled ps-0 mb-0 mt-3">
+                    <li class="mt-2">
+                        <i class="fa-brands fa-discord"></i>
+                        <a href="https://discord.gg/YGBzvmyBrR" class="text-white-50" rel="me"
+                           target="_blank">Discord</a>
+                    </li>
+                    <li class="mt-2">
+                        <i class="fa-brands fa-github"></i>
+                        <a href="https://github.com/aiursoftweb/anduinos-2/" class="text-white-50"
+                           target="_blank">Github</a>
+                    </li>
+                    <li class="mt-2">
+                        <i class="fa-solid fa-comments"></i>
+                        <a href="https://stt.gg/dPwPs8e6" class="text-white-50"
+                           target="_blank">Stoat</a>
+                    </li>
+                    <li class="mt-2">
+                        <i class="fa-brands fa-mastodon"></i>
+                        <a href="https://mastodon.social/@AnduinOS" class="text-white-50" rel="me"
+                           target="_blank">Mastodon (Running by community)</a>
+                    </li>
+                    <li class="mt-2">
+                        <i class="fa-brands fa-reddit"></i>
+                        <a href="https://reddit.com/r/AnduinOS/" class="text-white-50" rel="me"
+                           target="_blank">Reddit (Running by community)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <p class="text-white-50 mt-4 text-center mb-0">
+                    © 2026 <a href="https://www.aiursoft.com/" target="_blank">Aiursoft</a>
+                </p>
+                <p class="text-white-50 text-center mb-0 small">
+                    Linux® is the registered trademark of Linus Torvalds in the U.S. and other countries.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/js/auto-submit-select.js?v=gAm6sdRhQFfCLA6TUopEWRkxTaIw_xi4cqfTS173jBo" defer></script>
+
+
+
+
+
+        </div>
+    </main>
+
+</div>
+</div>
+
+<script src="/UIStack/dist/js/app.js"></script>
+
+    <script src="/js/index.js?v=5QPAYSJUrfWAXHDD2GdE6gicbJVuF-Goy3HM-lj3kbQ" defer></script>
+
+
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a45de9c0ac64b713',t:'MTc5MTIxODg5OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
+</html>
