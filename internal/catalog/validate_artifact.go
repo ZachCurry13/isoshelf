@@ -65,7 +65,9 @@ func (ec entryCheck) checkArtifact(keys map[string]SigningKey) {
 		return // check-only
 	}
 
-	withFile := append(slices.Clone(vars), "file")
+	// The checksum and signature names may use the file's own name, and the
+	// named groups in artifact.file (v0.8.9, #6).
+	withFile := append(append(slices.Clone(vars), "file"), FileGroups(a.File)...)
 
 	if a.Base == "" {
 		ec.problem("artifact.base", "required")

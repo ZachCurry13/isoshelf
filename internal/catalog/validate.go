@@ -187,7 +187,14 @@ func (ec entryCheck) checkURL(field, tmpl string, vars []string, kind urlKind) {
 	if !ec.checkPlaceholders(field, tmpl, vars) {
 		return
 	}
-	s, err := Expand(tmpl, sampleValues)
+	// A named group from artifact.file (v0.8.9) has no sample of its own.
+	samples := maps.Clone(sampleValues)
+	for _, v := range vars {
+		if _, ok := samples[v]; !ok {
+			samples[v] = "1"
+		}
+	}
+	s, err := Expand(tmpl, samples)
 	if err != nil {
 		ec.problem(field, "%v", err)
 		return

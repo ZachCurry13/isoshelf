@@ -36,7 +36,9 @@ func main() {
 
 	var slugs, missing []string
 	for i := range cat.Entries {
-		if icon := cat.Entries[i].Icon; icon != "" && !slices.Contains(slugs, icon) {
+		if icon := cat.Entries[i].Icon; icon == logos.Disc {
+			continue // isoshelf's own drawing, not a logo to fetch
+		} else if icon != "" && !slices.Contains(slugs, icon) {
 			slugs = append(slugs, icon)
 		} else if icon == "" {
 			missing = append(missing, cat.Entries[i].ID)
