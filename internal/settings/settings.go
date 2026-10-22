@@ -206,6 +206,8 @@ type Settings struct {
 	// can sign in, which is a different thing from letting them manage the
 	// folder, and should be a decision rather than a default.
 	ShareImages *bool `json:"share_images,omitempty"`
+	// AllowDownloads shows the Download button in each row, which downlaods the iso file
+	AllowDownloads *bool `json:"allow_downloads,omitempty"`
 	// Peer is another isoshelf to look at before downloading from the
 	// internet: its address, and what to sign in with.
 	Peer Peer `json:"peer,omitzero"`
