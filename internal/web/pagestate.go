@@ -162,7 +162,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		OldFiles:        saved.OldFiles,
 		AutoCheck:       settings.On(saved.AutoCheck),
 		AppUpdateCheck:  settings.On(saved.AppUpdateCheck),
-		AllowDownloads:  settings.On(saved.AllowDownloads),
+		AllowDownloads:  saved.AllowDownloads != nil && *saved.AllowDownloads,
 		AutoUpdate:      saved.AutoUpdate != nil && *saved.AutoUpdate,
 		AutoUpdateEvery: settings.CleanEvery(saved.AutoUpdateEvery),
 		AskAutoUpdate:   s.cfg.SelfUpdate.Container && saved.AutoUpdate == nil,
