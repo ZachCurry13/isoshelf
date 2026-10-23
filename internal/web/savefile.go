@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-
-	"github.com/ZachCurry13/isoshelf/internal/settings"
 )
 
 // saveFile hands one image in the folder to the browser, so it can be saved
@@ -19,9 +17,9 @@ import (
 // finds no record and doesn't become a path. Only images isoshelf already
 // lists can come out of here.
 func (s *Server) saveFile(w http.ResponseWriter, r *http.Request) {
-	// Turned off in Settings means turned off here too, not just a button
-	// taken off the page.
-	if !settings.On(s.loadSettings().AllowDownloads) {
+	// Off unless turned on in Settings, and off means off here too, not just
+	// a button taken off the page.
+	if on := s.loadSettings().AllowDownloads; on == nil || !*on {
 		http.Error(w, "Downloads are turned off in Settings.", http.StatusForbidden)
 		return
 	}

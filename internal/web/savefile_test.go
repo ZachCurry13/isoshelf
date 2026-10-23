@@ -27,6 +27,15 @@ func TestDownloadButtonServesOnlyImagesInTheRecords(t *testing.T) {
 	request(t, s, http.MethodPost, "/api/scan", nil)
 	waitIdle(t, s)
 
+	// Off until someone turns it on: an update must not hand every image to
+	// everyone who can sign in.
+	if rec := request(t, s, http.MethodGet, "/api/file?path="+url.QueryEscape(name), nil); rec.Code != http.StatusForbidden {
+		t.Fatalf("before turning downloads on: %d, want 403", rec.Code)
+	}
+	if rec := request(t, s, http.MethodPost, "/api/settings", map[string]bool{"allow_downloads": true}); rec.Code != http.StatusOK {
+		t.Fatalf("turning downloads on: %d %s", rec.Code, rec.Body)
+	}
+
 	rec := request(t, s, http.MethodGet, "/api/file?path="+url.QueryEscape(name), nil)
 	if rec.Code != http.StatusOK || rec.Body.String() != string(body) {
 		t.Fatalf("download: %d %q, want 200 and the file", rec.Code, rec.Body)
