@@ -113,6 +113,21 @@ function pinIcon() {
   return svg;
 }
 
+// downloadIcon is an arrow into a tray, drawn like pinIcon.
+function downloadIcon() {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
+  svg.classList.add("pin-icon", "download-icon");
+  for (const d of ["M12 4v11", "M7 10.5l5 5l5-5", "M5 19.5h14"]) {
+    const path = document.createElementNS(ns, "path");
+    path.setAttribute("d", d);
+    svg.append(path);
+  }
+  return svg;
+}
+
 const SHOW = [
   ["updates", "Updates available"],
   ["duplicates", "Possible duplicates"],
@@ -272,6 +287,8 @@ function isOlder(item) {
 }
 
 function renderRows() {
+  // Downloads turned off in Settings take the whole column with them.
+  $("table").classList.toggle("no-downloads", !state.allow_downloads);
   const rows = $("rows");
   rows.replaceChildren();
   const empty = $("empty");
@@ -615,6 +632,16 @@ function renderRow(item) {
         shortDate(item.added))
       : el("span", { class: "muted" }, "–"));
 
+  // Saves the file in the folder onto the computer looking at the page - the
+  // way to get an image off a NAS without fetching it from the project again.
+  const getCell = el("td", { class: "col-get" },
+    item.path && state.allow_downloads
+      ? el("a", {
+        class: "btn small icon-btn", href: `/api/file?path=${encodeURIComponent(item.path)}`, download: "",
+        title: `Save ${item.path} on this computer`, "aria-label": `Download ${item.path}`,
+      }, downloadIcon())
+      : null);
+
   const actions = [];
   if (item.entry && item.updates === "download" && item.status === "update available" && !isDismissed(item)) {
     actions.push(jobButton(item.entry, el("button", {
@@ -653,7 +680,8 @@ function renderRow(item) {
     versionCell,
     statusCell,
     addedCell,
-    el("td", { class: "row-actions" }, actions));
+    el("td", { class: "row-actions" }, actions),
+    getCell);
   return row;
 }
 

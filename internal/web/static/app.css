@@ -548,6 +548,10 @@ td.version-cell { font-family: var(--mono); font-size: 0.8571rem; font-variant-n
 /* When the file arrived. The same fact appears under the name on a phone,
    where there are no columns, so exactly one of the two is ever showing. */
 .col-added { width: 1%; white-space: nowrap; }
+.col-get { width: 1%; white-space: nowrap; text-align: center; }
+#table.no-downloads .col-get { display: none; }
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; padding: 4px 8px; }
+.download-icon { width: 16px; height: 16px; vertical-align: middle; }
 td.added-cell { color: var(--muted); font-variant-numeric: tabular-nums; }
 .added-inline { display: none; }
 .row-actions { white-space: nowrap; text-align: right; }

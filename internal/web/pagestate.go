@@ -43,6 +43,8 @@ type stateJSON struct {
 	// AppUpdateCheck whether it looks for a newer isoshelf.
 	AutoCheck      bool `json:"auto_check"`
 	AppUpdateCheck bool `json:"app_update_check"`
+	// AllowDownloads is whether each row has a Download button.
+	AllowDownloads bool `json:"allow_downloads"`
 	// AutoUpdate is whether isoshelf updates the images by itself, and
 	// AutoUpdateEvery how often.
 	AutoUpdate      bool   `json:"auto_update"`
@@ -160,6 +162,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 		OldFiles:        saved.OldFiles,
 		AutoCheck:       settings.On(saved.AutoCheck),
 		AppUpdateCheck:  settings.On(saved.AppUpdateCheck),
+		AllowDownloads:  saved.AllowDownloads != nil && *saved.AllowDownloads,
 		AutoUpdate:      saved.AutoUpdate != nil && *saved.AutoUpdate,
 		AutoUpdateEvery: settings.CleanEvery(saved.AutoUpdateEvery),
 		AskAutoUpdate:   s.cfg.SelfUpdate.Container && saved.AutoUpdate == nil,

@@ -146,6 +146,14 @@ const LIST_SETTINGS = {
         available: () => state && state.catalog && !state.catalog.can_auto,
         control: () => el("div", { class: "muted" }, catalogNote() || "In use."),
       },
+      {
+        name: "Allow downloads",
+        fields: ["allow_downloads"],
+        hint: "Allows downloading ISO files managed by isoshelf.",
+        words: "download save button browser computer laptop",
+        control: () => switchRow("Allow downloads", state && state.allow_downloads,
+          (on) => ({ allow_downloads: on })),
+      },
   ],
 };
 

@@ -52,6 +52,8 @@ type settingsRequest struct {
 	// AppUpdateCheck whether it looks for a newer isoshelf.
 	AutoCheck      *bool `json:"auto_check"`
 	AppUpdateCheck *bool `json:"app_update_check"`
+	// AllowDownloads is whether each row has a Download button.
+	AllowDownloads *bool `json:"allow_downloads"`
 	// AutoUpdate is whether isoshelf updates the images by itself, and
 	// AutoUpdateEvery how often.
 	AutoUpdate      *bool  `json:"auto_update"`
@@ -117,6 +119,9 @@ func (req settingsRequest) applyTo(current *settings.Settings) {
 	}
 	if req.AppUpdateCheck != nil {
 		current.AppUpdateCheck = req.AppUpdateCheck
+	}
+	if req.AllowDownloads != nil {
+		current.AllowDownloads = req.AllowDownloads
 	}
 	if req.AutoUpdate != nil {
 		current.AutoUpdate = req.AutoUpdate
