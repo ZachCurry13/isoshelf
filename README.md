@@ -215,12 +215,12 @@ it keeps itself current from this repository, so new images don't wait for a
 new release. You can also keep your own catalog file, which isoshelf then
 leaves alone.
 
-It currently knows **90 images**, grouped by what they're for:
+It currently knows **93 images**, grouped by what they're for:
 
 - **Desktop:** Ubuntu, Kubuntu and Xubuntu, Linux Mint and LMDE, Debian and
   Debian Live, Fedora, Arch, Omarchy, EndeavourOS, openSUSE Tumbleweed,
   NixOS, Zorin OS, Pop!_OS, CachyOS, MX, Manjaro, Q4OS, Tiny Core, FydeOS,
-  AnduinOS, BigLinux.
+  AnduinOS, BigLinux, Void Linux, elementary OS.
 - **Gaming and handhelds:** Bazzite, Nobara (including its Steam Handheld and
   Steam HTPC editions), Batocera, PikaOS.
 - **Server and homelab:** Proxmox VE, Backup Server and Mail Gateway,
@@ -274,7 +274,7 @@ themselves](https://github.com/ZachCurry13/isoshelf/issues/5).
 **1.0:** an official TrueNAS app, so it installs from the store rather than as
 a custom app.
 
-**Ongoing:** more images in the catalog. 90 so far; the wish list is in
+**Ongoing:** more images in the catalog. 93 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and requests go through
 [the catalog form](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
 

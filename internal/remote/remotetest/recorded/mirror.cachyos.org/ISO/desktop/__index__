@@ -20,9 +20,9 @@ hosted on GitHub, https://GitHub.com/Naereen/Nginx-Fancyindex-Theme
 /ISO/desktop/</h1>
 <table id="list"><thead><tr><th style="width:55%"><a href="?C=N&amp;O=A">File Name</a>&nbsp;<a href="?C=N&amp;O=D">&nbsp;&darr;&nbsp;</a></th><th style="width:20%"><a href="?C=S&amp;O=A">File Size</a>&nbsp;<a href="?C=S&amp;O=D">&nbsp;&darr;&nbsp;</a></th><th style="width:25%"><a href="?C=M&amp;O=A">Date</a>&nbsp;<a href="?C=M&amp;O=D">&nbsp;&darr;&nbsp;</a></th></tr></thead>
 <tbody><tr><td class="link"><a href="../">Parent directory/</a></td><td class="size">-</td><td class="date">-</td></tr>
-<tr><td class="link"><a href="260426/" title="260426">260426/</a></td><td class="size">-</td><td class="date">2026-Jun-28 11:26</td></tr>
-<tr><td class="link"><a href="260628/" title="260628">260628/</a></td><td class="size">-</td><td class="date">2026-Jun-28 12:47</td></tr>
-<tr><td class="link"><a href="260809/" title="260809">260809/</a></td><td class="size">-</td><td class="date">2026-Aug-09 19:16</td></tr>
+<tr><td class="link"><a href="260426/" title="260426">260426/</a></td><td class="size">-</td><td class="date">2026-Jun-28 10:26</td></tr>
+<tr><td class="link"><a href="260628/" title="260628">260628/</a></td><td class="size">-</td><td class="date">2026-Jun-28 11:47</td></tr>
+<tr><td class="link"><a href="260809/" title="260809">260809/</a></td><td class="size">-</td><td class="date">2026-Aug-09 18:16</td></tr>
 </tbody></table>    <div id="raw_include_README_md"></div>
     <footer>
         Theme available on <a href="https://GitHub.com/Naereen/Nginx-Fancyindex-Theme">GitHub</a> by <a href="https://GitHub.com/Naereen">Naereen</a>, © 2015-18, released under <a href="https://lbesson.mit-license.org/">the MIT License</a>.
@@ -57,7 +57,7 @@ hosted on GitHub, https://GitHub.com/Naereen/Nginx-Fancyindex-Theme
             elem.innerHTML = html;
         });
     </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"c29036ed835f49b68ee392858e3c5742","spa":2}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"c29036ed835f49b68ee392858e3c5742","spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
 <!--
