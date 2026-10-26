@@ -183,7 +183,9 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		}
 	}
 
-	var replaced string
+	// replaced is the file of the same name this one took the place of, and
+	// replacedVersion the version it was, for the history.
+	var replaced, replacedVersion string
 	request := fetch.Request{
 		URLs:     urls,
 		Filename: placeAs,
@@ -197,9 +199,12 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 			if missing(opts.Target, artifact.Filename) {
 				return nil // removed by hand while the new one downloaded
 			}
-			if err := removeFile(opts.Target, artifact.Filename, beforeRemoval, opts.State, opts.Now()); err != nil {
+			// Noted once, as replaced, while its record still says what it was:
+			// removeFile would note it too, and the second note would be empty.
+			if err := removeFile(opts.Target, artifact.Filename, beforeRemoval, nil, opts.Now()); err != nil {
 				return err
 			}
+			replacedVersion = opts.State.Files[artifact.Filename].Version
 			opts.State.Archived(artifact.Filename, state.GoneReplaced, opts.Now())
 			replaced = artifact.Filename
 			return nil
@@ -233,7 +238,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		HashedAt:  opts.Now().UTC(),
 		SourceURL: downloaded.URL,
 		PlacedAt:  opts.Now().UTC(),
-		Origin:    originOf(downloaded, artifact, near, opts.Now()),
+		Origin:    originOf(downloaded, artifact, near, replacedVersion, opts.Now()),
 	}); err != nil {
 		return result, err
 	}
@@ -272,8 +277,8 @@ func missing(target, rel string) bool {
 // site or another isoshelf, and - when the bytes matched - the checksum the
 // project publishes. A copy from another isoshelf that matched that checksum
 // is as proven as a download; the checksum never came from the copy.
-func originOf(got *fetch.Result, artifact *resolve.Artifact, near []string, now time.Time) state.Origin {
-	o := state.Origin{How: state.OriginDownload, From: got.URL, At: now.UTC()}
+func originOf(got *fetch.Result, artifact *resolve.Artifact, near []string, replaced string, now time.Time) state.Origin {
+	o := state.Origin{How: state.OriginDownload, From: got.URL, At: now.UTC(), Replaced: replaced}
 	if slices.Contains(near, got.URL) {
 		o.How = state.OriginCopy
 	}

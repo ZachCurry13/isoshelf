@@ -33,9 +33,9 @@ type ArchiveEntry struct {
 	// Gone is one of the Gone constants, and GoneAt when it happened.
 	Gone   string    `json:"gone"`
 	GoneAt time.Time `json:"gone_at"`
-	// Arrived is how the file came to be here, kept so the usage page still
-	// counts a download in the week it arrived after an update replaces it.
-	// Notes written before v0.8.6 don't have it.
+	// Arrived is how the file came to be here, kept so the history still
+	// shows a download arriving after an update replaces it. Notes written
+	// before v0.8.6 don't have it.
 	Arrived Origin `json:"arrived,omitzero"`
 }
 
