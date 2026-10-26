@@ -6,6 +6,26 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.12] - 2026-10-26
+
+### Fixed
+- **Updating by itself no longer tries images it can only check** (#78).
+  Tails, Clonezilla alternative, MX Linux and the other update-check-only
+  images have an update isoshelf can say is out, but no checksum it could
+  prove a download with. Automatic updates queued them anyway, and each one
+  failed with "this image has no download source yet". *Update all* on the
+  page always skipped them; now both do.
+
+### Security
+- **Every release takes the newest Go patch by itself.** isoshelf names only
+  Go's 1.27 line now, so a Go security fix reaches the next release without
+  anybody remembering to raise a number.
+- **A weekly audit** checks the code and the newest released program for
+  known security holes, and newer versions of what isoshelf uses, and keeps
+  one issue labeled `audit` up to date, closing it when all is clear.
+- The GitHub Actions steps and the container's Alpine base are brought up to
+  date (Alpine 3.21 to 3.24).
+
 ## [v0.8.11] - 2026-10-26
 
 ### Security

@@ -83,19 +83,24 @@ people have downloaded. Work never happens directly on it.
   project itself, so it stays out of the documents people read.
 
 ## Maintenance (adapted 2026-10-26 from the maintainer's protocol)
-- What can be updated on its own: the one Go library (`go-toml`), the Go
-  version (`go.mod` and the Dockerfile's golang image, together), the
-  GitHub Actions versions, the container base image, and the catalog (live
-  from `main`, no release needed). There are no other modules.
-- Checking: `ci.yml` runs `govulncheck` on every change and every Monday;
-  Dependabot (`.github/dependabot.yml`) proposes library, Actions and base
-  image updates as pull requests. A failed vulnerability check means a
-  release: raise Go, then tag. To check by hand:
-  `go run golang.org/x/vuln/cmd/govulncheck@latest ./...`.
-- Updates go through a branch and a pull request like everything else, never
-  onto `main` by themselves; a patch-level update can be merged once CI
-  passes, a major one (an Action's v4 to v7) is read first. One whose tests
-  fail is closed, not forced. **Never "roll back" with `git checkout` or
+- What can be updated on its own: the one Go library (`go-toml`), the GitHub
+  Actions versions, the container base image, and the catalog (live from
+  `main`, no release needed). There are no other modules. Go is named only
+  by its line (`go 1.27` in go.mod, `golang:1.27-alpine`), and every build
+  takes the newest patch; moving to 1.28 is a decision, made by hand.
+- Checking: `ci.yml` runs `govulncheck` on every change. Every Monday
+  `audit.yml` scans the code and the newest released program and keeps one
+  issue labeled `audit` (closed when clear): a hole only the released
+  program has means a release is the whole fix. Dependabot proposes library,
+  Actions and base image updates as pull requests. By hand:
+  `go run golang.org/x/vuln/cmd/govulncheck@latest ./...`, or
+  `-mode=binary <file>` for a released program.
+- **Claude applies by itself only a patch or minor update that fixes a known
+  hole, on a branch, and never merges or releases**: that is the
+  maintainer's call. Everything else (a major version, a base image or Go
+  line jump, anything that changes behaviour) is reported in plain words:
+  what changed and why it matters. One whose tests fail is closed, not
+  forced. **Never "roll back" with `git checkout` or
   `git reset` over uncommitted work**: throw away the update's own branch.
 - When reviewing GitHub: open issues and pull requests, including ones from
   other people (#84 was the first). An outside pull request is read for the

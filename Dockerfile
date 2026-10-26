@@ -13,7 +13,7 @@
 # a restart doesn't change it and there is nothing to set up; it prints the
 # link in the log. Set ISOSHELF_TOKEN to choose the secret yourself.
 
-FROM golang:1.27.3-alpine AS build
+FROM golang:1.27-alpine AS build
 WORKDIR /src
 
 # Dependencies first, so a change to the code doesn't refetch them.
