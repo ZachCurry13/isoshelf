@@ -109,42 +109,40 @@ works from the top, up to three a week, takes each name off when it's added,
 and moves ruled-out ones to "Ruled out" with the reason.
 
 1. antiX
-5. elementary OS
-6. Void Linux
-7. KDE neon
-8. Garuda Linux (its build server's folders didn't list on 2026-09-18)
-9. MiniOS
-10. TUXEDO OS
-11. Puppy Linux
-12. AerynOS
-13. PCLinuxOS
-14. SparkyLinux
-15. ZimaOS
-16. Devuan
-17. Mageia
-18. Linux Lite
-19. Solus
-20. pearOS
-21. ChromeOS Flex (Google's own installer; probably link only)
-22. Exton
-23. CentOS Stream
-24. HackerOS
-25. Linuxfx
-26. KDE Linux
-27. Linux Mint MATE
-28. openSUSE Leap
-29. Manjaro KDE and GNOME
-30. Bazzite's KDE, desktop and NVIDIA variants
-31. Aurora
-32. Bluefin
-33. OPNsense
-34. Talos Linux
-35. Proxmox Datacenter Manager
-36. LibreELEC
-37. DietPi
-38. Umbrel
-39. Memtest86+
-40. ShredOS
+2. KDE neon
+3. Garuda Linux (its build server's folders didn't list on 2026-09-18)
+4. MiniOS
+5. TUXEDO OS
+6. Puppy Linux
+7. AerynOS
+8. PCLinuxOS
+9. SparkyLinux
+10. ZimaOS
+11. Devuan
+12. Mageia
+13. Linux Lite
+14. Solus
+15. pearOS
+16. ChromeOS Flex (Google's own installer; probably link only)
+17. Exton
+18. CentOS Stream
+19. HackerOS
+20. Linuxfx
+21. KDE Linux
+22. Linux Mint MATE
+23. openSUSE Leap
+24. Manjaro KDE and GNOME
+25. Bazzite's KDE, desktop and NVIDIA variants
+26. Aurora
+27. Bluefin
+28. OPNsense
+29. Talos Linux
+30. Proxmox Datacenter Manager
+31. LibreELEC
+32. DietPi
+33. Umbrel
+34. Memtest86+
+35. ShredOS
 
 ### Manual entries to look at again
 
@@ -190,6 +188,27 @@ Nothing yet.
   on MD5-only projects.
 - Also seen: Nobara's page lists a plain KDE edition the catalog doesn't
   have yet.
+
+### Added 2026-10-26
+
+- **Void Linux** (Xfce and base, x86_64 glibc): the live images and their
+  `sha256sum.txt` (BSD-style lines) are on `repo-fastly.voidlinux.org`, the
+  project's own domain and one of the mirrors its documentation lists. The
+  file carries only the newest build, named by date, so it is also the
+  version source. `repo-default.voidlinux.org`, the address the download
+  page prints, did not answer from the maintainer's computer on 2026-10-26.
+  The musl, i686 and aarch64 images are not in the catalog yet.
+- **elementary OS**: link only. The download addresses on elementary.io carry
+  a time-limited token in the path, and no checksum file was found at a stable
+  address, so there is nothing safe to download or version-check.
+- **antiX**, looked at and still on the wish list: the project's download page
+  lists only third-party mirrors (and SourceForge), no address of its own, so
+  for now it can only be a link.
+- **Clonezilla** (`clonezilla-stable`): `free.nchc.org.tw` stopped answering
+  on 2026-10-26 (the weekly check saw an empty reply; the maintainer's
+  computer saw a timeout on port 443). The project's page points only to
+  SourceForge and OSDN, which send you to mirrors. Left as it was, to see
+  whether the server comes back.
 
 ## Entry metadata
 

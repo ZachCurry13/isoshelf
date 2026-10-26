@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026100501 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026102601 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -252,7 +252,7 @@ arch = "x86_64"
 match = 'bazzite-deck-gnome-stable-live-amd64\.iso'
 fixed_name = true
 samples = ["bazzite-deck-gnome-stable-live-amd64.iso"]
-size = 8831348736
+size = 8853690368
 popular = true
 page = "https://bazzite.gg/"
 category = "gaming"
@@ -276,7 +276,7 @@ name = "Alpine Linux Extended"
 arch = "x86_64"
 match = 'alpine-extended-(?P<version>\d+\.\d+\.\d+)-x86_64\.iso'
 samples = ["alpine-extended-3.19.0-x86_64.iso"]
-size = 1456766976
+size = 1458192384
 page = "https://www.alpinelinux.org/downloads/"
 category = "server"
 family = "alpine"
@@ -326,7 +326,7 @@ name = "Alpine Linux Virtual"
 arch = "x86_64"
 match = 'alpine-virt-(?P<version>\d+\.\d+\.\d+)-x86_64\.iso'
 samples = ["alpine-virt-3.24.1-x86_64.iso"]
-size = 69206016
+size = 70254592
 page = "https://www.alpinelinux.org/downloads/"
 category = "server"
 family = "alpine"
@@ -344,6 +344,66 @@ channel = "latest"
 base = "https://dl-cdn.alpinelinux.org/alpine/v{cycle}/releases/x86_64/"
 file = 'alpine-virt-{version}-x86_64\.iso'
 manifest = "alpine-virt-{version}-x86_64.iso.sha256"
+
+[[entry]]
+id = "void-live-xfce"
+name = "Void Linux Xfce (glibc)"
+arch = "x86_64"
+match = 'void-live-x86_64-(?P<version>\d{8})-xfce\.iso'
+samples = ["void-live-x86_64-20250202-xfce.iso"]
+size = 1446789120
+page = "https://voidlinux.org/download/"
+category = "desktop"
+family = "void"
+site = "https://voidlinux.org/"
+
+[entry.source]
+type = "listing" # the checksum file lists only the newest build, and names it by date
+url = "https://repo-fastly.voidlinux.org/live/current/sha256sum.txt"
+regex = 'void-live-x86_64-(?P<version>\d{8})-xfce\.iso'
+
+[entry.artifact]
+base = "https://repo-fastly.voidlinux.org/live/current/"
+file = 'void-live-x86_64-{version}-xfce\.iso'
+manifest = "sha256sum.txt"
+
+[[entry]]
+id = "void-live-base"
+name = "Void Linux base (glibc)"
+arch = "x86_64"
+match = 'void-live-x86_64-(?P<version>\d{8})-base\.iso'
+samples = ["void-live-x86_64-20250202-base.iso"]
+size = 1078804480
+page = "https://voidlinux.org/download/"
+category = "desktop"
+family = "void"
+site = "https://voidlinux.org/"
+
+[entry.source]
+type = "listing"
+url = "https://repo-fastly.voidlinux.org/live/current/sha256sum.txt"
+regex = 'void-live-x86_64-(?P<version>\d{8})-base\.iso'
+
+[entry.artifact]
+base = "https://repo-fastly.voidlinux.org/live/current/"
+file = 'void-live-x86_64-{version}-base\.iso'
+manifest = "sha256sum.txt"
+
+[[entry]]
+id = "elementary-os"
+name = "elementary OS"
+arch = "x86_64"
+match = 'elementaryos-(?P<version>\d+(?:\.\d+)*)-stable-amd64\.\d{8}\.iso'
+samples = ["elementaryos-8.1-stable-amd64.20260219.iso"]
+page = "https://elementary.io/"
+category = "desktop"
+family = "elementary"
+site = "https://elementary.io/"
+forum = "https://elementaryos.stackexchange.com/"
+
+[entry.source]
+type = "manual"
+
 
 # --- Servers, homelab and firewalls ------------------------------------------
 
@@ -624,7 +684,7 @@ name = "Kali Linux installer"
 arch = "x86_64"
 match = 'kali-linux-(?P<version>\d{4}\.\d+)-installer-amd64\.iso'
 samples = ["kali-linux-2026.2-installer-amd64.iso"]
-size = 4802531328
+size = 5047031808
 popular = true
 page = "https://www.kali.org/get-kali/"
 category = "security"
@@ -650,7 +710,7 @@ name = "Kali Purple installer"
 arch = "x86_64"
 match = 'kali-linux-(?P<version>\d{4}\.\d+)-installer-purple-amd64\.iso'
 samples = ["kali-linux-2023.4-installer-purple-amd64.iso"]
-size = 4893106176
+size = 4971552768
 page = "https://www.kali.org/get-kali/"
 category = "security"
 family = "kali"
@@ -1581,7 +1641,7 @@ name = "openSUSE Tumbleweed"
 arch = "x86_64"
 match = 'openSUSE-Tumbleweed-DVD-x86_64-Snapshot(?P<version>\d{8})-Media\.iso'
 samples = ["openSUSE-Tumbleweed-DVD-x86_64-Snapshot20260916-Media.iso"]
-size = 4679794688
+size = 4697620480
 popular = true
 page = "https://get.opensuse.org/tumbleweed/"
 category = "desktop"
@@ -1745,7 +1805,7 @@ name = "Raspberry Pi OS (64-bit, desktop)"
 arch = "arm64"
 match = '(?P<version>\d{4}-\d{2}-\d{2})-raspios-[a-z]+-arm64\.img\.xz'
 samples = ["2026-09-15-raspios-trixie-arm64.img.xz"]
-size = 1372609344
+size = 1364720984
 popular = true
 page = "https://www.raspberrypi.com/software/operating-systems/"
 category = "boards"
@@ -1773,7 +1833,7 @@ name = "Raspberry Pi OS Lite (64-bit)"
 arch = "arm64"
 match = '(?P<version>\d{4}-\d{2}-\d{2})-raspios-[a-z]+-arm64-lite\.img\.xz'
 samples = ["2026-09-15-raspios-trixie-arm64-lite.img.xz"]
-size = 541414936
+size = 550466056
 popular = true
 page = "https://www.raspberrypi.com/software/operating-systems/"
 category = "boards"
@@ -1847,7 +1907,7 @@ name = "Omarchy"
 arch = "x86_64"
 match = 'omarchy-(?P<version>\d+\.\d+\.\d+)\.iso'
 samples = ["omarchy-4.0.4.iso"]
-size = 6185304064
+size = 6448529408
 page = "https://omarchy.org/"
 category = "desktop"
 family = "omarchy"
@@ -1870,7 +1930,7 @@ name = "Nobara (Official, KDE)"
 arch = "x86_64"
 match = 'Nobara-\d+-Official-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
 samples = ["Nobara-44-Official-2026-09-02.iso"]
-size = 7870967808
+size = 7629307904
 page = "https://nobaraproject.org/download.html"
 category = "gaming"
 family = "nobara"
@@ -1895,7 +1955,7 @@ name = "Nobara (GNOME)"
 arch = "x86_64"
 match = 'Nobara-\d+-GNOME-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
 samples = ["Nobara-44-GNOME-2026-09-02.iso"]
-size = 7235321856
+size = 7004375040
 page = "https://nobaraproject.org/download.html"
 category = "gaming"
 family = "nobara"
@@ -1917,7 +1977,7 @@ name = "Nobara (Steam Handheld)"
 arch = "x86_64"
 match = 'Nobara-\d+-Steam-Handheld-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
 samples = ["Nobara-44-Steam-Handheld-2026-09-02.iso"]
-size = 9370970112
+size = 9296685056
 page = "https://nobaraproject.org/download.html"
 category = "gaming"
 family = "nobara"
@@ -1940,7 +2000,7 @@ name = "Nobara (Steam HTPC)"
 arch = "x86_64"
 match = 'Nobara-\d+-Steam-HTPC-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
 samples = ["Nobara-44-Steam-HTPC-2026-09-26.iso"]
-size = 9308694528
+size = 9229953024
 page = "https://nobaraproject.org/download.html"
 category = "gaming"
 family = "nobara"

@@ -9,6 +9,21 @@ Every image here was checked against the project's own site before it went in.
 Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml);
 requests are looked at every Monday.
 
+## 2026-10-26
+
+### Added
+- **Void Linux (Xfce and base)**, from the wish list: downloads and checks
+  against the checksum file Void publishes on its own servers.
+- **elementary OS**, from the wish list: isoshelf recognizes its files and
+  links to the download page. Downloading waits on the project publishing a
+  checksum at a fixed address.
+
+### Changed
+- **Download sizes** brought up to date for Kali (both editions), Omarchy,
+  Nobara (all four editions), Alpine (Virt and Extended), Raspberry Pi OS Lite
+  and desktop, Bazzite Deck and openSUSE Tumbleweed.
+
+
 ## 2026-10-05
 
 ### Added
