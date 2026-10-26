@@ -149,7 +149,7 @@ const LIST_SETTINGS = {
       {
         name: "Allow downloads",
         fields: ["allow_downloads"],
-        hint: "Allows downloading ISO files managed by isoshelf.",
+        hint: "A Download button on each image, to save it onto the computer you are using. Off unless you turn it on: on a network, everyone who can sign in could then take every image.",
         words: "download save button browser computer laptop",
         control: () => switchRow("Allow downloads", state && state.allow_downloads,
           (on) => ({ allow_downloads: on })),

@@ -1,0 +1,26 @@
+# GitHub proposes updates as pull requests, one per change, and CI tests each
+# one. Nothing is merged by itself: each is read and merged like any other
+# pull request, and one that fails CI is simply closed.
+#
+# Go itself is left out: the version in go.mod and the golang image in the
+# Dockerfile are raised together, by hand, at a release, when the
+# vulnerabilities check in ci.yml says so.
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    ignore:
+      - dependency-name: golang

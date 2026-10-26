@@ -56,3 +56,20 @@ jobs:
       - name: test with the race detector
         if: matrix.os == 'ubuntu-latest'
         run: go test -race ./...
+
+  # Known security holes in Go itself or in a library isoshelf uses, that its
+  # code can actually reach. Weekly as well as on every change, because a hole
+  # is often published long after the code it is in: v0.8.10 shipped on Go
+  # 1.27.1 with 13 of them, and nothing else would have said so.
+  vulnerabilities:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: govulncheck
+        run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...

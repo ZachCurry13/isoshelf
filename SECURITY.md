@@ -96,3 +96,7 @@ broken is a security report, not a feature request.
 Only the newest release is supported: security fixes go into a new release,
 not into older ones. isoshelf tells you when a newer version is out, and since
 v0.6.0 installs it itself when you press Update now.
+
+Every change, and every Monday, CI checks isoshelf against Go's list of known
+security holes in Go itself and in the libraries it uses, counting only the
+ones its code can reach. When one turns up, the fix is a new release.

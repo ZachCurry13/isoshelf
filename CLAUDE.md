@@ -68,8 +68,9 @@ people have downloaded. Work never happens directly on it.
   repositories attached to the session, so a `type = "github"` source is
   refused whatever token is set. `releases.ubuntu.com` answers, so it is an
   allowlist rather than a blanket block. This is why the weekly catalog
-  routine produces nothing: it fires, runs, and has no way to reach the
-  projects it is meant to ask. **The live check belongs in GitHub Actions**
+  job moved on 2026-10-26 from a cloud routine (paused) to a scheduled task
+  on the maintainer's computer, Mondays at noon Central, working in its own
+  checkout at `C:\isoshelf-catalog`. **The live check belongs in GitHub Actions**
   (`.github/workflows/catalog-check.yml`, `workflow_dispatch`), which has
   real network and a real token; read its result and write the catalog from
   that, rather than trying to fetch anything here.
@@ -80,6 +81,26 @@ people have downloaded. Work never happens directly on it.
   shallow with no tags fetched, so `git tag` prints nothing even when
   releases exist - ask GitHub, not the clone. None of this is true of the
   project itself, so it stays out of the documents people read.
+
+## Maintenance (adapted 2026-10-26 from the maintainer's protocol)
+- What can be updated on its own: the one Go library (`go-toml`), the Go
+  version (`go.mod` and the Dockerfile's golang image, together), the
+  GitHub Actions versions, the container base image, and the catalog (live
+  from `main`, no release needed). There are no other modules.
+- Checking: `ci.yml` runs `govulncheck` on every change and every Monday;
+  Dependabot (`.github/dependabot.yml`) proposes library, Actions and base
+  image updates as pull requests. A failed vulnerability check means a
+  release: raise Go, then tag. To check by hand:
+  `go run golang.org/x/vuln/cmd/govulncheck@latest ./...`.
+- Updates go through a branch and a pull request like everything else, never
+  onto `main` by themselves; a patch-level update can be merged once CI
+  passes, a major one (an Action's v4 to v7) is read first. One whose tests
+  fail is closed, not forced. **Never "roll back" with `git checkout` or
+  `git reset` over uncommitted work**: throw away the update's own branch.
+- When reviewing GitHub: open issues and pull requests, including ones from
+  other people (#84 was the first). An outside pull request is read for the
+  hard rules below and for races and path handling before it is merged, and
+  gets a CHANGELOG entry naming its author in the next release.
 
 ## Hard rules (details in docs/design.md)
 - Only image files inside the folder the user picked; never partitions, bootloaders or `ventoy/`.
