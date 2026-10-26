@@ -30,7 +30,7 @@ jobs:
         os: [ubuntu-latest, ubuntu-24.04-arm]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: install, the way the README says
         run: ISOSHELF_DIR="$RUNNER_TEMP/bin" sh install.sh
