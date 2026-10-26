@@ -26,7 +26,7 @@ RUN CGO_ENABLED=0 go build -trimpath \
     -ldflags "-s -w -X main.version=${VERSION}" \
     -o /out/isoshelf ./cmd/isoshelf
 
-FROM alpine:3.21
+FROM alpine:3.24
 # ca-certificates: isoshelf fetches over HTTPS and verifies what it downloads
 # against the projects' published checksums, so it needs to trust their sites.
 RUN apk add --no-cache ca-certificates tzdata
