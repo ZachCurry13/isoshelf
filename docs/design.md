@@ -387,8 +387,13 @@ alone is not an update.
 - Maintenance (since 2026-09-18): `.github/workflows/catalog-check.yml` checks
   every entry live each Monday and on every pull request that changes the
   catalog; the weekly problems go into one `catalog` issue. A scheduled
-  Claude job (a cloud routine) then works through the `catalog` issues and
-  the wish list and opens one pull request for the maintainer to review.
+  Claude task on the maintainer's own computer then works through the
+  `catalog` issues and the wish list and opens one pull request for the
+  maintainer to review. (It ran as a cloud routine until 2026-10-26, which
+  could not reach the projects' sites, so it never produced anything.)
+- Dependencies: `ci.yml` runs govulncheck on every change and every Monday,
+  and Dependabot proposes Go library, GitHub Actions and container base
+  updates as pull requests. Go itself is raised by hand at a release.
 - Later: one file per distro under `catalog/`, validated in CI.
 
 ## Milestones

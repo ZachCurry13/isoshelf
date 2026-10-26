@@ -624,7 +624,19 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.9 and older
+## From STATUS.md: releases v0.8.10 and older
+
+### v0.8.10 (2026-10-05)
+
+- **Weak checksums are weak**: an MD5 or SHA-1 match still catches a
+  damaged download, but never replaces anything and is never called
+  checked. **Nameless checksum files** (AnduinOS) can be read.
+- Catalog revision 2026100501 (no release needed): Nobara Steam HTPC
+  (#79), AnduinOS, PikaOS and BigLinux check-only, five sizes.
+- The two old branches on GitHub are deleted (their last commits were
+  `eaa19f51` and `07cd17dc`).
+- **Next:** Usage folded into History and Settings (v0.8.11); then the
+  catalog's second step.
 
 ### v0.8.9 (2026-10-05)
 

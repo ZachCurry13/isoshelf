@@ -6,6 +6,29 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.11] - 2026-10-26
+
+### Security
+- **Built with Go 1.27.3.** v0.8.10 was built with Go 1.27.1, which has 13
+  known security holes that isoshelf's code can reach: in how it serves and
+  fetches over HTTP/2, and in the template behind the sign-in page. Go 1.27.3
+  fixes all of them. Update if isoshelf answers on a network.
+- CI now checks every change, and every Monday, against Go's list of known
+  security holes, and GitHub proposes updates to what isoshelf is built with
+  as pull requests.
+
+### Added
+- **A Download button on each image** (#84, by @paulbmueller): saves the
+  file onto the computer you are using, the way to get an image off a NAS
+  without fetching it from the project again. Off unless *Settings → Images
+  → Allow downloads* is on, and off means the server refuses too, not just
+  that the button is hidden. Only files isoshelf lists can be downloaded.
+
+### Fixed
+- The download read the folder's records without waiting for a scan that was
+  rewriting them, which could stop isoshelf; it waits now. The setting says
+  what turning it on means on a network.
+
 ## [v0.8.10] - 2026-10-05
 
 ### Changed

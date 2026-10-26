@@ -239,7 +239,7 @@ Then:
   `internal/web/static_test.go`, and in every list of them - which
   `internal/docs` checks, because this list was stale for four releases.
 - **`deadcode` comes back clean** and should stay that way:
-  `GOTOOLCHAIN=go1.27.1 go run golang.org/x/tools/cmd/deadcode@latest -test ./...`.
+  `GOTOOLCHAIN=go1.27.3 go run golang.org/x/tools/cmd/deadcode@latest -test ./...`.
   `staticcheck` is not clean and hasn't been: it flags
   `internal/web/target.go:45` for a capitalized error ending in a full stop
   (ST1005). That one is deliberate - the string is shown to the user as a

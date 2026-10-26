@@ -82,6 +82,10 @@ And the rest:
 - **Missing images come back in one click.** *Restore* if the file is still
   in the archive, *Download again* if isoshelf can fetch it, or its download
   page if not. Removed one on purpose? *Stop expecting it*.
+- **Take a copy home.** Turn on *Allow downloads* in Settings and each image
+  gets a Download button that saves it onto the computer you are using: the
+  way to get an image off a NAS without fetching it from the project again.
+  Off unless you turn it on.
 - **Plain words.** Statuses read *Update available*, *End of life*,
   *Download manually* or *Won't boot from here*, and explain themselves when
   you hover over them.

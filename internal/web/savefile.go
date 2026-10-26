@@ -24,14 +24,19 @@ func (s *Server) saveFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	rel := r.URL.Query().Get("path")
+	// The records are read under the lock: a scan rewrites them as it goes,
+	// and reading a map while it is written can stop the program.
 	s.mu.Lock()
-	target, st := s.target, s.st
+	target, known := s.target, false
+	if s.st != nil {
+		_, known = s.st.Files[rel]
+	}
 	s.mu.Unlock()
-	if rel == "" || target == "" || st == nil {
+	if rel == "" || target == "" {
 		http.NotFound(w, r)
 		return
 	}
-	if _, ok := st.Files[rel]; !ok {
+	if !known {
 		http.Error(w, "That file isn't in the folder any more. Scan again.", http.StatusNotFound)
 		return
 	}

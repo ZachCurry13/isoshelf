@@ -245,19 +245,20 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.10 (2026-10-05)
+## Latest change: v0.8.11 (2026-10-26)
 
-- **Weak checksums are weak**: an MD5 or SHA-1 match still catches a
-  damaged download, but never replaces anything and is never called
-  checked. **Nameless checksum files** (AnduinOS) can be read.
-- Catalog revision 2026100501 (no release needed): Nobara Steam HTPC
-  (#79), AnduinOS, PikaOS and BigLinux check-only, five sizes.
-- The two old branches on GitHub are deleted (their last commits were
-  `eaa19f51` and `07cd17dc`).
-- **Next:** Usage folded into History and Settings (v0.8.11); then the
-  catalog's second step.
+- **Security release: built with Go 1.27.3.** v0.8.10 was built with Go
+  1.27.1, which has 13 known holes isoshelf can reach (HTTP/2, the sign-in
+  page's template). CI now runs govulncheck on every change and weekly, and
+  Dependabot proposes Go library, Actions and container base updates.
+- **Download button** (#84, @paulbmueller), off unless turned on; a race in
+  it fixed. The weekly catalog job now runs on the maintainer's computer
+  (Mondays at noon Central), since the cloud one could not reach any project.
+- **Next:** the Dependabot pull requests (the Actions are three majors
+  behind); bug #78 (Tails); Usage folded into History and Settings (v0.8.12,
+  on the `history-timeline` branch).
 
-Earlier releases, v0.8.9 back to the start, are written up in
+Earlier releases, v0.8.10 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3
