@@ -391,9 +391,11 @@ alone is not an update.
   `catalog` issues and the wish list and opens one pull request for the
   maintainer to review. (It ran as a cloud routine until 2026-10-26, which
   could not reach the projects' sites, so it never produced anything.)
-- Dependencies: `ci.yml` runs govulncheck on every change and every Monday,
-  and Dependabot proposes Go library, GitHub Actions and container base
-  updates as pull requests. Go itself is raised by hand at a release.
+- Dependencies: `ci.yml` runs govulncheck on every change; `audit.yml`, every
+  Monday, scans the code and the newest released program and keeps one
+  `audit` issue. Dependabot proposes Go library, GitHub Actions and container
+  base updates as pull requests. Go is named by its line (1.27), and every
+  build takes the newest patch.
 - Later: one file per distro under `catalog/`, validated in CI.
 
 ## Milestones

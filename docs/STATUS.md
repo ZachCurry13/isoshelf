@@ -245,20 +245,19 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.11 (2026-10-26)
+## Latest change: v0.8.12 (2026-10-26)
 
-- **Security release: built with Go 1.27.3.** v0.8.10 was built with Go
-  1.27.1, which has 13 known holes isoshelf can reach (HTTP/2, the sign-in
-  page's template). CI now runs govulncheck on every change and weekly, and
-  Dependabot proposes Go library, Actions and container base updates.
-- **Download button** (#84, @paulbmueller), off unless turned on; a race in
-  it fixed. The weekly catalog job now runs on the maintainer's computer
-  (Mondays at noon Central), since the cloud one could not reach any project.
-- **Next:** the Dependabot pull requests (the Actions are three majors
-  behind); bug #78 (Tails); Usage folded into History and Settings (v0.8.12,
-  on the `history-timeline` branch).
+- **Updating by itself skips check-only images** (#78): Tails, MX Linux and
+  the rest failed every automatic run with "no download source yet".
+- **The maintenance protocol, all three parts**: Go named by its line (1.27)
+  so builds take the newest patch; `audit.yml` scans the code and the newest
+  released program weekly into one `audit` issue; Claude applies only
+  hole-fixing patch or minor updates, never merges. Dependabot's six updates
+  are in (Actions to Node 24 versions, Alpine 3.24); `edge` built fine.
+- **Next:** Usage folded into History and Settings (v0.8.13, on the
+  `history-timeline` branch); then the catalog's second step.
 
-Earlier releases, v0.8.10 back to the start, are written up in
+Earlier releases, v0.8.11 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

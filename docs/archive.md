@@ -624,7 +624,20 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.10 and older
+## From STATUS.md: releases v0.8.11 and older
+
+### v0.8.11 (2026-10-26)
+
+- **Security release: built with Go 1.27.3.** v0.8.10 was built with Go
+  1.27.1, which has 13 known holes isoshelf can reach (HTTP/2, the sign-in
+  page's template). CI now runs govulncheck on every change and weekly, and
+  Dependabot proposes Go library, Actions and container base updates.
+- **Download button** (#84, @paulbmueller), off unless turned on; a race in
+  it fixed. The weekly catalog job now runs on the maintainer's computer
+  (Mondays at noon Central), since the cloud one could not reach any project.
+- **Next:** the Dependabot pull requests (the Actions are three majors
+  behind); bug #78 (Tails); Usage folded into History and Settings (v0.8.12,
+  on the `history-timeline` branch).
 
 ### v0.8.10 (2026-10-05)
 

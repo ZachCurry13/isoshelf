@@ -2,9 +2,9 @@
 # one. Nothing is merged by itself: each is read and merged like any other
 # pull request, and one that fails CI is simply closed.
 #
-# Go itself is left out: the version in go.mod and the golang image in the
-# Dockerfile are raised together, by hand, at a release, when the
-# vulnerabilities check in ci.yml says so.
+# Go itself is left out: go.mod and the Dockerfile name only the 1.27 line,
+# and every build takes its newest patch. The weekly audit (audit.yml) says
+# when the released program needs a new release for one.
 version: 2
 updates:
   - package-ecosystem: gomod

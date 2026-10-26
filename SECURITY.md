@@ -97,6 +97,9 @@ Only the newest release is supported: security fixes go into a new release,
 not into older ones. isoshelf tells you when a newer version is out, and since
 v0.6.0 installs it itself when you press Update now.
 
-Every change, and every Monday, CI checks isoshelf against Go's list of known
-security holes in Go itself and in the libraries it uses, counting only the
-ones its code can reach. When one turns up, the fix is a new release.
+Every change is checked against Go's list of known security holes in Go itself
+and in the libraries isoshelf uses, counting only the ones its code can
+reach. Every Monday the newest release is checked the same way, as the
+program people actually have, and anything found goes into an open issue
+labeled `audit`. Releases are built with the newest Go patch, so when a hole
+is in Go itself, a new release is the fix.
