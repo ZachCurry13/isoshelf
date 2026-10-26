@@ -130,10 +130,16 @@ func TestItQueuesTheUpdatesItFinds(t *testing.T) {
 	waitIdle(t, s)
 
 	s.mu.Lock()
-	updates := 0
+	// Only the ones it can download: an image it only checks has nothing to
+	// fetch (#78).
+	updates, checkOnly := 0, map[string]bool{}
 	for _, item := range s.report.Items {
 		if item.Status == check.UpdateAvailable && item.Entry != nil {
-			updates++
+			if item.Entry.Updates() == "download" {
+				updates++
+			} else {
+				checkOnly[item.Entry.ID] = true
+			}
 		}
 	}
 	if updates == 0 {
@@ -145,6 +151,9 @@ func TestItQueuesTheUpdatesItFinds(t *testing.T) {
 	for _, j := range s.queue {
 		if !j.automatic {
 			everyOneAutomatic = false
+		}
+		if checkOnly[j.entry] {
+			t.Errorf("queued %s, which isoshelf only checks and can't download", j.entry)
 		}
 	}
 	running := s.downloading

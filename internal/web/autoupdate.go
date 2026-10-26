@@ -131,7 +131,11 @@ func (s *Server) queueUpdatesLocked(room space.Usage) (int, string) {
 	free, known := room.Free, room.Known()
 	added := 0
 	for _, item := range s.report.Items {
-		if item.Status != check.UpdateAvailable || item.Entry == nil {
+		// Only images isoshelf can download. One it only checks, like Tails,
+		// has an update it can say is out but no checksum it could prove a
+		// download with: queuing it only failed, every time, with "no download
+		// source yet" (#78). Update all on the page always skipped them.
+		if item.Status != check.UpdateAvailable || item.Entry == nil || item.Entry.Updates() != "download" {
 			continue
 		}
 		if s.queuedLocked(item.Entry.ID) {
