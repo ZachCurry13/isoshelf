@@ -1,0 +1,109 @@
+/* The look, in one place: isoshelf's own names for colour, shape and type,
+   each one defined from a Primer token (https://primer.style/product/primitives).
+
+   This file is the seam. Every other stylesheet here uses only the names
+   defined below and never a Primer name, a colour or a shadow of its own, so a
+   different design is a different set of values in this file (and, if it comes
+   from another system, its own generated file beside primer.css). The test in
+   internal/web checks both halves: nothing else uses a raw colour, and every
+   name used anywhere is defined.
+
+   The Primer names below are real; primer.css (generated, not edited) defines
+   them for four themes - light, dark, and the two high-contrast ones - and is
+   switched by three attributes on <html> that Settings sets:
+   data-color-mode (auto, light or dark), data-light-theme and data-dark-theme.
+   Higher contrast is not a set of overrides here but two more Primer themes. */
+
+:root {
+  /* Surfaces and text. The page and its cards are the same colour, told apart
+     by a border, as on GitHub; --surface-2 is the quiet step used for table
+     headings and panels, --inset for a field set into the page. */
+  --bg: var(--bgColor-default);
+  --surface: var(--bgColor-default);
+  --surface-2: var(--bgColor-muted);
+  --inset: var(--bgColor-inset);
+  --text: var(--fgColor-default);
+  --muted: var(--fgColor-muted);
+  --border: var(--borderColor-default);
+  --border-muted: var(--borderColor-muted);
+
+  /* The accent is for links and marks (--accent), and for something filled
+     with it (--accent-fill, with --on-accent for the words on it): a progress
+     bar, a switch that is on, a count. Primer picks a different blue for each
+     in the dark theme, which is why they are two names. */
+  --accent: var(--fgColor-accent);
+  --accent-fill: var(--bgColor-accent-emphasis);
+  --on-accent: var(--fgColor-onEmphasis);
+  --accent-muted: var(--bgColor-accent-muted);
+  --focus: var(--focus-outlineColor);
+
+  /* Buttons: the ordinary one, and the one that does the thing (green, as in
+     Primer: blue is for links). */
+  --button-bg: var(--button-default-bgColor-rest);
+  --button-bg-hover: var(--button-default-bgColor-hover);
+  --button-border: var(--button-default-borderColor-rest);
+  --primary-bg: var(--button-primary-bgColor-rest);
+  --primary-bg-hover: var(--button-primary-bgColor-hover);
+  --primary-fg: var(--button-primary-fgColor-rest);
+  --primary-border: var(--button-primary-borderColor-rest);
+
+  /* Fields, and the on/off switch. */
+  --control-bg: var(--control-bgColor-rest);
+  --control-border: var(--control-borderColor-rest);
+  --track-bg: var(--controlTrack-bgColor-rest);
+  --knob-bg: var(--controlKnob-bgColor-rest);
+
+  /* The bar at the top. */
+  --header-bg: var(--header-bgColor);
+  --header-fg: var(--header-fgColor-default);
+  --header-fg-strong: var(--fgColor-onEmphasis);
+  --tab-hover: var(--underlineNav-borderColor-hover);
+
+  /* Depth: flat for things that sit in the page, a shadow for things that float
+     above it, and a veil behind a dialog. */
+  --shadow: var(--shadow-resting-small);
+  --shadow-menu: var(--shadow-floating-medium);
+  --shadow-dialog: var(--shadow-floating-large);
+  --backdrop: var(--overlay-backdrop-bgColor);
+
+  /* What a status means, as a word colour and a tint to sit it on. */
+  --ok-fg: var(--fgColor-success);          --ok-bg: var(--bgColor-success-muted);
+  --update-fg: var(--fgColor-attention);    --update-bg: var(--bgColor-attention-muted);
+  --bad-fg: var(--fgColor-danger);          --bad-bg: var(--bgColor-danger-muted);
+  --eol-fg: var(--fgColor-done);            --eol-bg: var(--bgColor-done-muted);
+  --warn-fg: var(--fgColor-severe);         --warn-bg: var(--bgColor-severe-muted);
+  --missing-fg: var(--fgColor-accent);      --missing-bg: var(--bgColor-accent-muted);
+  --manual-fg: var(--fgColor-muted);        --manual-bg: var(--bgColor-neutral-muted);
+  --muted-fg: var(--fgColor-muted);         --muted-bg: var(--bgColor-neutral-muted);
+  --star: var(--fgColor-attention);
+
+  /* Shape. */
+  --radius: var(--borderRadius-medium);
+  --radius-sm: var(--borderRadius-small);
+  --radius-lg: var(--borderRadius-large);
+  --radius-full: var(--borderRadius-full);
+
+  /* Type. The size everything else is measured against is the one number at
+     the bottom, and every other size is in rem against it, so Larger text
+     raises all of them. Three steps, as in Primer's scale (12, 14 and 16 px at
+     the default): small for captions, file names, labels and small buttons;
+     medium for what is being read; large for titles. Primer's own size tokens
+     are in rem against a 16 px root and this page's root is 14, so the steps
+     are written here rather than taken from it. */
+  --text-small: 0.8571rem;
+  --text-medium: 1rem;
+  --text-large: 1.1429rem;
+  --leading: 1.5;
+  --font: var(--fontStack-system);
+  --mono: var(--fontStack-monospace);
+  font-size: 14px;
+}
+
+/* Larger text, from Settings. */
+:root[data-text="large"] { font-size: 16px; }
+
+/* Which of the two the browser draws its own controls in (scrollbars, form
+   fields, the picker). "auto" follows this computer, as Primer's own themes do. */
+[data-color-mode="light"] { color-scheme: light; }
+[data-color-mode="dark"] { color-scheme: dark; }
+[data-color-mode="auto"] { color-scheme: light dark; }

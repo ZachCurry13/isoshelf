@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en" data-color-mode="auto" data-light-theme="light" data-dark-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>isoshelf style guide</title>
+<!-- The same stylesheets the page loads, in the same order. This page is for
+     whoever changes the design: every token and component in one place, in
+     every theme, using the real files, so a change shows up here before it
+     shows up anywhere else. It is described in docs/design-system.md and is
+     reached at /static/styleguide.html on a running isoshelf. -->
+<link rel="stylesheet" href="/static/css/primer.css">
+<link rel="stylesheet" href="/static/css/tokens.css">
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/topbar.css">
+<link rel="stylesheet" href="/static/css/target.css">
+<link rel="stylesheet" href="/static/css/feedback.css">
+<link rel="stylesheet" href="/static/css/controls.css">
+<link rel="stylesheet" href="/static/css/status.css">
+<link rel="stylesheet" href="/static/css/images.css">
+<link rel="stylesheet" href="/static/css/logos.css">
+<link rel="stylesheet" href="/static/css/catalog.css">
+<link rel="stylesheet" href="/static/css/menus.css">
+<link rel="stylesheet" href="/static/css/filters.css">
+<link rel="stylesheet" href="/static/css/todo.css">
+<link rel="stylesheet" href="/static/css/details.css">
+<link rel="stylesheet" href="/static/css/settings.css">
+<link rel="stylesheet" href="/static/css/picker.css">
+<link rel="stylesheet" href="/static/css/identify.css">
+<link rel="stylesheet" href="/static/css/dialogs.css">
+<link rel="stylesheet" href="/static/css/downloads.css">
+<link rel="stylesheet" href="/static/css/accessibility.css">
+<link rel="stylesheet" href="/static/styleguide.css">
+</head>
+<body>
+<div class="guide-bar">
+  <strong>isoshelf style guide</strong>
+  <span class="muted">theme</span>
+  <select id="g-theme" aria-label="Theme">
+    <option value="auto|light|dark">Follow this computer</option>
+    <option value="light|light|dark">Light</option>
+    <option value="dark|light|dark">Dark</option>
+    <option value="light|light_high_contrast|dark_high_contrast">Light, high contrast</option>
+    <option value="dark|light_high_contrast|dark_high_contrast">Dark, high contrast</option>
+  </select>
+  <label><input type="checkbox" id="g-large"> Larger text</label>
+  <label><input type="checkbox" id="g-contrast"> Fill status chips (what Higher contrast does)</label>
+  <span class="muted">Every stylesheet has a section here; see docs/design-system.md.</span>
+</div>
+
+<main class="guide">
+
+<section data-css="tokens">
+  <h2>Colours and shape</h2>
+  <p>Every name in css/tokens.css, as the theme above resolves it. These are the only colours a rule may use.</p>
+  <div class="card"><div class="swatches" id="g-swatches"></div></div>
+</section>
+
+<section data-css="status">
+  <h2>Status</h2>
+  <p>A coloured dot beside plain words; the two worth interrupting for keep their tint. Higher contrast fills them all.</p>
+  <div class="card"><div class="demo">
+    <span class="pill s-ok">Up to date</span>
+    <span class="pill s-update">Update available</span>
+    <span class="pill s-bad">Checksum mismatch</span>
+    <span class="pill s-eol">End of life</span>
+    <span class="pill s-warn">Might not boot</span>
+    <span class="pill s-missing">Missing</span>
+    <span class="pill s-manual">Download manually</span>
+    <span class="pill s-muted">Couldn't check</span>
+  </div></div>
+</section>
+
+<section data-css="controls">
+  <h2>Buttons, fields, switch</h2>
+  <p>Primary does the thing (green, as in Primer); the ordinary button does everything else.</p>
+  <div class="card"><div class="demo">
+    <button class="btn" type="button">Choose folder…</button>
+    <button class="btn primary" type="button">Refresh</button>
+    <button class="btn small" type="button">Details</button>
+    <button class="btn small primary" type="button">Update</button>
+    <button class="btn" type="button" disabled>Disabled</button>
+    <input type="search" placeholder="Search your images…" aria-label="Search">
+    <select aria-label="Sort"><option>Needs attention first</option><option>Name</option></select>
+    <label class="switch"><input type="checkbox" checked aria-label="On"><span class="track"></span></label>
+    <label class="switch"><input type="checkbox" aria-label="Off"><span class="track"></span></label>
+    <button class="linkish" type="button">a link-looking button</button>
+    <span class="summary"><button class="chip" type="button"><span class="count">3</span> updates</button><button class="chip" type="button" aria-pressed="true"><span class="count">1</span> missing</button></span>
+  </div></div>
+</section>
+
+<section data-css="feedback">
+  <h2>Progress and notices</h2>
+  <p>The notice line, the progress bar (known length and not), and the spinner.</p>
+  <div class="card"><div class="demo block">
+    <div class="run"><span class="run-text"><span class="spinner"></span> Checking for updates…</span><div class="bar indeterminate"><div class="bar-fill"></div></div></div>
+    <div class="run"><span class="run-text">Downloading Tails</span><div class="bar"><div class="bar-fill bar-62"></div></div></div>
+  </div></div>
+  <div class="stack">
+    <div class="notice">Something worth knowing, in the attention colours.</div>
+    <div class="notice error">Something that went wrong, in the danger colours.</div>
+  </div>
+</section>
+
+<section data-css="topbar">
+  <h2>Top bar and jump bar</h2>
+  <p>Primer's header, dark in every theme, and its UnderlineNav.</p>
+  <div class="card clip">
+    <header class="topbar">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path class="logo-disc" fill-rule="evenodd" d="M16 4a10 10 0 1 1 0 20a10 10 0 1 1 0-20zm0 7a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path><rect class="logo-shelf" x="3" y="26" width="26" height="3" rx="1.5"></rect></svg>
+        <span class="brand-name">isoshelf</span><span class="version">v0.9.0</span>
+      </div>
+      <a class="app-update" href="#">isoshelf v0.9.1 is available</a>
+      <button type="button" class="btn small settings-button">⚙ Settings</button>
+    </header>
+    <nav class="jump"><a href="#">Your images (4)</a><a href="#">Add images</a><a href="#">History</a><a href="#">Tools</a></nav>
+  </div>
+</section>
+
+<section data-css="target">
+  <h2>Folder card</h2>
+  <p>Which folder, what kind, how much room.</p>
+  <div class="card target">
+    <div class="target-info">
+      <div class="eyebrow">Folder</div>
+      <div class="target-path">E:\ISOs</div>
+      <div class="target-meta"><span>Ventoy drive</span><span class="muted">47 GB free of 128 GB</span></div>
+    </div>
+    <div class="target-actions"><button class="btn" type="button">Choose folder…</button><button class="btn primary" type="button">Refresh</button></div>
+  </div>
+</section>
+
+<section data-css="images">
+  <h2>The list of images</h2>
+  <p>Table, rows, version and status columns, the star, and a pinned file. On a phone each row becomes a card.</p>
+  <div class="card images"><div class="table-wrap">
+    <table id="table"><thead><tr><th class="col-star"></th><th>Image</th><th>Version</th><th>Status</th><th>Added</th><th></th></tr></thead>
+    <tbody>
+      <tr class="row"><td class="col-star"><button class="star" type="button" aria-pressed="true" aria-label="Pinned">★</button></td><td><div class="image-cell"><span class="logo initials" data-brand="#8250df">Ta</span><div class="image-text"><div class="name">Tails <span class="arch">amd64</span></div><div class="under"><span class="file">tails-amd64-7.13.iso</span><span class="size">· 1.4 GB</span></div></div></div></td><td class="version-cell">7.13 → <span class="latest-new">7.16</span></td><td><span class="pill s-update">Update available</span></td><td class="added-cell col-added">today</td><td class="row-actions"><button class="btn small primary" type="button">Update</button><button class="btn small" type="button">Details</button></td></tr>
+      <tr class="row"><td class="col-star"><button class="star" type="button" aria-label="Pin">☆</button></td><td><div class="image-cell"><span class="logo initials" data-brand="#1a7f37">LM</span><div class="image-text"><div class="name">Linux Mint Cinnamon <span class="caution" title="A note">⚠</span></div><div class="under"><span class="file">linuxmint-22.3-cinnamon-64bit.iso</span><span class="size">· 2.9 GB</span></div></div></div></td><td class="version-cell">22.3</td><td><span class="pill s-ok">Up to date</span></td><td class="added-cell col-added">3 days ago</td><td class="row-actions"><button class="btn small" type="button">Details</button></td></tr>
+      <tr class="row dismissed"><td class="col-star"></td><td><div class="image-cell"><span class="logo initials" data-brand="#bc4c00">Ub</span><div class="image-text"><div class="name">Ubuntu Desktop</div><div class="under"><span class="file">ubuntu-22.04.5-desktop-amd64.iso</span></div></div></div></td><td class="version-cell">22.04.5</td><td><span class="pill s-eol">End of life</span></td><td class="added-cell col-added">today</td><td class="row-actions"><button class="btn small" type="button">Details</button></td></tr>
+    </tbody></table>
+  </div></div>
+</section>
+
+<section data-css="logos">
+  <h2>Logo tiles</h2>
+  <p>Coloured initials, or a project's logo through a mask where its rules allow one.</p>
+  <div class="card"><div class="demo">
+    <span class="logo initials" data-brand="#8250df">Ta</span>
+    <span class="logo initials" data-brand="#1a7f37">LM</span>
+    <span class="logo initials" data-brand="#0969da">De</span>
+    <span class="logo has-logo" data-brand="#0969da" data-logo="/static/logos/disc.svg"></span>
+  </div></div>
+</section>
+
+<section data-css="catalog">
+  <h2>Add images, Archive, History, Tools</h2>
+  <p>The folded sections and the card list they share.</p>
+  <div class="card more"><details open><summary><span class="more-title">History</span><span class="muted">last 30 days: 1 updated, 2 added</span></summary>
+    <div class="archive-head"><p class="muted more-hint">What arrived, what an update changed, and what left.</p><select aria-label="How far back"><option>Last 30 days</option></select></div>
+    <ul class="catalog" id="history-list">
+      <li><span class="logo initials" data-brand="#8250df">Ta</span><div class="info"><div><span class="name">Tails</span><span class="arch">7.12 → 7.13</span></div><div class="file">tails-amd64-7.13.iso</div><div class="kind">Updated · today · 1.4 GB</div></div></li>
+      <li><span class="logo initials" data-brand="#1a7f37">LM</span><div class="info"><div><span class="name">Linux Mint Cinnamon</span><span class="arch">21</span></div><div class="file">linuxmint-21-cinnamon-64bit.iso</div><div class="kind">Archived · 5 days ago · 2.7 GB</div></div><div class="past-actions"><button class="btn small" type="button">Download again</button><a class="btn small" href="#">Download page</a></div></li>
+    </ul>
+  </details></div>
+</section>
+
+<section data-css="menus">
+  <h2>Menus</h2>
+  <p>A drop-down that floats above the page.</p>
+  <div class="card"><div class="demo tall menu-open">
+    <details class="menu" open><summary>⋯</summary><div class="menu-items"><a href="#">Show in folder</a><a href="#">Copy file name</a><a href="#">Remove…</a></div></details>
+  </div></div>
+</section>
+
+<section data-css="filters">
+  <h2>Filters</h2>
+  <p>The Filter menu's count, and a chip for everything switched on.</p>
+  <div class="card"><div class="demo"><span class="filter-count">2</span>
+    <div class="chips no-pad"><button class="chip-off" type="button">Updates available <span class="x">✕</span></button><button class="chip-off" type="button">Popular <span class="x">✕</span></button></div>
+  </div></div>
+</section>
+
+<section data-css="todo">
+  <h2>What wants doing</h2>
+  <p>One line of counts, and the first-run question.</p>
+  <div class="todo"><button class="summary-part s-update" type="button"><b>2</b> updates</button><span class="summary-sep">·</span><button class="summary-part s-warn" type="button"><b>1</b> might not boot</button><button class="btn small primary summary-go" type="button">Update all</button></div>
+  <div class="card first-run gap-top"><div class="first-run-title">How should isoshelf keep this folder up to date?</div><p>Ask once; change it any time in Settings.</p><div class="first-run-buttons"><button class="btn small primary" type="button">Check by itself</button><button class="btn small" type="button">Not now</button></div></div>
+</section>
+
+<section data-css="details">
+  <h2>Details panel</h2>
+  <p>Everything about one image. Drawn beside the list in the app; shown here in the page's flow.</p>
+  <div class="card clip"><div class="details">
+    <div class="details-head"><div class="details-title"><span class="logo initials" data-brand="#8250df">Ta</span><div><h2>Tails</h2><div class="muted">tails-amd64-7.13.iso</div></div></div><button class="btn small" type="button">✕</button></div>
+    <div class="details-body"><div class="detail-row"><div class="detail-label">Where it came from</div><div class="detail-value"><div>Downloaded from download.tails.net, today.</div><div class="file">tails-amd64-7.13.iso</div></div></div>
+    <div class="details-buttons"><button class="btn primary" type="button">Update</button><button class="btn" type="button">Check it</button></div></div>
+  </div></div>
+</section>
+
+<section data-css="settings">
+  <h2>Settings rows</h2>
+  <p>A group heading, a setting with its hint, and the "Saved" mark.</p>
+  <div class="card settings-demo"><div class="setting-group"><h3>Updates</h3>
+    <div class="setting"><div class="setting-name">Allow downloads <span class="saved-mark">Saved</span></div><div class="setting-hint">A Download button on each image, to save it onto the computer you are using.</div><div class="setting-control"><label class="switch"><input type="checkbox" checked aria-label="Allow downloads"><span class="track"></span></label></div></div>
+  </div></div>
+</section>
+
+<section data-css="picker">
+  <h2>Folder chooser</h2>
+  <p>A dialog; opened here so it can be looked at.</p>
+  <div class="card"><div class="demo block"><dialog class="picker" open><div class="picker-form">
+    <div class="picker-head"><h2>Choose a folder</h2><p class="muted">The images in it are the ones this page is about.</p></div>
+    <div class="picker-path"><input type="text" value="E:\ISOs" aria-label="Path"><button class="btn" type="button">Go</button></div>
+    <div class="picker-body"><div class="picker-roots"><h3>This computer</h3><button type="button">C:\</button><button type="button">E:\</button></div><div class="picker-list"><ul><li><button type="button">ubuntu</button></li><li><button type="button">tools</button></li></ul></div></div>
+    <div class="picker-foot"><span class="spacer"></span><button class="btn" type="button">Cancel</button><button class="btn primary" type="button">Use this folder</button></div>
+  </div></dialog></div></div>
+</section>
+
+<section data-css="identify">
+  <h2>What is this file?</h2>
+  <p>The guesses isoshelf offers for a file it doesn't recognise.</p>
+  <div class="card tight"><ul class="guesses"><li><span class="logo initials" data-brand="#8250df">Ta</span><div class="info"><div><span class="name">Tails</span></div><div class="kind">The name and size match.</div></div><button class="btn small primary" type="button">This is it</button></li></ul></div>
+</section>
+
+<section data-css="dialogs">
+  <h2>Dialogs</h2>
+  <p>The question dialog and the checklist.</p>
+  <div class="card"><div class="demo block"><dialog class="ask" open><form class="ask-form"><div class="ask-body"><h2>Replace the old file?</h2><p>The old copy can go to the archive, so you can get it back.</p></div><div class="ask-buttons"><button class="btn" type="button">Keep both</button><button class="btn primary" type="button">Archive it</button></div></form></dialog></div></div>
+  <div class="card gap-top"><div class="pick-body"><ul class="pick-list"><li class="pick-item"><input type="checkbox" checked aria-label="Tails"><div class="info"><span class="name">Tails</span><span class="kind">7.13 → 7.16 · 1.4 GB</span></div></li></ul></div></div>
+</section>
+
+<section data-css="downloads">
+  <h2>Downloads bar</h2>
+  <p>Along the bottom of the window while anything is queued; shown here in the page's flow.</p>
+  <div class="card clip"><div class="dock">
+    <div class="dock-bar"><div class="dock-summary"><strong>Downloading</strong><span>Tails · 62%</span></div><div class="bar"><div class="bar-fill bar-62"></div></div><div class="dock-actions"><button class="btn small" type="button">Pause</button><button class="btn small" type="button">Open queue</button></div></div>
+    <div class="dock-panel"><ul class="dock-list"><li class="dock-item queued"><span class="grip">⠿</span><span class="place">1</span><div class="info"><div class="name">Linux Mint Cinnamon</div><div class="kind">Queued · 2.9 GB</div></div><div class="dock-buttons"><button class="btn small icon" type="button" aria-label="Remove">✕</button></div></li></ul></div>
+  </div></div>
+</section>
+
+<section data-css="accessibility">
+  <h2>Accessibility settings</h2>
+  <p>Use the controls at the top: Larger text, Fill status chips, and the two high-contrast themes. Reduced motion is a Settings choice and only stops the movement above.</p>
+</section>
+
+<section data-css="base">
+  <h2>Type</h2>
+  <p>Three sizes; everything is in rem, so Larger text raises all of them.</p>
+  <div class="card scale"><p class="large-bold">Large: titles and the name (16 px at the default)</p><p>Medium: what is being read (14 px)</p><p class="small-text">Small: captions, labels, file names, small buttons (12 px)</p><p class="file last">tails-amd64-7.13.iso, in the mono font</p><p><a href="#">A link</a> and <span class="muted">muted words</span></p></div>
+</section>
+
+</main>
+<script src="/static/styleguide.js" defer></script>
+</body>
+</html>

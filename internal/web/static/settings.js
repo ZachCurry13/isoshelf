@@ -44,6 +44,13 @@ function applyAppearance(look) {
   };
   set("data-theme", look.theme === "light" || look.theme === "dark", look.theme);
   set("data-contrast", look.high_contrast, "high");
+  // The colours are Primer's themes, picked by three attributes: follow this
+  // computer or force one side, and which theme each side uses. Higher
+  // contrast is two more Primer themes rather than a set of overrides here.
+  const hc = look.high_contrast ? "_high_contrast" : "";
+  root.setAttribute("data-color-mode", look.theme === "light" || look.theme === "dark" ? look.theme : "auto");
+  root.setAttribute("data-light-theme", "light" + hc);
+  root.setAttribute("data-dark-theme", "dark" + hc);
   set("data-text", look.larger_text, "large");
   set("data-motion", look.reduce_motion, "reduce");
   try {

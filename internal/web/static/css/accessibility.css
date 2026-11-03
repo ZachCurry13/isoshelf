@@ -1,0 +1,25 @@
+/* What the Settings choices change beyond colour: higher contrast, less motion. */
+
+:root[data-contrast="high"] :focus-visible { outline-width: 3px; }
+:root[data-contrast="high"] .muted { color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner, .bar.indeterminate .bar-fill { animation: none; }
+}
+/* The same, asked for in Settings rather than in the operating system. */
+:root[data-motion="reduce"] .spinner,
+:root[data-motion="reduce"] .bar.indeterminate .bar-fill { animation: none; }
+:root[data-motion="reduce"] * { transition: none !important; scroll-behavior: auto !important; }
+
+/* Higher contrast is the setting for somebody who needs the difference to
+   shout. There a dot is the wrong answer, so every status goes back to being
+   a filled chip - which is what that switch is for. */
+:root[data-contrast="high"] .pill {
+  padding: 2px 9px 2px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  color: var(--fg);
+  background: var(--bgc);
+}
+:root[data-contrast="high"] .pill::before { left: 8px; top: 0.55em; }
+

@@ -1,0 +1,85 @@
+/* Buttons, text inputs and selects, the summary chips, the on/off switch, the link that looks like a link. */
+
+/* Buttons and inputs */
+
+.btn {
+  font: inherit;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--button-bg);
+  border: 1px solid var(--button-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 5px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover:not(:disabled) { background: var(--button-bg-hover); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn.primary { background: var(--primary-bg); border-color: var(--primary-border); color: var(--primary-fg); }
+.btn.primary:hover:not(:disabled) { background: var(--primary-bg-hover); border-color: var(--primary-bg-hover); }
+.btn.small { padding: 3px 12px; font-size: var(--text-small); }
+
+input[type="search"], input[type="text"], select {
+  font: inherit;
+  color: var(--text);
+  background: var(--control-bg);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius);
+  padding: 5px 12px;
+}
+
+.inline-select { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); }
+.inline-select select { padding: 3px 8px; color: var(--text); }
+
+/* Summary chips */
+
+.summary { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  font: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 11px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.chip .count { font-weight: 600; font-variant-numeric: tabular-nums; }
+.chip[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+
+.switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+.switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.switch .track {
+  position: absolute; inset: 0;
+  background: var(--muted-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  transition: background 0.15s;
+  pointer-events: none;
+}
+.switch .track::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--knob-bg); box-shadow: var(--shadow);
+  transition: transform 0.15s;
+}
+.switch input:checked + .track { background: var(--accent-fill); border-color: var(--accent-fill); }
+.switch input:checked + .track::after { transform: translateX(14px); }
+.switch input:focus-visible + .track { outline: 3px solid var(--focus); outline-offset: 1px; }
+.switch input:disabled { cursor: default; }
+.switch input:disabled + .track { opacity: 0.5; }
+
+.btn.icon { min-width: 30px; padding-left: 6px; padding-right: 6px; }
+
+/* An Add or Update button while its image is in the downloads. */
+.btn.job-state { color: var(--accent); border-color: color-mix(in srgb, var(--accent), transparent 55%); font-variant-numeric: tabular-nums; }
+.job-done { color: var(--ok-fg); font-size: var(--text-small); font-weight: 600; white-space: nowrap; padding: 4px 6px; }
+
+.linkish {
+  border: 0; background: none; padding: 0; cursor: pointer;
+  color: var(--accent); font: inherit; font-size: var(--text-small); text-decoration: underline;
+}
+

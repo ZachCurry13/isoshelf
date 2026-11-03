@@ -1,0 +1,24 @@
+/* The logo tile beside each image: a project logo, or coloured initials. */
+
+.logo {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: var(--radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-small);
+  font-weight: 600;
+  color: var(--on-accent);
+  margin-top: 1px;
+}
+.logo.has-logo {
+  background-color: var(--brand, currentColor);
+  -webkit-mask: var(--logo) center / 22px 22px no-repeat;
+  mask: var(--logo) center / 22px 22px no-repeat;
+}
+.logo.initials { background: var(--brand); }
+
+.catalog .logo { flex: none; }
+

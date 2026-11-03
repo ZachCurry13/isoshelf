@@ -1,0 +1,43 @@
+/* The style guide's own furniture. Not part of the design, and not one of the
+   app's stylesheets (it is not in index.html and does not count toward the
+   rules in css_test.go that keep the design in one place), but it follows the
+   same one: tokens only, no colour of its own. It is a file rather than a
+   <style> because the page's Content-Security-Policy refuses inline styles. */
+
+.guide-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 20px; position: sticky; top: 0; z-index: 40; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+.guide-bar label { color: var(--muted); }
+.guide { max-width: 1100px; margin: 0 auto; padding: 4px 20px 60px; }
+.guide h2 { margin: 28px 0 4px; font-size: var(--text-large); }
+.guide h2 + p { margin: 0 0 10px; color: var(--muted); }
+.guide .demo { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 14px; }
+.guide .demo.block { display: block; padding: 0; }
+.guide .demo.tall { min-height: 150px; align-items: flex-start; }
+
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr)); gap: 8px; padding: 14px; }
+.swatch { display: flex; align-items: center; gap: 10px; font-size: var(--text-small); min-width: 0; }
+.swatch .chipc { width: 34px; height: 34px; border-radius: var(--radius); border: 1px solid var(--border); flex: none; }
+.swatch code { display: block; font-family: var(--mono); }
+.swatch .val { color: var(--muted); font-family: var(--mono); overflow-wrap: anywhere; }
+.guide .scale p { margin: 0; padding: 4px 14px; }
+.guide .scale .last { padding-bottom: 8px; }
+.guide .large-bold { font-size: var(--text-large); font-weight: 600; }
+.guide .small-text { font-size: var(--text-small); }
+
+/* Things the app draws fixed to the window, shown in the page's flow instead. */
+.guide .topbar, .guide .jump, .guide .details, .guide .dock { position: static; }
+.guide .topbar .settings-button { margin-left: 0; }
+.guide .details { width: auto; box-shadow: none; border: 0; }
+.guide .details-head h2 { margin: 0; font-size: var(--text-large); }
+.guide .dock { box-shadow: none; border: 0; }
+.guide dialog.picker, .guide dialog.ask { position: static; margin: 0 auto; box-shadow: none; max-height: none; }
+.guide dialog.picker { width: 100%; }
+.guide dialog.ask { width: min(460px, 100%); }
+.guide .menu-open .menu-items { right: auto; }
+
+.guide .clip { overflow: hidden; }
+.guide .stack { display: grid; gap: 8px; margin-top: 8px; }
+.guide .gap-top { margin-top: 8px; }
+.guide .no-pad { padding: 0; }
+.guide .tight { padding: 12px 0; }
+.guide .settings-demo { padding: 0 16px 8px; }
+.guide .bar-62 { width: 62%; }

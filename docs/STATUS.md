@@ -245,20 +245,21 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.13 (2026-11-03)
+## Latest change: v0.9.0 (2026-11-03)
 
-- **History is a timeline** of what arrived, what an update changed (one
-  event, "updated 7.12 → 7.13") and what left, newest first with dates
-  and sizes; **Usage is gone**, its system facts now under the version in
-  Settings. Worked out from the records already kept, nothing new stored
-  except `Origin.Replaced`.
-- Fixed on the way: a same-name update left an *empty* note about the old
-  file (no version, size or arrival).
-- **Next:** the catalog's second step (Fedora through groups, #6; discs;
-  AtlasOS unlisted; PikaOS, BigLinux and AnduinOS as downloads), then #4, #2,
-  #3, #5, #11, #12. The weekly task now merges its own catalog pull request.
+- **A new look, from Primer** (GitHub's design system), through one place: `css/primer.css`
+  (Primer's tokens, generated and pinned) -> `css/tokens.css` (isoshelf's names) ->
+  twenty component stylesheets that use only those names. Light, dark and the two
+  high-contrast themes; Higher contrast is now two Primer themes.
+- **Held in place by tests** (no raw colours, every name defined in every theme, the
+  style guide covers every stylesheet, the document names every token) and shown by
+  `/static/styleguide.html`. The whole story is `docs/design-system.md`.
+- **Not tokenised yet:** spacing and layout (see the end of that document).
+- **Next:** the catalog's second step (Fedora through groups, #6; discs; AtlasOS
+  unlisted; PikaOS, BigLinux, AnduinOS as downloads); a colour-blind-safe choice
+  under Look (Primer has the themes); then #4, #2, #3, #5, #11, #12.
 
-Earlier releases, v0.8.12 back to the start, are written up in
+Earlier releases, v0.8.13 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

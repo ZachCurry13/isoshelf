@@ -1,0 +1,37 @@
+/* What wants doing, as one line, and the first-run question. */
+
+.updates {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  border-left: 3px solid var(--accent);
+}
+.updates #updates-text { font-weight: 600; }
+.updates .btn { margin-left: auto; }
+
+/* What wants doing, as one line: every count shows those images. */
+.todo {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;
+  padding: 5px 6px 5px 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.todo:empty { display: none; }
+.summary-part {
+  background: none; border: 0; border-radius: var(--radius); padding: 4px 6px;
+  font: inherit; font-size: var(--text-small); color: var(--text); cursor: pointer;
+}
+.summary-part:hover { background: var(--surface-2); }
+.summary-part:disabled { cursor: default; color: var(--muted); background: none; }
+.summary-part b { font-weight: 600; color: var(--fg, var(--text)); font-variant-numeric: tabular-nums; }
+.summary-part.s-update { --fg: var(--update-fg); }
+.summary-part.s-warn { --fg: var(--warn-fg); }
+.summary-part.s-missing { --fg: var(--missing-fg); }
+.summary-sep { color: var(--muted); }
+.summary-go { margin-left: auto; }
+
+/* Asked once, in a container. */
+.first-run { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-left: 2px solid var(--accent); }
+.first-run[hidden] { display: none; }
+.first-run-title { font-weight: 600; font-size: var(--text-medium); }
+.first-run p { margin: 0; color: var(--muted); font-size: var(--text-small); max-width: 70ch; }
+.first-run-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+

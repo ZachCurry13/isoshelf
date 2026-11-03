@@ -1,0 +1,53 @@
+/* The Settings panel: search, group index, one row per setting. */
+
+/* Settings: the same panel shape as the details one, with a search box that
+   stays put and a row per setting. */
+
+.settings .gear { font-size: var(--text-large); line-height: 1; }
+.settings-find { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+/* The list of settings takes the room left over, so the buttons underneath
+   stay at the bottom even when a search leaves one setting showing. */
+.settings .details-body { flex: 1 1 auto; }
+.settings-find input { width: 100%; }
+/* The groups, one link each, under the search (v0.8.8). */
+.settings-index { display: flex; flex-wrap: wrap; gap: 2px 12px; margin-top: 8px; font-size: var(--text-small); }
+.settings-index[hidden] { display: none; }
+.setting-group { scroll-margin-top: 8px; }
+.settings-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 16px; border-top: 1px solid var(--border); background: var(--surface-2);
+}
+.settings-foot .muted { font-size: var(--text-small); text-align: right; }
+.setting-group { padding-top: 6px; }
+.setting-group h3 {
+  margin: 12px 0 2px; font-size: var(--text-small); font-weight: 600;
+  color: var(--muted);
+}
+.setting { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.setting-name { font-weight: 600; }
+.setting-hint { color: var(--muted); font-size: var(--text-small); margin: 2px 0 6px; }
+.setting-control { display: grid; gap: 6px; }
+.setting-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.setting-controls .file { flex: 1; min-width: 0; }
+/* A path needs room, but not more than the panel has: min() lets it give way
+   on a phone rather than pushing the button off the edge. */
+.setting-controls .records-dir { flex: 1 1 min(320px, 100%); min-width: 0; }
+/* Notes carry paths, and a path has no spaces to break at: without this one
+   ran the Settings panel sideways. */
+.setting-note { font-size: var(--text-small); margin-top: 6px; overflow-wrap: anywhere; }
+/* "Saved", beside the setting that just saved. Everything here saves itself
+   the moment it changes, which looks like nothing happening at all. */
+.saved-mark {
+  margin-left: 8px; font-size: var(--text-small); font-weight: 600;
+  padding: 1px 7px; border-radius: var(--radius-full); vertical-align: 1px;
+  color: var(--ok-fg); background: var(--ok-bg);
+}
+.saved-mark::before { content: "✓ "; }
+/* What moving a folder's records just did, above where they now are. */
+.records-done { color: var(--ok-fg); font-weight: 600; margin-bottom: 2px; overflow-wrap: anywhere; }
+.records-done::before { content: "✓ "; }
+@media (prefers-reduced-motion: no-preference) {
+  .saved-mark { animation: saved-in 140ms ease-out; }
+  @keyframes saved-in { from { opacity: 0; } to { opacity: 1; } }
+}
+

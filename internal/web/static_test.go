@@ -8,6 +8,34 @@ import (
 	"testing"
 )
 
+// cssFiles returns every stylesheet in static/css, by file name.
+func cssFiles(t *testing.T) map[string]string {
+	t.Helper()
+	entries, err := fs.ReadDir(staticFiles, "static/css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	out := map[string]string{}
+	for _, e := range entries {
+		if !e.IsDir() && strings.HasSuffix(e.Name(), ".css") {
+			out[e.Name()] = readStatic(t, "css/"+e.Name())
+		}
+	}
+	return out
+}
+
+// allCSS is every stylesheet in one string, for a check that only needs to
+// find a rule and doesn't care which file it lives in.
+func allCSS(t *testing.T) string {
+	t.Helper()
+	var all strings.Builder
+	for _, css := range cssFiles(t) {
+		all.WriteString(css)
+		all.WriteString("\n")
+	}
+	return all.String()
+}
+
 // read returns one of the embedded static files.
 func readStatic(t *testing.T, name string) string {
 	t.Helper()
@@ -64,7 +92,8 @@ func TestPageLoadsEveryScript(t *testing.T) {
 	}
 	for _, path := range found {
 		name := strings.TrimPrefix(path, "static/")
-		if !slices.Contains(scripts, name) {
+		// The style guide is its own page, with its own script (see css_test.go).
+		if !slices.Contains(scripts, name) && name != "styleguide.js" {
 			t.Errorf("static/%s is shipped but this test doesn't know about it", name)
 		}
 	}
@@ -120,13 +149,14 @@ func TestLinksOpenSafely(t *testing.T) {
 // column with a 280px minimum on a 296px page. min() lets the last column
 // give way instead. Cheap to write, easy to forget, so the test remembers.
 func TestGridMinimumsCanGiveWayOnNarrowScreens(t *testing.T) {
-	css := readStatic(t, "app.css")
 	bare := regexp.MustCompile(`minmax\(\s*\d+px`)
-	for i, line := range strings.Split(css, "\n") {
-		if bare.MatchString(line) {
-			t.Errorf("app.css:%d has a grid minimum that can't shrink below its own width.\n  %s\n"+
-				"Write minmax(min(280px, 100%%), 1fr) so a narrower screen gets one column that fits.",
-				i+1, strings.TrimSpace(line))
+	for name, css := range cssFiles(t) {
+		for i, line := range strings.Split(css, "\n") {
+			if bare.MatchString(line) {
+				t.Errorf("css/%s:%d has a grid minimum that can't shrink below its own width.\n  %s\n"+
+					"Write minmax(min(280px, 100%%), 1fr) so a narrower screen gets one column that fits.",
+					name, i+1, strings.TrimSpace(line))
+			}
 		}
 	}
 }
@@ -190,7 +220,7 @@ func TestSettingHintsStayShort(t *testing.T) {
 // This is the kind of promise a later restyle breaks without noticing: the
 // dots are a default, not the only way the page can say what a status is.
 func TestHigherContrastStillFillsEveryStatusChip(t *testing.T) {
-	css := readStatic(t, "app.css")
+	css := allCSS(t)
 
 	rule := regexp.MustCompile(`:root\[data-contrast="high"\] \.pill \{([^}]*)\}`)
 	m := rule.FindStringSubmatch(css)
@@ -211,7 +241,7 @@ func TestHigherContrastStillFillsEveryStatusChip(t *testing.T) {
 // control had one, and it cut "Needs attention first" off for exactly the
 // people who had asked for bigger words.
 func TestTheSortControlCanGrowWithLargerText(t *testing.T) {
-	css := readStatic(t, "app.css")
+	css := allCSS(t)
 	rule := regexp.MustCompile(`\.toolbar select \{([^}]*)\}`)
 	m := rule.FindStringSubmatch(css)
 	if m == nil {

@@ -1,0 +1,33 @@
+/* The panel beside the list with everything about one image. */
+
+/* The details panel: everything about one image, beside the list. */
+.details {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 25;
+  width: min(400px, 100vw);
+  display: flex; flex-direction: column;
+  background: var(--surface); border-left: 1px solid var(--border);
+  box-shadow: var(--shadow-dialog);
+}
+.details-head {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+}
+.details-title { display: flex; gap: 10px; align-items: flex-start; flex: 1; min-width: 0; }
+.details-head h2 { margin: 0; font-size: var(--text-large); overflow-wrap: break-word; }
+.details-head .muted { font-size: var(--text-small); }
+.details-body { padding: 8px 16px 20px; overflow-y: auto; }
+.detail-row { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.detail-label {
+  font-size: var(--text-small); font-weight: 600;
+  color: var(--muted); margin-bottom: 4px;
+}
+.detail-value { display: grid; gap: 4px; font-size: var(--text-small); }
+.detail-value .file { font-family: var(--mono); font-size: var(--text-small); overflow-wrap: anywhere; }
+.detail-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.details-buttons { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 14px; }
+.version-set { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; }
+.version-input { width: 120px; }
+
+@media (max-width: 720px) {
+  .details { top: auto; width: 100vw; max-height: 80vh; border-left: 0; border-top: 1px solid var(--border); }
+}

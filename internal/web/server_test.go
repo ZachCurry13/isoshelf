@@ -151,7 +151,7 @@ func TestPageAndStaticFiles(t *testing.T) {
 	if rec := request(t, s, http.MethodGet, "/", nil); rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "<title>isoshelf</title>") {
 		t.Errorf("page: %d", rec.Code)
 	}
-	for _, path := range []string{"/static/app.js", "/static/app.css"} {
+	for _, path := range []string{"/static/app.js", "/static/css/tokens.css"} {
 		if rec := request(t, s, http.MethodGet, path, nil); rec.Code != http.StatusOK {
 			t.Errorf("%s: %d", path, rec.Code)
 		}
