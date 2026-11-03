@@ -656,7 +656,22 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.9.1 and older
+## From STATUS.md: releases v0.9.2 and older
+
+### v0.9.2 (2026-11-03)
+
+- **A file's name can come from the pattern** when its checksum file names none and
+  the pattern spells exactly one file (AnduinOS: its page links the checksum, not the
+  image). **A logo with no colour is drawn muted**, not white-on-white. Both are
+  what the catalog was waiting for.
+- **Catalog revision 2026110301 (no release needed)**: the second step. Fedora
+  follows its newest release (#6); AtlasOS is `unlisted`; PikaOS KDE and BigLinux
+  (three kernels) download, MD5-only and marked weak; PikaOS's other editions stay
+  check-only (the server refuses their `.md5` files to a program); four sizes
+  refreshed.
+- **Next:** AnduinOS as a download and the plain discs (`icon = "disc"`), once
+  v0.9.2 has been out a while; the logo audit (item 9); then #4, #2, #3, #5, #11,
+  #12. Spacing as tokens (item 20) waits until someone wants to change the density.
 
 ### v0.9.1 (2026-11-03)
 

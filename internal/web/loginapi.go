@@ -73,7 +73,7 @@ func (s *Server) setLogin(w http.ResponseWriter, r *http.Request) {
 	// This browser keeps its place; every other one is asked again, because
 	// a changed password should mean a changed password everywhere.
 	s.rotateSessionKey()
-	s.setSession(w, user)
+	s.setSession(w, r, user)
 	s.getState(w, r)
 }
 
@@ -85,7 +85,7 @@ func (s *Server) signOutEverywhere(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.rotateSessionKey()
-	s.setSession(w, "")
+	s.setSession(w, r, "")
 	writeJSON(w, http.StatusOK, map[string]any{"status": "signed out"})
 }
 

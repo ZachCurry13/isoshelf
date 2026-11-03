@@ -108,10 +108,10 @@ type loginData struct {
 
 // writeLoginPage shows the login form, or the setup form when nobody has a
 // login yet.
-func (s *Server) writeLoginPage(w http.ResponseWriter, have *auth.Account, problem string, code int) {
+func (s *Server) writeLoginPage(w http.ResponseWriter, r *http.Request, have *auth.Account, problem string, code int) {
 	// The cookie has to go on before anything is written, and it pairs with
 	// the value in the form below.
-	token := s.formToken(w)
+	token := s.formToken(w, r)
 	// The guard set a policy that forbids inline styles, which would leave
 	// this page as unstyled HTML. Naming the hash of its one stylesheet lets
 	// that one through and nothing else.

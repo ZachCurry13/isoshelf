@@ -28,8 +28,14 @@ func get(t *testing.T, s *Server, url string, cookies ...*http.Cookie) *httptest
 // cookie it was set with have to agree.
 func postLogin(t *testing.T, s *Server, form map[string]string) *httptest.ResponseRecorder {
 	t.Helper()
+	// Setting a login up is for whoever has the link (v0.9.3), so before there
+	// is one the form is asked for, and posted, with the link's cookie.
+	var link []*http.Cookie
+	if s.account() == nil {
+		link = append(link, &http.Cookie{Name: cookieName, Value: testToken})
+	}
 	// Ask for the form first, so its cookie and token are a matching pair.
-	page := get(t, s, "http://nas.local:8765/login")
+	page := get(t, s, "http://nas.local:8765/login", link...)
 	token := ""
 	for _, c := range page.Result().Cookies() {
 		if c.Name == formCookie {
@@ -47,23 +53,37 @@ func postLogin(t *testing.T, s *Server, form map[string]string) *httptest.Respon
 	req := httptest.NewRequest(http.MethodPost, "http://nas.local:8765/login", strings.NewReader(strings.Join(values, "&")))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.AddCookie(&http.Cookie{Name: formCookie, Value: token})
+	for _, c := range link {
+		req.AddCookie(c)
+	}
 	rec := httptest.NewRecorder()
 	s.ServeHTTP(rec, req)
 	return rec
 }
 
-// On a server with no login set, the address shows the setup form: that is
-// the first run people expect, and what the maintainer asked for.
-func TestAServerWithNoLoginOffersToSetOneUp(t *testing.T) {
+// On a server with no login set, the setup form is for whoever has the link
+// (v0.9.3). It used to be shown to anybody who reached the address, so the
+// first stranger to arrive after a fresh install chose the password; a server
+// on the internet can't have that. A stranger gets the plain refusal, which
+// says where the link is; somebody with the link gets the form.
+func TestAServerWithNoLoginOffersToSetOneUpOnlyToWhoHasTheLink(t *testing.T) {
 	s := serverMode(t, true)
 	rec := get(t, s, "http://nas.local:8765/")
-	if rec.Code != http.StatusSeeOther || rec.Header().Get("Location") != loginPath {
-		t.Fatalf("the address gave %d to %q, want a redirect to %s", rec.Code, rec.Header().Get("Location"), loginPath)
+	if rec.Code != http.StatusForbidden {
+		t.Fatalf("a stranger at the address got %d, want the 403 that says where the link is", rec.Code)
 	}
-	page := get(t, s, "http://nas.local:8765/login").Body.String()
+	if !strings.Contains(rec.Body.String(), "?token=") {
+		t.Error("the refusal doesn't say where to find the link")
+	}
+	if page := get(t, s, "http://nas.local:8765/login"); page.Code != http.StatusForbidden || strings.Contains(page.Body.String(), "Set up isoshelf") {
+		t.Errorf("a stranger asking for the form got %d: %.80s", page.Code, page.Body)
+	}
+
+	link := &http.Cookie{Name: cookieName, Value: testToken}
+	page := get(t, s, "http://nas.local:8765/login", link)
 	for _, want := range []string{"Set up isoshelf", "Password again", "form_token"} {
-		if !strings.Contains(page, want) {
-			t.Errorf("the setup form doesn't mention %q", want)
+		if !strings.Contains(page.Body.String(), want) {
+			t.Errorf("the setup form, for somebody with the link, doesn't mention %q", want)
 		}
 	}
 }
@@ -239,6 +259,9 @@ func TestTooManyWrongPasswordsWait(t *testing.T) {
 // of mistake nobody notices in a test that only reads the body.
 func TestTheLoginPageIsAllowedItsOwnStyle(t *testing.T) {
 	s := serverMode(t, true)
+	if err := auth.Set(s.cfg.Dirs.Config, "zach", "a+good+long+password"); err != nil {
+		t.Fatal(err)
+	}
 	rec := get(t, s, "http://nas.local:8765/login")
 	policy := rec.Header().Get("Content-Security-Policy")
 	if !strings.Contains(policy, loginStyleHash) {

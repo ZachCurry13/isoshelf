@@ -61,11 +61,11 @@ func setUpLogin(e *env, dirs appdir.Dirs, server bool, address string) {
 func sayNobodyHasSetOneYet(w io.Writer, address string) {
 	fmt.Fprintln(w, "isoshelf: nobody has set a username and password yet.")
 	if address != "" {
-		fmt.Fprintf(w, "isoshelf:   Open %s and the first thing it asks is to choose one.\n", address)
+		fmt.Fprintf(w, "isoshelf:   Open %s with the link below, then choose one in Settings.\n", address)
 	}
-	fmt.Fprintf(w, "isoshelf:   Until then, whoever reaches this address first is the one who sets it, so\n")
-	fmt.Fprintf(w, "isoshelf:   do it now rather than later. Setting %s and %s before\n", userEnv, passwordEnv)
-	fmt.Fprintln(w, "isoshelf:   isoshelf starts skips this entirely.")
+	fmt.Fprintf(w, "isoshelf:   Until then the link is the only way in, and a stranger who finds the\n")
+	fmt.Fprintf(w, "isoshelf:   address gets nothing. Setting %s and %s\n", userEnv, passwordEnv)
+	fmt.Fprintln(w, "isoshelf:   before isoshelf starts means there is never a time without a login.")
 }
 
 // haveLogin says whether a username and password are set, for the startup

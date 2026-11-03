@@ -650,8 +650,9 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   the page - browsing the catalog, updating, the answer about old files,
   history - was already there and needed nothing.
 - **Getting in** (v0.4.5, the maintainer's decision over keeping the token
-  alone): a username and password, chosen on first run or given in
-  `ISOSHELF_USERNAME`/`ISOSHELF_PASSWORD`. One login, not user accounts -
+  alone): a username and password, chosen by whoever has the link (since
+  v0.9.3 - before, by whoever reached the address first, which a server on the
+  internet can't allow) or given in `ISOSHELF_USERNAME`/`ISOSHELF_PASSWORD`. One login, not user accounts -
   isoshelf looks after a folder, and there is one person's worth of access to
   give. `internal/auth` keeps it: PBKDF2-HMAC-SHA256 with a random salt, from
   the standard library, so the one dependency stays one.
@@ -666,6 +667,17 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
     opened at all, and stops the moment one exists - including a cookie
     somebody already holds, with no restart needed. Two ways in is two ways
     in, and the weaker one sat in a log.
+  - **Behind a tunnel or a proxy** (v0.9.3): the form and session cookies are
+    `Secure` when the visitor is on https (`isHTTPS`: the connection, or
+    `X-Forwarded-Proto`, or Cloudflare's `CF-Visitor`; believing a made-up
+    header only makes a cookie stricter). The guessing wait is per visitor
+    address, which is the connection's; behind a tunnel that is one address for
+    everybody, so `ISOSHELF_TRUST_PROXY` (`web.Config.TrustProxy`) takes it
+    from `CF-Connecting-IP`, or the last `X-Forwarded-For` entry, instead.
+    Off by default, because without a proxy those headers are the visitor's.
+    `security_test.go` sends every registered route, read from `server.go`,
+    to a networked server with a login and no cookie, and expects a refusal
+    from every one.
   - The way back from a forgotten password is therefore not the page:
     `ISOSHELF_USERNAME`/`ISOSHELF_PASSWORD` at the next start, or
     `isoshelf password` from a shell on the machine. Both need the machine,
