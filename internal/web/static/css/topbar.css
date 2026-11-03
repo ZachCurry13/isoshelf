@@ -1,0 +1,68 @@
+/* The bar at the top (name, update notice, Settings button) and the jump bar under it. */
+
+/* Top bar */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  /* Wraps rather than pushing Settings off the edge on the narrowest
+     screens - a folded phone is about 280px across. */
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+.logo { width: 20px; height: 20px; }
+/* A disc on a shelf: the name, drawn. It replaced three stacked bars in
+   v0.6.1, which read as a menu button. The disc's hole is cut out of the
+   shape rather than painted, so it shows whatever is behind it; the shelf is
+   the accent thinned, so the mark follows the palette. */
+.logo-disc { fill: var(--accent); }
+.logo-shelf { fill: color-mix(in srgb, var(--accent), transparent 35%); }
+.brand-name { font-size: 1.0714rem; font-weight: 600; letter-spacing: 0; }
+.version { color: var(--muted); font-size: 0.8571rem; padding: 1px 6px; border: 1px solid var(--border); border-radius: 4px; }
+
+.app-update {
+  margin-left: auto;
+  background: var(--update-bg);
+  color: var(--update-fg);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.9286rem;
+}
+/* Update now, and then how the update is going. It takes the link's place on
+   the right while the update runs, so the bar doesn't jump about. */
+.self-update { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; margin-left: auto; font-size: 0.9286rem; }
+.app-update:not([hidden]) + .self-update { margin-left: 0; }
+.self-update-failed { color: var(--bad-fg); font-weight: 500; overflow-wrap: anywhere; }
+
+.jump {
+  position: sticky; top: 0; z-index: 15;
+  display: flex; gap: 4px; flex-wrap: wrap;
+  padding: 6px 20px;
+  background: color-mix(in srgb, var(--surface), transparent 8%);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(6px);
+}
+/* A part of the page jumped to stops below the bar rather than under it. */
+main > section[id] { scroll-margin-top: 52px; }
+.jump a {
+  padding: 5px 10px; border-radius: 8px;
+  color: var(--muted); font-size: 0.9286rem; font-weight: 600; text-decoration: none;
+}
+.jump a:hover { background: var(--surface-2); color: var(--text); }
+.jump a { border-radius: 5px; }
+
+.settings-button { margin-left: auto; }
+
+@media (max-width: 720px) {
+  .topbar { padding: 10px 12px; }
+  .jump { padding: 6px 12px; }
+}

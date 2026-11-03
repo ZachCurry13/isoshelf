@@ -1,0 +1,60 @@
+/* The folder chooser dialog. */
+
+/* Folder picker */
+
+.picker {
+  width: min(760px, calc(100vw - 32px));
+  max-height: min(640px, calc(100vh - 32px));
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+.picker::backdrop { background: rgba(10, 14, 22, 0.45); }
+.picker-form { display: flex; flex-direction: column; max-height: inherit; }
+.picker-head { padding: 18px 20px 8px; }
+.picker-head h2 { margin: 0 0 2px; font-size: 1.2857rem; }
+.picker-head p { margin: 0; }
+.picker-path { display: flex; gap: 8px; padding: 8px 20px 12px; }
+.picker-path input { flex: 1; font-family: var(--mono); font-size: 0.9286rem; }
+.picker-body { display: flex; min-height: 300px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
+.picker-roots { width: 220px; flex: none; border-right: 1px solid var(--border); padding: 8px; overflow-y: auto; background: var(--surface-2); }
+.picker-roots h3 { font-size: 0.7857rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 10px 8px 4px; }
+.picker-roots button, .picker-list button {
+  font: inherit; display: block; width: 100%; text-align: left;
+  background: none; border: none; color: var(--text);
+  padding: 6px 8px; border-radius: 6px; cursor: pointer;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.picker-roots button:hover, .picker-list button:hover { background: color-mix(in srgb, var(--accent), transparent 88%); }
+/* A folder isoshelf remembers: its path, what it held under that, and a way
+   to take it off the list. The path button takes the room the ✕ doesn't. */
+.remembered-row { display: flex; align-items: center; gap: 2px; }
+.remembered-row .remembered-open { flex: 1; min-width: 0; }
+.remembered-row .remembered-forget {
+  flex: none; width: auto; padding: 6px; color: var(--muted); opacity: 0;
+}
+.remembered:hover .remembered-forget, .remembered-forget:focus-visible { opacity: 1; }
+.remembered-detail {
+  font-size: 0.7857rem; color: var(--muted);
+  padding: 0 8px 6px; margin-top: -4px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* Nothing hides on a touch screen, where there is no hovering to do it with. */
+@media (hover: none) {
+  .remembered-row .remembered-forget { opacity: 1; }
+}
+
+.picker-list { flex: 1; overflow-y: auto; padding: 8px; }
+.picker-list ul { list-style: none; margin: 0; padding: 0; }
+.picker-list button::before { content: "📁"; margin-right: 8px; }
+.picker-error { color: var(--bad-fg); padding: 8px; }
+.picker-empty { color: var(--muted); padding: 8px; }
+.picker-foot { display: flex; align-items: center; gap: 8px; padding: 12px 20px; }
+
+@media (max-width: 720px) {
+  .picker-body { flex-direction: column; }
+  .picker-roots { width: auto; max-height: 130px; border-right: none; border-bottom: 1px solid var(--border); }
+}

@@ -1,0 +1,66 @@
+/* Add images, Archive, History and Tools: the folded sections and the card grid they share. */
+
+/* Catalog */
+
+.more { padding: 0; }
+.more summary {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; cursor: pointer; list-style: none;
+}
+.more summary::-webkit-details-marker { display: none; }
+.more summary::before { content: "▸"; color: var(--muted); transition: transform 0.15s; }
+.more details[open] summary::before { transform: rotate(90deg); }
+.more-title { font-weight: 600; }
+.more-hint { margin: 0 20px 10px; }
+#more-search { margin: 0 20px 12px; width: calc(100% - 40px); max-width: 320px; }
+
+.catalog {
+  list-style: none; margin: 0; padding: 0 12px 12px;
+  display: grid; gap: 8px;
+  /* min() so a screen narrower than the 280px ideal gets one column that
+     fits, rather than one column 280px wide on a 296px page. */
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+}
+.catalog li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface-2);
+}
+.catalog .info { flex: 1; min-width: 0; }
+.catalog .kind { font-size: 0.8571rem; color: var(--muted); }
+
+/* History: the range sits beside the hint, as the archive's button does, and
+   the list is one column, because it is read newest first, top to bottom. */
+#history-range { flex: none; }
+#history-list.catalog { grid-template-columns: 1fr; }
+
+/* The tools that go with the images: a short read, not a catalog. */
+.tools { list-style: none; margin: 0 20px 12px; padding: 0; display: grid; gap: 10px; }
+.tools li { display: grid; gap: 1px; }
+.tools li a { font-weight: 550; justify-self: start; }
+.tools .muted { font-size: 0.8929rem; }
+
+.wont-fit { color: var(--bad-fg); }
+.more .toolbar { padding: 0 20px 12px; border: 0; }
+#more-shown { margin-left: auto; }
+
+/* Catalog cards: room for the name, with the buttons wrapping under it when
+   the column is narrow. */
+.catalog { grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
+.catalog li { flex-wrap: wrap; }
+.catalog .info { flex: 1 1 150px; }
+.catalog li .btn, .catalog li a.btn { flex: none; }
+.catalog .info-line { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.catalog .info-line .name { overflow-wrap: anywhere; }
+
+/* The archive and history cards: the buttons belong together at the end of
+   the row, not spread across it. */
+.past-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: flex-end; }
+#archive-list .file, #history-list .file { font-family: var(--mono); font-size: 0.8571rem; color: var(--muted); overflow-wrap: anywhere; margin-top: 2px; }
+#archive-list .kind, #history-list .kind { margin-top: 2px; }
+
+.archive-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.archive-head .more-hint { flex: 1; }
+

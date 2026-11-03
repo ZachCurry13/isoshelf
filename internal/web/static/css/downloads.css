@@ -1,0 +1,103 @@
+/* The downloads bar along the bottom, adding a file from this computer, and the drop overlay. */
+
+/* Downloads: a bar along the bottom of the window while anything is queued,
+   running or just finished, which opens into the queue. */
+body.has-dock { padding-bottom: 76px; }
+/* Scrolling to something, or tabbing to it, stops short of the bar. */
+html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
+.dock {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 16px rgba(16, 24, 40, 0.08);
+}
+.dock-bar {
+  display: flex; align-items: center; gap: 14px;
+  max-width: 1320px; margin: 0 auto; padding: 10px 20px;
+}
+.dock-summary { flex: 0 1 auto; min-width: 0; display: flex; gap: 8px; align-items: baseline; }
+.dock-summary span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dock .bar { flex: 1 1 120px; min-width: 80px; }
+.dock-actions { display: flex; gap: 6px; flex: none; margin-left: auto; }
+#dock-waiting { flex: none; font-size: 0.9286rem; }
+.dock-panel {
+  max-height: min(55vh, 520px); overflow-y: auto;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.dock-list { list-style: none; margin: 0 auto; padding: 6px 20px 12px; max-width: 1320px; }
+.dock-heading {
+  font-size: 0.8571rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--muted); padding: 12px 0 6px;
+}
+.dock-heading .muted { text-transform: none; letter-spacing: 0; font-weight: 400; }
+.dock-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; margin-bottom: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+}
+.dock-item .info { flex: 1; min-width: 0; }
+.conflict-choices { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.dock-item .name { font-weight: 600; overflow-wrap: break-word; }
+.dock-item .kind { font-size: 0.8571rem; color: var(--muted); }
+.dock-item .bar { margin-top: 6px; }
+.dock-item.queued { cursor: grab; }
+.dock-item.dragging { opacity: 0.5; }
+.dock-item.drop-before { box-shadow: 0 -3px 0 var(--accent); }
+.dock-item.drop-after { box-shadow: 0 3px 0 var(--accent); }
+.dock-item .grip { color: var(--muted); font-size: 1.1429rem; line-height: 1; }
+.dock-item .place {
+  min-width: 1.6em; text-align: center; font-variant-numeric: tabular-nums;
+  color: var(--muted); font-weight: 600;
+}
+.dock-item .mark { min-width: 1.8em; text-align: center; }
+.dock-buttons { display: flex; gap: 4px; flex: none; }
+
+@media (max-width: 720px) {
+  body.has-dock { padding-bottom: 120px; }
+  .dock-bar { flex-wrap: wrap; padding: 10px 16px; gap: 8px 12px; }
+  .dock-summary { flex-basis: 100%; }
+  .dock-summary span { white-space: normal; }
+  .dock-list { padding: 6px 16px 12px; }
+  .dock-item { flex-wrap: wrap; }
+  .dock-buttons { margin-left: auto; }
+}
+
+/* Adding a file from this computer. The rows borrow the downloads dock's
+   shape, because they are the same idea: one file, how far it has got. */
+.upload-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+.upload-words { flex: 1; min-width: 12rem; }
+.upload-words p { margin: 4px 0 0; }
+.upload-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.upload-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; margin-bottom: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+}
+.upload-item .info { flex: 1; min-width: 0; }
+.upload-item .name { font-weight: 600; overflow-wrap: anywhere; }
+.upload-item .kind { font-size: 0.8571rem; color: var(--muted); }
+.upload-item .bar { margin-top: 6px; }
+
+/* Shown while a file is held over the window. It covers the page so the
+   answer to "can I drop this here?" is the whole window, not a rectangle. */
+.drop-overlay {
+  position: fixed; inset: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border: 3px dashed var(--accent);
+}
+.drop-overlay[hidden] { display: none; }
+.drop-sign {
+  padding: 18px 24px;
+  font-size: 1.1429rem; font-weight: 600;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+}
+

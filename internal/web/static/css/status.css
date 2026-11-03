@@ -1,0 +1,50 @@
+/* Status colours, and the mark beside a status word. */
+
+/* Status colors */
+
+.s-ok { --fg: var(--ok-fg); --bgc: var(--ok-bg); }
+.s-update { --fg: var(--update-fg); --bgc: var(--update-bg); }
+.s-bad { --fg: var(--bad-fg); --bgc: var(--bad-bg); }
+.s-eol { --fg: var(--eol-fg); --bgc: var(--eol-bg); }
+.s-warn { --fg: var(--warn-fg); --bgc: var(--warn-bg); }
+.s-missing { --fg: var(--missing-fg); --bgc: var(--missing-bg); }
+.s-manual { --fg: var(--manual-fg); --bgc: var(--manual-bg); }
+.s-muted { --fg: var(--muted-fg); --bgc: var(--muted-bg); }
+
+/* A status is a coloured mark beside plain words, not a filled chip.
+   Ten filled chips in one column compete with each other and with the names
+   beside them, and nothing wins; a dot says the same thing and lets the word
+   be read. The two that must interrupt you keep their tint - see below. */
+.pill {
+  display: inline-block;
+  position: relative;
+  padding: 0 0 0 14px;
+  font-size: 0.9286rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text);
+  background: none;
+}
+.pill::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 7px;
+  height: 7px;
+  border-radius: 99px;
+  background: var(--fg);
+}
+
+/* The two worth interrupting for: a file that doesn't match its checksum, and
+   an update waiting to be taken. */
+.pill.s-bad, .pill.s-update {
+  padding: 1px 8px 1px 20px;
+  border-radius: 4px;
+  font-weight: 600;
+  color: var(--fg);
+  background: var(--bgc);
+}
+.pill.s-bad::before, .pill.s-update::before { left: 8px; top: 0.55em; }
+.pill + .pill { margin-left: 8px; }
+
