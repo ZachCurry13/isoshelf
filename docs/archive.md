@@ -1409,3 +1409,14 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 [#56]: https://github.com/ZachCurry13/isoshelf/issues/56
 [#58]: https://github.com/ZachCurry13/isoshelf/issues/58
 [#57]: https://github.com/ZachCurry13/isoshelf/issues/57
+
+## v0.10.0: several downloads at once, and the logo audit
+
+- `internal/web/schedule.go` picks what runs: never two from one server (host
+  from the catalog's `base`, `github.com` for GitHub sources, "your server"
+  for peer copies); two at once with no limit; with a limit another starts
+  only while the running ones use under 70% of it, each measured for 4 s,
+  at most three. `s.running` replaced the single `s.downloading`.
+- `fetch.Limiter` paces all downloads from one clock, can be changed while
+  they run, and leaves hosts in `Client.Unlimited` (a LAN peer) alone.
+- Logo audit (TODO item 9): findings in `docs/catalog-sources.md`.

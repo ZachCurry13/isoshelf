@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026110301 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026110302 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -51,8 +51,7 @@ popular = true
 page = "https://linuxmint.com/download.php"
 category = "desktop"
 family = "linuxmint"
-icon = "linuxmint"
-icon_color = "#86BE43"
+icon = "disc"
 site = "https://linuxmint.com/"
 forum = "https://forums.linuxmint.com/"
 
@@ -128,8 +127,7 @@ size = 2751463424
 page = "https://system76.com/pop/download/"
 category = "desktop"
 family = "popos"
-icon = "popos"
-icon_color = "#48B9C7"
+icon = "disc"
 site = "https://pop.system76.com/"
 forum = "https://support.system76.com/"
 
@@ -153,8 +151,7 @@ size = 3242065920
 page = "https://system76.com/pop/download/"
 category = "desktop"
 family = "popos"
-icon = "popos"
-icon_color = "#48B9C7"
+icon = "disc"
 site = "https://pop.system76.com/"
 forum = "https://support.system76.com/"
 
@@ -179,8 +176,7 @@ popular = true
 page = "https://system76.com/pop/download/"
 category = "desktop"
 family = "popos"
-icon = "popos"
-icon_color = "#48B9C7"
+icon = "disc"
 site = "https://pop.system76.com/"
 forum = "https://support.system76.com/"
 
@@ -204,8 +200,7 @@ size = 3934945280
 page = "https://system76.com/pop/download/"
 category = "desktop"
 family = "popos"
-icon = "popos"
-icon_color = "#48B9C7"
+icon = "disc"
 site = "https://pop.system76.com/"
 forum = "https://support.system76.com/"
 
@@ -230,8 +225,7 @@ popular = true
 page = "https://cachyos.org/download/"
 category = "desktop"
 family = "cachyos"
-icon = "cachyos"
-icon_color = "#00AA88"
+icon = "disc"
 site = "https://cachyos.org/"
 forum = "https://discuss.cachyos.org/"
 
@@ -280,8 +274,7 @@ size = 1458192384
 page = "https://www.alpinelinux.org/downloads/"
 category = "server"
 family = "alpine"
-icon = "alpinelinux"
-icon_color = "#0D597F"
+icon = "disc"
 site = "https://alpinelinux.org/"
 forum = "https://gitlab.alpinelinux.org/alpine"
 
@@ -305,8 +298,7 @@ size = 370147328
 page = "https://www.alpinelinux.org/downloads/"
 category = "server"
 family = "alpine"
-icon = "alpinelinux"
-icon_color = "#0D597F"
+icon = "disc"
 site = "https://alpinelinux.org/"
 forum = "https://gitlab.alpinelinux.org/alpine"
 
@@ -330,8 +322,7 @@ size = 70254592
 page = "https://www.alpinelinux.org/downloads/"
 category = "server"
 family = "alpine"
-icon = "alpinelinux"
-icon_color = "#0D597F"
+icon = "disc"
 site = "https://alpinelinux.org/"
 forum = "https://gitlab.alpinelinux.org/alpine"
 
@@ -441,8 +432,7 @@ popular = true
 page = "https://www.proxmox.com/en/downloads"
 category = "server"
 family = "proxmox"
-icon = "proxmox"
-icon_color = "#E57000"
+icon = "disc"
 site = "https://www.proxmox.com/"
 forum = "https://forum.proxmox.com/"
 
@@ -466,8 +456,7 @@ size = 1480032256
 page = "https://www.proxmox.com/en/downloads"
 category = "server"
 family = "proxmox"
-icon = "proxmox"
-icon_color = "#E57000"
+icon = "disc"
 site = "https://www.proxmox.com/"
 forum = "https://forum.proxmox.com/"
 
@@ -491,8 +480,7 @@ size = 1042089984
 page = "https://www.truenas.com/download/"
 category = "server"
 family = "truenas"
-icon = "truenas"
-icon_color = "#0095D5"
+icon = "disc"
 site = "https://www.truenas.com/"
 forum = "https://forums.truenas.com/"
 
@@ -516,8 +504,7 @@ size = 546666496
 page = "https://www.freebsd.org/where/"
 category = "server"
 family = "freebsd"
-icon = "freebsd"
-icon_color = "#AB2B28"
+icon = "disc"
 site = "https://www.freebsd.org/"
 forum = "https://forums.freebsd.org/"
 
@@ -541,8 +528,7 @@ size = 484671488
 page = "https://www.freebsd.org/where/"
 category = "server"
 family = "freebsd"
-icon = "freebsd"
-icon_color = "#AB2B28"
+icon = "disc"
 site = "https://www.freebsd.org/"
 forum = "https://forums.freebsd.org/"
 
@@ -566,8 +552,7 @@ size = 574277009
 page = "https://www.pfsense.org/download/"
 category = "server"
 family = "pfsense"
-icon = "pfsense"
-icon_color = "#212121"
+icon = "disc"
 site = "https://www.pfsense.org/"
 forum = "https://forum.netgate.com/"
 fixup = "extract" # published as .iso.gz; newer releases only have Netgate's online installer
@@ -689,8 +674,7 @@ popular = true
 page = "https://www.kali.org/get-kali/"
 category = "security"
 family = "kali"
-icon = "kalilinux"
-icon_color = "#557C94"
+icon = "disc"
 site = "https://www.kali.org/"
 forum = "https://forums.kali.org/"
 
@@ -714,8 +698,7 @@ size = 4971552768
 page = "https://www.kali.org/get-kali/"
 category = "security"
 family = "kali"
-icon = "kalilinux"
-icon_color = "#557C94"
+icon = "disc"
 site = "https://www.kali.org/"
 forum = "https://forums.kali.org/"
 
@@ -738,8 +721,7 @@ samples = ["kali-linux-2026.2-live-amd64.iso"]
 page = "https://www.kali.org/get-kali/#kali-live"
 category = "security"
 family = "kali"
-icon = "kalilinux"
-icon_color = "#557C94"
+icon = "disc"
 site = "https://www.kali.org/"
 forum = "https://forums.kali.org/"
 
@@ -761,8 +743,7 @@ size = 4165287936
 page = "https://www.parrotsec.org/download/"
 category = "security"
 family = "parrot"
-icon = "parrotsecurity"
-icon_color = "#15E0ED"
+icon = "disc"
 site = "https://www.parrotsec.org/"
 forum = "https://community.parrotsec.org/"
 
@@ -786,8 +767,7 @@ size = 8682078208
 page = "https://www.parrotsec.org/download/"
 category = "security"
 family = "parrot"
-icon = "parrotsecurity"
-icon_color = "#15E0ED"
+icon = "disc"
 site = "https://www.parrotsec.org/"
 forum = "https://community.parrotsec.org/"
 
@@ -811,8 +791,7 @@ size = 8459569152
 page = "https://www.qubes-os.org/downloads/"
 category = "security"
 family = "qubes"
-icon = "qubesos"
-icon_color = "#3874D8"
+icon = "disc"
 site = "https://www.qubes-os.org/"
 forum = "https://forum.qubes-os.org/"
 
@@ -920,8 +899,7 @@ size = 980938752
 page = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
 category = "server"
 family = "centos"
-icon = "centos"
-icon_color = "#262577"
+icon = "disc"
 site = "https://www.centos.org/"
 forum = "https://forums.centos.org/"
 
@@ -946,8 +924,7 @@ size = 8291639296
 page = "https://vault.centos.org/altarch/7.9.2009/isos/i386/"
 category = "server"
 family = "centos"
-icon = "centos"
-icon_color = "#262577"
+icon = "disc"
 site = "https://www.centos.org/"
 forum = "https://forums.centos.org/"
 
@@ -972,8 +949,7 @@ size = 1035993088
 page = "https://vault.centos.org/7.9.2009/isos/x86_64/"
 category = "server"
 family = "centos"
-icon = "centos"
-icon_color = "#262577"
+icon = "disc"
 site = "https://www.centos.org/"
 forum = "https://forums.centos.org/"
 
@@ -998,8 +974,7 @@ size = 10287327232
 page = "https://vault.centos.org/7.9.2009/isos/x86_64/"
 category = "server"
 family = "centos"
-icon = "centos"
-icon_color = "#262577"
+icon = "disc"
 site = "https://www.centos.org/"
 forum = "https://forums.centos.org/"
 
@@ -1027,7 +1002,7 @@ samples = ["MX-21.3_x64.iso", "MX-23.1_x64.iso", "MX-23.1_November_x64.iso", "MX
 page = "https://mxlinux.org/download-links/"
 category = "desktop"
 family = "mx-linux"
-icon = "mxlinux"
+icon = "disc"
 site = "https://mxlinux.org/"
 forum = "https://forum.mxlinux.org/"
 
@@ -1052,7 +1027,7 @@ page = "https://sourceforge.net/projects/mx-linux/files/Old/MX-23.6/Xfce/"
 find = "The 32-bit ISO is MX-{version}_386.iso, in that version's Xfce folder."
 category = "desktop"
 family = "mx-linux"
-icon = "mxlinux"
+icon = "disc"
 site = "https://mxlinux.org/"
 forum = "https://forum.mxlinux.org/"
 
@@ -1070,8 +1045,7 @@ samples = ["manjaro-xfce-23.0.4-231015-linux65.iso", "manjaro-xfce-26.1.0-260812
 page = "https://manjaro.org/products/download/x86/"
 category = "desktop"
 family = "manjaro"
-icon = "manjaro"
-icon_color = "#35BFA4"
+icon = "disc"
 site = "https://manjaro.org/"
 forum = "https://forum.manjaro.org/"
 
@@ -1106,8 +1080,7 @@ samples = ["Manjaro-ARM-xfce-generic-23.02.img"]
 page = "https://manjaro.org/products/download/arm"
 category = "boards"
 family = "manjaro"
-icon = "manjaro"
-icon_color = "#35BFA4"
+icon = "disc"
 site = "https://manjaro.org/"
 forum = "https://forum.manjaro.org/"
 fixup = "extract"
@@ -1128,8 +1101,7 @@ popular = true
 page = "https://www.truenas.com/download/"
 category = "server"
 family = "truenas"
-icon = "truenas"
-icon_color = "#0095D5"
+icon = "disc"
 site = "https://www.truenas.com/"
 forum = "https://forums.truenas.com/"
 
@@ -1147,8 +1119,7 @@ samples = ["tails-amd64-5.21.img", "tails-amd64-7.13.iso"]
 page = "https://tails.net/install/"
 category = "security"
 family = "tails"
-icon = "tails"
-icon_color = "#56347C"
+icon = "disc"
 site = "https://tails.net/"
 forum = "https://tails.net/support/"
 
@@ -1289,8 +1260,7 @@ samples = ["pop-os_22.04_arm64_raspi_4.img"]
 page = "https://system76.com/pop/download/"
 category = "boards"
 family = "popos"
-icon = "popos"
-icon_color = "#48B9C7"
+icon = "disc"
 site = "https://pop.system76.com/"
 forum = "https://support.system76.com/"
 
@@ -1409,8 +1379,7 @@ popular = true
 page = "https://kubuntu.org/getkubuntu/"
 category = "desktop"
 family = "kubuntu"
-icon = "kubuntu"
-icon_color = "#0079C1"
+icon = "disc"
 site = "https://kubuntu.org/"
 forum = "https://kubuntuforums.net/"
 
@@ -1434,8 +1403,7 @@ size = 5186390016
 page = "https://xubuntu.org/download/"
 category = "desktop"
 family = "xubuntu"
-icon = "xubuntu"
-icon_color = "#0044AA"
+icon = "disc"
 site = "https://xubuntu.org/"
 forum = "https://xubuntu.org/help/"
 
@@ -1460,8 +1428,7 @@ size = 3033710592
 page = "https://linuxmint.com/download.php"
 category = "desktop"
 family = "linuxmint"
-icon = "linuxmint"
-icon_color = "#86BE43"
+icon = "disc"
 site = "https://linuxmint.com/"
 forum = "https://forums.linuxmint.com/"
 
@@ -1486,8 +1453,7 @@ size = 2960867328
 page = "https://linuxmint.com/download_lmde.php"
 category = "desktop"
 family = "linuxmint"
-icon = "linuxmint"
-icon_color = "#86BE43"
+icon = "disc"
 site = "https://linuxmint.com/"
 forum = "https://forums.linuxmint.com/"
 
@@ -1565,8 +1531,7 @@ popular = true
 page = "https://fedoraproject.org/workstation/download"
 category = "desktop"
 family = "fedora"
-icon = "fedora"
-icon_color = "#51A2DA"
+icon = "disc"
 site = "https://fedoraproject.org/"
 forum = "https://discussion.fedoraproject.org/"
 
@@ -1596,8 +1561,7 @@ size = 3368683520
 page = "https://fedoraproject.org/kde/download"
 category = "desktop"
 family = "fedora"
-icon = "fedora"
-icon_color = "#51A2DA"
+icon = "disc"
 site = "https://fedoraproject.org/"
 forum = "https://discussion.fedoraproject.org/"
 
@@ -1650,8 +1614,7 @@ popular = true
 page = "https://get.opensuse.org/tumbleweed/"
 category = "desktop"
 family = "opensuse"
-icon = "opensuse"
-icon_color = "#73BA25"
+icon = "disc"
 site = "https://www.opensuse.org/"
 forum = "https://forums.opensuse.org/"
 
@@ -1735,8 +1698,7 @@ popular = true
 page = "https://rockylinux.org/download"
 category = "server"
 family = "rockylinux"
-icon = "rockylinux"
-icon_color = "#10B981"
+icon = "disc"
 site = "https://rockylinux.org/"
 forum = "https://forums.rockylinux.org/"
 
@@ -1762,8 +1724,7 @@ size = 1651376128
 page = "https://almalinux.org/get-almalinux/"
 category = "server"
 family = "almalinux"
-icon = "almalinux"
-icon_color = "#0069DA"
+icon = "disc"
 site = "https://almalinux.org/"
 forum = "https://chat.almalinux.org/"
 
@@ -1787,8 +1748,7 @@ size = 1694324736
 page = "https://www.proxmox.com/en/downloads/proxmox-mail-gateway"
 category = "server"
 family = "proxmox"
-icon = "proxmox"
-icon_color = "#E57000"
+icon = "disc"
 site = "https://www.proxmox.com/"
 forum = "https://forum.proxmox.com/"
 
@@ -1814,8 +1774,7 @@ popular = true
 page = "https://www.raspberrypi.com/software/operating-systems/"
 category = "boards"
 family = "raspios"
-icon = "raspberrypi"
-icon_color = "#A22846"
+icon = "disc"
 site = "https://www.raspberrypi.com/"
 forum = "https://forums.raspberrypi.com/"
 
@@ -1842,8 +1801,7 @@ popular = true
 page = "https://www.raspberrypi.com/software/operating-systems/"
 category = "boards"
 family = "raspios"
-icon = "raspberrypi"
-icon_color = "#A22846"
+icon = "disc"
 site = "https://www.raspberrypi.com/"
 forum = "https://forums.raspberrypi.com/"
 
@@ -1867,8 +1825,7 @@ size = 328339908
 page = "https://www.home-assistant.io/installation/raspberrypi/"
 category = "boards"
 family = "home-assistant"
-icon = "homeassistant"
-icon_color = "#18BCF2"
+icon = "disc"
 site = "https://www.home-assistant.io/"
 forum = "https://community.home-assistant.io/"
 
@@ -1889,8 +1846,7 @@ popular = true
 page = "https://www.home-assistant.io/installation/generic-x86-64/"
 category = "server"
 family = "home-assistant"
-icon = "homeassistant"
-icon_color = "#18BCF2"
+icon = "disc"
 site = "https://www.home-assistant.io/"
 forum = "https://community.home-assistant.io/"
 
@@ -2029,8 +1985,7 @@ samples = ["EndeavourOS_Titan-Nova-2026.08.15.iso"]
 page = "https://endeavouros.com/"
 category = "desktop"
 family = "endeavouros"
-icon = "endeavouros"
-icon_color = "#7F7FFF"
+icon = "disc"
 site = "https://endeavouros.com/"
 forum = "https://forum.endeavouros.com/"
 popular = true
@@ -2050,8 +2005,7 @@ samples = ["Zorin-OS-18-Core-64-bit-r3.iso", "Zorin-OS-18-Core-64-bit.iso"]
 page = "https://zorin.com/os/download/"
 category = "desktop"
 family = "zorin"
-icon = "zorin"
-icon_color = "#15A6F0"
+icon = "disc"
 site = "https://zorin.com/os/"
 forum = "https://forum.zorin.com/"
 
