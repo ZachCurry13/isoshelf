@@ -8,7 +8,7 @@
   max-height: min(640px, calc(100vh - 32px));
   padding: 0;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: var(--surface);
   color: var(--text);
   box-shadow: var(--shadow-dialog);
@@ -16,14 +16,14 @@
 .ask::backdrop { background: var(--backdrop); }
 .ask-form { display: flex; flex-direction: column; max-height: inherit; padding: 20px; }
 .ask-body { overflow-y: auto; min-height: 0; }
-.ask h2 { margin: 0 0 6px; font-size: 1.2143rem; }
+.ask h2 { margin: 0 0 6px; font-size: var(--text-large); }
 .ask p { margin: 0 0 16px; color: var(--muted); overflow-wrap: anywhere; }
 .ask-buttons { display: flex; flex: none; gap: 8px; flex-wrap: wrap; justify-content: flex-end; padding-top: 16px; }
 /* The two files a records move is between, one to a line: a path run into a
    sentence is the part nobody reads. */
 .records-move { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; }
 .records-move dt { color: var(--muted); }
-.records-move dd { margin: 0; font-family: var(--mono); font-size: 0.8571rem; overflow-wrap: anywhere; }
+.records-move dd { margin: 0; font-family: var(--mono); font-size: var(--text-small); overflow-wrap: anywhere; }
 
 /* The checklist, shared by "update all" and "review older versions". */
 .pick { width: min(620px, calc(100vw - 32px)); }
@@ -31,15 +31,15 @@
 .pick-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .pick-item {
   display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface-2); cursor: pointer;
 }
 .pick-item .info { display: grid; flex: 1; min-width: 0; }
-.pick-item .kind { font-size: 0.8571rem; color: var(--muted); overflow-wrap: anywhere; }
-.pick-note { font-size: 0.8571rem; white-space: nowrap; }
+.pick-item .kind { font-size: var(--text-small); color: var(--muted); overflow-wrap: anywhere; }
+.pick-note { font-size: var(--text-small); white-space: nowrap; }
 
 .meanings { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0; text-align: left; }
-.meanings dd { margin: 0; color: var(--muted); font-size: 0.9286rem; }
+.meanings dd { margin: 0; color: var(--muted); font-size: var(--text-small); }
 
 /* What a bug report would say, shown before anything opens. */
 .report { display: grid; gap: 10px; margin: 10px 0; }
@@ -47,12 +47,12 @@
    pretty: on a phone, long-pressing this is how the text gets copied when
    the clipboard button can't do it. */
 .report-text {
-  font: inherit; font-size: 0.8571rem; width: 100%; box-sizing: border-box;
+  font: inherit; font-size: var(--text-small); width: 100%; box-sizing: border-box;
   color: var(--text); background: var(--surface);
-  border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px;
   resize: vertical; white-space: pre; overflow-wrap: normal;
 }
-.report-said { font-size: 0.8571rem; min-height: 1.2em; }
+.report-said { font-size: var(--text-small); min-height: 1.2em; }
 
 @media (max-width: 720px) {
   .pick-note { white-space: normal; }

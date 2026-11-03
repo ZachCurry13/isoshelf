@@ -25,11 +25,11 @@
   display: flex; align-items: center; gap: 10px;
   padding: 7px 12px;
   border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: var(--radius);
   background: var(--surface-2);
 }
 .catalog .info { flex: 1; min-width: 0; }
-.catalog .kind { font-size: 0.8571rem; color: var(--muted); }
+.catalog .kind { font-size: var(--text-small); color: var(--muted); }
 
 /* History: the range sits beside the hint, as the archive's button does, and
    the list is one column, because it is read newest first, top to bottom. */
@@ -39,8 +39,8 @@
 /* The tools that go with the images: a short read, not a catalog. */
 .tools { list-style: none; margin: 0 20px 12px; padding: 0; display: grid; gap: 10px; }
 .tools li { display: grid; gap: 1px; }
-.tools li a { font-weight: 550; justify-self: start; }
-.tools .muted { font-size: 0.8929rem; }
+.tools li a { font-weight: 600; justify-self: start; }
+.tools .muted { font-size: var(--text-small); }
 
 .wont-fit { color: var(--bad-fg); }
 .more .toolbar { padding: 0 20px 12px; border: 0; }
@@ -58,7 +58,7 @@
 /* The archive and history cards: the buttons belong together at the end of
    the row, not spread across it. */
 .past-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: flex-end; }
-#archive-list .file, #history-list .file { font-family: var(--mono); font-size: 0.8571rem; color: var(--muted); overflow-wrap: anywhere; margin-top: 2px; }
+#archive-list .file, #history-list .file { font-family: var(--mono); font-size: var(--text-small); color: var(--muted); overflow-wrap: anywhere; margin-top: 2px; }
 #archive-list .kind, #history-list .kind { margin-top: 2px; }
 
 .archive-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }

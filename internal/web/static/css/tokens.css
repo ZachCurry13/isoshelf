@@ -56,6 +56,8 @@
   /* The bar at the top. */
   --header-bg: var(--header-bgColor);
   --header-fg: var(--header-fgColor-default);
+  --header-fg-strong: var(--fgColor-onEmphasis);
+  --tab-hover: var(--underlineNav-borderColor-hover);
 
   /* Depth: flat for things that sit in the page, a shadow for things that float
      above it, and a veil behind a dialog. */
@@ -81,8 +83,17 @@
   --radius-lg: var(--borderRadius-large);
   --radius-full: var(--borderRadius-full);
 
-  /* Type. The size everything else is measured against is the one number
-     below, in rem everywhere else, so Larger text raises all of it. */
+  /* Type. The size everything else is measured against is the one number at
+     the bottom, and every other size is in rem against it, so Larger text
+     raises all of them. Three steps, as in Primer's scale (12, 14 and 16 px at
+     the default): small for captions, file names, labels and small buttons;
+     medium for what is being read; large for titles. Primer's own size tokens
+     are in rem against a 16 px root and this page's root is 14, so the steps
+     are written here rather than taken from it. */
+  --text-small: 0.8571rem;
+  --text-medium: 1rem;
+  --text-large: 1.1429rem;
+  --leading: 1.5;
   --font: var(--fontStack-system);
   --mono: var(--fontStack-monospace);
   font-size: 14px;

@@ -13,16 +13,16 @@
   padding: 14px 16px; border-bottom: 1px solid var(--border);
 }
 .details-title { display: flex; gap: 10px; align-items: flex-start; flex: 1; min-width: 0; }
-.details-head h2 { margin: 0; font-size: 1.1429rem; overflow-wrap: break-word; }
-.details-head .muted { font-size: 0.8571rem; }
+.details-head h2 { margin: 0; font-size: var(--text-large); overflow-wrap: break-word; }
+.details-head .muted { font-size: var(--text-small); }
 .details-body { padding: 8px 16px 20px; overflow-y: auto; }
 .detail-row { padding: 10px 0; border-bottom: 1px solid var(--border); }
 .detail-label {
-  font-size: 0.7857rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.04em; color: var(--muted); margin-bottom: 4px;
+  font-size: var(--text-small); font-weight: 600;
+  color: var(--muted); margin-bottom: 4px;
 }
-.detail-value { display: grid; gap: 4px; font-size: 0.9286rem; }
-.detail-value .file { font-family: var(--mono); font-size: 0.8571rem; overflow-wrap: anywhere; }
+.detail-value { display: grid; gap: 4px; font-size: var(--text-small); }
+.detail-value .file { font-family: var(--mono); font-size: var(--text-small); overflow-wrap: anywhere; }
 .detail-links { display: flex; flex-wrap: wrap; gap: 10px; }
 .details-buttons { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 14px; }
 .version-set { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; }

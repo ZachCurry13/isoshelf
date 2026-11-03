@@ -19,7 +19,7 @@
   display: inline-block;
   position: relative;
   padding: 0 0 0 14px;
-  font-size: 0.9286rem;
+  font-size: var(--text-small);
   font-weight: 500;
   white-space: nowrap;
   color: var(--text);
@@ -32,7 +32,7 @@
   top: 0.45em;
   width: 7px;
   height: 7px;
-  border-radius: 99px;
+  border-radius: var(--radius-full);
   background: var(--fg);
 }
 
@@ -40,7 +40,7 @@
    an update waiting to be taken. */
 .pill.s-bad, .pill.s-update {
   padding: 1px 8px 1px 20px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
   color: var(--fg);
   background: var(--bgc);

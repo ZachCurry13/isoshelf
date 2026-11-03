@@ -4,7 +4,7 @@
 
 .identify .picker-head p { margin-bottom: 6px; }
 .identify-file {
-  font-family: var(--mono); font-size: 0.9286rem;
+  font-family: var(--mono); font-size: var(--text-small);
   overflow-wrap: anywhere;
 }
 .identify-body {
@@ -22,14 +22,14 @@
   display: flex; align-items: center; gap: 12px;
   padding: 10px 12px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--surface-2);
 }
 .guesses .info { flex: 1; min-width: 0; }
-.guesses .kind { font-size: 0.8571rem; color: var(--muted); overflow-wrap: anywhere; }
+.guesses .kind { font-size: var(--text-small); color: var(--muted); overflow-wrap: anywhere; }
 .identify #identify-all { padding: 0 8px; }
 .identify #identify-all summary {
-  cursor: pointer; padding: 8px 12px; color: var(--muted); font-size: 0.9286rem;
+  cursor: pointer; padding: 8px 12px; color: var(--muted); font-size: var(--text-small);
 }
 #identify-search { margin: 0 12px 10px; width: calc(100% - 24px); max-width: 320px; }
 .identify .catalog { grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
@@ -39,11 +39,11 @@
   grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
   align-items: end;
 }
-.mine-form label { display: grid; gap: 4px; font-size: 0.9286rem; color: var(--muted); }
+.mine-form label { display: grid; gap: 4px; font-size: var(--text-small); color: var(--muted); }
 .mine-form input, .mine-form select { width: 100%; }
 .mine-form button { justify-self: start; }
 .identify #identify-mine summary {
-  cursor: pointer; padding: 8px 12px; color: var(--muted); font-size: 0.9286rem;
+  cursor: pointer; padding: 8px 12px; color: var(--muted); font-size: var(--text-small);
 }
 #identify-report { margin: 0 20px 14px; }
 

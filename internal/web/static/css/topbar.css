@@ -10,8 +10,10 @@
   flex-wrap: wrap;
   gap: 12px;
   padding: 8px 20px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  /* Primer's header: dark in every theme, its words a step down from white,
+     the name and the links in it at full strength. */
+  background: var(--header-bg);
+  color: var(--header-fg);
   position: sticky;
   top: 0;
   z-index: 5;
@@ -22,47 +24,49 @@
 /* A disc on a shelf: the name, drawn. It replaced three stacked bars in
    v0.6.1, which read as a menu button. The disc's hole is cut out of the
    shape rather than painted, so it shows whatever is behind it; the shelf is
-   the accent thinned, so the mark follows the palette. */
-.logo-disc { fill: var(--accent); }
-.logo-shelf { fill: color-mix(in srgb, var(--accent), transparent 35%); }
-.brand-name { font-size: 1.0714rem; font-weight: 600; letter-spacing: 0; }
-.version { color: var(--muted); font-size: 0.8571rem; padding: 1px 6px; border: 1px solid var(--border); border-radius: 4px; }
+   the text colour thinned, so the mark follows the palette. */
+.logo-disc { fill: var(--header-fg-strong); }
+.logo-shelf { fill: color-mix(in srgb, var(--header-fg-strong), transparent 35%); }
+.brand-name { font-size: var(--text-large); font-weight: 600; color: var(--header-fg-strong); }
+.version { color: var(--header-fg); font-size: var(--text-small); padding: 1px 6px; border: 1px solid color-mix(in srgb, var(--header-fg), transparent 55%); border-radius: var(--radius-full); }
 
 .app-update {
   margin-left: auto;
   background: var(--update-bg);
   color: var(--update-fg);
   padding: 3px 10px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-weight: 500;
-  font-size: 0.9286rem;
+  font-size: var(--text-small);
 }
 /* Update now, and then how the update is going. It takes the link's place on
    the right while the update runs, so the bar doesn't jump about. */
-.self-update { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; margin-left: auto; font-size: 0.9286rem; }
+.self-update { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; margin-left: auto; font-size: var(--text-small); }
 .app-update:not([hidden]) + .self-update { margin-left: 0; }
-.self-update-failed { color: var(--bad-fg); font-weight: 500; overflow-wrap: anywhere; }
+/* On the dark bar a red word is hard to read, so the failure sits on its own tint. */
+.self-update-failed { color: var(--bad-fg); background: var(--bad-bg); padding: 1px 8px; border-radius: var(--radius-sm); font-weight: 500; overflow-wrap: anywhere; }
 
+/* Primer's UnderlineNav: tabs along a rule, an underline under the one you point
+   at. These are links to parts of this page, so none of them is "selected". */
 .jump {
   position: sticky; top: 0; z-index: 15;
-  display: flex; gap: 4px; flex-wrap: wrap;
-  padding: 6px 20px;
-  background: color-mix(in srgb, var(--surface), transparent 8%);
+  display: flex; gap: 0; flex-wrap: wrap;
+  padding: 0 12px;
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(6px);
 }
 /* A part of the page jumped to stops below the bar rather than under it. */
 main > section[id] { scroll-margin-top: 52px; }
 .jump a {
-  padding: 5px 10px; border-radius: 8px;
-  color: var(--muted); font-size: 0.9286rem; font-weight: 600; text-decoration: none;
+  padding: 10px 14px 8px;
+  border-bottom: 2px solid transparent;
+  color: var(--text); font-size: var(--text-medium); text-decoration: none;
 }
-.jump a:hover { background: var(--surface-2); color: var(--text); }
-.jump a { border-radius: 5px; }
+.jump a:hover { border-bottom-color: var(--tab-hover); text-decoration: none; }
 
 .settings-button { margin-left: auto; }
 
 @media (max-width: 720px) {
   .topbar { padding: 10px 12px; }
-  .jump { padding: 6px 12px; }
+  .jump { padding: 0 6px; }
 }

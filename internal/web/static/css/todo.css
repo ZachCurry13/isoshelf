@@ -16,12 +16,12 @@
 }
 .todo:empty { display: none; }
 .summary-part {
-  background: none; border: 0; border-radius: 6px; padding: 4px 6px;
-  font: inherit; font-size: 0.9286rem; color: var(--text); cursor: pointer;
+  background: none; border: 0; border-radius: var(--radius); padding: 4px 6px;
+  font: inherit; font-size: var(--text-small); color: var(--text); cursor: pointer;
 }
 .summary-part:hover { background: var(--surface-2); }
 .summary-part:disabled { cursor: default; color: var(--muted); background: none; }
-.summary-part b { font-weight: 650; color: var(--fg, var(--text)); font-variant-numeric: tabular-nums; }
+.summary-part b { font-weight: 600; color: var(--fg, var(--text)); font-variant-numeric: tabular-nums; }
 .summary-part.s-update { --fg: var(--update-fg); }
 .summary-part.s-warn { --fg: var(--warn-fg); }
 .summary-part.s-missing { --fg: var(--missing-fg); }
@@ -31,7 +31,7 @@
 /* Asked once, in a container. */
 .first-run { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-left: 2px solid var(--accent); }
 .first-run[hidden] { display: none; }
-.first-run-title { font-weight: 600; font-size: 0.9643rem; }
-.first-run p { margin: 0; color: var(--muted); font-size: 0.8929rem; max-width: 70ch; }
+.first-run-title { font-weight: 600; font-size: var(--text-medium); }
+.first-run p { margin: 0; color: var(--muted); font-size: var(--text-small); max-width: 70ch; }
 .first-run-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 

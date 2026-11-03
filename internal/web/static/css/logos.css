@@ -4,12 +4,12 @@
   width: 26px;
   height: 26px;
   flex: none;
-  border-radius: 6px;
+  border-radius: var(--radius);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7857rem;
-  font-weight: 700;
+  font-size: var(--text-small);
+  font-weight: 600;
   color: var(--on-accent);
   margin-top: 1px;
 }

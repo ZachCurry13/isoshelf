@@ -15,10 +15,8 @@ tbody td { border-bottom: 1px solid color-mix(in srgb, var(--border), transparen
 tbody tr:hover { background: color-mix(in srgb, var(--accent), transparent 94%); }
 /* A heading that reads as a heading rather than as a first row. */
 th {
-  font-size: 0.7143rem;
+  font-size: var(--text-small);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
   color: var(--muted);
   background: var(--surface-2);
   position: sticky;
@@ -35,22 +33,22 @@ tbody tr:last-child td { border-bottom: none; }
 #col-image { width: 32%; }
 td.replace { text-align: center; }
 
-.name { font-weight: 550; }
+.name { font-weight: 600; }
 .name a { color: inherit; }
 .name a:hover { color: var(--accent); }
-.arch { margin-left: 6px; font-size: 0.7857rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; font-weight: 500; }
+.arch { margin-left: 6px; font-size: var(--text-small); color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0 4px; font-weight: 500; }
 /* A pinned file: kept whatever updates come. */
 .pin-mark { margin-left: 6px; color: var(--accent); display: inline-flex; }
 .pin-icon { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -2px; }
-td.version-cell { font-family: var(--mono); font-size: 0.8571rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.latest-new { font-weight: 650; color: var(--update-fg); }
-.file { font-family: var(--mono); font-size: 0.8214rem; overflow-wrap: break-word; min-width: 170px; }
-.size { color: var(--muted); font-size: 0.7857rem; }
-.note { color: var(--muted); font-size: 0.8929rem; margin-top: 3px; max-width: 520px; overflow-wrap: anywhere; }
+td.version-cell { font-family: var(--mono); font-size: var(--text-small); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.latest-new { font-weight: 600; color: var(--update-fg); }
+.file { font-family: var(--mono); font-size: var(--text-small); overflow-wrap: break-word; min-width: 170px; }
+.size { color: var(--muted); font-size: var(--text-small); }
+.note { color: var(--muted); font-size: var(--text-small); margin-top: 3px; max-width: 520px; overflow-wrap: anywhere; }
 
 .star {
   font: inherit;
-  font-size: 1.2143rem;
+  font-size: var(--text-large);
   line-height: 1;
   background: none;
   border: none;
@@ -96,12 +94,12 @@ td.added-cell { color: var(--muted); font-variant-numeric: tabular-nums; }
 /* Sortable column headings */
 th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
 th.sortable:hover { color: var(--text); }
-th.sortable.sorted::after { content: " ▲"; font-size: 0.7143rem; color: var(--accent); }
+th.sortable.sorted::after { content: " ▲"; font-size: var(--text-small); color: var(--accent); }
 th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
 
 /* The mark for images worth knowing about, and its key under the list. */
 .caution { color: var(--warn-fg); margin: 0 4px; cursor: help; }
-.legend { margin: 10px 16px 4px; font-size: 0.9286rem; color: var(--muted); }
+.legend { margin: 10px 16px 4px; font-size: var(--text-small); color: var(--muted); }
 .legend .caution { margin-left: 0; }
 
 /* A name wraps as a whole; its badges go on the line below, never dangling
@@ -110,7 +108,7 @@ th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
 .name-line .name { overflow-wrap: break-word; }
 .meta-line {
   display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
-  margin-top: 3px; font-size: 0.8571rem;
+  margin-top: 3px; font-size: var(--text-small);
 }
 .meta-line .arch { margin-left: 0; }
 
@@ -119,11 +117,11 @@ tbody tr.row { cursor: pointer; }
 tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 92%); }
 .under {
   display: flex; flex-wrap: wrap; gap: 4px;
-  margin-top: 3px; font-size: 0.8571rem; color: var(--muted);
+  margin-top: 3px; font-size: var(--text-small); color: var(--muted);
 }
 /* No minimum width here: the one .file carries for tables left a gap after
    every short file name, before its size. */
-.under .file { font-family: var(--mono); font-size: 0.8214rem; overflow-wrap: anywhere; min-width: 0; }
+.under .file { font-family: var(--mono); font-size: var(--text-small); overflow-wrap: anywhere; min-width: 0; }
 .version-cell .latest-new { font-weight: 600; }
 
 /* On a phone the list stops being a table: each image is a small card, with
@@ -139,7 +137,7 @@ tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 9
   }
   #table td { border: 0; padding: 2px 0; }
   #table td.col-star { position: absolute; top: 10px; right: 10px; padding: 0; }
-  #table .version-cell { font-size: 0.9286rem; color: var(--muted); }
+  #table .version-cell { font-size: var(--text-small); color: var(--muted); }
   #table .col-added { display: none; }
   .added-inline { display: inline; }
   .row-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }

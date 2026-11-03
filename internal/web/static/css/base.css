@@ -7,7 +7,7 @@ html, body { margin: 0; }
 body {
   background: var(--bg);
   color: var(--text);
-  font: 1rem/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font: var(--text-medium)/var(--leading) var(--font);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -43,7 +43,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
   outline-offset: 1px;
 }
 
-.footer { color: var(--muted); font-size: 0.9286rem; display: grid; gap: 4px; }
+.footer { color: var(--muted); font-size: var(--text-small); display: grid; gap: 4px; }
 
 .spacer { flex: 1; }
 

@@ -10,8 +10,8 @@
   flex-wrap: wrap;
 }
 .target-info { flex: 1 1 360px; min-width: 0; }
-.eyebrow { font-size: 0.7143rem; font-weight: 650; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-.target-path { font-family: var(--mono); font-size: 0.9286rem; margin: 2px 0 6px; overflow-wrap: anywhere; }
+.eyebrow { font-size: var(--text-small); font-weight: 600; color: var(--muted); }
+.target-path { font-family: var(--mono); font-size: var(--text-small); margin: 2px 0 6px; overflow-wrap: anywhere; }
 .target-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .target-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 /* On a server, one line: the folder, its type and choosing another are in

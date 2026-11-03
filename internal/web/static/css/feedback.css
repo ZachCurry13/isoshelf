@@ -4,8 +4,8 @@
 
 .run { display: flex; align-items: center; gap: 16px; padding: 12px 20px; }
 .run-text { display: flex; align-items: center; gap: 10px; min-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.bar { flex: 1; height: 8px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 99px; overflow: hidden; }
-.bar-fill { height: 100%; width: 0; background: var(--accent-fill); border-radius: 99px; transition: width 0.3s ease; }
+.bar { flex: 1; height: 8px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-full); overflow: hidden; }
+.bar-fill { height: 100%; width: 0; background: var(--accent-fill); border-radius: var(--radius-full); transition: width 0.3s ease; }
 .bar.indeterminate .bar-fill { width: 30%; animation: slide 1.2s ease-in-out infinite; }
 @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(340%); } }
 

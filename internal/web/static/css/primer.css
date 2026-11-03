@@ -63,10 +63,12 @@
   --focus-outline-color: var(--borderColor-accent-emphasis);
   --header-fgColor-default: #ffffffb3;
   --shadow-resting-small: 0 1px 1px 0 #1f23280a, 0 1px 2px 0 #1f232808;
+  --borderColor-neutral-muted: var(--borderColor-muted);
   --button-default-borderColor-rest: var(--control-borderColor-rest);
   --button-primary-borderColor-rest: var(--borderColor-translucent);
   --button-primary-fgColor-rest: var(--fgColor-white);
   --focus-outlineColor: var(--focus-outline-color);
+  --underlineNav-borderColor-hover: var(--borderColor-muted);
   --shadow-floating-large: 0 0 0 1px #d1d9e000, 0 40px 80px 0 #25292e3d;
   --shadow-floating-medium: 0 0 0 1px #d1d9e000, 0 8px 16px -4px #25292e14, 0 4px 32px -4px #25292e14, 0 24px 48px -12px #25292e14, 0 48px 96px -24px #25292e14;
 }
@@ -112,10 +114,12 @@
     --focus-outline-color: var(--borderColor-accent-emphasis);
     --header-fgColor-default: #ffffffb3;
     --shadow-resting-small: 0 1px 1px 0 #1f23280a, 0 1px 2px 0 #1f232808;
+    --borderColor-neutral-muted: var(--borderColor-muted);
     --button-default-borderColor-rest: var(--control-borderColor-rest);
     --button-primary-borderColor-rest: var(--borderColor-translucent);
     --button-primary-fgColor-rest: var(--fgColor-white);
     --focus-outlineColor: var(--focus-outline-color);
+    --underlineNav-borderColor-hover: var(--borderColor-muted);
     --shadow-floating-large: 0 0 0 1px #d1d9e000, 0 40px 80px 0 #25292e3d;
     --shadow-floating-medium: 0 0 0 1px #d1d9e000, 0 8px 16px -4px #25292e14, 0 4px 32px -4px #25292e14, 0 24px 48px -12px #25292e14, 0 48px 96px -24px #25292e14;
   }
@@ -163,12 +167,14 @@
   --focus-outline-color: var(--borderColor-accent-emphasis);
   --header-fgColor-default: #ffffffb3;
   --shadow-resting-small: 0 1px 1px 0 #01040999, 0 1px 3px 0 #01040999;
+  --borderColor-neutral-muted: var(--borderColor-muted);
   --button-default-borderColor-rest: var(--control-borderColor-rest);
   --button-primary-borderColor-rest: var(--borderColor-translucent);
   --button-primary-fgColor-rest: var(--fgColor-white);
   --focus-outlineColor: var(--focus-outline-color);
   --shadow-floating-large: 0 0 0 1px #3d444d, 0 24px 48px 0 #010409;
   --shadow-floating-medium: 0 0 0 1px #3d444d, 0 8px 16px -4px #01040966, 0 4px 32px -4px #01040966, 0 24px 48px -12px #01040966, 0 48px 96px -24px #01040966;
+  --underlineNav-borderColor-hover: var(--borderColor-neutral-muted);
 }
 @media (prefers-color-scheme: dark) {
   [data-color-mode][data-color-mode="auto"][data-dark-theme="dark"] {
@@ -212,12 +218,14 @@
     --focus-outline-color: var(--borderColor-accent-emphasis);
     --header-fgColor-default: #ffffffb3;
     --shadow-resting-small: 0 1px 1px 0 #01040999, 0 1px 3px 0 #01040999;
+    --borderColor-neutral-muted: var(--borderColor-muted);
     --button-default-borderColor-rest: var(--control-borderColor-rest);
     --button-primary-borderColor-rest: var(--borderColor-translucent);
     --button-primary-fgColor-rest: var(--fgColor-white);
     --focus-outlineColor: var(--focus-outline-color);
     --shadow-floating-large: 0 0 0 1px #3d444d, 0 24px 48px 0 #010409;
     --shadow-floating-medium: 0 0 0 1px #3d444d, 0 8px 16px -4px #01040966, 0 4px 32px -4px #01040966, 0 24px 48px -12px #01040966, 0 48px 96px -24px #01040966;
+    --underlineNav-borderColor-hover: var(--borderColor-neutral-muted);
   }
 }
 
@@ -264,11 +272,13 @@
   --focus-outline-color: var(--borderColor-accent-emphasis);
   --header-fgColor-default: #ffffffb3;
   --shadow-resting-small: 0 1px 1px 0 #0104090a, 0 1px 2px 0 #01040908;
+  --borderColor-neutral-muted: var(--borderColor-muted);
   --button-default-borderColor-rest: var(--control-borderColor-rest);
   --button-primary-fgColor-rest: var(--fgColor-white);
   --focus-outlineColor: var(--focus-outline-color);
   --shadow-floating-large: 0 0 0 1px #454c54, 0 40px 80px 0 #25292e3d;
   --shadow-floating-medium: 0 0 0 1px #454c54, 0 8px 16px -4px #25292e14, 0 4px 32px -4px #25292e14, 0 24px 48px -12px #25292e14, 0 48px 96px -24px #25292e14;
+  --underlineNav-borderColor-hover: var(--borderColor-muted);
 }
 @media (prefers-color-scheme: dark) {
   [data-color-mode][data-color-mode="auto"][data-dark-theme="light_high_contrast"] {
@@ -313,11 +323,13 @@
     --focus-outline-color: var(--borderColor-accent-emphasis);
     --header-fgColor-default: #ffffffb3;
     --shadow-resting-small: 0 1px 1px 0 #0104090a, 0 1px 2px 0 #01040908;
+    --borderColor-neutral-muted: var(--borderColor-muted);
     --button-default-borderColor-rest: var(--control-borderColor-rest);
     --button-primary-fgColor-rest: var(--fgColor-white);
     --focus-outlineColor: var(--focus-outline-color);
     --shadow-floating-large: 0 0 0 1px #454c54, 0 40px 80px 0 #25292e3d;
     --shadow-floating-medium: 0 0 0 1px #454c54, 0 8px 16px -4px #25292e14, 0 4px 32px -4px #25292e14, 0 24px 48px -12px #25292e14, 0 48px 96px -24px #25292e14;
+    --underlineNav-borderColor-hover: var(--borderColor-muted);
   }
 }
 
@@ -364,11 +376,13 @@
   --focus-outline-color: var(--borderColor-accent-emphasis);
   --header-fgColor-default: #ffffffb3;
   --shadow-resting-small: 0 1px 1px 0 #01040999, 0 1px 3px 0 #01040999;
+  --borderColor-neutral-muted: var(--borderColor-muted);
   --button-default-borderColor-rest: var(--control-borderColor-rest);
   --button-primary-fgColor-rest: var(--fgColor-white);
   --focus-outlineColor: var(--focus-outline-color);
   --shadow-floating-large: 0 0 0 1px #b7bdc8, 0 24px 48px 0 #010409;
   --shadow-floating-medium: 0 0 0 1px #b7bdc8, 0 8px 16px -4px #01040966, 0 4px 32px -4px #01040966, 0 24px 48px -12px #01040966, 0 48px 96px -24px #01040966;
+  --underlineNav-borderColor-hover: var(--borderColor-neutral-muted);
 }
 @media (prefers-color-scheme: dark) {
   [data-color-mode][data-color-mode="auto"][data-dark-theme="dark_high_contrast"] {
@@ -413,10 +427,12 @@
     --focus-outline-color: var(--borderColor-accent-emphasis);
     --header-fgColor-default: #ffffffb3;
     --shadow-resting-small: 0 1px 1px 0 #01040999, 0 1px 3px 0 #01040999;
+    --borderColor-neutral-muted: var(--borderColor-muted);
     --button-default-borderColor-rest: var(--control-borderColor-rest);
     --button-primary-fgColor-rest: var(--fgColor-white);
     --focus-outlineColor: var(--focus-outline-color);
     --shadow-floating-large: 0 0 0 1px #b7bdc8, 0 24px 48px 0 #010409;
     --shadow-floating-medium: 0 0 0 1px #b7bdc8, 0 8px 16px -4px #01040966, 0 4px 32px -4px #01040966, 0 24px 48px -12px #01040966, 0 48px 96px -24px #01040966;
+    --underlineNav-borderColor-hover: var(--borderColor-neutral-muted);
   }
 }

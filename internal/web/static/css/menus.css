@@ -5,9 +5,9 @@
   list-style: none;
   cursor: pointer;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 4px 10px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.1;
   color: var(--muted);
   background: var(--surface);
@@ -25,11 +25,11 @@
   gap: 2px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow-menu);
   text-align: left;
 }
 .menu-items.pinned { position: fixed; top: auto; z-index: 30; overflow-y: auto; overscroll-behavior: contain; }
-.menu-items a { padding: 6px 10px; border-radius: 6px; color: var(--text); }
+.menu-items a { padding: 6px 10px; border-radius: var(--radius); color: var(--text); }
 .menu-items a:hover { background: color-mix(in srgb, var(--accent), transparent 88%); text-decoration: none; }
 
