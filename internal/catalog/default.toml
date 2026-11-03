@@ -359,11 +359,11 @@ site = "https://voidlinux.org/"
 
 [entry.source]
 type = "listing" # the checksum file lists only the newest build, and names it by date
-url = "https://repo-fastly.voidlinux.org/live/current/sha256sum.txt"
+url = "https://repo-default.voidlinux.org/live/current/sha256sum.txt"
 regex = 'void-live-x86_64-(?P<version>\d{8})-xfce\.iso'
 
 [entry.artifact]
-base = "https://repo-fastly.voidlinux.org/live/current/"
+base = "https://repo-default.voidlinux.org/live/current/"
 file = 'void-live-x86_64-{version}-xfce\.iso'
 manifest = "sha256sum.txt"
 
@@ -381,11 +381,11 @@ site = "https://voidlinux.org/"
 
 [entry.source]
 type = "listing"
-url = "https://repo-fastly.voidlinux.org/live/current/sha256sum.txt"
+url = "https://repo-default.voidlinux.org/live/current/sha256sum.txt"
 regex = 'void-live-x86_64-(?P<version>\d{8})-base\.iso'
 
 [entry.artifact]
-base = "https://repo-fastly.voidlinux.org/live/current/"
+base = "https://repo-default.voidlinux.org/live/current/"
 file = 'void-live-x86_64-{version}-base\.iso'
 manifest = "sha256sum.txt"
 

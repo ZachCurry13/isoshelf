@@ -192,11 +192,12 @@ Nothing yet.
 ### Added 2026-10-26
 
 - **Void Linux** (Xfce and base, x86_64 glibc): the live images and their
-  `sha256sum.txt` (BSD-style lines) are on `repo-fastly.voidlinux.org`, the
-  project's own domain and one of the mirrors its documentation lists. The
-  file carries only the newest build, named by date, so it is also the
-  version source. `repo-default.voidlinux.org`, the address the download
-  page prints, did not answer from the maintainer's computer on 2026-10-26.
+  `sha256sum.txt` (BSD-style lines) are on `repo-default.voidlinux.org`, the
+  address the download page prints, on the project's own domain. The file
+  carries only the newest build, named by date, so it is also the version
+  source. (It timed out once from the maintainer's computer on 2026-10-26, so
+  the first version of this entry used `repo-fastly.voidlinux.org`, a mirror
+  of the same file; it answers today and is the host the page names.)
   The musl, i686 and aarch64 images are not in the catalog yet.
 - **elementary OS**: link only. The download addresses on elementary.io carry
   a time-limited token in the path, and no checksum file was found at a stable
