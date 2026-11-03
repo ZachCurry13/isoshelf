@@ -932,11 +932,15 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
     page state. `{"reset": true}` puts the choices back to their defaults and
     keeps what isn't a choice: the folder in use, the pinned folders and
     where records are kept.
-  - How it looks is four attributes on `<html>`: `data-theme`,
-    `data-contrast`, `data-text` and `data-motion`. The colors are written
-    once with `light-dark()`, so a theme is `color-scheme` and nothing else,
-    and sizes are in `rem` against one number on `:root`, so "larger text"
-    raises all of them together. A copy of the answers is kept in the
+  - How it looks is attributes on `<html>`. The colours are Primer's themes,
+    picked by `data-color-mode`, `data-light-theme` and `data-dark-theme`
+    (Higher contrast selects the two high-contrast themes), and `data-theme`,
+    `data-contrast`, `data-text` and `data-motion` carry the rest. The
+    colours reach the page through `css/primer.css` (generated) and
+    `css/tokens.css` (isoshelf's names for them), and sizes are in `rem`
+    against one number on `:root`, so "larger text" raises all of them
+    together. `docs/design-system.md` is the whole story and how to change
+    it. A copy of the answers is kept in the
     browser's localStorage as well, so the page opens in the right colors
     instead of changing under the reader a moment later; isoshelf is still
     the one that remembers.

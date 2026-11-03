@@ -92,7 +92,8 @@ func TestPageLoadsEveryScript(t *testing.T) {
 	}
 	for _, path := range found {
 		name := strings.TrimPrefix(path, "static/")
-		if !slices.Contains(scripts, name) {
+		// The style guide is its own page, with its own script (see css_test.go).
+		if !slices.Contains(scripts, name) && name != "styleguide.js" {
 			t.Errorf("static/%s is shipped but this test doesn't know about it", name)
 		}
 	}

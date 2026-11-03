@@ -193,3 +193,49 @@ func TestStylesheetsStayShort(t *testing.T) {
 		}
 	}
 }
+
+func linkedStylesheets(page string) []string {
+	var out []string
+	for _, m := range regexp.MustCompile(`href="/static/css/([^"]+\.css)"`).FindAllStringSubmatch(page, -1) {
+		out = append(out, m[1])
+	}
+	return out
+}
+
+// The style guide is where a change to the design is looked at, so it has to
+// be made of the same files as the page, in the same order; one that links a
+// different set shows a look nobody has.
+func TestStyleGuideLinksTheSameStylesheetsAsThePage(t *testing.T) {
+	page := linkedStylesheets(readStatic(t, "index.html"))
+	guide := linkedStylesheets(readStatic(t, "styleguide.html"))
+	if strings.Join(page, " ") != strings.Join(guide, " ") {
+		t.Errorf("styleguide.html links\n  %v\nbut index.html links\n  %v", guide, page)
+	}
+}
+
+// Every stylesheet has a section in the guide (data-css="name"), so a new one
+// can't go in without somewhere to see it.
+func TestStyleGuideShowsEveryStylesheet(t *testing.T) {
+	guide := readStatic(t, "styleguide.html")
+	for name := range handWritten(t) {
+		section := `data-css="` + strings.TrimSuffix(name, ".css") + `"`
+		if !strings.Contains(guide, section) {
+			t.Errorf("styleguide.html has no section for css/%s: add one marked %s", name, section)
+		}
+	}
+}
+
+// The guide has no JavaScript engine in the tests either, so it gets the same
+// first-line and brace checks as the page's own scripts.
+func TestStyleGuideScriptIsWellFormed(t *testing.T) {
+	js := readStatic(t, "styleguide.js")
+	if !strings.HasPrefix(js, `"use strict";`) {
+		t.Error(`styleguide.js should start with "use strict"`)
+	}
+	if n := strings.Count(js, "{") - strings.Count(js, "}"); n != 0 {
+		t.Errorf("styleguide.js has %d more { than }", n)
+	}
+	if strings.Contains(js, "innerHTML") {
+		t.Error("styleguide.js uses innerHTML; text goes in with textContent, as everywhere else")
+	}
+}

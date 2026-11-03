@@ -24,6 +24,11 @@ func TestEveryDocumentListingPageScriptsListsThemAll(t *testing.T) {
 	}
 	var scripts []string
 	for _, name := range names {
+		// The style guide is a page of its own, described in docs/design-system.md,
+		// not one of the parts of the page.
+		if filepath.Base(name) == "styleguide.js" {
+			continue
+		}
 		scripts = append(scripts, filepath.Base(name))
 	}
 

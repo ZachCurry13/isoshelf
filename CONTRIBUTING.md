@@ -103,6 +103,13 @@ per part of the page, from `internal/web/static/`. A new one has to be added
 to `scripts` in `internal/web/static_test.go` too, which is what keeps the
 page and the tests honest about each other.
 
+The look is a design system, [Primer](https://primer.style)'s tokens under
+isoshelf's own names, kept in one place so it can be changed without touching
+the rest. Read [`docs/design-system.md`](docs/design-system.md) before changing a
+colour or a stylesheet; `/static/styleguide.html` on a running isoshelf shows
+every token and component in every theme, and tests fail if a rule uses a
+colour of its own.
+
 Tests never touch a real drive (temp folders only) and never reach the network
 (recorded responses only). Please keep it that way.
 

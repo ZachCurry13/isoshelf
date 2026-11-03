@@ -26,15 +26,17 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
   folder's records live), `upload.js`, `report.js`, `selfupdate.js`
   (isoshelf updating its own program), `history.js` (what arrived, was
   updated and left), `system.js` (where isoshelf runs), plus `css/` (the stylesheets, one file per part of the page; `css/tokens.css` is the look)
+- `internal/web/primer`: builds `static/css/primer.css` from Primer's published design tokens (`go run ./internal/web/primer/fetch`); the look is documented in `docs/design-system.md`, and `static/styleguide.html` is the page that shows all of it
 - `internal/remote/remotetest/recorded`: recorded HTTP responses the tests replay
 - `internal/sampledrive`: real filenames used as test fixtures; its `mkdrive` command writes them to a real folder for trying the page against a full drive
 - `internal/docs`: no code, just the test that keeps this repository's own claims about itself true
-- `docs/design.md` (full rules and design), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/archive.md` (finished work moved out of those two), `docs/HANDOFF.md` (the 2026-09-29 handoff to a model on the maintainer's own computer), `docs/catalog-sources.md`
+- `docs/design.md` (full rules and design), `docs/design-system.md` (the look: tokens, stylesheets, how to change them), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/archive.md` (finished work moved out of those two), `docs/HANDOFF.md` (the 2026-09-29 handoff to a model on the maintainer's own computer), `docs/catalog-sources.md`
 
 ## Run and test
 - `go build ./... && go vet ./... && go test ./...` must pass before a commit (CI also checks `gofmt -l .`)
 - `go run ./cmd/isoshelf ui --port 8765 --no-browser <folder>`: preview; restart after editing static files
-- `go run ./internal/remote/remotetest/record -sizes`: the only thing that goes online; run after catalog changes
+- `go run ./internal/remote/remotetest/record -sizes`: the only thing that goes online while checking the catalog (the logo and Primer fetchers download assets too); run after catalog changes
+- `go run ./internal/web/primer/fetch`: rebuilds `css/primer.css` after changing `primer.Version` or the Primer names in `css/tokens.css`
 
 ## Branches and releases
 `main` is what the latest release was built from: it always matches something
@@ -162,5 +164,6 @@ people have downloaded. Work never happens directly on it.
   with a real version in it; an example version is written `vMAJOR.MINOR.PATCH`
   or `vX.Y.Z`. A test (`internal/docs`) fails the build if a release file name
   carrying a real version reappears outside the changelogs.
+- **The look lives in `css/tokens.css`.** A rule uses isoshelf's names from there and never a colour, a shadow or a Primer name of its own; tests fail if it does (`internal/web/css_test.go`). Change the look by changing values there, and read `docs/design-system.md` first. `static/styleguide.html` shows every token and component in every theme: look at a change there.
 - Commit and push after each step; keep README and docs current.
 - Never stop or restart the maintainer's preview (port 8765) without asking; test downloads in a scratch folder.

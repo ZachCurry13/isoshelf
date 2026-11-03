@@ -624,7 +624,20 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.12 and older
+## From STATUS.md: releases v0.8.13 and older
+
+### v0.8.13 (2026-11-03)
+
+- **History is a timeline** of what arrived, what an update changed (one
+  event, "updated 7.12 → 7.13") and what left, newest first with dates
+  and sizes; **Usage is gone**, its system facts now under the version in
+  Settings. Worked out from the records already kept, nothing new stored
+  except `Origin.Replaced`.
+- Fixed on the way: a same-name update left an *empty* note about the old
+  file (no version, size or arrival).
+- **Next:** the catalog's second step (Fedora through groups, #6; discs;
+  AtlasOS unlisted; PikaOS, BigLinux and AnduinOS as downloads), then #4, #2,
+  #3, #5, #11, #12. The weekly task now merges its own catalog pull request.
 
 ### v0.8.12 (2026-10-26, and the days after)
 
