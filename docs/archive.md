@@ -624,7 +624,21 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.13 and older
+## From STATUS.md: releases v0.9.0 and older
+
+### v0.9.0 (2026-11-03)
+
+- **A new look, from Primer** (GitHub's design system), through one place: `css/primer.css`
+  (Primer's tokens, generated and pinned) -> `css/tokens.css` (isoshelf's names) ->
+  twenty component stylesheets that use only those names. Light, dark and the two
+  high-contrast themes; Higher contrast is now two Primer themes.
+- **Held in place by tests** (no raw colours, every name defined in every theme, the
+  style guide covers every stylesheet, the document names every token) and shown by
+  `/static/styleguide.html`. The whole story is `docs/design-system.md`.
+- **Not tokenised yet:** spacing and layout (see the end of that document).
+- **Next:** the catalog's second step (Fedora through groups, #6; discs; AtlasOS
+  unlisted; PikaOS, BigLinux, AnduinOS as downloads); a colour-blind-safe choice
+  under Look (Primer has the themes); then #4, #2, #3, #5, #11, #12.
 
 ### v0.8.13 (2026-11-03)
 

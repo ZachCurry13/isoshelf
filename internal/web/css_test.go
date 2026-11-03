@@ -47,7 +47,7 @@ func TestEveryTokenUsedIsDefined(t *testing.T) {
 }
 
 // primer.css has a block per theme, so a name can be defined in light and
-// missing in dark. Each of the four themes must define every Primer name the
+// missing in dark. Each of the twelve themes must define every Primer name the
 // page uses, or one of them (Higher contrast, say) loses a colour.
 func TestEveryThemeDefinesEveryPrimerName(t *testing.T) {
 	src := readStatic(t, "css/primer.css")

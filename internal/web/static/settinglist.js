@@ -173,6 +173,17 @@ const LOOK_SETTINGS = {
         ], look().theme || "", (theme) => ({ theme })),
       },
       {
+        name: "Status colours",
+        fields: ["colours"],
+        hint: "Colours that stay apart for the common kinds of colour blindness, instead of green and red.",
+        words: "accessibility colour color blind blindness colorblind red green protanopia deuteranopia tritanopia blue yellow status",
+        control: () => choiceRow("Status colours", [
+          ["", "Standard"],
+          ["colorblind", "Red-green colour blindness"],
+          ["tritanopia", "Blue-yellow colour blindness"],
+        ], look().colours || "", (colours) => ({ colours })),
+      },
+      {
         name: "Higher contrast",
         fields: ["high_contrast"],
         hint: "Bolder text and stronger borders, for a bright room or tired eyes.",

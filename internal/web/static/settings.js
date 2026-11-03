@@ -45,12 +45,15 @@ function applyAppearance(look) {
   set("data-theme", look.theme === "light" || look.theme === "dark", look.theme);
   set("data-contrast", look.high_contrast, "high");
   // The colours are Primer's themes, picked by three attributes: follow this
-  // computer or force one side, and which theme each side uses. Higher
-  // contrast is two more Primer themes rather than a set of overrides here.
+  // computer or force one side, and which theme each side uses. A theme is a
+  // side, a set of colours (ordinary, or one of Primer's two for colour
+  // blindness) and ordinary or high contrast, and Primer's names for the
+  // twelve are those three put together; internal/web/primer lists them.
+  const colours = look.colours === "colorblind" || look.colours === "tritanopia" ? "_" + look.colours : "";
   const hc = look.high_contrast ? "_high_contrast" : "";
   root.setAttribute("data-color-mode", look.theme === "light" || look.theme === "dark" ? look.theme : "auto");
-  root.setAttribute("data-light-theme", "light" + hc);
-  root.setAttribute("data-dark-theme", "dark" + hc);
+  root.setAttribute("data-light-theme", "light" + colours + hc);
+  root.setAttribute("data-dark-theme", "dark" + colours + hc);
   set("data-text", look.larger_text, "large");
   set("data-motion", look.reduce_motion, "reduce");
   try {

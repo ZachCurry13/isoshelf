@@ -13,7 +13,7 @@ its components.
 It was chosen over IBM Carbon, Microsoft Fluent 2 and Pico CSS (rough drafts of
 each were built from the real published code and looked at side by side) because
 it is documented end to end, its tokens are plain CSS variables, it is built for
-dense lists of things (which an inventory of files is), and it ships four themes
+dense lists of things (which an inventory of files is), and it ships the themes
 the page needed anyway - light, dark and two high-contrast ones. Material was
 set aside as a poor fit for a dense tool.
 
@@ -106,10 +106,18 @@ Three attributes on `<html>` pick the colours: `data-color-mode` (`auto`,
 `light` or `dark`; `auto` follows the computer), `data-light-theme` and
 `data-dark-theme`. `settings.js` sets them from the Look settings, and
 `index.html` carries the defaults so the page is right before any script runs.
-`primer.css` defines four themes: `light`, `dark`, `light_high_contrast` and
-`dark_high_contrast`.
+`primer.css` defines twelve themes: light or dark, with ordinary colours or one of
+Primer's two sets for colour blindness (`colorblind`, for red-green, and
+`tritanopia`, for blue-yellow), each ordinary or high contrast. Their names are
+those three put together: `light`, `dark_high_contrast`, `light_colorblind`,
+`dark_tritanopia_high_contrast` and so on. `settings.js` builds the name from the
+Theme, Status colours and Higher contrast choices; `internal/web/primer` lists
+them all.
 
-- **Higher contrast** selects the two high-contrast Primer themes. It also sets
+- **Status colours** selects a colour-blind set: red-green turns the greens into
+  blue and the reds into orange, so the statuses and the primary button no longer
+  depend on telling them apart.
+- **Higher contrast** selects the high-contrast version of whichever set is in use. It also sets
   `data-contrast="high"`, which `accessibility.css` uses for the one thing that
   is not a colour: every status goes back to being a filled chip, not a dot.
 - **Larger text** sets `data-text="large"`, which raises the root size from 14 to
@@ -175,7 +183,7 @@ If the new value is a different Primer token, say which in the table above.
 
 **Add a colour.** Add a name in `tokens.css` defined from a Primer token, add it
 to the table, then run `go run ./internal/web/primer/fetch` (the Primer token it
-uses has to be in `primer.css` for all four themes). Use the new name in the
+uses has to be in `primer.css` for every theme). Use the new name in the
 rule.
 
 **Look at a change.** Run isoshelf and open `/static/styleguide.html`. It shows
@@ -187,8 +195,9 @@ real files, with the theme, Larger text and the filled-status switch at the top.
 read the diff of `primer.css`, run the tests, and update the version in this
 document. If Primer renamed a token the tests say which.
 
-**Add a Primer theme** (it has colour-blind and dimmed ones): add a line to
-`primer.Themes`, run the fetch, and add the choice to Look in `settings.js`.
+**Add a Primer theme** (it also has a dimmed one): add it to `primer.Themes`, run the
+fetch, and add the choice to Look in `settings.js` and the setting behind it
+(`settings.Appearance`).
 
 **Add a component.** Put its rules in the stylesheet for the part of the page it
 belongs to, using tokens. If it is a new part, add a stylesheet (and its line in

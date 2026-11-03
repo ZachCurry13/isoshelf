@@ -65,6 +65,7 @@ type settingsRequest struct {
 	ArchiveAfter *int `json:"archive_after"`
 	// Appearance fields, one at a time like the rest.
 	Theme        *string `json:"theme"`
+	Colours      *string `json:"colours"`
 	HighContrast *bool   `json:"high_contrast"`
 	LargerText   *bool   `json:"larger_text"`
 	ReduceMotion *bool   `json:"reduce_motion"`
@@ -142,6 +143,9 @@ func (req settingsRequest) applyTo(current *settings.Settings) {
 	}
 	if req.Theme != nil {
 		current.Appearance.Theme = settings.CleanTheme(*req.Theme)
+	}
+	if req.Colours != nil {
+		current.Appearance.Colours = settings.CleanColours(*req.Colours)
 	}
 	if req.HighContrast != nil {
 		current.Appearance.HighContrast = *req.HighContrast
