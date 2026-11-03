@@ -388,8 +388,9 @@ alone is not an update.
   every entry live each Monday and on every pull request that changes the
   catalog; the weekly problems go into one `catalog` issue. A scheduled
   Claude task on the maintainer's own computer then works through the
-  `catalog` issues and the wish list and opens one pull request for the
-  maintainer to review. (It ran as a cloud routine until 2026-10-26, which
+  `catalog` issues and the wish list, opens one pull request, and (since
+  2026-11-03) merges it itself if it passes a written checklist, else leaves
+  it open for the maintainer with a comment saying why. (It ran as a cloud routine until 2026-10-26, which
   could not reach the projects' sites, so it never produced anything.)
 - Dependencies: `ci.yml` runs govulncheck on every change; `audit.yml`, every
   Monday, scans the code and the newest released program and keeps one
