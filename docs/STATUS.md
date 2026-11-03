@@ -14,8 +14,8 @@ four times in one evening. The releases page on GitHub is the answer, and
   change onto the folder's records rather than saving over them. Keeps a
   catalog that updates itself from this repository. Web page and CLI;
   Windows and Linux builds.
-- **Catalog:** 96 entries (67 downloadable, 11 update-check only, 18 link only),
-  revision `2026110302`. Checked live every Monday by
+- **Catalog:** 96 entries (68 downloadable, 10 update-check only, 18 link only),
+  revision `2026110303`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm
   Chicago, just after the maintainer's weekly usage resets;
@@ -253,8 +253,7 @@ keeps its item numbers, since decisions refer to them.
   for whoever has the link, not the first visitor; cookies are Secure on https;
   `ISOSHELF_TRUST_PROXY` tells visitors apart behind a proxy so a stranger's
   guesses don't lock out the owner. docs/docker.md has a tunnel section.
-- The catalog is still revision 2026110301: AnduinOS as a download and the plain
-  discs wait for v0.9.2 to have been out a while.
+- Catalog revision 2026110303: AnduinOS downloads and the plain discs are in.
 - **Next:** the download queue (#4, on branch `parallel-downloads`: two at once,
   never two from one server, a speed limit in Mbit/s that decides how many); the
   logo audit (item 9); then #2, #3, #5, #11, #12.

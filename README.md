@@ -264,8 +264,7 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** AnduinOS as a download, once the release that can pair its checksum
-with its image has been out a while; and more notes on where to find the images you fetch yourself.
+**Next:** more notes on where to find the images you fetch yourself.
 
 **Also planned:** [installing an older version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),

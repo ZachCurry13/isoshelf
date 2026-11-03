@@ -9,6 +9,17 @@ Every image here was checked against the project's own site before it went in.
 Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml);
 requests are looked at every Monday.
 
+## 2026-11-03 (second change)
+
+### Added
+- **AnduinOS** now downloads. Its checksum is a bare line with no file name, so
+  isoshelf takes the name from the pattern (isoshelf v0.9.2 and later; older
+  copies keep showing it as a check-only entry).
+
+### Changed
+- The six Ubuntu entries, the three Windows ones, NiceHash OS and AtlasOS show
+  the plain disc instead of initials.
+
 ## 2026-11-03
 
 ### Added

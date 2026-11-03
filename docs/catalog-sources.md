@@ -180,7 +180,7 @@ Nothing yet.
 ### Added 2026-10-05, check-only for now
 
 - **AnduinOS**: SHA-256 on its own site, but as a bare `SHA256: <hash>` line
-  with no file name. Still check-only; see 2026-11-03 below.
+  with no file name. Downloads since catalog revision 2026110303 (v0.9.2 pairs it with the image).
 - **PikaOS** and **BigLinux**: only MD5 checksums, which catch a broken
   download but not a changed one. Both sites refuse curl's default user
   agent with 403 but answer isoshelf's. The maintainer decided on 2026-10-05
@@ -227,17 +227,14 @@ Nothing yet.
   entry (`pikaos-other`): their ISOs answer, their checksums can't be fetched.
   BigLinux's `.iso.md5` files are on its own site, and agree with the
   MD5 printed on its download page.
-- **AnduinOS** stays check-only for now. Its page links the SHA-256 file but
-  not the image; the image is at `cf.anduinos.com/AnduinOS-<version>-amd64.iso`,
-  which the project's own "thank you" page gives, and a plain request gets it.
-  Pairing the two needs a file name taken from the pattern when the checksum
-  file names none, which isoshelf does from v0.9.2; it becomes a download once
-  that has been out a while.
+- **AnduinOS** downloads (2026-11-03): the SHA-256 file on its own site is a bare
+  `SHA256: <hash>` line and the image is at
+  `cf.anduinos.com/AnduinOS-<version>-amd64.iso`, which isoshelf pairs by taking
+  the file name from the pattern (v0.9.2).
 - AtlasOS is `unlisted`: recognized, not offered under Add images (item 8).
-- The plain disc (`icon = "disc"`) for Ubuntu (six entries), Windows (three),
-  NiceHash OS and AtlasOS waits for v0.9.2: a mask-drawn logo with no brand
-  colour was drawn in the tile's white text colour, invisible on a card, and
-  the catalog goes to every copy at once (TODO item 9).
+- The plain disc (`icon = "disc"`) is on Ubuntu (six entries), Windows (three),
+  NiceHash OS and AtlasOS (revision 2026110303), after v0.9.2 made it visible
+  on a card.
 - Sizes refreshed: Arch (its ISO is about 20% smaller than it was), openSUSE
   Tumbleweed and the two Home Assistant OS images.
 
