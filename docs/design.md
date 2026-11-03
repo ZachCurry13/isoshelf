@@ -116,8 +116,11 @@ Every catalog entry runs through four stages:
 2. **Resolver** (`internal/resolve`) - expands `{cycle}`/`{version}` templates,
    fetches the checksum manifest, finds the exact filename by regex (or, when
    there's no manifest or its name uses `{file}`, from the filename a listing
-   source already matched, else the directory index at `base`). A manifest
-   that redirects to another host is refused. Output:
+   source already matched, else the directory index at `base`; and since
+   v0.9.2, for a checksum file that names no file at all, the name the `file`
+   pattern spells out once the version is filled in, when it spells exactly
+   one - AnduinOS's page links the checksum but not the image, so nothing else
+   gives it). A manifest that redirects to another host is refused. Output:
    `Artifact{Filename, URLs, Size, Checksum}`.
 3. **Verifier** (`internal/verify`) - GNU (`hash  file`) and BSD
    (`SHA256 (file) = hash`) manifests, and since v0.8.10 a one-image file

@@ -14,6 +14,10 @@
   margin-top: 1px;
 }
 .logo.has-logo {
+  /* A logo with no brand colour (the plain disc) is drawn in the tile's text
+     colour, which for initials is white: invisible on a card. The muted colour
+     is what a mark with no identity of its own should be. */
+  color: var(--muted);
   background-color: var(--brand, currentColor);
   -webkit-mask: var(--logo) center / 22px 22px no-repeat;
   mask: var(--logo) center / 22px 22px no-repeat;
