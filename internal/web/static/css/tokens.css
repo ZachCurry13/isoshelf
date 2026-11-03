@@ -9,10 +9,11 @@
    name used anywhere is defined.
 
    The Primer names below are real; primer.css (generated, not edited) defines
-   them for four themes - light, dark, and the two high-contrast ones - and is
-   switched by three attributes on <html> that Settings sets:
-   data-color-mode (auto, light or dark), data-light-theme and data-dark-theme.
-   Higher contrast is not a set of overrides here but two more Primer themes. */
+   them for twelve themes - light or dark, ordinary or one of the two sets for
+   colour blindness, ordinary or high contrast - and is switched by three
+   attributes on <html> that Settings sets: data-color-mode (auto, light or
+   dark), data-light-theme and data-dark-theme. Higher contrast and the colour
+   sets are not overrides here but more Primer themes. */
 
 :root {
   /* Surfaces and text. The page and its cards are the same colour, told apart

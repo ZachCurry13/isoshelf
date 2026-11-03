@@ -161,3 +161,26 @@ func TestAContainerAsksOnceAboutUpdatingByItself(t *testing.T) {
 		t.Error("a desktop isoshelf asks about updating by itself")
 	}
 }
+
+// Status colours is one of three, and anything else a hand-edited settings file
+// might say becomes the standard colours rather than a theme nothing can draw.
+func TestStatusColoursAreOneOfThree(t *testing.T) {
+	s := newServer(t, testDirs(t), "")
+	for _, want := range []string{settings.ColoursRedGreen, settings.ColoursBlueYellow, settings.ColoursStandard} {
+		got := decode[stateJSON](t, request(t, s, http.MethodPost, "/api/settings", map[string]any{"colours": want}))
+		if got.Appearance.Colours != want {
+			t.Errorf("asked for %q, the page is told %q", want, got.Appearance.Colours)
+		}
+	}
+	request(t, s, http.MethodPost, "/api/settings", map[string]any{"colours": settings.ColoursRedGreen})
+	got := decode[stateJSON](t, request(t, s, http.MethodPost, "/api/settings", map[string]any{"colours": "neon"}))
+	if got.Appearance.Colours != settings.ColoursStandard {
+		t.Errorf("an unknown colour set became %q, want the standard colours", got.Appearance.Colours)
+	}
+	// The others survive it, and a reset puts it back.
+	request(t, s, http.MethodPost, "/api/settings", map[string]any{"colours": settings.ColoursBlueYellow, "high_contrast": true})
+	got = decode[stateJSON](t, request(t, s, http.MethodPost, "/api/settings", map[string]any{"reset": true}))
+	if got.Appearance.Colours != settings.ColoursStandard || got.Appearance.HighContrast {
+		t.Errorf("after a reset the appearance is %+v", got.Appearance)
+	}
+}

@@ -6,6 +6,15 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.9.1] - 2026-11-03
+
+### Added
+- **Status colours, in Settings under Look**: colours chosen to stay apart for the
+  common kinds of colour blindness, from Primer's own colour-blind themes. *Red-green*
+  turns the greens into blue and the reds into orange (and the green button blue);
+  *blue-yellow* is the other set. They work with light, dark and Higher contrast.
+  Before this, a status was told apart from the next mostly by green and red.
+
 ## [v0.9.0] - 2026-11-03
 
 ### Changed

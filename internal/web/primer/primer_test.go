@@ -88,3 +88,27 @@ func TestParseRefusesWhatItDoesNotUnderstand(t *testing.T) {
 		t.Error("an unclosed block was accepted")
 	}
 }
+
+// settings.js builds theme names from the same three choices; these are the
+// ones Primer actually publishes, so a typo here is a missing theme there.
+func TestThemesAreEveryCombinationUnderPrimersOwnNames(t *testing.T) {
+	want := map[string]File{
+		"light":                          "functional/themes/light",
+		"dark_high_contrast":             "functional/themes/dark-high-contrast",
+		"light_colorblind":               "functional/themes/light-colorblind",
+		"dark_colorblind_high_contrast":  "functional/themes/dark-colorblind-high-contrast",
+		"light_tritanopia_high_contrast": "functional/themes/light-tritanopia-high-contrast",
+	}
+	got := map[string]File{}
+	for _, th := range Themes {
+		got[th.Name] = th.File
+	}
+	if len(Themes) != 12 || len(got) != 12 {
+		t.Errorf("%d themes (%d distinct), want 12", len(Themes), len(got))
+	}
+	for name, file := range want {
+		if got[name] != file {
+			t.Errorf("theme %s is %q, want %q", name, got[name], file)
+		}
+	}
+}

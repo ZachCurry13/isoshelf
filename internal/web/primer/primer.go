@@ -32,22 +32,43 @@ func (f File) URL() string {
 	return fmt.Sprintf("https://cdn.jsdelivr.net/npm/@primer/primitives@%s/dist/css/%s.css", Version, f)
 }
 
-// Theme is one of Primer's colour themes, kept under its own name. These four
-// are what Settings can ask for: light and dark, and the two high-contrast
-// ones, which is what Higher contrast now means. Primer also has colour-blind
-// and dimmed themes; adding one is a line here and a line in settings.js.
+// Theme is one of Primer's colour themes, kept under its own name. What
+// Settings can ask for is every combination of three things: light or dark
+// (the page needs both, to follow the computer), the colours (ordinary, or the
+// two sets Primer makes for colour blindness), and ordinary or high contrast.
+// Primer also has a dimmed theme; it is not offered.
 type Theme struct {
 	// Name is the value of data-light-theme or data-dark-theme.
 	Name string
 	File File
 }
 
-// Themes are the colour themes shipped.
-var Themes = []Theme{
-	{"light", "functional/themes/light"},
-	{"dark", "functional/themes/dark"},
-	{"light_high_contrast", "functional/themes/light-high-contrast"},
-	{"dark_high_contrast", "functional/themes/dark-high-contrast"},
+// Colours are the colour sets Settings offers, as Primer names them: the empty
+// one is ordinary, "colorblind" is for red-green colour blindness (protanopia
+// and deuteranopia) and "tritanopia" is for blue-yellow.
+var Colours = []string{"", "colorblind", "tritanopia"}
+
+// Themes are the colour themes shipped: twelve, from the combinations above.
+// settings.js builds the same names from the same three choices.
+var Themes = themes()
+
+func themes() []Theme {
+	var out []Theme
+	for _, side := range []string{"light", "dark"} {
+		for _, colours := range Colours {
+			for _, contrast := range []bool{false, true} {
+				name, file := side, "functional/themes/"+side
+				if colours != "" {
+					name, file = name+"_"+colours, file+"-"+colours
+				}
+				if contrast {
+					name, file = name+"_high_contrast", file+"-high-contrast"
+				}
+				out = append(out, Theme{name, File(file)})
+			}
+		}
+	}
+	return out
 }
 
 // Base are the files of tokens that do not change with the theme: radii and

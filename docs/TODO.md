@@ -58,12 +58,8 @@ wrongness that costs trust once somebody notices.
    a column. Worded as what it is: "the project documents these as the live
    session's defaults", never as something isoshelf found out.
 
-20. **Two things the new look left open** (v0.9.0; `docs/design-system.md` says why).
-    **A colour-blind-safe choice under Look**: Primer ships `light_colorblind` and
-    `dark_colorblind` themes, which is a line in `primer.Themes`, a run of the fetch
-    command, and one setting (a Go field, the settings request, `settings.js`) -
-    worth doing because the status colours lean on green and red. **Spacing as
-    tokens**: paddings and gaps are numbers in the stylesheets; Primer has a scale,
+20. **Spacing as tokens** (what v0.9.0's new look left open; `docs/design-system.md`
+    says why). Paddings and gaps are numbers in the stylesheets; Primer has a scale,
     but moving every rule onto it nudges a hundred of them by a pixel or two, so it
     waits until somebody wants to change the density of the page.
 
