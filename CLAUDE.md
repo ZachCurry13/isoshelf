@@ -97,7 +97,13 @@ people have downloaded. Work never happens directly on it.
   `-mode=binary <file>` for a released program.
 - **Claude applies by itself only a patch or minor update that fixes a known
   hole, on a branch, and never merges or releases**: that is the
-  maintainer's call. Everything else (a major version, a base image or Go
+  maintainer's call. **One exception, decided 2026-11-03: the weekly catalog
+  task reviews and merges its own catalog pull request** when it passes the
+  checklist in its instructions (checks green, only catalog files changed,
+  nothing left for a decision, checksums on the project's own domain, no
+  field a released isoshelf can't read); otherwise it leaves it open with a
+  comment saying which item held it back. It never tags, releases, or merges
+  anything else. Everything else (a major version, a base image or Go
   line jump, anything that changes behaviour) is reported in plain words:
   what changed and why it matters. One whose tests fail is closed, not
   forced. **Never "roll back" with `git checkout` or
