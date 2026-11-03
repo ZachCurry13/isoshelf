@@ -56,3 +56,19 @@ func TestExpandRegexp(t *testing.T) {
 		}
 	}
 }
+
+func TestLiteralFileIsAPatternThatNamesOneFile(t *testing.T) {
+	vars := map[string]string{"version": "2.0.5"}
+	if got, ok := LiteralFile(`Example-{version}-amd64\.iso`, vars); !ok || got != "Example-2.0.5-amd64.iso" {
+		t.Errorf("got %q, %v", got, ok)
+	}
+	// A group around a literal is still one file.
+	if got, ok := LiteralFile(`Example-{version}-(?P<arch>amd64)\.iso`, vars); !ok || got != "Example-2.0.5-amd64.iso" {
+		t.Errorf("a group around a literal: got %q, %v", got, ok)
+	}
+	for _, tmpl := range []string{`Example-{version}-(?:amd64|arm64)\.iso`, `Example-{version}-[a-z]+\.iso`, `Example-{nope}\.iso`} {
+		if got, ok := LiteralFile(tmpl, vars); ok {
+			t.Errorf("%s is not one file, but gave %q", tmpl, got)
+		}
+	}
+}

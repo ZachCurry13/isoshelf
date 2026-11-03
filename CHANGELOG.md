@@ -6,6 +6,20 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.9.2] - 2026-11-03
+
+### Fixed
+- **An image the project's page doesn't list can still be downloaded when its
+  checksum names no file.** AnduinOS publishes a bare `SHA256: <hash>` and its
+  page links that file but not the image; when the file name follows from the
+  version alone (and only then), isoshelf now takes it from the catalog's
+  pattern. A checksum file that names other files but not this one is still
+  refused, as before. This is what lets the catalog offer AnduinOS to
+  download, once copies have this.
+- **A logo with no colour of its own was drawn white**, which is invisible on a
+  card in the light theme. It is drawn in the muted text colour now. Nothing
+  uses one yet; the plain disc for Ubuntu, Windows, NiceHash OS and AtlasOS will.
+
 ## [v0.9.1] - 2026-11-03
 
 ### Added

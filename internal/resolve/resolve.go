@@ -115,6 +115,15 @@ func Resolve(ctx context.Context, client *remote.Client, e *catalog.Entry, rel *
 			if name := path.Base(rel.Matched); a.Filename == "" && rel.Matched != "" && fileRE.MatchString(name) {
 				a.Filename = name
 			}
+			// Or, when the listing only matched the checksum file, to the name the
+			// pattern itself spells out once the version is filled in. Only for a
+			// checksum file that names no file at all: one that names others and
+			// leaves this one out has told us something.
+			if a.Filename == "" && !anyNamed(checksums) {
+				if name, ok := catalog.LiteralFile(spec.File, vars); ok {
+					a.Filename = name
+				}
+			}
 			if a.Filename == "" {
 				return nil, fmt.Errorf("no file matching %q in %s", fileRE, manifestURL)
 			}
@@ -187,4 +196,14 @@ func newest(names []string, re *regexp.Regexp) string {
 		}
 	}
 	return best
+}
+
+// anyNamed reports whether any line of a checksum file says which file it is for.
+func anyNamed(checksums []verify.Checksum) bool {
+	for _, c := range checksums {
+		if c.Name != "" {
+			return true
+		}
+	}
+	return false
 }

@@ -101,3 +101,21 @@ func FileGroups(file string) []string {
 	}
 	return names
 }
+
+// LiteralFile returns the file name a pattern spells out, when it is not a
+// pattern at all once its placeholders are filled in: a name that follows from
+// the version alone, like AnduinOS-{version}-amd64.iso. It is how a checksum
+// file that names no file (v0.8.10) can still be paired with one, when the
+// project's own page doesn't list the image to read the name from.
+func LiteralFile(tmpl string, vars map[string]string) (string, bool) {
+	expr, err := expand(tmpl, vars, regexp.QuoteMeta)
+	if err != nil {
+		return "", false
+	}
+	re, err := regexp.Compile(expr)
+	if err != nil {
+		return "", false
+	}
+	name, complete := re.LiteralPrefix()
+	return name, complete && name != ""
+}

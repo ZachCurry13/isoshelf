@@ -656,7 +656,14 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.9.0 and older
+## From STATUS.md: releases v0.9.1 and older
+
+### v0.9.1 (2026-11-03)
+
+- **Status colours** under Look: Primer's two colour-blind sets (red-green and
+  blue-yellow), each with light, dark and high contrast, so `primer.css` now has twelve
+  themes. Green and red no longer carry the statuses for people who can't tell them
+  apart. One Go field, one request field, one control; the rest was Primer's.
 
 ### v0.9.0 (2026-11-03)
 
