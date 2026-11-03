@@ -371,7 +371,7 @@ alone is not an update.
   sample filename matches exactly one entry. Every problem is reported at once.
 - Scope: the sample drive is only an example. The default catalog should cover
   common and trending images (desktop, server/homelab, rescue tools), so users
-  can add images that aren't on their target yet. It has 93 entries: the
+  can add images that aren't on their target yet. It has 96 entries: the
   sample drive, the maintainer's Proxmox folder, the images people ask for
   first, and what people are talking about. Anything worth knowing goes in,
   even when isoshelf can't download it: an entry with only a page link still
@@ -379,9 +379,11 @@ alone is not an update.
   checking each one live before it goes in.
   Why each entry is set up the way it is, and the wish list:
   `docs/catalog-sources.md`.
-- A few entries pin a release number in their URLs because nothing else gives
-  the version their checksum file is named after (Fedora). Those need raising
-  by hand each release; `docs/catalog-sources.md` lists them.
+- A few entries write a release number into a file name because nothing gives
+  it (PikaOS's "4.0"). If the project moves on, the Monday check says so;
+  `docs/catalog-sources.md` lists them. Fedora used to be one (#6) and follows
+  its newest release now, through the endoflife source and a named group in
+  the file pattern.
 - Every catalog URL is the final address: tests can't replay redirects, and a
   checksum file that redirects to another host is refused.
 - Maintenance (since 2026-09-18): `.github/workflows/catalog-check.yml` checks

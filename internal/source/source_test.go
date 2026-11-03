@@ -48,7 +48,7 @@ func TestLatestRecorded(t *testing.T) {
 		{"centos-7-i386-minimal", "7 (2009)", "7", ""},
 		{"netbootxyz", "3.0.3", "", "3.0.3"},
 		{"netbootxyz-multiarch", "3.0.3", "", "3.0.3"},
-		{"bazzite-deck-gnome", "44.20260929", "", "44.20260929"},
+		{"bazzite-deck-gnome", "44.20261026", "", "44.20261026"},
 		{"popos-2204-intel", "58", "", ""},
 		{"cachyos-desktop", "260809", "", ""},
 		{"manjaro-xfce", "26.1.0", "", ""},

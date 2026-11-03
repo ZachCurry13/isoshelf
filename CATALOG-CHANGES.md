@@ -9,6 +9,32 @@ Every image here was checked against the project's own site before it went in.
 Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml);
 requests are looked at every Monday.
 
+## 2026-11-03
+
+### Added
+- **BigLinux** now downloads, in three entries, one for each kernel the project
+  publishes (Linux 6.12, 6.18 and 7.2). The checksum is an MD5 from BigLinux's
+  own site: it catches a broken download but not a changed one, so isoshelf
+  checks it, never calls it verified, and never lets it replace anything.
+- **PikaOS KDE** downloads the same way. The project's other editions (GNOME,
+  COSMIC, Hyprland and the NVIDIA ones) stay one entry that checks for
+  updates and links to the download, because the project's server won't hand
+  their checksums to a program.
+
+### Changed
+- **Fedora** (Workstation and KDE) follows its newest release by itself. Until
+  now the release number was written into the catalog and had to be raised by
+  hand when Fedora 45 came out. A copy that already has a Fedora image now
+  sees its version as the release (`44`), not the build (`44-1.7`).
+- **AtlasOS** is still recognized if you have its file, but no longer offered
+  under Add images: the project moved from handing out modified Windows images
+  to a playbook you apply to your own Windows.
+- **Download sizes** brought up to date for Arch (its ISO is about 20% smaller
+  than it was), openSUSE Tumbleweed and the two Home Assistant OS images.
+- **PikaOS** is no longer one entry for every edition: an update downloads one
+  particular file, so each edition that downloads has its own.
+
+
 ## 2026-10-26
 
 ### Added

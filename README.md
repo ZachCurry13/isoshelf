@@ -216,7 +216,7 @@ it keeps itself current from this repository, so new images don't wait for a
 new release. You can also keep your own catalog file, which isoshelf then
 leaves alone.
 
-It currently knows **93 images**, grouped by what they're for:
+It currently knows **96 images**, grouped by what they're for:
 
 - **Desktop:** Ubuntu, Kubuntu and Xubuntu, Linux Mint and LMDE, Debian and
   Debian Live, Fedora, Arch, Omarchy, EndeavourOS, openSUSE Tumbleweed,
@@ -260,11 +260,10 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** [Fedora following its newest release by
-itself](https://github.com/ZachCurry13/isoshelf/issues/6), now that isoshelf can
-name its checksum; logos only where each project's own rules allow them, with
-a plain disc otherwise; and more notes on where to find the images you fetch
-yourself.
+**Next:** checking the rest of the logos against each project's own rules, with
+a plain disc where they don't allow one; AnduinOS as a download, once the
+release that can pair its checksum with its image has been out a while; and
+more notes on where to find the images you fetch yourself.
 
 **Also planned:** [two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
 [installing an older version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
@@ -275,7 +274,7 @@ themselves](https://github.com/ZachCurry13/isoshelf/issues/5).
 **1.0:** an official TrueNAS app, so it installs from the store rather than as
 a custom app.
 
-**Ongoing:** more images in the catalog. 93 so far; the wish list is in
+**Ongoing:** more images in the catalog. 96 so far; the wish list is in
 [docs/catalog-sources.md](docs/catalog-sources.md), and requests go through
 [the catalog form](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
 

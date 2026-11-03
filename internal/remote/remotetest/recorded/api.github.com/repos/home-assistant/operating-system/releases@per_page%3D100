@@ -2,6 +2,266 @@
   {
     "assets": [
       {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_generic-aarch64-18.5.rc1.img.xz",
+        "digest": "sha256:61625fd49065c879f0b036777fbc11c24ba34608fff3a9bfc511fccff7830545",
+        "name": "haos_generic-aarch64-18.5.rc1.img.xz",
+        "size": 356774932
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_generic-aarch64-18.5.rc1.qcow2.xz",
+        "digest": "sha256:14a7377429ac4a0bb52dce4fa449ba5834d6dfef25a06500b7fd02960323a8a7",
+        "name": "haos_generic-aarch64-18.5.rc1.qcow2.xz",
+        "size": 356779652
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_generic-aarch64-18.5.rc1.vdi.zip",
+        "digest": "sha256:8011d44cdc2d128de961fbf11ded93b6e00019e7f156bb80962d3b11b5a4395b",
+        "name": "haos_generic-aarch64-18.5.rc1.vdi.zip",
+        "size": 399839402
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_generic-aarch64-18.5.rc1.vmdk.zip",
+        "digest": "sha256:f485c6ebbe418f6ede64baf89936bcb4accbf9edc1fa5e758f66768bb69c837a",
+        "name": "haos_generic-aarch64-18.5.rc1.vmdk.zip",
+        "size": 399843586
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_generic-x86-64-18.5.rc1.img.xz",
+        "digest": "sha256:01bc0bba85968a60960a2d47489b6ad63938b6a19f8d69bea2410618ba0dbcef",
+        "name": "haos_generic-x86-64-18.5.rc1.img.xz",
+        "size": 563903048
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_green-18.5.rc1.img.xz",
+        "digest": "sha256:638336c96dd9554f9e176e4bffcc20387b2e7ef7b2f2135d5a4fc89d5a2dce49",
+        "name": "haos_green-18.5.rc1.img.xz",
+        "size": 344912748
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_khadas-vim3-18.5.rc1.img.xz",
+        "digest": "sha256:f8209332e338fec78f43da4f515872ee65f4463e070fe0702c1ea50f066388d4",
+        "name": "haos_khadas-vim3-18.5.rc1.img.xz",
+        "size": 306583864
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_odroid-c2-18.5.rc1.img.xz",
+        "digest": "sha256:8985366f968a59659a2c7eb1b88e40d4bcc52e563923e1dd3936f28bcddd8fe2",
+        "name": "haos_odroid-c2-18.5.rc1.img.xz",
+        "size": 306876688
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_odroid-c4-18.5.rc1.img.xz",
+        "digest": "sha256:d9177d2e31fd4c7a809181a4f658efe96b98e8d9084bf13b5881c1f541e80f8d",
+        "name": "haos_odroid-c4-18.5.rc1.img.xz",
+        "size": 307014100
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_odroid-m1-18.5.rc1.img.xz",
+        "digest": "sha256:db172e7e660aeb58275ae45be6259040a30784cb9175c82f78d423414373d492",
+        "name": "haos_odroid-m1-18.5.rc1.img.xz",
+        "size": 344777292
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_odroid-m1s-18.5.rc1.img.xz",
+        "digest": "sha256:80580a56bb5b73a9eb49f399bff2ffd790b03209117f38f95b73f84b13531170",
+        "name": "haos_odroid-m1s-18.5.rc1.img.xz",
+        "size": 344786028
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_odroid-n2-18.5.rc1.img.xz",
+        "digest": "sha256:83ca11a7907016d61d0671db01687058ffdcf73778a0e90b0ef5f539c5966e5f",
+        "name": "haos_odroid-n2-18.5.rc1.img.xz",
+        "size": 307102984
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_ova-18.5.rc1.qcow2.xz",
+        "digest": "sha256:0a92221282bcd1b1e59dd1daa76db2a0180d79d5df7ad42ee181adcecae11df9",
+        "name": "haos_ova-18.5.rc1.qcow2.xz",
+        "size": 533814104
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_ova-18.5.rc1.vdi.zip",
+        "digest": "sha256:691ca2f3e503e1636ec6a77d77358d51283b1461be96821bba0992410297d2d6",
+        "name": "haos_ova-18.5.rc1.vdi.zip",
+        "size": 589400949
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_ova-18.5.rc1.vhdx.zip",
+        "digest": "sha256:e28e8f17e7ac45a076b85210f7bf1f226524ebff9a58b130c11275342ba89fb0",
+        "name": "haos_ova-18.5.rc1.vhdx.zip",
+        "size": 589644900
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_ova-18.5.rc1.vmdk.zip",
+        "digest": "sha256:ec6a46c0a1f6bce55d32702141481e0b11dd4be806fb387c4a2cd2ffa5b22b93",
+        "name": "haos_ova-18.5.rc1.vmdk.zip",
+        "size": 589439490
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_rpi3-64-18.5.rc1.img.xz",
+        "digest": "sha256:44786b2fd4f4c8934b9f3bb4f756683c6b436f3b1484762f01b0248ae5b80ca6",
+        "name": "haos_rpi3-64-18.5.rc1.img.xz",
+        "size": 320661768
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_rpi4-64-18.5.rc1.img.xz",
+        "digest": "sha256:5b32ffcc58417f33f409c8195c7a1e96d5d9dcf2b5606132fdf0edace3c75a05",
+        "name": "haos_rpi4-64-18.5.rc1.img.xz",
+        "size": 332065944
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_rpi5-64-18.5.rc1.img.xz",
+        "digest": "sha256:52aac6070d11ec7aea3131ab68a51f553d3852472ba3a4e545f8c533403f5ebd",
+        "name": "haos_rpi5-64-18.5.rc1.img.xz",
+        "size": 342242580
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.5.rc1/haos_yellow-18.5.rc1.img.xz",
+        "digest": "sha256:69efe742759ea2dacc10950e7af3b44de5764383def094165c99f8c90ff3b68b",
+        "name": "haos_yellow-18.5.rc1.img.xz",
+        "size": 331334272
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/18.5.rc1",
+    "name": "Home Assistant OS 18.5.rc1",
+    "prerelease": true,
+    "published_at": "2026-11-03T13:30:09Z",
+    "tag_name": "18.5.rc1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_generic-aarch64-18.4.img.xz",
+        "digest": "sha256:16580d8baad9eae15e6e912a044526bed885cb8037cd0d426946bc03e1c0267b",
+        "name": "haos_generic-aarch64-18.4.img.xz",
+        "size": 343421420
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_generic-aarch64-18.4.qcow2.xz",
+        "digest": "sha256:1616dd368542591f7b144fc4b21fae51c8d1d23b4545a5b3904011d11ed724a3",
+        "name": "haos_generic-aarch64-18.4.qcow2.xz",
+        "size": 343413556
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_generic-aarch64-18.4.vdi.zip",
+        "digest": "sha256:f38dc9881c31d812c62e7b3ec826420474cc1c08c63dac85f8e45a11b3d4533d",
+        "name": "haos_generic-aarch64-18.4.vdi.zip",
+        "size": 386555668
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_generic-aarch64-18.4.vmdk.zip",
+        "digest": "sha256:c214d0e0e56a2adf7df3bb817fbd5e76f33f24efb4e3c91bbdcee9e199d839cf",
+        "name": "haos_generic-aarch64-18.4.vmdk.zip",
+        "size": 386564329
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_generic-x86-64-18.4.img.xz",
+        "digest": "sha256:6923ed7407511dc37119a00199575411d93f144fe83f276e7b595fe04acb561c",
+        "name": "haos_generic-x86-64-18.4.img.xz",
+        "size": 538830908
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_green-18.4.img.xz",
+        "digest": "sha256:b5d9a4869a9c70a9d87946f8ba90c72b0a42b393404fa8bf82e161452b8c6aba",
+        "name": "haos_green-18.4.img.xz",
+        "size": 331564644
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_khadas-vim3-18.4.img.xz",
+        "digest": "sha256:32569b9b3a12e6fd50fb6836c3f10102ca905ccf725a3697e0a7dadc9e9a325d",
+        "name": "haos_khadas-vim3-18.4.img.xz",
+        "size": 293325796
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_odroid-c2-18.4.img.xz",
+        "digest": "sha256:e3aaa8194e35b5b8ffd682c52f15b14191443623720b8682139471d69213971c",
+        "name": "haos_odroid-c2-18.4.img.xz",
+        "size": 293617312
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_odroid-c4-18.4.img.xz",
+        "digest": "sha256:bd1712fe0e554d06c8bae561b7bbc4171ae0178741416146dd8dfdd47e0544b4",
+        "name": "haos_odroid-c4-18.4.img.xz",
+        "size": 293762420
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_odroid-m1-18.4.img.xz",
+        "digest": "sha256:c34569b74a6a3324eb9f287fd6d5bb418ddc8c377726f8c6b83faf573cf7a881",
+        "name": "haos_odroid-m1-18.4.img.xz",
+        "size": 331422300
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_odroid-m1s-18.4.img.xz",
+        "digest": "sha256:e9a130af8efd01787a29fbfd04217d4c535f9ec8041b7cfa6459e30b42d9638a",
+        "name": "haos_odroid-m1s-18.4.img.xz",
+        "size": 331435520
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_odroid-n2-18.4.img.xz",
+        "digest": "sha256:ff6b5fb01aa5e20837be5a7fc9455af794340c32a5c2749a14fd30f4b9ea46e9",
+        "name": "haos_odroid-n2-18.4.img.xz",
+        "size": 293751180
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_ova-18.4.qcow2.xz",
+        "digest": "sha256:756ec485b1b153099ca53e88a5eebd63a801d56b791afe5c6d63ef94a35dc02d",
+        "name": "haos_ova-18.4.qcow2.xz",
+        "size": 508539728
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_ova-18.4.vdi.zip",
+        "digest": "sha256:e46c3b9bcf437ff56e5905b29e92ebaef4a50dac376eb8d919c29fbcea33b7be",
+        "name": "haos_ova-18.4.vdi.zip",
+        "size": 560370635
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_ova-18.4.vhdx.zip",
+        "digest": "sha256:ab49fec41536c49fb7ca23db0a383f1e6b6078ac3e1a169a177cc8ec58641993",
+        "name": "haos_ova-18.4.vhdx.zip",
+        "size": 560616192
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_ova-18.4.vmdk.zip",
+        "digest": "sha256:4dfe00b33f984e15413df992d5f4b74ac6049a3e19cd317ef069ef0842aec200",
+        "name": "haos_ova-18.4.vmdk.zip",
+        "size": 560388845
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_rpi3-64-18.4.img.xz",
+        "digest": "sha256:64363bb8c0d50c16ca7d23dfff0c752a759bb84a1af9b6b6ec0ad81dcf4cd647",
+        "name": "haos_rpi3-64-18.4.img.xz",
+        "size": 306911304
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_rpi4-64-18.4.img.xz",
+        "digest": "sha256:fdb498a0f48df4eb7767a34a2b5e61802efb7a3c9d2702cebaa1fec57235efff",
+        "name": "haos_rpi4-64-18.4.img.xz",
+        "size": 318286368
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_rpi5-64-18.4.img.xz",
+        "digest": "sha256:074db4345010e58d45748abcc26999659526f24d62cd729deb687accadbd41f7",
+        "name": "haos_rpi5-64-18.4.img.xz",
+        "size": 328339908
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4/haos_yellow-18.4.img.xz",
+        "digest": "sha256:589ef1638d78956cdf4deb15daa8286731232e75a0440077e8e0b2cf480579e6",
+        "name": "haos_yellow-18.4.img.xz",
+        "size": 317571360
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/18.4",
+    "name": "Home Assistant OS 18.4",
+    "prerelease": false,
+    "published_at": "2026-10-27T12:42:15Z",
+    "tag_name": "18.4"
+  },
+  {
+    "assets": [
+      {
         "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.4.rc2/haos_generic-aarch64-18.4.rc2.img.xz",
         "digest": "sha256:0e25d3550b2900851392259900b4dd6e6ae7b839fb27fb4b90cecfc398a42e6a",
         "name": "haos_generic-aarch64-18.4.rc2.img.xz",
@@ -1042,136 +1302,6 @@
   {
     "assets": [
       {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_generic-aarch64-18.1.rc1.img.xz",
-        "digest": "sha256:93261c811fe02bb0ff9d30a04cff8d6ecea1dcf0ef330bb08000c84f32c2989b",
-        "name": "haos_generic-aarch64-18.1.rc1.img.xz",
-        "size": 359785540
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_generic-aarch64-18.1.rc1.qcow2.xz",
-        "digest": "sha256:941b45ba5d001a3f156eff93573070058ae2d6b8189b0bb739d0d15f078de7bf",
-        "name": "haos_generic-aarch64-18.1.rc1.qcow2.xz",
-        "size": 359169120
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_generic-aarch64-18.1.rc1.vdi.zip",
-        "digest": "sha256:8fb1a39ef8530f04d315d092b9b141ad5ca565e11d3b7e80b4620e36342a04eb",
-        "name": "haos_generic-aarch64-18.1.rc1.vdi.zip",
-        "size": 397445552
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_generic-aarch64-18.1.rc1.vmdk.zip",
-        "digest": "sha256:65e4a15d95543f2dec5fde5bb69f0a7f804c2a33e4a3d3e5782d34e0463eabc4",
-        "name": "haos_generic-aarch64-18.1.rc1.vmdk.zip",
-        "size": 397446302
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_generic-x86-64-18.1.rc1.img.xz",
-        "digest": "sha256:902e8f865a57f58ea594d5278d43dc7179b458383d9c44a47c6c67b13b569eff",
-        "name": "haos_generic-x86-64-18.1.rc1.img.xz",
-        "size": 578587276
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_green-18.1.rc1.img.xz",
-        "digest": "sha256:2e74002b2ca6781c710679831d191829c7b11804d20fdf723bc6a9b978d739d2",
-        "name": "haos_green-18.1.rc1.img.xz",
-        "size": 349703504
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_khadas-vim3-18.1.rc1.img.xz",
-        "digest": "sha256:f844aef80b680d955755c7dc6240f5429ee246d722b49e010664caac49b1ff95",
-        "name": "haos_khadas-vim3-18.1.rc1.img.xz",
-        "size": 311229344
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_odroid-c2-18.1.rc1.img.xz",
-        "digest": "sha256:ec056f4ff3f740d0cfdd40506efedde93b45faf54e371b3e2fc29242ffc11814",
-        "name": "haos_odroid-c2-18.1.rc1.img.xz",
-        "size": 311033244
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_odroid-c4-18.1.rc1.img.xz",
-        "digest": "sha256:e1f5f9345647f8310987a248e9d4ed53b1cba47ed80cee2eb6d5dc91cbeccc77",
-        "name": "haos_odroid-c4-18.1.rc1.img.xz",
-        "size": 311394580
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_odroid-m1-18.1.rc1.img.xz",
-        "digest": "sha256:2275477fcefa227d97c945cc2a47bbb98a3432ab42ed84ab4787ad3e4d17469c",
-        "name": "haos_odroid-m1-18.1.rc1.img.xz",
-        "size": 349697788
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_odroid-m1s-18.1.rc1.img.xz",
-        "digest": "sha256:8044fd086867b86c1d8828f383d718d0d1daeb89e92934354c126b9c0fcf68c3",
-        "name": "haos_odroid-m1s-18.1.rc1.img.xz",
-        "size": 349788096
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_odroid-n2-18.1.rc1.img.xz",
-        "digest": "sha256:38727071de47404d968f83518b7209d5f4475542742fac31a26ca8038f3df848",
-        "name": "haos_odroid-n2-18.1.rc1.img.xz",
-        "size": 311489644
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_ova-18.1.rc1.qcow2.xz",
-        "digest": "sha256:7c5de564a9a622c7d38191a04b360a54cf05ebc173de9872d8a915f36193fa22",
-        "name": "haos_ova-18.1.rc1.qcow2.xz",
-        "size": 534840412
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_ova-18.1.rc1.vdi.zip",
-        "digest": "sha256:4eedd246841c991b29dae86c8f913a261e4225d6f7bc6ef432278faaaf17b873",
-        "name": "haos_ova-18.1.rc1.vdi.zip",
-        "size": 620929045
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_ova-18.1.rc1.vhdx.zip",
-        "digest": "sha256:92950c76fda4453477cdc11cac41b0c22addc4e061beb5e6df37ce3605f15379",
-        "name": "haos_ova-18.1.rc1.vhdx.zip",
-        "size": 621188793
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_ova-18.1.rc1.vmdk.zip",
-        "digest": "sha256:bdcd7844fe9c97e49ecf25a66092ffe2d6051bfef774caf6a78f451fa990ea52",
-        "name": "haos_ova-18.1.rc1.vmdk.zip",
-        "size": 620955431
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_rpi3-64-18.1.rc1.img.xz",
-        "digest": "sha256:99b7eb3240105f2b0bb366d5469bbb480c32cb4b0c8fea33576e93444e0eb840",
-        "name": "haos_rpi3-64-18.1.rc1.img.xz",
-        "size": 325107944
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_rpi4-64-18.1.rc1.img.xz",
-        "digest": "sha256:4f811abfe1bd6ab9f73878964f793bd64611d69c654c52457f21fbba0189f270",
-        "name": "haos_rpi4-64-18.1.rc1.img.xz",
-        "size": 335878996
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_rpi5-64-18.1.rc1.img.xz",
-        "digest": "sha256:e7a8a0d3d8134398367a89bb85676eeb20e9dcdd5b006e8d2d5a3e4269adec07",
-        "name": "haos_rpi5-64-18.1.rc1.img.xz",
-        "size": 347117768
-      },
-      {
-        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.1.rc1/haos_yellow-18.1.rc1.img.xz",
-        "digest": "sha256:60d09d5a7aebf4f8443223b1f447e1ccad54f734a3f349240bfa624862cb63ce",
-        "name": "haos_yellow-18.1.rc1.img.xz",
-        "size": 335085904
-      }
-    ],
-    "draft": false,
-    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/18.1.rc1",
-    "name": "Home Assistant OS 18.1.rc1",
-    "prerelease": true,
-    "published_at": "2026-06-29T21:30:51Z",
-    "tag_name": "18.1.rc1"
-  },
-  {
-    "assets": [
-      {
         "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/18.0/haos_generic-aarch64-18.0.img.xz",
         "digest": "sha256:fcd92459935e9ef6f77ab59620172126b928ff8752d3affc9a36621f1c0567e8",
         "name": "haos_generic-aarch64-18.0.img.xz",
@@ -1298,5 +1428,1313 @@
     "prerelease": false,
     "published_at": "2026-06-18T14:03:12Z",
     "tag_name": "18.0"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_generic-aarch64-17.3.img.xz",
+        "digest": "sha256:5ef46d7a50eea8da1f8d8e3a6584b990e0a940181d8614d56ba999010ccd1b1f",
+        "name": "haos_generic-aarch64-17.3.img.xz",
+        "size": 389416988
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_generic-aarch64-17.3.qcow2.xz",
+        "digest": "sha256:f5b2f350557cfff91b4d2e33777b623c0203858d94a116b29962c8147ab456e5",
+        "name": "haos_generic-aarch64-17.3.qcow2.xz",
+        "size": 388653728
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_generic-aarch64-17.3.vdi.zip",
+        "digest": "sha256:8d0a1665dc73be48fd453750fac80f3f293ee877687dbb970a02add91e979129",
+        "name": "haos_generic-aarch64-17.3.vdi.zip",
+        "size": 421194215
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_generic-aarch64-17.3.vmdk.zip",
+        "digest": "sha256:eea95dae077195d108b3fa13807aae827babd7ca1ada310e8c9d3cfb61cf161d",
+        "name": "haos_generic-aarch64-17.3.vmdk.zip",
+        "size": 421186803
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_generic-x86-64-17.3.img.xz",
+        "digest": "sha256:df891ed681db241eb963d983592108a64fc3d15690ac33b7a6d1f15c0fcc510a",
+        "name": "haos_generic-x86-64-17.3.img.xz",
+        "size": 593428632
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_green-17.3.img.xz",
+        "digest": "sha256:4c2747fa3518a083a7a0085b79670a4e927d566331e459629215e82b6bb893e1",
+        "name": "haos_green-17.3.img.xz",
+        "size": 386530476
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_khadas-vim3-17.3.img.xz",
+        "digest": "sha256:b194980886ab1beceb27cadcfa0e82fb42fa5f38d80ad3bcae18ab92b6a470e7",
+        "name": "haos_khadas-vim3-17.3.img.xz",
+        "size": 346962304
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_odroid-c2-17.3.img.xz",
+        "digest": "sha256:8d3af515b08976f42471d9c9c927dcd163da1ec0417ab78ef26a8183c49d8b5e",
+        "name": "haos_odroid-c2-17.3.img.xz",
+        "size": 347242076
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_odroid-c4-17.3.img.xz",
+        "digest": "sha256:bb84dd6500da655752128863fb45f4fc46a346f8237f61ed264bb657825d04ee",
+        "name": "haos_odroid-c4-17.3.img.xz",
+        "size": 347393520
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_odroid-m1-17.3.img.xz",
+        "digest": "sha256:bbc35884100e806717870310921d9d747c959ddde9235f67e7eeebdb34a499d5",
+        "name": "haos_odroid-m1-17.3.img.xz",
+        "size": 386393284
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_odroid-m1s-17.3.img.xz",
+        "digest": "sha256:7204f72ed7d69e0000af3e3cffb645dee0192dd0c487909f4ed94db9237d2188",
+        "name": "haos_odroid-m1s-17.3.img.xz",
+        "size": 386402724
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_odroid-n2-17.3.img.xz",
+        "digest": "sha256:18819fe9dccc3ff648ca94c37885e2c76db8fc8c23203bfc475c944050abce52",
+        "name": "haos_odroid-n2-17.3.img.xz",
+        "size": 347481152
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_ova-17.3.qcow2.xz",
+        "digest": "sha256:d42fadf806c0690792a4460ff3a72c2846c4e16e2033aefad0835662e7a9696f",
+        "name": "haos_ova-17.3.qcow2.xz",
+        "size": 555120812
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_ova-17.3.vdi.zip",
+        "digest": "sha256:f709763900c0f274f7404a7ee8f878f7533fcd495bafdd01d6ae3d0a6a724b55",
+        "name": "haos_ova-17.3.vdi.zip",
+        "size": 634306453
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_ova-17.3.vhdx.zip",
+        "digest": "sha256:dda70f13b27603321cfa380c8b2b4ab6f4f291e02e58bab75bd516dc941aa6ca",
+        "name": "haos_ova-17.3.vhdx.zip",
+        "size": 634525535
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_ova-17.3.vmdk.zip",
+        "digest": "sha256:6c39c2c8fb067117c3ecec6d813f460672f9510f896eb2bf87452cb426a5ef9d",
+        "name": "haos_ova-17.3.vmdk.zip",
+        "size": 634348088
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_rpi3-64-17.3.img.xz",
+        "digest": "sha256:e196eaebe8416ffdfc860d9253c2a0e0b0d985f9fb7692688f04d6dbe22def88",
+        "name": "haos_rpi3-64-17.3.img.xz",
+        "size": 360255648
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_rpi4-64-17.3.img.xz",
+        "digest": "sha256:371af52e378d94bbe0391ad7fb49848a94443336c168c5848cbff66923afbb25",
+        "name": "haos_rpi4-64-17.3.img.xz",
+        "size": 370998380
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_rpi5-64-17.3.img.xz",
+        "digest": "sha256:d24ab0d4bfc7553f51c0fcc5673575f9f864c1cb3c6587e2a73e186500560ce6",
+        "name": "haos_rpi5-64-17.3.img.xz",
+        "size": 380977196
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.3/haos_yellow-17.3.img.xz",
+        "digest": "sha256:8b6e4113493e6a5ca189f872cb38318dbc991c488034c16cbb138b92c197f598",
+        "name": "haos_yellow-17.3.img.xz",
+        "size": 371187284
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/17.3",
+    "name": "Home Assistant OS 17.3",
+    "prerelease": false,
+    "published_at": "2026-05-06T06:48:57Z",
+    "tag_name": "17.3"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_generic-aarch64-17.2.img.xz",
+        "digest": "sha256:982e4f0882b8b0a13bcbd8b35322eb97dc7d08e5ea47796f36460d46b06906ba",
+        "name": "haos_generic-aarch64-17.2.img.xz",
+        "size": 387245260
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_generic-aarch64-17.2.qcow2.xz",
+        "digest": "sha256:45960c0b24739272a17ac697b497534e1e71ddf8fe5ec26070cb6545f70ef857",
+        "name": "haos_generic-aarch64-17.2.qcow2.xz",
+        "size": 386782172
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_generic-aarch64-17.2.vdi.zip",
+        "digest": "sha256:ecfbfe45019601c3f54dd74f5f2bd82d977a4a90b3186f216151c713a2d000fb",
+        "name": "haos_generic-aarch64-17.2.vdi.zip",
+        "size": 418739502
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_generic-aarch64-17.2.vmdk.zip",
+        "digest": "sha256:1dc87054d17e1b92d82e4ac4d22deda8b0a735a798843e48cc337cc3b0a6078f",
+        "name": "haos_generic-aarch64-17.2.vmdk.zip",
+        "size": 418726993
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_generic-x86-64-17.2.img.xz",
+        "digest": "sha256:289a50647f4e9995b82f57c020f1e208f74ac13ecabcbeb62a323870acaa67ec",
+        "name": "haos_generic-x86-64-17.2.img.xz",
+        "size": 593643644
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_green-17.2.img.xz",
+        "digest": "sha256:a463885ed692ac2637ed7cabe62eadb1d771c49c36b4bef7e102b213c1f26c6b",
+        "name": "haos_green-17.2.img.xz",
+        "size": 384356824
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_khadas-vim3-17.2.img.xz",
+        "digest": "sha256:690e1d8e4c8bf7cb733898cb7e732236d6caed7d85914458aeffa73e75d27e0a",
+        "name": "haos_khadas-vim3-17.2.img.xz",
+        "size": 344798308
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_odroid-c2-17.2.img.xz",
+        "digest": "sha256:ae7d52e7be8c75ed510ccc49e29d921ea40f627736cf956c18745043b4228398",
+        "name": "haos_odroid-c2-17.2.img.xz",
+        "size": 345071888
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_odroid-c4-17.2.img.xz",
+        "digest": "sha256:b02f88ad2d043e67dcef25d86db8ed4476a8517f5605e01ab3678525e097cc82",
+        "name": "haos_odroid-c4-17.2.img.xz",
+        "size": 345221244
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_odroid-m1-17.2.img.xz",
+        "digest": "sha256:d409e88ddf6a4b80d540f2f741e66d063efac2e9ef80c9256709480eab51063a",
+        "name": "haos_odroid-m1-17.2.img.xz",
+        "size": 384222188
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_odroid-m1s-17.2.img.xz",
+        "digest": "sha256:05c2bf250b6931870226658c776d9f1eaf4238fe655bd9ccd2216cf93f0dbe10",
+        "name": "haos_odroid-m1s-17.2.img.xz",
+        "size": 384236368
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_odroid-n2-17.2.img.xz",
+        "digest": "sha256:e3d176cef64128a092f66dc1ac9a9f823ec804c7a88f0c09b73e53ab7f48f3a1",
+        "name": "haos_odroid-n2-17.2.img.xz",
+        "size": 345309596
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_ova-17.2.qcow2.xz",
+        "digest": "sha256:474b8f2e657f697c7a226acd5b6d0b8f74b2dfd19f71487a18238d8b36a3604f",
+        "name": "haos_ova-17.2.qcow2.xz",
+        "size": 554921332
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_ova-17.2.vdi.zip",
+        "digest": "sha256:894fc33476d415f6d03ca2780d2d8601a764dc71dad2aece96ee1b5fd50228a7",
+        "name": "haos_ova-17.2.vdi.zip",
+        "size": 633649772
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_ova-17.2.vhdx.zip",
+        "digest": "sha256:3073d4d9f8b39a5895e0f21493ae31ca257c070f54becb2ffd52c1f9823e714d",
+        "name": "haos_ova-17.2.vhdx.zip",
+        "size": 633886559
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_ova-17.2.vmdk.zip",
+        "digest": "sha256:b088d685b00b21f779e6bb4f68933b7706a5e5d38e29643053feb90fdd873133",
+        "name": "haos_ova-17.2.vmdk.zip",
+        "size": 633682182
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_rpi3-64-17.2.img.xz",
+        "digest": "sha256:a456b9104fdf5823e232ee92737f8cfeed5a2b2511e2fdefac4ef768322735ad",
+        "name": "haos_rpi3-64-17.2.img.xz",
+        "size": 358144288
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_rpi4-64-17.2.img.xz",
+        "digest": "sha256:d4fb68b7daffbb34b7861fd1f520d31c48d3335bf6a7a11b26ba8683f202eef5",
+        "name": "haos_rpi4-64-17.2.img.xz",
+        "size": 368813860
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_rpi5-64-17.2.img.xz",
+        "digest": "sha256:9361820f406948b171b9bb90f21c6104242b1539f618e6f9f8956399b7d107d0",
+        "name": "haos_rpi5-64-17.2.img.xz",
+        "size": 378899992
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.2/haos_yellow-17.2.img.xz",
+        "digest": "sha256:4659907609724974aab58223e8d8d8cf86d1fc51f73003ce5b63bd087d0bcc57",
+        "name": "haos_yellow-17.2.img.xz",
+        "size": 368997920
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/17.2",
+    "name": "Home Assistant OS 17.2",
+    "prerelease": false,
+    "published_at": "2026-04-07T09:01:03Z",
+    "tag_name": "17.2"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_generic-aarch64-17.1.img.xz",
+        "digest": "sha256:a42cccbb39c8fce22d5faf52d511aa4a9f3878ce933f328a3611dd7fd360f8d8",
+        "name": "haos_generic-aarch64-17.1.img.xz",
+        "size": 366094604
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_generic-aarch64-17.1.qcow2.xz",
+        "digest": "sha256:67ad3c2e62661c101e3e1954818e62d573a815d0470c241f2603cf406239bd52",
+        "name": "haos_generic-aarch64-17.1.qcow2.xz",
+        "size": 363651112
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_generic-aarch64-17.1.vdi.zip",
+        "digest": "sha256:d89cd1ead513b1ed0f5c21af31d723ebab25e7b9e427ef1f8063c878e4f35ac8",
+        "name": "haos_generic-aarch64-17.1.vdi.zip",
+        "size": 395429957
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_generic-aarch64-17.1.vmdk.zip",
+        "digest": "sha256:318c6b391adc42f9041b2f0e83c8d3b3a35b759460d1a813268714bc5a77b30d",
+        "name": "haos_generic-aarch64-17.1.vmdk.zip",
+        "size": 395408904
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_generic-x86-64-17.1.img.xz",
+        "digest": "sha256:5e9c24648bba3b8862c9f299086c645b5c9995c5350bf5d392555b99c0e8795d",
+        "name": "haos_generic-x86-64-17.1.img.xz",
+        "size": 555781508
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_green-17.1.img.xz",
+        "digest": "sha256:15c915733b6201860fc612005a39edb2a752597ef687705971b6320640ef2ce0",
+        "name": "haos_green-17.1.img.xz",
+        "size": 361474636
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_khadas-vim3-17.1.img.xz",
+        "digest": "sha256:4bcad6a805c05105c43410b0a442c400ccfae9b4864fc80d035e53ea99cb34d8",
+        "name": "haos_khadas-vim3-17.1.img.xz",
+        "size": 322843280
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_odroid-c2-17.1.img.xz",
+        "digest": "sha256:13ca56f0ff765e33e3b5d2b7bc5b91da4e4eb468fa9cbacab407dda19e24dd1c",
+        "name": "haos_odroid-c2-17.1.img.xz",
+        "size": 322864044
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_odroid-c4-17.1.img.xz",
+        "digest": "sha256:ad28a07919c1effbdf9b86ba79a9205ffca6e738f9884e9016a4b8a7bc3cc41a",
+        "name": "haos_odroid-c4-17.1.img.xz",
+        "size": 323014508
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_odroid-m1-17.1.img.xz",
+        "digest": "sha256:ca47bd866623125c871c93e40292f58664949d39615df27153497ca00c5a96da",
+        "name": "haos_odroid-m1-17.1.img.xz",
+        "size": 361330000
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_odroid-m1s-17.1.img.xz",
+        "digest": "sha256:402a0a4cf717174198f669e0b038ccf5111079bd5b670cef9921e136660ac57c",
+        "name": "haos_odroid-m1s-17.1.img.xz",
+        "size": 361349100
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_odroid-n2-17.1.img.xz",
+        "digest": "sha256:64cfa32a4c4431003a2c3c9ef4abc4d592545496a94bd5fa71a92cfb96cfb673",
+        "name": "haos_odroid-n2-17.1.img.xz",
+        "size": 323101244
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_ova-17.1.qcow2.xz",
+        "digest": "sha256:a4c320c38109357a5a3d7b42ee26c7cde4704197c9ea7f4c393f1ffca42fe376",
+        "name": "haos_ova-17.1.qcow2.xz",
+        "size": 517790076
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_ova-17.1.vdi.zip",
+        "digest": "sha256:d901216f3007696b393acf17459de74e9c252686e8fa93849b80ec94e4a717f6",
+        "name": "haos_ova-17.1.vdi.zip",
+        "size": 590641153
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_ova-17.1.vhdx.zip",
+        "digest": "sha256:14ddfd7045b86baf99fcf31e79840e6c0f017d4021576ca97d564038776b0a0a",
+        "name": "haos_ova-17.1.vhdx.zip",
+        "size": 590901578
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_ova-17.1.vmdk.zip",
+        "digest": "sha256:5dafb8701739307654e1d45f7a9a57391a3369b8b3ca4e4ff2bde914250e9d21",
+        "name": "haos_ova-17.1.vmdk.zip",
+        "size": 590678726
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_rpi3-64-17.1.img.xz",
+        "digest": "sha256:4f2dcd28536260d360b863db9e43d6e9637415bfefb52db8ae7d703a02ee5d46",
+        "name": "haos_rpi3-64-17.1.img.xz",
+        "size": 335676852
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_rpi4-64-17.1.img.xz",
+        "digest": "sha256:31edf2a510d88d235b67eb5a04ecf89eadcacfbc9a1a7de3fc72f5f714afa95b",
+        "name": "haos_rpi4-64-17.1.img.xz",
+        "size": 346627856
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_rpi5-64-17.1.img.xz",
+        "digest": "sha256:5a9c1992ef9e4a56bc3d482aae21490e7ab4a36ace76b7e4a8eb3edebdf3f4eb",
+        "name": "haos_rpi5-64-17.1.img.xz",
+        "size": 355688536
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.1/haos_yellow-17.1.img.xz",
+        "digest": "sha256:539d919c80e1650feb85c2046886642e46daa574beb9a5a9b27da549c2fc89d1",
+        "name": "haos_yellow-17.1.img.xz",
+        "size": 346946532
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/17.1",
+    "name": "Home Assistant OS 17.1",
+    "prerelease": false,
+    "published_at": "2026-02-12T14:09:06Z",
+    "tag_name": "17.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_generic-aarch64-17.0.img.xz",
+        "digest": "sha256:b6277045e93b85a61faa17aef9127fdbd00260a58d74be6eeea0566321740467",
+        "name": "haos_generic-aarch64-17.0.img.xz",
+        "size": 363380584
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_generic-aarch64-17.0.qcow2.xz",
+        "digest": "sha256:d6ed7f1bf59d8c7e0b5b894ef01aeff60916818615bdfc65d6506753dc00b609",
+        "name": "haos_generic-aarch64-17.0.qcow2.xz",
+        "size": 361072700
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_generic-aarch64-17.0.vdi.zip",
+        "digest": "sha256:6dc52446f8f2d410eb0e3e3e729e6803b378e2696ad5dee46ea7ceca19d4e6d2",
+        "name": "haos_generic-aarch64-17.0.vdi.zip",
+        "size": 392806075
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_generic-aarch64-17.0.vmdk.zip",
+        "digest": "sha256:f7879f01c03cb90b0af1e93d79df8469a77db708e59aebd3b9a6a5a151e5bf17",
+        "name": "haos_generic-aarch64-17.0.vmdk.zip",
+        "size": 392795996
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_generic-x86-64-17.0.img.xz",
+        "digest": "sha256:29381c35a862e5cc40f17098db309990c0f501bde89a3da3f6ec764dae78119f",
+        "name": "haos_generic-x86-64-17.0.img.xz",
+        "size": 552212004
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_green-17.0.img.xz",
+        "digest": "sha256:ce8eb94b7b1b81419368212dfa333045d285a3cf46aff0f5fc79e5ea36f5e078",
+        "name": "haos_green-17.0.img.xz",
+        "size": 358691388
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_khadas-vim3-17.0.img.xz",
+        "digest": "sha256:601bd7fae38608b87c69f8542f08b09c3dbfeff0c5fbf0920ac96f16042d26cd",
+        "name": "haos_khadas-vim3-17.0.img.xz",
+        "size": 319928024
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_odroid-c2-17.0.img.xz",
+        "digest": "sha256:3ca97b244c17e2368af8bef86c5b9bbfa341d4555d09c14a524a6d940a737ace",
+        "name": "haos_odroid-c2-17.0.img.xz",
+        "size": 319978308
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_odroid-c4-17.0.img.xz",
+        "digest": "sha256:639f83350ea2af2dcd301a91fd5b4044626b354c560464bad73057bcf45d920c",
+        "name": "haos_odroid-c4-17.0.img.xz",
+        "size": 320122836
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_odroid-m1-17.0.img.xz",
+        "digest": "sha256:b9ce181401970ac57957b8f78b5f56773bb2e70cd3f969cff64346aca000b0fc",
+        "name": "haos_odroid-m1-17.0.img.xz",
+        "size": 358555204
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_odroid-m1s-17.0.img.xz",
+        "digest": "sha256:32205f293fbc92ca6e048227a3a7a56fbd892d586b15fa219c4d1080c1fd0f04",
+        "name": "haos_odroid-m1s-17.0.img.xz",
+        "size": 358568476
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_odroid-n2-17.0.img.xz",
+        "digest": "sha256:98c6c9fd89b38887319444afe3008a74903ba4fa58ea06aeb4532e79b68ca6b9",
+        "name": "haos_odroid-n2-17.0.img.xz",
+        "size": 320217912
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_ova-17.0.qcow2.xz",
+        "digest": "sha256:5080f10959785dfc60bfa614fe0ef267b40ec33afcdf920040070e7afc1a43b2",
+        "name": "haos_ova-17.0.qcow2.xz",
+        "size": 514089680
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_ova-17.0.vdi.zip",
+        "digest": "sha256:2d6b8fdc7037de8c7160991b4b2948bc0f23818aa975caab8fd7634a2235a2c4",
+        "name": "haos_ova-17.0.vdi.zip",
+        "size": 586042263
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_ova-17.0.vhdx.zip",
+        "digest": "sha256:741d9464385bff001954b6ada4c9d8d89678dcc1fd1addefd4c0e1d699a2d379",
+        "name": "haos_ova-17.0.vhdx.zip",
+        "size": 586312807
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_ova-17.0.vmdk.zip",
+        "digest": "sha256:30b2adf02a93959b7a5b46b498d2b016b9878e4df3a541e55a0d6fc3223760d8",
+        "name": "haos_ova-17.0.vmdk.zip",
+        "size": 586082470
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_rpi3-64-17.0.img.xz",
+        "digest": "sha256:ee90ddb68e138109d7daca8ddcf0f37551fe0fcc4c0376baafd05ec7abcd5a4c",
+        "name": "haos_rpi3-64-17.0.img.xz",
+        "size": 332925572
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_rpi4-64-17.0.img.xz",
+        "digest": "sha256:8518c5b42bbcc31f93000257098912d5db69e243148fcc10af4b7511c4ba2d50",
+        "name": "haos_rpi4-64-17.0.img.xz",
+        "size": 343853752
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_rpi5-64-17.0.img.xz",
+        "digest": "sha256:ecae90148163b25429309d8b8d368080e8069eab500243fee2391e1dcaa4dcc3",
+        "name": "haos_rpi5-64-17.0.img.xz",
+        "size": 352818356
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/17.0/haos_yellow-17.0.img.xz",
+        "digest": "sha256:4e9810a534a7dd97b6b8cc08b907f3fe50f53082ef3a1a9412b1d0829ad6cf8f",
+        "name": "haos_yellow-17.0.img.xz",
+        "size": 344049100
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/17.0",
+    "name": "Home Assistant OS 17.0",
+    "prerelease": false,
+    "published_at": "2026-01-19T11:11:37Z",
+    "tag_name": "17.0"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_generic-aarch64-16.3.img.xz",
+        "digest": "sha256:4769532f71886f8b41c4520b3c0c8f974f5bbf583782a2dc7b16a8e2743315ed",
+        "name": "haos_generic-aarch64-16.3.img.xz",
+        "size": 341537340
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_generic-aarch64-16.3.qcow2.xz",
+        "digest": "sha256:8c39d2929eeb76febe58d1b9b019b89414c22595bef65ce3b6a57c88368f4a1d",
+        "name": "haos_generic-aarch64-16.3.qcow2.xz",
+        "size": 339480672
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_generic-aarch64-16.3.vdi.zip",
+        "digest": "sha256:f44a74a8475e97a94b5a6316d716c7e1acf51bf9b6feee0aa40f409055e2d56b",
+        "name": "haos_generic-aarch64-16.3.vdi.zip",
+        "size": 432593790
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_generic-aarch64-16.3.vmdk.zip",
+        "digest": "sha256:30a9faadfd7cd334d7912b79985f28b6beba699f936edb6f5ac296d069dd5156",
+        "name": "haos_generic-aarch64-16.3.vmdk.zip",
+        "size": 432551441
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_generic-x86-64-16.3.img.xz",
+        "digest": "sha256:afe591a859a068eb25dcef15be9e7b2236f9c06f515cac3706681db900cb02df",
+        "name": "haos_generic-x86-64-16.3.img.xz",
+        "size": 396451208
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_green-16.3.img.xz",
+        "digest": "sha256:fd41fb3432fb5d64d916b04f6ab18c39824b128fd996d55ea207e393fc65c943",
+        "name": "haos_green-16.3.img.xz",
+        "size": 336860104
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_khadas-vim3-16.3.img.xz",
+        "digest": "sha256:3c852191fff72efcd20aa3df589c82b1be5ba666d63245836c0ed47fed125699",
+        "name": "haos_khadas-vim3-16.3.img.xz",
+        "size": 298271704
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_odroid-c2-16.3.img.xz",
+        "digest": "sha256:898ff9f1f7b175c5c8422ec874936f9d377f42f11c579fdda5790f128a6a7241",
+        "name": "haos_odroid-c2-16.3.img.xz",
+        "size": 298539208
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_odroid-c4-16.3.img.xz",
+        "digest": "sha256:d84eb96e1d823213d97a875e05cdee74d1babc521cfadae11179b3ce7338d812",
+        "name": "haos_odroid-c4-16.3.img.xz",
+        "size": 298770768
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_odroid-m1-16.3.img.xz",
+        "digest": "sha256:67603922ee054740e0d59b319806fb11a4a62e5b93a78c90077670e91b75d025",
+        "name": "haos_odroid-m1-16.3.img.xz",
+        "size": 337395068
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_odroid-m1s-16.3.img.xz",
+        "digest": "sha256:3eed2da3a01bae6dc9ac5482c319fd2816266b0c97df01eff059051f051d5c09",
+        "name": "haos_odroid-m1s-16.3.img.xz",
+        "size": 336863952
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_odroid-n2-16.3.img.xz",
+        "digest": "sha256:f97b188d9fd2c239269c886e53031ad8bc38828296f1eaede2e89fd4b89207b7",
+        "name": "haos_odroid-n2-16.3.img.xz",
+        "size": 298412092
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_odroid-xu4-16.3.img.xz",
+        "digest": "sha256:a19afa034b48548b761ac7215d92b01d8a813038f933970af89799bb5ecacded",
+        "name": "haos_odroid-xu4-16.3.img.xz",
+        "size": 288562728
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_ova-16.3.qcow2.xz",
+        "digest": "sha256:f3f56cae72cdc1732c35b1b2a7547a11397eaaac8c4de2ff63bb10f45721c8ce",
+        "name": "haos_ova-16.3.qcow2.xz",
+        "size": 357688740
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_ova-16.3.vdi.zip",
+        "digest": "sha256:fb7f20a848cf48dbf5acfcecd712ea93bc3346973801175868cce7144a8687f2",
+        "name": "haos_ova-16.3.vdi.zip",
+        "size": 443876181
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_ova-16.3.vhdx.zip",
+        "digest": "sha256:400888d58c160c5a37c9d6e67d7aeee26821c22993b9ae1380fe40d23325b455",
+        "name": "haos_ova-16.3.vhdx.zip",
+        "size": 444257915
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_ova-16.3.vmdk.zip",
+        "digest": "sha256:0143cc55dcba988e73cbad573fa6ec36b0a73e9ea87525c9030f83538d8864bc",
+        "name": "haos_ova-16.3.vmdk.zip",
+        "size": 443902996
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_rpi2-16.3.img.xz",
+        "digest": "sha256:2228988ef3361e1f3d2ff7c49be71bc3655cbd2c1f63e396f7cda486351db735",
+        "name": "haos_rpi2-16.3.img.xz",
+        "size": 300861076
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_rpi3-16.3.img.xz",
+        "digest": "sha256:c7a4d62d0007889f4253ddeb16e6304d8bc6ab122cfa9bfab5e244b71fa52d0e",
+        "name": "haos_rpi3-16.3.img.xz",
+        "size": 299905192
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_rpi3-64-16.3.img.xz",
+        "digest": "sha256:f21d5da83a94a5045d4d36822da77d2bee3539ab5150a7074c562d922f81e0de",
+        "name": "haos_rpi3-64-16.3.img.xz",
+        "size": 311438560
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_rpi4-16.3.img.xz",
+        "digest": "sha256:e4f72c1487f8e9a4c6a5679a4d5a800a887aaaa187e0d1a66a2ccf3e1800ce85",
+        "name": "haos_rpi4-16.3.img.xz",
+        "size": 311865372
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_rpi4-64-16.3.img.xz",
+        "digest": "sha256:3ebed523708dc1dad5b5399707ee74d0a54b9604b7d4cae5d591d75c85b35013",
+        "name": "haos_rpi4-64-16.3.img.xz",
+        "size": 322239272
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_rpi5-64-16.3.img.xz",
+        "digest": "sha256:5ade653232aa1c4504e52b56347b389fb0b24d9edc69134a860edb84f41ea9e9",
+        "name": "haos_rpi5-64-16.3.img.xz",
+        "size": 331899792
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_tinker-16.3.img.xz",
+        "digest": "sha256:28916a7c4aadad3eb3ae730f345379ea0cd83c8024d916625da0ff4fe8efc177",
+        "name": "haos_tinker-16.3.img.xz",
+        "size": 292023092
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.3/haos_yellow-16.3.img.xz",
+        "digest": "sha256:145f252403a00a50391ed4074242e5b770c59477b66f2a2ea33927f68bef0e98",
+        "name": "haos_yellow-16.3.img.xz",
+        "size": 322261788
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/16.3",
+    "name": "Home Assistant OS 16.3",
+    "prerelease": false,
+    "published_at": "2025-11-04T12:28:47Z",
+    "tag_name": "16.3"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_generic-aarch64-16.2.img.xz",
+        "digest": "sha256:f0d064041433dfc98cef9d5ff6dd1a68c70b0e1b4ec4de1f21184d351feb5013",
+        "name": "haos_generic-aarch64-16.2.img.xz",
+        "size": 325441820
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_generic-aarch64-16.2.qcow2.xz",
+        "digest": "sha256:862e78ad3da09e25e70232653c24002a467cfab4f0f0dd80ae24aee1943a7dba",
+        "name": "haos_generic-aarch64-16.2.qcow2.xz",
+        "size": 323713960
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_generic-aarch64-16.2.vdi.zip",
+        "digest": "sha256:9dc5d55396f2379d04081c6ea9399dc8aacb257f6fc22f5095383067f0f9bae8",
+        "name": "haos_generic-aarch64-16.2.vdi.zip",
+        "size": 409675857
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_generic-aarch64-16.2.vmdk.zip",
+        "digest": "sha256:743487124226f76e0771aa0364b75fc5b776fb57025bd124e259a3a7aee08f2b",
+        "name": "haos_generic-aarch64-16.2.vmdk.zip",
+        "size": 409672857
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_generic-x86-64-16.2.img.xz",
+        "digest": "sha256:00d1b7da66edacb3f6bdde4e39bdbacf8eb1685ba44ddc827771157c83cf4144",
+        "name": "haos_generic-x86-64-16.2.img.xz",
+        "size": 377949212
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_green-16.2.img.xz",
+        "digest": "sha256:61c3e7635542ac353c9fa5777d2519a9fabeb67e9ecf3810dc8f71ccc4066de2",
+        "name": "haos_green-16.2.img.xz",
+        "size": 321117164
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_khadas-vim3-16.2.img.xz",
+        "digest": "sha256:49d731887d0e6e1a2826de93340f69c81dc649964a763c91ebc5e60742b82b0c",
+        "name": "haos_khadas-vim3-16.2.img.xz",
+        "size": 282053924
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_odroid-c2-16.2.img.xz",
+        "digest": "sha256:176d6a8c4555fa1cde96eb515e667eef6ebf3e7ff538bac5fe66474a3ef0b678",
+        "name": "haos_odroid-c2-16.2.img.xz",
+        "size": 282699500
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_odroid-c4-16.2.img.xz",
+        "digest": "sha256:78da25ed7f5833795194a238870920e689614d24170f61557d8da03b23cf6663",
+        "name": "haos_odroid-c4-16.2.img.xz",
+        "size": 282586268
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_odroid-m1-16.2.img.xz",
+        "digest": "sha256:2cce8d4ec96f0a7cdf711c49151bc6adb9022e5696df656c31337e16eb45a808",
+        "name": "haos_odroid-m1-16.2.img.xz",
+        "size": 320885424
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_odroid-m1s-16.2.img.xz",
+        "digest": "sha256:a5e852dc60cd41acd55781e32acb7866299e0cfd05224df5dfcbd89064092cc8",
+        "name": "haos_odroid-m1s-16.2.img.xz",
+        "size": 320404856
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_odroid-n2-16.2.img.xz",
+        "digest": "sha256:ed5ed814abd763a3b99afab29cf2a1aeffe88717da70b64bf3d85a418515f911",
+        "name": "haos_odroid-n2-16.2.img.xz",
+        "size": 283079812
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_odroid-xu4-16.2.img.xz",
+        "digest": "sha256:1ddf2e5c3550c54c1b8f2805180d6756559e1ebcca791925b3b1d7fd9400dd3a",
+        "name": "haos_odroid-xu4-16.2.img.xz",
+        "size": 273586536
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_ova-16.2.qcow2.xz",
+        "digest": "sha256:a53922b862d4dcf8d96e7e0860db7f07cfaee21f415772c00b28caaf0ce1534c",
+        "name": "haos_ova-16.2.qcow2.xz",
+        "size": 340340424
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_ova-16.2.vdi.zip",
+        "digest": "sha256:33b82bbf5e279376742c7df8d4fa6c6e1643b3c7548aeea244a1f7b4e2ae90ef",
+        "name": "haos_ova-16.2.vdi.zip",
+        "size": 420501037
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_ova-16.2.vhdx.zip",
+        "digest": "sha256:e9c9ab1800abbdedb1cc2acf1d308bd2947ba53829b5597e049d3dfbe42732fe",
+        "name": "haos_ova-16.2.vhdx.zip",
+        "size": 420926344
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_ova-16.2.vmdk.zip",
+        "digest": "sha256:78056f047e91383462e6d012304b1a6185cb7ecb6c7498566621c4fcdaaa903c",
+        "name": "haos_ova-16.2.vmdk.zip",
+        "size": 420517517
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_rpi2-16.2.img.xz",
+        "digest": "sha256:27900f88f1fdabb3e65bebe47f2c3402425c9d98f317c05028ba7b4def2a6008",
+        "name": "haos_rpi2-16.2.img.xz",
+        "size": 285549104
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_rpi3-16.2.img.xz",
+        "digest": "sha256:8617c6df7a2ca1eda4d1caab472ef3b798867602a1959e090908c7ac7b5e1c5b",
+        "name": "haos_rpi3-16.2.img.xz",
+        "size": 285015124
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_rpi3-64-16.2.img.xz",
+        "digest": "sha256:5380ceffb3eef35f4b56d743e37a74a9d7e5490f49ebe273ac8326df1b7b21d2",
+        "name": "haos_rpi3-64-16.2.img.xz",
+        "size": 294989448
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_rpi4-16.2.img.xz",
+        "digest": "sha256:1f6782f9b8828adcc3fe13b9d6df206e323bfa7b6761c70ab91bc8d1b6394402",
+        "name": "haos_rpi4-16.2.img.xz",
+        "size": 297091532
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_rpi4-64-16.2.img.xz",
+        "digest": "sha256:8a3ee7094c2acbf537223cd767acb9cc227478744c7dcc794a43372548fe9cf5",
+        "name": "haos_rpi4-64-16.2.img.xz",
+        "size": 306315400
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_rpi5-64-16.2.img.xz",
+        "digest": "sha256:67b94b4bfb68c8329cd5d154ddc660cba2713ed9546708e24382f29a8ced76bb",
+        "name": "haos_rpi5-64-16.2.img.xz",
+        "size": 315806628
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_tinker-16.2.img.xz",
+        "digest": "sha256:50ba9948e4bc3a19966c91167f45de8244ad77f083f56e6236fb09dc9b942c1f",
+        "name": "haos_tinker-16.2.img.xz",
+        "size": 277301144
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.2/haos_yellow-16.2.img.xz",
+        "digest": "sha256:bce90aad48451df4867e84cc2969a74d8cb6d081155709c52f8c9f6af41d4a61",
+        "name": "haos_yellow-16.2.img.xz",
+        "size": 305771824
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/16.2",
+    "name": "Home Assistant OS 16.2",
+    "prerelease": false,
+    "published_at": "2025-09-08T14:03:25Z",
+    "tag_name": "16.2"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_generic-aarch64-16.1.img.xz",
+        "digest": "sha256:b7afaaed4638e9139efffde5cfc32981d62b4e69966c1aeed400f1979340aea1",
+        "name": "haos_generic-aarch64-16.1.img.xz",
+        "size": 310084768
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_generic-aarch64-16.1.qcow2.xz",
+        "digest": "sha256:3a9ef10f7902980466d8dba25060c3da27d08babaa3b73a01a7887f9dde2d157",
+        "name": "haos_generic-aarch64-16.1.qcow2.xz",
+        "size": 308507208
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_generic-aarch64-16.1.vdi.zip",
+        "digest": "sha256:890293b37540f055c8f15d8d30e90b51fd87bc3ea73c75ee00fdb895ad0b9c49",
+        "name": "haos_generic-aarch64-16.1.vdi.zip",
+        "size": 388508318
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_generic-aarch64-16.1.vmdk.zip",
+        "digest": "sha256:1f0756c6f3e47858abf90cacb4237883df0479ea7c033e21662b319bc0889dde",
+        "name": "haos_generic-aarch64-16.1.vmdk.zip",
+        "size": 388511715
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_generic-x86-64-16.1.img.xz",
+        "digest": "sha256:36914c4abd336ae5312d9495bc62de12f4c66d31278231096f26b617247becd4",
+        "name": "haos_generic-x86-64-16.1.img.xz",
+        "size": 363680092
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_green-16.1.img.xz",
+        "digest": "sha256:31e4bef4bcd71773bd9eca82365570e61107163663be12dcdef7e2820de0b36f",
+        "name": "haos_green-16.1.img.xz",
+        "size": 306364768
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_khadas-vim3-16.1.img.xz",
+        "digest": "sha256:cb275608e0e83c5c4040dba260f71ea981dd8554579d9ae626ad65359ec7bb98",
+        "name": "haos_khadas-vim3-16.1.img.xz",
+        "size": 267896852
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_odroid-c2-16.1.img.xz",
+        "digest": "sha256:4a2d0e338044bb58fa890c7018dc148f95058d5e21d9a58ecaeb6decda49128f",
+        "name": "haos_odroid-c2-16.1.img.xz",
+        "size": 267480724
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_odroid-c4-16.1.img.xz",
+        "digest": "sha256:0a8fcaeb0eebc6a7215777cb10f34bb2c4b314ad2b872c7d9b3e54e1527d148c",
+        "name": "haos_odroid-c4-16.1.img.xz",
+        "size": 268262136
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_odroid-m1-16.1.img.xz",
+        "digest": "sha256:be757575723ae9d497acf8b36d44304785697da0ad2014220805191d0d1ef683",
+        "name": "haos_odroid-m1-16.1.img.xz",
+        "size": 306169164
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_odroid-m1s-16.1.img.xz",
+        "digest": "sha256:09076d348b45628734350b3f4288d137e5fd08809099ee1f4ed9d31f11fb733c",
+        "name": "haos_odroid-m1s-16.1.img.xz",
+        "size": 306147764
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_odroid-n2-16.1.img.xz",
+        "digest": "sha256:922ba1466d3eb4aa18b9820e8501b8b0d67ba428488868ce81f5a49c48db82ad",
+        "name": "haos_odroid-n2-16.1.img.xz",
+        "size": 268098688
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_odroid-xu4-16.1.img.xz",
+        "digest": "sha256:d834cdb0c68daac570eba0f070262f9356d414334120cb7ea61c9a20652e279f",
+        "name": "haos_odroid-xu4-16.1.img.xz",
+        "size": 259594304
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_ova-16.1.qcow2.xz",
+        "digest": "sha256:f7711207d9ef8fe07d8b6853a48a14fa6dd87f95ff6119c0317cbbb96851cfa5",
+        "name": "haos_ova-16.1.qcow2.xz",
+        "size": 325217860
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_ova-16.1.vdi.zip",
+        "digest": "sha256:6d5378a031216a372c10e7d80c410882a4163d7726a3ddc538e5087afcd8ccb3",
+        "name": "haos_ova-16.1.vdi.zip",
+        "size": 399987238
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_ova-16.1.vhdx.zip",
+        "digest": "sha256:c44db50694a7d2da1a416d14b0d535243f56360f0193b7ac49de44e92bb711e2",
+        "name": "haos_ova-16.1.vhdx.zip",
+        "size": 400381299
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_ova-16.1.vmdk.zip",
+        "digest": "sha256:e295d8413caaf26e4cbb08cdb2f788e964af86214a036e2963bfe812f262053a",
+        "name": "haos_ova-16.1.vmdk.zip",
+        "size": 399983133
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_rpi2-16.1.img.xz",
+        "digest": "sha256:3b4751117b663f36df95b803230952134c922329f4b55cc8c929a4413f1f330b",
+        "name": "haos_rpi2-16.1.img.xz",
+        "size": 271136416
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_rpi3-16.1.img.xz",
+        "digest": "sha256:783412ab307d3c5e95244843b00733218f4bbdcaec78b36c51c14ae77b53bf22",
+        "name": "haos_rpi3-16.1.img.xz",
+        "size": 270743080
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_rpi3-64-16.1.img.xz",
+        "digest": "sha256:3ab3e353f8302644f6ffe5c20374c54ae0822562ca156f39d1e01e5c45ca04ff",
+        "name": "haos_rpi3-64-16.1.img.xz",
+        "size": 280513044
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_rpi4-16.1.img.xz",
+        "digest": "sha256:ae1004e97582e016753a0f69e748253cba3b80607cbee78d68ed1970ae81fcf7",
+        "name": "haos_rpi4-16.1.img.xz",
+        "size": 282394032
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_rpi4-64-16.1.img.xz",
+        "digest": "sha256:a9dcc657294dc97974ec8e464b5828f101a6f665ecdb50f0a847ab706470c7e3",
+        "name": "haos_rpi4-64-16.1.img.xz",
+        "size": 291339264
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_rpi5-64-16.1.img.xz",
+        "digest": "sha256:6f67d063e697d5f52a709aaf427c684e85ae051dec0405d6fea7236387f22ae9",
+        "name": "haos_rpi5-64-16.1.img.xz",
+        "size": 300976936
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_tinker-16.1.img.xz",
+        "digest": "sha256:9834f795db6802b226a03914a77fdaf9d85a37dc156f6f2bf9de78ad449ef0a1",
+        "name": "haos_tinker-16.1.img.xz",
+        "size": 263011476
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.1/haos_yellow-16.1.img.xz",
+        "digest": "sha256:ba27b7fe87eb24deeba24032e18e6426d0ab5b59c838fbc9a5c94a68b97461c7",
+        "name": "haos_yellow-16.1.img.xz",
+        "size": 291302052
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/16.1",
+    "name": "Home Assistant OS 16.1",
+    "prerelease": false,
+    "published_at": "2025-08-13T07:58:10Z",
+    "tag_name": "16.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_generic-aarch64-16.0.img.xz",
+        "digest": "sha256:6bc848f032d0060c68f3e9cb11e4c9a77a69ed1f43bcf90706ed06655a14cea9",
+        "name": "haos_generic-aarch64-16.0.img.xz",
+        "size": 320532100
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_generic-aarch64-16.0.qcow2.xz",
+        "digest": "sha256:84b884b7228faf1ce85120e98d98ae9c273436b7b72bc118e3cd5fe487140e0f",
+        "name": "haos_generic-aarch64-16.0.qcow2.xz",
+        "size": 318668028
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_generic-aarch64-16.0.vmdk.zip",
+        "digest": "sha256:d0f1f1c039791c25f0a5843fed3fe799ea022a16fb55212a74f32c803212ea6d",
+        "name": "haos_generic-aarch64-16.0.vmdk.zip",
+        "size": 403104872
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_generic-x86-64-16.0.img.xz",
+        "digest": "sha256:b659e82bf7217a474a9a626bcb80b592632ce97e2e6b91567e402feffaf684e9",
+        "name": "haos_generic-x86-64-16.0.img.xz",
+        "size": 374478316
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_green-16.0.img.xz",
+        "digest": "sha256:eb5c84f3c8a30e968093ef6cd7af482e5b96d723f6863a9cafc3f8bc773429e0",
+        "name": "haos_green-16.0.img.xz",
+        "size": 316561844
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_khadas-vim3-16.0.img.xz",
+        "digest": "sha256:520c9196566228c879a4d0fec7ab25060832b82d36e4ec090d2948bf84ec38c1",
+        "name": "haos_khadas-vim3-16.0.img.xz",
+        "size": 277093428
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_odroid-c2-16.0.img.xz",
+        "digest": "sha256:cd3e7dd13da75fd5076dc0babc25422cededa95acddaaafb36605052c0da536a",
+        "name": "haos_odroid-c2-16.0.img.xz",
+        "size": 278036380
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_odroid-c4-16.0.img.xz",
+        "digest": "sha256:f9d6568654f2e39caf94dad3ff612e2f47b2f5470a2926e5a3ed7e7cbc659cc3",
+        "name": "haos_odroid-c4-16.0.img.xz",
+        "size": 277665240
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_odroid-m1-16.0.img.xz",
+        "digest": "sha256:5f15d8a123d0d2678d44ee2d138da2b9033ba8b33c0416e21f06daddfb696eed",
+        "name": "haos_odroid-m1-16.0.img.xz",
+        "size": 315896424
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_odroid-m1s-16.0.img.xz",
+        "digest": "sha256:b82aba0e64d97b039bc31cec4dd0211cd951a42bcc316c15f94bc5d0dc6edabb",
+        "name": "haos_odroid-m1s-16.0.img.xz",
+        "size": 316100220
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_odroid-n2-16.0.img.xz",
+        "digest": "sha256:fd196a72de1ddcecfbe8d8cda9b95c7fcbe855528c8086a73e5a75496044e99e",
+        "name": "haos_odroid-n2-16.0.img.xz",
+        "size": 277288164
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_odroid-xu4-16.0.img.xz",
+        "digest": "sha256:9f98b37e353721ed7848837e77c492da557c08935bb4701bd93a8a775c562851",
+        "name": "haos_odroid-xu4-16.0.img.xz",
+        "size": 269235312
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_ova-16.0.qcow2.xz",
+        "digest": "sha256:24c5f30619da5ad8534d615023626361783c7436b67c06afe53b58a4ff6cd6b5",
+        "name": "haos_ova-16.0.qcow2.xz",
+        "size": 334677436
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_ova-16.0.vdi.zip",
+        "digest": "sha256:7ac9fd297be3517b507666a8e9d01c9157f3f21363ccb08ca6a06ee10c8372f1",
+        "name": "haos_ova-16.0.vdi.zip",
+        "size": 414348227
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_ova-16.0.vhdx.zip",
+        "digest": "sha256:303db9456dcbe74725e44c32e8ccc445f96e5de5c88d02a67b512a0b98f5ae3b",
+        "name": "haos_ova-16.0.vhdx.zip",
+        "size": 414758113
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_ova-16.0.vmdk.zip",
+        "digest": "sha256:c6e634277b9551877cc28fc2c07f7b4efebfd898b20a4c97ec69361d01dbd6af",
+        "name": "haos_ova-16.0.vmdk.zip",
+        "size": 414365972
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_rpi2-16.0.img.xz",
+        "digest": "sha256:25e4ea359caef4dd8d8acc30dafdb67793c6be6cbc0438e5161fdd744e658e06",
+        "name": "haos_rpi2-16.0.img.xz",
+        "size": 280743000
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_rpi3-16.0.img.xz",
+        "digest": "sha256:91c67e758215ca5ae13b5dbb76611eeb4f902428af104d1b479c237d3cc480ae",
+        "name": "haos_rpi3-16.0.img.xz",
+        "size": 279841004
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_rpi3-64-16.0.img.xz",
+        "digest": "sha256:366e74f9ef950f0c943dd3d7f4475acdd724a159d544c39aaa77e8cb9654e7d0",
+        "name": "haos_rpi3-64-16.0.img.xz",
+        "size": 289881120
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_rpi4-16.0.img.xz",
+        "digest": "sha256:2ff1ae7d8174001719f034f977c7b5fb2d26554e61d0d644cfe8b0f5046779e6",
+        "name": "haos_rpi4-16.0.img.xz",
+        "size": 291583000
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_rpi4-64-16.0.img.xz",
+        "digest": "sha256:b1666ff7cc12caa45de23e6da41ee80e4a900ea6952087dff59924bc826b6920",
+        "name": "haos_rpi4-64-16.0.img.xz",
+        "size": 300759972
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_rpi5-64-16.0.img.xz",
+        "digest": "sha256:e73232cd31f90787d2333ecf5f9a03109274c822efa41047e84b5c4a09630fb8",
+        "name": "haos_rpi5-64-16.0.img.xz",
+        "size": 309652300
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_tinker-16.0.img.xz",
+        "digest": "sha256:9c0f51e7c5122d0fd15e6d30f52ebdd859e605e5dce1e638e6fc24dda5627b6f",
+        "name": "haos_tinker-16.0.img.xz",
+        "size": 272160232
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/16.0/haos_yellow-16.0.img.xz",
+        "digest": "sha256:c5f188764ae22554d90e21565f551b47190d7ed996b7664fbc896378cec68025",
+        "name": "haos_yellow-16.0.img.xz",
+        "size": 300915488
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/16.0",
+    "name": "Home Assistant OS 16.0",
+    "prerelease": false,
+    "published_at": "2025-07-09T13:28:43Z",
+    "tag_name": "16.0"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_generic-aarch64-15.2.img.xz",
+        "digest": null,
+        "name": "haos_generic-aarch64-15.2.img.xz",
+        "size": 307089804
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_generic-aarch64-15.2.qcow2.xz",
+        "digest": null,
+        "name": "haos_generic-aarch64-15.2.qcow2.xz",
+        "size": 304806148
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_generic-aarch64-15.2.vmdk.zip",
+        "digest": null,
+        "name": "haos_generic-aarch64-15.2.vmdk.zip",
+        "size": 385163351
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_generic-x86-64-15.2.img.xz",
+        "digest": null,
+        "name": "haos_generic-x86-64-15.2.img.xz",
+        "size": 370406548
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_green-15.2.img.xz",
+        "digest": null,
+        "name": "haos_green-15.2.img.xz",
+        "size": 304150336
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_khadas-vim3-15.2.img.xz",
+        "digest": null,
+        "name": "haos_khadas-vim3-15.2.img.xz",
+        "size": 264225948
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_odroid-c2-15.2.img.xz",
+        "digest": null,
+        "name": "haos_odroid-c2-15.2.img.xz",
+        "size": 264826200
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_odroid-c4-15.2.img.xz",
+        "digest": null,
+        "name": "haos_odroid-c4-15.2.img.xz",
+        "size": 264883336
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_odroid-m1-15.2.img.xz",
+        "digest": null,
+        "name": "haos_odroid-m1-15.2.img.xz",
+        "size": 303965288
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_odroid-m1s-15.2.img.xz",
+        "digest": null,
+        "name": "haos_odroid-m1s-15.2.img.xz",
+        "size": 304000312
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_odroid-n2-15.2.img.xz",
+        "digest": null,
+        "name": "haos_odroid-n2-15.2.img.xz",
+        "size": 265074896
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_odroid-xu4-15.2.img.xz",
+        "digest": null,
+        "name": "haos_odroid-xu4-15.2.img.xz",
+        "size": 256355396
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_ova-15.2.qcow2.xz",
+        "digest": null,
+        "name": "haos_ova-15.2.qcow2.xz",
+        "size": 333177036
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_ova-15.2.vdi.zip",
+        "digest": null,
+        "name": "haos_ova-15.2.vdi.zip",
+        "size": 406433218
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_ova-15.2.vhdx.zip",
+        "digest": null,
+        "name": "haos_ova-15.2.vhdx.zip",
+        "size": 406788498
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_ova-15.2.vmdk.zip",
+        "digest": null,
+        "name": "haos_ova-15.2.vmdk.zip",
+        "size": 406429442
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_rpi2-15.2.img.xz",
+        "digest": null,
+        "name": "haos_rpi2-15.2.img.xz",
+        "size": 266481756
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_rpi3-15.2.img.xz",
+        "digest": null,
+        "name": "haos_rpi3-15.2.img.xz",
+        "size": 265590480
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_rpi3-64-15.2.img.xz",
+        "digest": null,
+        "name": "haos_rpi3-64-15.2.img.xz",
+        "size": 272246148
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_rpi4-15.2.img.xz",
+        "digest": null,
+        "name": "haos_rpi4-15.2.img.xz",
+        "size": 268515260
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_rpi4-64-15.2.img.xz",
+        "digest": null,
+        "name": "haos_rpi4-64-15.2.img.xz",
+        "size": 277144412
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_rpi5-64-15.2.img.xz",
+        "digest": null,
+        "name": "haos_rpi5-64-15.2.img.xz",
+        "size": 285190192
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_tinker-15.2.img.xz",
+        "digest": null,
+        "name": "haos_tinker-15.2.img.xz",
+        "size": 260204040
+      },
+      {
+        "browser_download_url": "https://github.com/home-assistant/operating-system/releases/download/15.2/haos_yellow-15.2.img.xz",
+        "digest": null,
+        "name": "haos_yellow-15.2.img.xz",
+        "size": 276395272
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/home-assistant/operating-system/releases/tag/15.2",
+    "name": "Home Assistant OS 15.2",
+    "prerelease": false,
+    "published_at": "2025-04-14T15:37:12Z",
+    "tag_name": "15.2"
   }
 ]

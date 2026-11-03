@@ -11,26 +11,25 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: the catalog's second step, once v0.8.9 has been out a release or
-so** (older copies refuse what it adds): Fedora on the endoflife source with
-its checksum named through a group in `file` ([#6]: `file =
-'Fedora-Workstation-Live-{version}-(?P<compose>[\d.]+)\.x86_64\.iso'`,
-`manifest = "Fedora-Workstation-{version}-{compose}-x86_64-CHECKSUM"`, base
-on `{cycle}`; check it with `record` before committing), `icon = "disc"` on
-the Ubuntu, Windows, Windows 11, AtlasOS and NiceHash entries (item 9), and
-`unlisted = true` on AtlasOS (item 8), and - once v0.8.10 has been out as
-long - PikaOS, BigLinux and AnduinOS as downloads (the maintainer,
-2026-10-05: MD5-only images download, marked weak; v0.8.10 makes that safe,
-and reads AnduinOS's nameless checksum). Meanwhile, item 9's other half:
-checking every remaining logo against its project's own rules. Item 8's field, `unlisted`,
-shipped in v0.8.8; AtlasOS gets it a release or two later, once older copies
-no longer matter. Then the list under *After those*. Finished work is in
+**Next: AnduinOS as a download, and the plain discs, once v0.9.2 has been out a
+release or so.** v0.9.2 teaches the resolver to take the file's name from the
+pattern when the checksum file names none (AnduinOS's checksum is a bare
+`SHA256: <hash>` and its page links that file but not the image), and draws a
+logo that has no colour in the muted colour instead of white; a copy older than
+that can't resolve the entry, and would show a disc nobody can see, so the
+catalog waits. The change is in the entry: put back
+`[entry.artifact]` with `base = "https://cf.anduinos.com/"`, `file =
+'AnduinOS-{version}-amd64\.iso'`, `manifest = "AnduinOS-{version}-amd64.sha256"`
+and a `size`, and check it with `record`. The plain discs are `icon = "disc"` on the
+six Ubuntu entries, the three Windows ones, NiceHash OS and AtlasOS (item 9).
+The rest of the second step is done (2026-11-03, catalog revision 2026110301):
+Fedora follows its newest release ([#6]); AtlasOS is `unlisted` (item 8); PikaOS KDE and BigLinux's
+three kernels download, marked weak - PikaOS's other editions stay check-only
+because the server refuses their `.md5` files to automated requests. Then
+item 9's other half: checking every remaining logo against its project's own
+rules. Possibly a Nobara KDE entry (its page lists a plain KDE edition the
+catalog doesn't have). Then the list under *After those*. Finished work is in
 `docs/archive.md`.
-
-**Left over from v0.5.0:** [#6], the Fedora entries stop pinning a release
-number. This is the least 1.0 thing in the repository: when Fedora 45 ships,
-isoshelf keeps offering 44 and nothing fails, which is the kind of quiet
-wrongness that costs trust once somebody notices.
 
 19. **Default credentials, where the project publishes them** (the
    maintainer, 2026-09-23: "if any of these systems have default passwords
@@ -79,14 +78,6 @@ wrongness that costs trust once somebody notices.
    after v0.8.3 has been the latest. **The first is in** (catalog revision
    2026092901): MX Linux's 32-bit ISO. The weekly catalog job can add the
    rest, read from each project's own download page.
-8. **AtlasOS: recognized, not listed.** The field is `unlisted = true`
-   (shipped in v0.8.8: Add images leaves the entry out, What is this? still
-   offers it); set it on AtlasOS once copies older than v0.8.8 no longer
-   matter. "AtlasOS (archival ISO)" is in the
-   built-in catalog with a logo, so it appears under Add images for everyone.
-   AtlasOS itself moved from handing out modified Windows images to a
-   playbook applied to your own Windows. Keep recognizing the file; stop
-   listing it as something to go and get.
 9. **Logos by trademark policy.** A project being open source doesn't make
    its logo free to use: Debian publishes an open-use logo, Canonical's
    Ubuntu policy is strict. Keep a logo only where the project's own policy
@@ -94,11 +85,13 @@ wrongness that costs trust once somebody notices.
    Windows, Windows 11, Ubuntu, AtlasOS and NiceHash - including the ones
    fetched from the Simple Icons CDN. The weekly catalog job can check each
    policy on the project's own site. Delisting on request already stands.
-   **Begun 2026-09-29** (catalog revision 2026092901): those five entries no
-   longer name a logo, so they show initials. Still to do: a plain disc in
-   isoshelf for them (a reserved `icon = "disc"`, which older copies would
-   simply fail to fetch and fall back from); taking their files out of
-   `internal/web/static/logos`; and checking every other logo's policy.
+   **Done so far:** those five brands' entries no longer name a logo (revision
+   2026092901), isoshelf draws a plain disc (v0.8.9), and their files are out
+   of `internal/web/static/logos`. **Still to do:** the entries use the disc
+   (`icon = "disc"`) once v0.9.2 has been out a while, because before it a
+   logo with no colour came out white; and checking every other logo's policy
+   - the 16 built in, and the ones fetched from the CDN - and moving any that
+   don't pass to the disc.
 
 **Around 1.0, not before:** signing the Windows program so the "unknown
 publisher" warning goes (the maintainer, 2026-09-23: GitHub users are used to

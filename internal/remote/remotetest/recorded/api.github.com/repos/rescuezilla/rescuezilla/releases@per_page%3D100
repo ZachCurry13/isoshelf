@@ -344,5 +344,219 @@
     "prerelease": true,
     "published_at": "2022-07-24T20:18:34Z",
     "tag_name": "rolling-release.2022-07-24"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.3.1/rescuezilla-2.3.1-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.3.1-64bit.focal.iso",
+        "size": 908500992
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.3.1/rescuezilla-2.3.1-64bit.impish.iso",
+        "digest": null,
+        "name": "rescuezilla-2.3.1-64bit.impish.iso",
+        "size": 1068525568
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.3.1",
+    "name": "v2.3.1 (2022-01-02)",
+    "prerelease": false,
+    "published_at": "2022-01-02T20:51:37Z",
+    "tag_name": "2.3.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.3/rescuezilla-2.3-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.3-64bit.focal.iso",
+        "size": 887042048
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.3/rescuezilla-2.3-64bit.impish.iso",
+        "digest": null,
+        "name": "rescuezilla-2.3-64bit.impish.iso",
+        "size": 1047091200
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.3",
+    "name": "v2.3 (2021-12-24)",
+    "prerelease": false,
+    "published_at": "2021-12-24T19:24:37Z",
+    "tag_name": "2.3"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.2/rescuezilla-2.2-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.2-64bit.focal.iso",
+        "size": 843687936
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.2/rescuezilla-2.2-64bit.hirsute.iso",
+        "digest": null,
+        "name": "rescuezilla-2.2-64bit.hirsute.iso",
+        "size": 947429376
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.2",
+    "name": "v2.2 (2021-06-04)",
+    "prerelease": false,
+    "published_at": "2021-06-03T18:21:28Z",
+    "tag_name": "2.2"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.1.3/rescuezilla-2.1.3-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.1.3-64bit.focal.iso",
+        "size": 893978624
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.1.3/rescuezilla-2.1.3-64bit.groovy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.1.3-64bit.groovy.iso",
+        "size": 933472256
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.1.3",
+    "name": "v2.1.3 (2021-01-29)",
+    "prerelease": false,
+    "published_at": "2021-01-29T22:01:43Z",
+    "tag_name": "2.1.3"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.1.2/rescuezilla-2.1.2-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.1.2-64bit.focal.iso",
+        "size": 840296448
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.1.2/rescuezilla-2.1.2-64bit.groovy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.1.2-64bit.groovy.iso",
+        "size": 891693056
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.1.2",
+    "name": "v2.1.2 (2021-01-01)",
+    "prerelease": false,
+    "published_at": "2021-01-01T03:38:21Z",
+    "tag_name": "2.1.2"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.1.1/rescuezilla-2.1.1-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.1.1-64bit.focal.iso",
+        "size": 839866368
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.1.1/rescuezilla-2.1.1-64bit.groovy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.1.1-64bit.groovy.iso",
+        "size": 891252736
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.1.1",
+    "name": "v2.1.1 (2020-12-14)",
+    "prerelease": false,
+    "published_at": "2020-12-14T11:28:13Z",
+    "tag_name": "2.1.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.1/rescuezilla-2.1-64bit.focal.iso",
+        "digest": null,
+        "name": "rescuezilla-2.1-64bit.focal.iso",
+        "size": 833781760
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.1/rescuezilla-2.1-64bit.groovy.iso",
+        "digest": null,
+        "name": "rescuezilla-2.1-64bit.groovy.iso",
+        "size": 885288960
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.1",
+    "name": "v2.1 (2020-12-12)",
+    "prerelease": false,
+    "published_at": "2020-12-12T03:40:18Z",
+    "tag_name": "2.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.0/rescuezilla-2.0-64bit.iso",
+        "digest": null,
+        "name": "rescuezilla-2.0-64bit.iso",
+        "size": 808114176
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/2.0",
+    "name": "v2.0 (2020-10-14)",
+    "prerelease": false,
+    "published_at": "2020-10-14T01:31:22Z",
+    "tag_name": "2.0"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/1.0.6.1/rescuezilla-1.0.6.1-32bit.iso",
+        "digest": null,
+        "name": "rescuezilla-1.0.6.1-32bit.iso",
+        "size": 700542976
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/1.0.6.1/rescuezilla-1.0.6.1-64bit.iso",
+        "digest": null,
+        "name": "rescuezilla-1.0.6.1-64bit.iso",
+        "size": 794234880
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/1.0.6.1",
+    "name": "v1.0.6.1 (2020-06-26)",
+    "prerelease": false,
+    "published_at": "2020-06-26T06:00:41Z",
+    "tag_name": "1.0.6.1"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/1.0.6/rescuezilla-1.0.6-32bit.iso",
+        "digest": null,
+        "name": "rescuezilla-1.0.6-32bit.iso",
+        "size": 699709440
+      },
+      {
+        "browser_download_url": "https://github.com/rescuezilla/rescuezilla/releases/download/1.0.6/rescuezilla-1.0.6-64bit.iso",
+        "digest": null,
+        "name": "rescuezilla-1.0.6-64bit.iso",
+        "size": 794081280
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/rescuezilla/rescuezilla/releases/tag/1.0.6",
+    "name": "v1.0.6 (2020-06-17)",
+    "prerelease": false,
+    "published_at": "2020-06-17T10:25:25Z",
+    "tag_name": "1.0.6"
   }
 ]
