@@ -230,15 +230,26 @@ func trim(u *url.URL, body []byte) ([]byte, error) {
 
 var imageAsset = regexp.MustCompile(`\.(iso|img|xz|gz|zip|7z)$`)
 
-// releases keeps the first n GitHub releases, the fields isoshelf reads, and
-// assets that look like images.
+// releases keeps the first n GitHub releases, and up to n more that are not
+// pre-releases, the fields isoshelf reads, and assets that look like images.
+// The newest releases are not always the ones isoshelf wants: Bazzite
+// publishes dozens of unstable and testing builds, marked pre-release, for
+// every stable one, so its stable tag fell out of the first ten and the
+// recording stopped matching what the live check finds.
 func releases(body []byte, n int) ([]byte, error) {
 	var all []map[string]any
 	if err := json.Unmarshal(body, &all); err != nil {
 		return nil, err
 	}
 	var kept []map[string]any
-	for _, r := range all[:min(n, len(all))] {
+	extra := 0
+	for i, r := range all {
+		if i >= n {
+			if pre, _ := r["prerelease"].(bool); pre || extra >= n {
+				continue
+			}
+			extra++
+		}
 		release := map[string]any{}
 		for _, k := range []string{"tag_name", "name", "draft", "prerelease", "published_at", "html_url"} {
 			release[k] = r[k]
