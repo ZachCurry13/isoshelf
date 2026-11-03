@@ -46,9 +46,14 @@ func (s *Server) recordsFor(folder string) state.Home {
 	return state.Home(s.loadSettings().RecordsHome(folder, s.cfg.Dirs.Config))
 }
 
-// updatingLocked reports whether the download running now will replace path,
+// updatingLocked reports whether a download running now will replace path,
 // which makes it the one file that can't be removed by hand until it's done.
 // s.mu must be held.
 func (s *Server) updatingLocked(path string) bool {
-	return s.downloading != nil && slices.Contains(s.downloading.job.old, path)
+	for _, r := range s.running {
+		if slices.Contains(r.job.old, path) {
+			return true
+		}
+	}
+	return false
 }

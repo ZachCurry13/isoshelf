@@ -118,7 +118,7 @@ func (s *Server) restore(w http.ResponseWriter, r *http.Request) {
 	}
 	// The page scans after putting a file back, but not while downloads run;
 	// the scan that follows them picks it up instead.
-	if s.downloading != nil {
+	if len(s.running) > 0 {
 		s.placed = true
 	}
 	writeJSON(w, http.StatusOK, map[string]string{"status": "restored"})

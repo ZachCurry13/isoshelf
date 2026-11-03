@@ -25,9 +25,8 @@ six Ubuntu entries, the three Windows ones, NiceHash OS and AtlasOS (item 9).
 The rest of the second step is done (2026-11-03, catalog revision 2026110301):
 Fedora follows its newest release ([#6]); AtlasOS is `unlisted` (item 8); PikaOS KDE and BigLinux's
 three kernels download, marked weak - PikaOS's other editions stay check-only
-because the server refuses their `.md5` files to automated requests. Then
-item 9's other half: checking every remaining logo against its project's own
-rules. Possibly a Nobara KDE entry (its page lists a plain KDE edition the
+because the server refuses their `.md5` files to automated requests. The logo
+audit is done too (v0.10.0, item 9). Possibly a Nobara KDE entry (its page lists a plain KDE edition the
 catalog doesn't have). Then the list under *After those*. Finished work is in
 `docs/archive.md`.
 
@@ -78,20 +77,14 @@ catalog doesn't have). Then the list under *After those*. Finished work is in
    after v0.8.3 has been the latest. **The first is in** (catalog revision
    2026092901): MX Linux's 32-bit ISO. The weekly catalog job can add the
    rest, read from each project's own download page.
-9. **Logos by trademark policy.** A project being open source doesn't make
-   its logo free to use: Debian publishes an open-use logo, Canonical's
-   Ubuntu policy is strict. Keep a logo only where the project's own policy
-   allows this use, and a generic disc icon otherwise - starting with
-   Windows, Windows 11, Ubuntu, AtlasOS and NiceHash - including the ones
-   fetched from the Simple Icons CDN. The weekly catalog job can check each
-   policy on the project's own site. Delisting on request already stands.
-   **Done so far:** those five brands' entries no longer name a logo (revision
-   2026092901), isoshelf draws a plain disc (v0.8.9), and their files are out
-   of `internal/web/static/logos`. **Still to do:** the entries use the disc
-   (`icon = "disc"`) once v0.9.2 has been out a while, because before it a
-   logo with no colour came out white; and checking every other logo's policy
-   - the 16 built in, and the ones fetched from the CDN - and moving any that
-   don't pass to the disc.
+9. **Logos by trademark policy - the last part.** The audit is done (v0.10.0,
+   catalog revision 2026110302; findings in `docs/catalog-sources.md`): only
+   Debian, Arch and NixOS keep their logo, 25 became the plain disc. What is
+   left is the entries that name no logo at all - the six Ubuntu ones, the
+   three Windows ones, NiceHash OS and AtlasOS - which should name
+   `icon = "disc"` once v0.9.2 has been out a while (before it a logo with no
+   colour came out white). NixOS is the one judgement call: its logos are CC BY
+   4.0 but the repository is silent on the trademark; drop it if anyone asks.
 
 **Around 1.0, not before:** signing the Windows program so the "unknown
 publisher" warning goes (the maintainer, 2026-09-23: GitHub users are used to
@@ -102,7 +95,7 @@ has a reputation. Self-update already means the warning appears only on the
 first download, because files isoshelf downloads itself don't carry the
 browser's "came from the internet" mark.
 
-**After those, in this order:** [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
+**After those, in this order:** [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12]. Any time a real
 USB drive is to hand: [#7], trying the portable zip on one.
@@ -217,8 +210,7 @@ Then:
      with the filename pattern and hash - the same shape as the bug report
      in `report.js`, pointed at the missing-image form. Nothing is sent
      without them pressing submit.
-14. **The rest of decision 15**: a download speed limit, hiding kinds and
-   architectures you don't use.
+14. **The rest of decision 15**: hiding kinds and architectures you don't use.
 
 ## Worth knowing before you start
 

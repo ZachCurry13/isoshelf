@@ -87,6 +87,9 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 	fetcher := fetch.New(s.cfg.Version)
 	fetcher.HTTP = s.cfg.HTTP
 	fetcher.GitHubToken = s.cfg.GitHubToken
+	// Held to the speed limit in Settings together with every other download
+	// running now.
+	fetcher.Limit = s.limiter
 
 	// Another isoshelf on the network, when one is set up: it may already
 	// hold this file, and a minute over the LAN beats an hour over the wire.
@@ -97,6 +100,9 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 	if near != nil {
 		fetcher.HTTP = withJar(s.cfg.HTTP, near.HTTP.Jar)
 		fetcher.HostHeaders = map[string]map[string]string{near.Address: near.Headers()}
+		// A copy from the next machine is not the internet connection being
+		// rationed.
+		fetcher.Unlimited = []string{near.Address}
 	}
 
 	res, err := update.Run(ctx, update.Options{
@@ -111,15 +117,18 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 			// a URL is not something to ask somebody to read.
 			from := sourceName(p.URL, near)
 			s.mu.Lock()
-			if s.downloading != nil {
-				s.downloading.progress = inventory.Progress{
+			if r := j.run; r != nil {
+				r.note(inventory.Progress{
 					Stage: inventory.Stage(p.Stage), File: p.Filename, Done: p.Done, Total: p.Total,
-				}
+				}, s.cfg.Now())
 				// An empty URL means this stage doesn't know; the last place
 				// that did is still where the file is coming from.
 				if from != "" {
-					s.downloading.from = from
+					r.from = from
 				}
+				// A report is when the speed of what is running is known, so it
+				// is when there may be room for another (schedule.go).
+				s.startNextLocked()
 			}
 			s.mu.Unlock()
 		},

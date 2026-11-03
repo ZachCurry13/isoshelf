@@ -122,7 +122,7 @@ func TestUpdateNowPutsTheNewProgramInPlace(t *testing.T) {
 func TestUpdateNowWaitsForDownloads(t *testing.T) {
 	s, r, _ := updatingServer(t, "v9.0.0", false)
 	s.mu.Lock()
-	s.downloading = &run{kind: "update", job: &job{id: 1, name: "Ubuntu"}}
+	s.running = []*run{{kind: "update", job: &job{id: 1, name: "Ubuntu"}}}
 	s.mu.Unlock()
 	request(t, s, http.MethodPost, "/api/selfupdate", nil)
 	waitUntil(t, func() bool {
@@ -132,7 +132,7 @@ func TestUpdateNowWaitsForDownloads(t *testing.T) {
 		t.Fatal("it restarted with a download running")
 	}
 	s.mu.Lock()
-	s.downloading = nil
+	s.running = nil
 	s.mu.Unlock()
 	waitUntil(t, func() bool { return len(r.got()) > 0 })
 }

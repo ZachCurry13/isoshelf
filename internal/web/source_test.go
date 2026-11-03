@@ -47,15 +47,15 @@ func TestThePageIsToldWhereADownloadCameFrom(t *testing.T) {
 	s := serverMode(t, false)
 
 	s.mu.Lock()
-	s.downloading = &run{kind: "update", job: &job{id: 1, name: "Ubuntu"}, from: "your isoshelf server"}
-	current := s.downloadsLocked().Current
+	s.running = []*run{{kind: "update", job: &job{id: 1, name: "Ubuntu"}, from: "your isoshelf server"}}
+	running := s.downloadsLocked().Running
 	s.mu.Unlock()
-	if current == nil || current.From != "your isoshelf server" {
-		t.Errorf("the running download tells the page %+v, want From \"your isoshelf server\"", current)
+	if len(running) != 1 || running[0].From != "your isoshelf server" {
+		t.Errorf("the running download tells the page %+v, want From \"your isoshelf server\"", running)
 	}
 
 	s.mu.Lock()
-	s.downloading = nil
+	s.running = nil
 	s.finished = []finishedJob{{job: job{id: 1, name: "Ubuntu"}, outcome: "done", from: "your isoshelf server"}}
 	finished := s.downloadsLocked().Finished
 	s.mu.Unlock()

@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -124,6 +125,12 @@ func (c *Client) attempt(ctx context.Context, req Request, url, part string, att
 	side = &sidecar{URL: url, ETag: resp.Header.Get("ETag"), Size: total}
 	report := throttle(progress, c.ProgressEvery)
 	buf := make([]byte, 1<<20)
+	// A download under a speed limit reads in small pieces, so the limit is
+	// kept steadily rather than in a megabyte at a time.
+	limited := c.Limit.Rate() > 0 && !slices.Contains(c.Unlimited, httpReq.URL.Host)
+	if limited {
+		buf = buf[:32<<10]
+	}
 	lastSave := time.Now()
 	for {
 		if err := ctx.Err(); err != nil {
@@ -137,6 +144,12 @@ func (c *Client) attempt(ctx context.Context, req Request, url, part string, att
 			}
 			digest.Write(buf[:n])
 			offset += int64(n)
+			if limited {
+				if err := c.Limit.Wait(ctx, n); err != nil {
+					saveSidecar(part, side, offset, digest)
+					return nil, err
+				}
+			}
 			report(Progress{Stage: Downloading, Filename: req.Filename, Done: offset, Total: total, Resumed: resumed, URL: url, Attempt: attempt})
 			if time.Since(lastSave) > 5*time.Second {
 				saveSidecar(part, side, offset, digest)

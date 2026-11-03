@@ -252,10 +252,28 @@ the first 72 entries were checked on 2026-09-17, and those added since on the
 day they went in; a few sites answer scripted requests with 403
 or 406 but are fine in a browser (MX Linux, Kali's forums, Q4OS, Microsoft).
 
-Twenty-one projects have a logo in Simple Icons and ship inside isoshelf;
-refresh them with `go run ./internal/web/logos/fetch`. The rest show colored
-initials. Entries added later, or from a user's own catalog, have their logo
-fetched once at runtime and kept in the settings folder.
+Only three projects' logos are shown (Debian, Arch Linux, NixOS), because only
+their own published terms clearly let a program like isoshelf show the logo to
+refer to the project; every other entry names `icon = "disc"`. Checked
+2026-11-03 against each project's own page; refresh with
+`go run ./internal/web/logos/fetch` (it fetches the shown ones). Entries added
+later, or from a user's own catalog, have their logo fetched once at runtime and
+kept in the settings folder.
+
+What each project's page says, for the next time someone asks:
+- **Allowed:** Debian ([open-use logo](https://www.debian.org/logos/)), Arch
+  Linux ([trademark policy](https://terms.archlinux.org/docs/trademark-policy/):
+  non-commercial use that refers to the real Arch, monochrome allowed), NixOS
+  ([branding repo](https://github.com/NixOS/branding): CC BY 4.0; it is silent on
+  the trademark, so a cautious reading would drop it).
+- **Needs permission:** Kali, TrueNAS (text only), Raspberry Pi, Rocky Linux.
+- **Logo must not be changed** (isoshelf draws it in one colour): CentOS,
+  pfSense, FreeBSD, Proxmox, AlmaLinux.
+- **No policy found, or unclear:** Alpine, CachyOS, Linux Mint, Manjaro, MX Linux,
+  Parrot, Pop!_OS, Qubes, Tails, Home Assistant, Zorin (non-commercial only),
+  Xubuntu and Kubuntu (Canonical's policy), openSUSE and Fedora (their pages
+  could not be read by a program), EndeavourOS.
+A project that says in writing that it is happy gets its logo back.
 
 ## What discs say about themselves
 

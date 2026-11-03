@@ -5,29 +5,35 @@
 
 // ---- Downloads -------------------------------------------------------------
 
-// Downloads run one at a time, in the queue's order, which can be changed —
-// like a game launcher's download queue. The bar at the bottom of the page
-// shows the one running; opening it shows the rest.
+// Downloads go in the queue's order, which can be changed - like a game
+// launcher's download queue - and more than one runs at a time (v0.10.0): two
+// from different servers, or more under a speed limit, never two from one
+// server (the rules are in internal/web/schedule.go). The bar at the bottom of
+// the page shows what is running, a row each when it is more than one, and
+// opening it shows the rest.
 
 let dockOpen = false;
 // dockDrawn is what the list last showed, so it is only rebuilt when that
 // changes; dragging is the id of the download being dragged, if one is.
 let dockDrawn = "";
 let dragging = null;
-// dockCurrent holds the running download's line and bar in the open list.
-let dockCurrent = null;
-// speed smooths the download rate over the last few seconds.
-let speed = { id: null, done: 0, at: 0, rate: 0 };
+// dockRuns holds each running download's line and bar in the open list, by
+// the id of the download.
+let dockRuns = new Map();
+// barRows is the same for the rows on the bar itself: which downloads they
+// were drawn for, and each one's line and bar.
+let barRows = { key: "", rows: new Map() };
 
 function downloads() {
-  return (state && state.downloads) || { queued: [], finished: [] };
+  return (state && state.downloads) || { running: [], queued: [], finished: [] };
 }
 
 // jobFor says where an image is in the downloads: downloading now, waiting
 // (and at which place), or how it ended. Null when it isn't there.
 function jobFor(entry) {
   const d = downloads();
-  if (d.current && d.current.entry === entry) return { where: "current", job: d.current };
+  const going = d.running.find((job) => job.entry === entry);
+  if (going) return { where: "running", job: going };
   const at = d.queued.findIndex((job) => job.entry === entry);
   if (at >= 0) return { where: "queued", job: d.queued[at], place: at + 1 };
   const ended = d.finished.find((job) => job.entry === entry);
@@ -39,7 +45,7 @@ function jobFor(entry) {
 function inDownloads(entry) {
   const at = jobFor(entry);
   if (!at) return false;
-  return at.where === "current" || at.where === "queued" || (at.where === "done" && arrivedSinceScan(at.job));
+  return at.where === "running" || at.where === "queued" || (at.where === "done" && arrivedSinceScan(at.job));
 }
 
 function arrivedSinceScan(job) {
@@ -50,19 +56,18 @@ function arrivedSinceScan(job) {
 function pendingBytes() {
   const d = downloads();
   let bytes = d.queued.reduce((sum, job) => sum + (job.size || 0), 0);
-  if (d.current) {
-    const cur = d.current;
+  for (const cur of d.running) {
     bytes += cur.total ? Math.max(cur.total - cur.done, 0) : cur.size || 0;
   }
   return bytes;
 }
 
-// downloadProgress describes the download that is running, in words and as a
-// fraction (null when there's no telling).
-function downloadProgress() {
+// downloadProgress describes a download that is running, in words and as a
+// fraction (null when there's no telling). With none given, the one that has
+// been running longest.
+function downloadProgress(run = downloads().running[0]) {
   // The download carries its own progress, so the page can draw it and a
   // scan's card at the same time.
-  const run = downloads().current;
   if (!run) return { text: "Starting…", fraction: null, short: "Starting…" };
   if (run.stage === "downloading" && run.total > 0) {
     const fraction = run.done / run.total;
@@ -94,19 +99,11 @@ function downloadProgress() {
   return { text: "Finding the download…", fraction: null, short: "Starting…" };
 }
 
+// downloadRate is how fast a download is going, in bytes a second. isoshelf
+// measures it for each one (more than one at a time makes a single reading
+// in the page meaningless) and says so in the state.
 function downloadRate(run) {
-  const id = run.id;
-  const now = Date.now();
-  if (speed.id !== id || run.done < speed.done) {
-    speed = { id, done: run.done, at: now, rate: 0 };
-    return 0;
-  }
-  const seconds = (now - speed.at) / 1000;
-  if (seconds >= 1) {
-    const rate = (run.done - speed.done) / seconds;
-    speed = { id, done: run.done, at: now, rate: speed.rate ? speed.rate * 0.7 + rate * 0.3 : rate };
-  }
-  return speed.rate;
+  return run.speed || 0;
 }
 
 function duration(seconds) {
@@ -118,7 +115,7 @@ function duration(seconds) {
 
 function renderDock() {
   const d = downloads();
-  const any = Boolean(d.current || d.queued.length || d.finished.length);
+  const any = Boolean(d.running.length || d.queued.length || d.finished.length);
   $("dock").hidden = !any;
   document.body.classList.toggle("has-dock", any);
   if (!any) {
@@ -128,13 +125,13 @@ function renderDock() {
   $("dock-panel").hidden = !dockOpen;
   $("dock-toggle").textContent = dockOpen ? "Hide" : "Show";
   $("dock-toggle").setAttribute("aria-expanded", String(dockOpen));
-  $("dock-stop").hidden = !(d.current || d.queued.length);
+  $("dock-stop").hidden = !(d.running.length || d.queued.length);
   $("dock-clear").hidden = !d.finished.length;
   renderDockProgress();
 
   // Never rebuild the list under a drag, or while it hasn't changed: the
   // button that has focus would go with it.
-  const key = JSON.stringify([dockOpen, d.current && d.current.id,
+  const key = JSON.stringify([dockOpen, d.running.map((job) => job.id),
     d.queued.map((job) => job.id), d.finished.map((job) => [job.id, job.outcome])]);
   if (dragging !== null || key === dockDrawn) return;
   dockDrawn = key;
@@ -142,26 +139,29 @@ function renderDock() {
   const list = $("dock-list");
   const focused = rememberFocus();
   list.replaceChildren();
-  dockCurrent = null;
+  dockRuns = new Map();
   if (!dockOpen) return;
-  if (d.current) {
-    dockCurrent = {
-      text: el("div", { class: "kind" }, downloadProgress().text),
-      fill: el("div", { class: "bar-fill" }),
-    };
+  if (d.running.length) {
     list.append(el("li", { class: "dock-heading" }, "Downloading"));
-    list.append(el("li", { class: "dock-item current" },
-      logoTile(entryInfo(d.current)),
-      el("div", { class: "info" },
-        el("div", { class: "name" }, d.current.name),
-        dockCurrent.text,
-        el("div", { class: "bar" }, dockCurrent.fill)),
-      el("button", {
-        type: "button", class: "btn small",
-        title: "Stop this one and start the next. What has downloaded so far is kept.",
-        "aria-label": `Stop downloading ${d.current.name}`,
-        onclick: () => dropJob(d.current),
-      }, "Stop")));
+    for (const run of d.running) {
+      const going = {
+        text: el("div", { class: "kind" }, downloadProgress(run).text),
+        fill: el("div", { class: "bar-fill" }),
+      };
+      dockRuns.set(run.id, going);
+      list.append(el("li", { class: "dock-item current" },
+        logoTile(entryInfo(run)),
+        el("div", { class: "info" },
+          el("div", { class: "name" }, run.name),
+          going.text,
+          el("div", { class: "bar" }, going.fill)),
+        el("button", {
+          type: "button", class: "btn small",
+          title: "Stop this one. What has downloaded so far is kept, and anything waiting that can go takes its place.",
+          "aria-label": `Stop downloading ${run.name}`,
+          onclick: () => dropJob(run),
+        }, "Stop")));
+    }
   }
   if (d.queued.length) {
     list.append(el("li", { class: "dock-heading" },
@@ -356,11 +356,18 @@ function againButtons(job) {
 function renderDockProgress() {
   const d = downloads();
   if ($("dock").hidden) return;
-  const running = d.current ? downloadProgress() : null;
+  const many = d.running.length > 1;
+  const first = d.running[0];
+  const running = first ? downloadProgress(first) : null;
   const count = (outcome) => d.finished.filter((job) => job.outcome === outcome).length;
   let text;
-  if (d.current) {
-    text = `${d.current.update ? "Updating" : "Adding"} ${d.current.name} — ${running.text}`;
+  if (many) {
+    const total = d.running.reduce((sum, run) => sum + downloadRate(run), 0);
+    text = `${d.running.length} at once`;
+    if (total > 0) text += ` · ${formatBytes(total)}/s`;
+    if (state.download_limit > 0) text += ` · limit ${state.download_limit} Mbit/s`;
+  } else if (first) {
+    text = `${first.update ? "Updating" : "Adding"} ${first.name} — ${running.text}`;
   } else if (d.queued.length) {
     text = "Starting the next one…";
   } else {
@@ -380,18 +387,63 @@ function renderDockProgress() {
     ? `${d.queued.length} waiting${left ? ` · ${formatBytes(left)} to download` : ""}`
     : "";
 
+  // The bar at the bottom: one download's own, or the whole lot's together.
   const bar = $("dock-bar");
-  bar.hidden = !d.current;
-  if (running) {
+  bar.hidden = !first || many;
+  if (running && !many) {
     bar.classList.toggle("indeterminate", running.fraction === null);
     $("dock-fill").style.width = running.fraction === null ? "" : `${Math.round(running.fraction * 100)}%`;
-    if (dockCurrent) {
-      dockCurrent.text.textContent = running.text;
-      dockCurrent.fill.style.width = running.fraction === null ? "0" : `${Math.round(running.fraction * 100)}%`;
-    }
+  }
+  renderRunRows(d.running, many);
+  for (const [id, going] of dockRuns) {
+    const run = d.running.find((job) => job.id === id);
+    if (!run) continue;
+    const p = downloadProgress(run);
+    going.text.textContent = p.text;
+    going.fill.style.width = p.fraction === null ? "0" : `${Math.round(p.fraction * 100)}%`;
   }
   for (const button of document.querySelectorAll("[data-downloading]")) {
-    button.textContent = running ? running.short : "Starting…";
+    const run = d.running.find((job) => job.entry === button.dataset.downloading);
+    button.textContent = run ? downloadProgress(run).short : "Starting…";
+  }
+}
+
+// renderRunRows keeps a row on the bar for each download while more than one
+// is running: its name, how far it is, and its own Stop. The rows are only
+// rebuilt when the set of downloads changes, so a click isn't lost to a redraw.
+function renderRunRows(running, many) {
+  const list = $("dock-runs");
+  list.hidden = !many;
+  const key = many ? running.map((run) => run.id).join(",") : "";
+  if (key !== barRows.key) {
+    barRows = { key, rows: new Map() };
+    list.replaceChildren();
+    if (many) {
+      for (const run of running) {
+        const row = {
+          text: el("span", { class: "run-text" }),
+          fill: el("div", { class: "bar-fill" }),
+        };
+        barRows.rows.set(run.id, row);
+        list.append(el("li", { class: "dock-run" },
+          el("span", { class: "run-name", title: run.name }, run.name),
+          row.text,
+          el("div", { class: "bar" }, row.fill),
+          el("button", {
+            type: "button", class: "btn small",
+            title: "Stop this one. What has downloaded so far is kept.",
+            "aria-label": `Stop downloading ${run.name}`,
+            onclick: () => dropJob(run),
+          }, "Stop")));
+      }
+    }
+  }
+  for (const run of running) {
+    const row = barRows.rows.get(run.id);
+    if (!row) continue;
+    const p = downloadProgress(run);
+    row.text.textContent = p.text;
+    row.fill.style.width = p.fraction === null ? "0" : `${Math.round(p.fraction * 100)}%`;
   }
 }
 
@@ -473,12 +525,12 @@ function jobButton(entry, idle, fresh) {
   const at = jobFor(entry);
   if (!at) return idle;
   switch (at.where) {
-    case "current":
+    case "running":
       return el("button", {
-        type: "button", class: "btn small job-state", "data-downloading": "",
+        type: "button", class: "btn small job-state", "data-downloading": entry,
         title: "Downloading now. Click to see the downloads.",
         onclick: openDock,
-      }, downloadProgress().short);
+      }, downloadProgress(at.job).short);
     case "queued":
       return el("button", {
         type: "button", class: "btn small job-state",

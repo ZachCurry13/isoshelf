@@ -6,6 +6,34 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.10.0] - 2026-11-03
+
+### Several downloads at once, and a speed limit
+- **Two images download together** when they come from different servers,
+  instead of one after the other. Never two from the same server: a project's
+  site sees one connection from you, however long the queue is, and a waiting
+  image whose server is busy lets the next one go first. Stopping one leaves
+  the other going. ([#4](https://github.com/ZachCurry13/isoshelf/issues/4))
+- **Download speed limit** (Settings → Updates, in megabits a second; empty
+  means none). It paces every download, shared between them, and takes effect
+  at once, even for downloads already running. With a limit set, a third image
+  starts only while the ones going use under 70% of it, up to three at a time,
+  so a slow server doesn't leave your connection idle. Copying from another
+  isoshelf on your network is not limited.
+- **The downloads bar shows a row for each**, with its own name, progress, speed
+  and Stop. With one download it looks as it did.
+
+### Logos by each project's own rules
+- **25 projects' logos are now a plain disc.** isoshelf is free and open, but
+  that doesn't make a project's logo free to use: of the 28 whose logo it
+  showed, only Debian, Arch Linux and NixOS publish terms that clearly allow
+  a program like this to show it. Kali, TrueNAS, Raspberry Pi and Rocky say
+  outright that it needs permission; CentOS, pfSense, FreeBSD, Proxmox and
+  AlmaLinux forbid changing the logo, and isoshelf draws it in one colour;
+  the rest have no policy to point to. The disc is ordinary and drawn by
+  isoshelf. Their logo files are out of the program. (Catalog revision
+  2026110302; the same list is in `docs/catalog-sources.md`.)
+
 ## [v0.9.3] - 2026-11-03
 
 ### Security

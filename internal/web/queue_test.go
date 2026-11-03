@@ -23,14 +23,17 @@ type fakeDownloads struct {
 
 func useFakeDownloads(s *Server) *fakeDownloads {
 	f := &fakeDownloads{finish: map[string]chan error{}}
+	// One at a time unless a test says otherwise: the queue's own behaviour is
+	// what these tests are about, and schedule_test.go has the rest.
+	s.atOnce = 1
 	s.runJob = func(ctx context.Context, j *job) (string, error) {
 		// The real download reports progress as it goes, and the dock draws
 		// from it now that the scan's card is no longer shared.
 		s.mu.Lock()
-		if s.downloading != nil {
-			s.downloading.progress = inventory.Progress{
+		if j.run != nil {
+			j.run.note(inventory.Progress{
 				Stage: inventory.Stage("downloading"), File: j.name, Done: j.size / 4, Total: j.size,
-			}
+			}, s.cfg.Now())
 		}
 		s.mu.Unlock()
 		select {
@@ -87,11 +90,12 @@ func queued(d downloadsJSON) string {
 	return strings.Join(names, " ")
 }
 
+// current is the download that has been running longest, or "".
 func current(d downloadsJSON) string {
-	if d.Current == nil {
+	if len(d.Running) == 0 {
 		return ""
 	}
-	return d.Current.Entry
+	return d.Running[0].Entry
 }
 
 func add(t *testing.T, s *Server, entry string) int {
@@ -121,7 +125,7 @@ func TestDownloadQueue(t *testing.T) {
 	st := waitDownloads(t, s, func(st stateJSON) bool {
 		// Its progress too: the slot is filled a moment before the download
 		// itself starts reporting.
-		return current(st.Downloads) == "ubuntu-desktop-lts" && st.Downloads.Current.Stage != ""
+		return current(st.Downloads) == "ubuntu-desktop-lts" && st.Downloads.Running[0].Stage != ""
 	})
 	if got := queued(st.Downloads); got != "archlinux gparted-live" {
 		t.Fatalf("waiting: %q", got)
@@ -131,8 +135,8 @@ func TestDownloadQueue(t *testing.T) {
 	if st.Run != nil {
 		t.Errorf("a download filled the scan's card: %+v", st.Run)
 	}
-	if st.Downloads.Current.Total == 0 {
-		t.Errorf("the dock has no progress to draw: %+v", st.Downloads.Current)
+	if st.Downloads.Running[0].Total == 0 {
+		t.Errorf("the dock has no progress to draw: %+v", st.Downloads.Running[0])
 	}
 
 	// Asking twice for the same image is refused, running or waiting.
@@ -250,7 +254,7 @@ func TestStoppingDownloads(t *testing.T) {
 	// Stop stops everything, and nothing was placed, so there is no scan.
 	request(t, s, http.MethodPost, "/api/cancel", nil)
 	st = waitIdle(t, s)
-	if len(st.Downloads.Queued) != 0 || st.Downloads.Current != nil {
+	if len(st.Downloads.Queued) != 0 || len(st.Downloads.Running) > 0 {
 		t.Errorf("after stopping: %+v", st.Downloads)
 	}
 	if got := f.order(); got != "ubuntu-desktop-lts archlinux" {

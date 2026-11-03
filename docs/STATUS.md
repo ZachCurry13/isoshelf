@@ -7,7 +7,7 @@ four times in one evening. The releases page on GitHub is the answer, and
 `CHANGELOG.md` says what each one held.
 
 - **What it does:** scans a folder, works out each image, checks for updates
-  online, downloads and verifies (resumable, queued one at a time,
+  online, downloads and verifies (resumable, queued two at a time with an optional speed limit,
   reorderable), replaces or archives old files, and identifies unknown ones.
   Images can be added from the user's own computer as well as downloaded. A
   scan and a download run side by side, and every writer merges its own
@@ -15,14 +15,14 @@ four times in one evening. The releases page on GitHub is the answer, and
   catalog that updates itself from this repository. Web page and CLI;
   Windows and Linux builds.
 - **Catalog:** 96 entries (67 downloadable, 11 update-check only, 18 link only),
-  revision `2026102601`. Checked live every Monday by
+  revision `2026110302`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm
   Chicago, just after the maintainer's weekly usage resets;
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
   `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
   one pull request.
-- **GitHub:** public; open issues #2-#7, #11 and #12 are the
+- **GitHub:** public; open issues #2, #3, #5-#7, #11 and #12 are the
   roadmap (#1, isoshelf update, #10, the phone layout, #54, the simpler shelf, #55, missing
   images, #56, dismissing an update, #57, duplicates, #58, where to find
   it, #59, gentler with servers, and #62, where each file came from, are
@@ -277,3 +277,9 @@ Earlier releases, v0.9.2 back to the start, are written up in
 [#57]: https://github.com/ZachCurry13/isoshelf/issues/57
 [#1]: https://github.com/ZachCurry13/isoshelf/issues/1
 [#4]: https://github.com/ZachCurry13/isoshelf/issues/4
+
+## Latest (v0.10.0, 2026-11-03)
+- Downloads run two at once (never two from one server); a speed limit in
+  Settings paces them and lets a third start while there is room (#4).
+- Logo audit: only Debian, Arch and NixOS keep a logo; 25 became the plain disc.
+- Next: AnduinOS as a download, the remaining plain discs, #2, #3, #5.

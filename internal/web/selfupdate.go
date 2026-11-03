@@ -104,9 +104,7 @@ func (s *Server) selfUpdateLocked() selfUpdateJSON {
 	}
 	if u.stage == "waiting" {
 		out.Waiting = len(s.queue)
-		if s.downloading != nil {
-			out.Waiting++
-		}
+		out.Waiting += len(s.running)
 	}
 	return out
 }
@@ -196,7 +194,7 @@ func (s *Server) runSelfUpdate(ctx context.Context, tag string) {
 func (s *Server) claimRestart() bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if s.downloading != nil || len(s.queue) > 0 || s.scanning != nil || s.uploads > 0 {
+	if len(s.running) > 0 || len(s.queue) > 0 || s.scanning != nil || s.uploads > 0 {
 		s.self.stage = "waiting"
 		return false
 	}

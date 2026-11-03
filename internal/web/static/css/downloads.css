@@ -19,6 +19,12 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
 .dock-summary span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dock .bar { flex: 1 1 120px; min-width: 80px; }
 .dock-actions { display: flex; gap: 6px; flex: none; margin-left: auto; }
+/* One row a download while more than one is running, each with its own Stop. */
+.dock-runs { list-style: none; margin: 0 auto; padding: 8px 20px 0; max-width: 1320px; display: grid; gap: 6px; }
+.dock-run { display: flex; gap: 12px; align-items: center; }
+.dock-run .run-name { flex: 0 1 240px; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dock-run .run-text { flex: 0 1 auto; min-width: 0; font-size: var(--text-small); color: var(--muted); white-space: nowrap; }
+.dock-run .bar { flex: 1 1 80px; min-width: 60px; }
 #dock-waiting { flex: none; font-size: var(--text-small); }
 .dock-panel {
   max-height: min(55vh, 520px); overflow-y: auto;
@@ -59,7 +65,10 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
   body.has-dock { padding-bottom: 120px; }
   .dock-bar { flex-wrap: wrap; padding: 10px 16px; gap: 8px 12px; }
   .dock-summary { flex-basis: 100%; }
-  .dock-summary span { white-space: normal; }
+  .dock-runs { padding: 8px 16px 0; }
+  .dock-run { flex-wrap: wrap; gap: 4px 10px; }
+  .dock-run .run-name { flex-basis: 100%; }
+  .dock-run .run-text { white-space: normal; flex: 1 1 100%; }  .dock-summary span { white-space: normal; }
   .dock-list { padding: 6px 16px 12px; }
   .dock-item { flex-wrap: wrap; }
   .dock-buttons { margin-left: auto; }

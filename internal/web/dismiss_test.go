@@ -54,13 +54,11 @@ func TestADismissedUpdateIsLeftAloneUntilUndone(t *testing.T) {
 		for _, j := range s.queue {
 			queued = queued || j.entry == entry
 		}
-		if s.downloading != nil && s.downloading.job.entry == entry {
-			queued = true
+		for _, r := range s.running {
+			queued = queued || r.job.entry == entry
+			r.cancel()
 		}
 		s.queue = nil
-		if s.downloading != nil {
-			s.downloading.cancel()
-		}
 		s.mu.Unlock()
 		waitIdle(t, s)
 		if queued {

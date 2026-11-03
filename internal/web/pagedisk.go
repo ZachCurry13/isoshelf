@@ -56,7 +56,7 @@ func (s *Server) pageState() stateJSON {
 	}
 	out := s.stateLocked(disk.recent, disk.room)
 	out.Login = disk.login
-	out.FolderChanged = disk.changed && s.scanning == nil && s.downloading == nil
+	out.FolderChanged = disk.changed && s.scanning == nil && len(s.running) == 0
 	return out
 }
 

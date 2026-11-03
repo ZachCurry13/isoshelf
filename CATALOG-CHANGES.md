@@ -22,6 +22,14 @@ requests are looked at every Monday.
   their checksums to a program.
 
 ### Changed
+- **Logos by each project's own rules** (revision 2026110302). Of the 28
+  projects whose logo isoshelf showed, only three publish a policy that
+  clearly lets a program like this show it to refer to the project: Debian
+  (its open-use logo), Arch Linux (non-commercial use that refers to the real
+  Arch) and NixOS (CC BY 4.0). The other 25 now show a plain disc, because
+  their policy asks for permission, bans changing the logo (and isoshelf
+  draws it in one colour), or says nothing at all. Nothing is lost but the
+  picture; if a project tells us it is happy with its logo, it goes back.
 - **Fedora** (Workstation and KDE) follows its newest release by itself. Until
   now the release number was written into the catalog and had to be raised by
   hand when Fedora 45 came out. A copy that already has a Fedora image now

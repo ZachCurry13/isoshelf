@@ -42,8 +42,10 @@ isoshelf does that for you:
   downloads carry on where they stopped.
 - **Your order, your pace.** Every image has its own Update button, so you're
   never forced to update everything at once. Add and Update join a download
-  queue, like a game launcher's: one at a time, in an order you can change by
-  dragging, with each button saying *Queued*, *Downloading* or *Added*.
+  queue, like a game launcher's: two at a time (never two from one server), in
+  an order you can change by dragging, with each button saying *Queued*,
+  *Downloading* or *Added*. A speed limit in Settings keeps isoshelf from using
+  all of your connection.
 - **Tidying up.** Remove images you no longer want: archive them (restore any
   time) or delete them. Older copies of the same image are found and cleared in
   one go. isoshelf remembers what left the folder and can download it again,
@@ -262,13 +264,10 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 **Released:** everything from v0.1 (a read-only scan) to the newest release.
 [CHANGELOG.md](CHANGELOG.md) says what each version held.
 
-**Next:** checking the rest of the logos against each project's own rules, with
-a plain disc where they don't allow one; AnduinOS as a download, once the
-release that can pair its checksum with its image has been out a while; and
-more notes on where to find the images you fetch yourself.
+**Next:** AnduinOS as a download, once the release that can pair its checksum
+with its image has been out a while; and more notes on where to find the images you fetch yourself.
 
-**Also planned:** [two downloads at once from different servers](https://github.com/ZachCurry13/isoshelf/issues/4),
-[installing an older version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
+**Also planned:** [installing an older version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
 [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
 and [signature checking for the images
 themselves](https://github.com/ZachCurry13/isoshelf/issues/5).
@@ -440,8 +439,8 @@ careful — nothing is deleted unless you choose it, and archiving (which can be
 undone) is always offered — but keep a backup of anything you couldn't
 download again.
 
-Distro logos come from [Simple Icons](https://simpleicons.org) (CC0 1.0) and
-are used to identify the projects they belong to.
+The few distro logos shown (Debian, Arch Linux, NixOS) come from [Simple Icons](https://simpleicons.org) (CC0 1.0) and
+are used only to identify the projects they belong to, where each project's own terms allow it; every other project shows a plain disc.
 
 isoshelf is an independent project. It isn't affiliated with or endorsed by
 Ventoy, Proxmox, TrueNAS or any of the distributions it tracks. All names and

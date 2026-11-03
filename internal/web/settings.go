@@ -63,6 +63,9 @@ type settingsRequest struct {
 	// answer here - it is how the timer is turned off - and the zero value
 	// of an int can't tell "never" from "not mentioned".
 	ArchiveAfter *int `json:"archive_after"`
+	// DownloadLimit is the most to download at, in megabits a second; 0 for no
+	// limit. A pointer, for the same reason as ArchiveAfter.
+	DownloadLimit *int `json:"download_limit"`
 	// Appearance fields, one at a time like the rest.
 	Theme        *string `json:"theme"`
 	Colours      *string `json:"colours"`
@@ -83,6 +86,10 @@ func (s *Server) setSettings(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	current := s.updateSettings(func(c *settings.Settings) { req.applyTo(c) })
+	// A new limit takes hold of the downloads running now, not the next one.
+	if req.DownloadLimit != nil || req.Reset {
+		s.limiter.SetRate(settings.BytesPerSecond(current.DownloadLimit))
+	}
 
 	// Turning it on means looking now rather than within the quarter hour.
 	if req.AutoUpdate != nil && *req.AutoUpdate {
@@ -140,6 +147,9 @@ func (req settingsRequest) applyTo(current *settings.Settings) {
 	}
 	if req.ArchiveAfter != nil {
 		current.ArchiveAfter = cleanArchiveAfter(*req.ArchiveAfter)
+	}
+	if req.DownloadLimit != nil {
+		current.DownloadLimit = settings.CleanDownloadLimit(*req.DownloadLimit)
 	}
 	if req.Theme != nil {
 		current.Appearance.Theme = settings.CleanTheme(*req.Theme)
