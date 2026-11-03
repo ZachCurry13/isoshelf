@@ -85,7 +85,12 @@ func TestTwoDownloadsFromDifferentServersRunTogether(t *testing.T) {
 	add(t, s, "ubuntu-desktop-lts")
 	add(t, s, "archlinux")
 	add(t, s, "gparted-live")
-	st := waitDownloads(t, s, func(st stateJSON) bool { return len(st.Downloads.Running) == 2 })
+	// Both, and their progress: a slot is filled a moment before the download
+	// reports any.
+	st := waitDownloads(t, s, func(st stateJSON) bool {
+		r := st.Downloads.Running
+		return len(r) == 2 && r[0].Stage != "" && r[1].Stage != ""
+	})
 	if got := running(st.Downloads); got != "ubuntu-desktop-lts archlinux" {
 		t.Errorf("running %q, want the first two, from different servers", got)
 	}
