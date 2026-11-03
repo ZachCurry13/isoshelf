@@ -21,7 +21,7 @@ func TestUpdatingByItselfIsOffUntilAskedFor(t *testing.T) {
 	}
 	// And a tick with nothing turned on does nothing at all.
 	s.autoUpdateIfDue()
-	if st := waitIdle(t, s); len(st.Downloads.Queued) > 0 || st.Downloads.Current != nil {
+	if st := waitIdle(t, s); len(st.Downloads.Queued) > 0 || len(st.Downloads.Running) > 0 {
 		t.Errorf("something was downloaded without being asked for: %+v", st.Downloads)
 	}
 }

@@ -20,6 +20,8 @@
 .btn.primary:hover:not(:disabled) { background: var(--primary-bg-hover); border-color: var(--primary-bg-hover); }
 .btn.small { padding: 3px 12px; font-size: var(--text-small); }
 
+.number-input { width: 96px; }
+
 input[type="search"], input[type="text"], select {
   font: inherit;
   color: var(--text);

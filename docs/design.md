@@ -142,8 +142,10 @@ Every catalog entry runs through four stages:
    mismatch deletes the partial file and places nothing. `BeforePlace` runs
    after verification and just before the rename, which is how the old file is
    moved aside for images whose filename never changes. Downloads are queued
-   by the web UI and run one at a time (see Web UI); still to do: 2 at once,
-   1 per host.
+   by the web UI and run two at once (more under a speed limit), never two
+   from one server (see Web UI and `internal/web/schedule.go`). A shared
+   `fetch.Limiter` paces every download to the speed limit in Settings;
+   copies from another isoshelf on the network are exempt.
 
 5. **Update** (`internal/update`) - resolves the entry again, downloads,
    places, records it in state, then keeps, moves aside or deletes the old
@@ -1028,9 +1030,12 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   to v0.8.12: weeks of arrivals and departures, which the maintainer found
   little use) that History replaced.
 - Downloads (`queue.go`): Add, Update, Update all and Download again join a
-  queue that runs one at a time, and the queue drains into one rescan. The
-  page shows it in a bar along the bottom (Steam-like): the running download
-  with speed and time left, the waiting ones with up/down/next/remove buttons
+  queue, and the queue drains into one rescan. Two run together with no speed
+  limit; with one, another starts only while those running use under 70% of
+  it, up to three, each measured for 4 seconds first; never two from one
+  server. The page shows it in a bar along the bottom (Steam-like): the
+  running download with speed and time left (a row each, with its own Stop,
+  when several run), the waiting ones with up/down/next/remove buttons
   and drag and drop, and the finished ones with Try again. Each Add or Update
   button says Queued #n, Downloading n% or Added. Finished jobs live in memory
   only (last 20). Because the page polls twice a second for as long as

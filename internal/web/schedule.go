@@ -65,6 +65,16 @@ func (s *Server) hostOfLocked(j *job) string {
 	return "entry:" + j.entry
 }
 
+// atOnceWithoutLimit is how many run together when no limit is set. Tests set
+// s.atOnce to run one at a time, which is what most of the queue's behaviour
+// is easiest to see with.
+func (s *Server) atOnceWithoutLimit() int {
+	if s.atOnce > 0 {
+		return s.atOnce
+	}
+	return atOnceWithoutLimit
+}
+
 // roomLocked says whether another download may start now. s.mu must be held.
 func (s *Server) roomLocked() bool {
 	n := len(s.running)
@@ -76,7 +86,7 @@ func (s *Server) roomLocked() bool {
 	}
 	limit := s.limiter.Rate()
 	if limit <= 0 {
-		return n < atOnceWithoutLimit
+		return n < s.atOnceWithoutLimit()
 	}
 	now := s.cfg.Now()
 	var using float64

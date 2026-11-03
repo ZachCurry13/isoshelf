@@ -102,7 +102,7 @@ has a reputation. Self-update already means the warning appears only on the
 first download, because files isoshelf downloads itself don't carry the
 browser's "came from the internet" mark.
 
-**After those, in this order:** [#4] two downloads at once, [#2] older versions with a hold, [#3] make bootable (rename and extract
+**After those, in this order:** [#2] older versions with a hold, [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12]. Any time a real
 USB drive is to hand: [#7], trying the portable zip on one.
@@ -217,8 +217,7 @@ Then:
      with the filename pattern and hash - the same shape as the bug report
      in `report.js`, pointed at the missing-image form. Nothing is sent
      without them pressing submit.
-14. **The rest of decision 15**: a download speed limit, hiding kinds and
-   architectures you don't use.
+14. **The rest of decision 15**: hiding kinds and architectures you don't use.
 
 ## Worth knowing before you start
 

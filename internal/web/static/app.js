@@ -185,13 +185,16 @@ function el(tag, attrs = {}, ...children) {
 function drawnKey(s) {
   const { run, space, downloads, ...rest } = s;
   let queue = downloads;
-  if (downloads && downloads.current) {
-    // The running download's progress moves twice a second and is drawn by
+  if (downloads && downloads.running) {
+    // The running downloads' progress moves twice a second and is drawn by
     // renderDockProgress. Leaving it in here would redraw the whole page
     // that often, closing any open menu, which is the very thing this key
     // exists to avoid.
-    const { stage, done, total, ...current } = downloads.current;
-    queue = { ...downloads, current };
+    const running = downloads.running.map((job) => {
+      const { stage, done, total, speed, ...rest } = job;
+      return rest;
+    });
+    queue = { ...downloads, running };
   }
   return JSON.stringify([rest, queue, run ? run.kind : null]);
 }
@@ -244,7 +247,7 @@ function scanning() {
 // pull the ground out from under it - switching folders, emptying the archive
 // - wait for that.
 function downloading() {
-  return Boolean(downloads().current);
+  return downloads().running.length > 0;
 }
 
 function render() {

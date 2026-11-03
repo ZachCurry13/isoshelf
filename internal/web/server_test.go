@@ -91,7 +91,7 @@ func waitIdle(t *testing.T, s *Server) stateJSON {
 	for time.Now().Before(deadline) {
 		st := decode[stateJSON](t, request(t, s, http.MethodGet, "/api/state", nil))
 		// A scan and a download have a slot each, so both must be empty.
-		if st.Run == nil && st.Downloads.Current == nil {
+		if st.Run == nil && len(st.Downloads.Running) == 0 {
 			return st
 		}
 		time.Sleep(20 * time.Millisecond)

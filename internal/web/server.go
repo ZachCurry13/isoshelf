@@ -91,6 +91,9 @@ type Server struct {
 	// limiter holds every running download to the speed limit in Settings,
 	// together, and is told when the setting changes.
 	limiter *fetch.Limiter
+	// atOnce overrides how many downloads run together when there is no speed
+	// limit; 0 means schedule.go's own answer. It exists for tests.
+	atOnce int
 	// autoQueue marks the scan that the scheduler started, so that when it
 	// finishes its findings go straight into the download queue. autoNote is
 	// the line the page shows about what it did.

@@ -31,6 +31,21 @@ function choiceRow(label, options, current, change) {
   }, options.map(([value, text]) => el("option", { value, selected: value === current || undefined }, text)));
 }
 
+// numberRow is a whole number in a box, saved when the box is left or Enter
+// is pressed. Empty means 0, which the setting takes to mean "none".
+function numberRow(label, value, unit, change) {
+  return el("label", { class: "inline-select" },
+    el("input", {
+      type: "text", inputmode: "numeric", class: "number-input", "aria-label": label,
+      value: value > 0 ? String(value) : "", placeholder: "No limit", maxlength: "6",
+      onchange: (e) => {
+        const n = parseInt(e.target.value.replace(/\D/g, ""), 10);
+        saveSetting(change(Number.isFinite(n) ? n : 0));
+      },
+    }),
+    unit);
+}
+
 // settingGroups is every group, in the order the panel shows them. A
 // function rather than a table so that groups defined in scripts loaded
 // after this one are there when it's called (v0.8.8, decided by the
@@ -85,6 +100,16 @@ const UPDATE_SETTINGS = {
           ["archive", "Move it to the archive"],
           ["keep", "Keep both"],
         ], (state && state.old_files) || "replace", (old_files) => ({ old_files })),
+      },
+      {
+        name: "Download speed limit",
+        fields: ["download_limit"],
+        hint: "The most of your internet connection isoshelf may use. Leave it empty " +
+          "to use all you have; with a limit, it also downloads more than one image at once when there is room.",
+        words: "download speed limit bandwidth megabits mbit throttle slow internet parallel several at once",
+        control: () => numberRow("Download speed limit", state && state.download_limit, "Mbit/s",
+          (download_limit) => ({ download_limit })),
+        note: () => "Only downloads from the internet are limited. Copying from another isoshelf on your network is not.",
       },
       {
         name: "Dismissed updates",
