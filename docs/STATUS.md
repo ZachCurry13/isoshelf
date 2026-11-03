@@ -14,7 +14,7 @@ four times in one evening. The releases page on GitHub is the answer, and
   change onto the folder's records rather than saving over them. Keeps a
   catalog that updates itself from this repository. Web page and CLI;
   Windows and Linux builds.
-- **Catalog:** 93 entries (63 downloadable, 12 update-check only, 18 link only),
+- **Catalog:** 96 entries (67 downloadable, 11 update-check only, 18 link only),
   revision `2026102601`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm
@@ -251,9 +251,15 @@ keeps its item numbers, since decisions refer to them.
   blue-yellow), each with light, dark and high contrast, so `primer.css` now has twelve
   themes. Green and red no longer carry the statuses for people who can't tell them
   apart. One Go field, one request field, one control; the rest was Primer's.
-- **Next:** the catalog's second step (Fedora through groups, #6; discs; AtlasOS
-  unlisted; PikaOS, BigLinux, AnduinOS as downloads); then #4, #2, #3, #5, #11, #12.
-  Spacing as tokens (TODO item 20) waits until someone wants to change the density.
+- **Catalog revision 2026110301 (no release needed)**: the second step. Fedora
+  follows its newest release (#6); AtlasOS is `unlisted`; PikaOS KDE and BigLinux (three kernels)
+  download, MD5-only and marked weak; PikaOS's other editions stay check-only
+  (the server refuses their `.md5` files to a program); four sizes refreshed.
+- **Next:** v0.9.2 (the resolver takes a file's name from the pattern when its
+  checksum file names none; a logo with no colour is drawn muted, not white),
+  then AnduinOS as a download and the plain discs once that has been out a
+  while; the logo audit (item 9); then #4, #2, #3, #5, #11, #12. Spacing as
+  tokens (item 20) waits until someone wants to change the density.
 
 Earlier releases, v0.9.0 back to the start, are written up in
 [archive.md](archive.md).

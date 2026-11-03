@@ -180,12 +180,11 @@ Nothing yet.
 ### Added 2026-10-05, check-only for now
 
 - **AnduinOS**: SHA-256 on its own site, but as a bare `SHA256: <hash>` line
-  with no file name, which isoshelf can't read yet. Becomes a download once
-  it can.
+  with no file name. Still check-only; see 2026-11-03 below.
 - **PikaOS** and **BigLinux**: only MD5 checksums, which catch a broken
   download but not a changed one. Both sites refuse curl's default user
-  agent with 403 but answer isoshelf's. Waiting on the maintainer's decision
-  on MD5-only projects.
+  agent with 403 but answer isoshelf's. The maintainer decided on 2026-10-05
+  that MD5-only images download, marked weak; done 2026-11-03, below.
 - Also seen: Nobara's page lists a plain KDE edition the catalog doesn't
   have yet.
 
@@ -210,6 +209,37 @@ Nothing yet.
   computer saw a timeout on port 443). The project's page points only to
   SourceForge and OSDN, which send you to mirrors. Left as it was, to see
   whether the server comes back.
+
+### 2026-11-03: the second step
+
+- **Fedora** (Workstation and KDE) follows its newest release by itself (#6):
+  the endoflife `fedora` product gives the release, `{cycle}` goes in the
+  folder, and the compose in the checksum file's name is a named group in the
+  file pattern. Each entry's `match` now captures only the release (`44`), not
+  the compose, because that is what the source compares against.
+- **PikaOS KDE** and **BigLinux** (Linux 6.12, 6.18 and 7.2, one entry each)
+  download, checked against their MD5 and marked weak, as decided on
+  2026-10-05. Each is its own entry because an update downloads one specific
+  file and must not put one edition or kernel where another was.
+  PikaOS lists an MD5 for every edition on its own site, but the server
+  answers an automated request for all but the KDE one with 403, and has a
+  bot check on its folder index, so the other editions are one check-only
+  entry (`pikaos-other`): their ISOs answer, their checksums can't be fetched.
+  BigLinux's `.iso.md5` files are on its own site, and agree with the
+  MD5 printed on its download page.
+- **AnduinOS** stays check-only for now. Its page links the SHA-256 file but
+  not the image; the image is at `cf.anduinos.com/AnduinOS-<version>-amd64.iso`,
+  which the project's own "thank you" page gives, and a plain request gets it.
+  Pairing the two needs a file name taken from the pattern when the checksum
+  file names none, which isoshelf does from v0.9.2; it becomes a download once
+  that has been out a while.
+- AtlasOS is `unlisted`: recognized, not offered under Add images (item 8).
+- The plain disc (`icon = "disc"`) for Ubuntu (six entries), Windows (three),
+  NiceHash OS and AtlasOS waits for v0.9.2: a mask-drawn logo with no brand
+  colour was drawn in the tile's white text colour, invisible on a card, and
+  the catalog goes to every copy at once (TODO item 9).
+- Sizes refreshed: Arch (its ISO is about 20% smaller than it was), openSUSE
+  Tumbleweed and the two Home Assistant OS images.
 
 ## Entry metadata
 
@@ -266,19 +296,24 @@ Checked live the same day, and all of them resolve in a full recorder run.
 | Linux Mint Xfce | endoflife `linuxmint`, cycles filter keeps LMDE out | `mirrors.edge.kernel.org/linuxmint/stable/{cycle}/sha256sum.txt` | Same shape as the Cinnamon entry. |
 | LMDE | listing of `linuxmint/debian/sha256sum.txt` | the same file | endoflife.date files LMDE under `linuxmint` with cycles like `lmde7`, which don't give the plain number the filenames use. The checksum file lists every LMDE released, so the highest wins. |
 | Debian Live (GNOME, KDE) | endoflife `debian`, latest | `cdimage.debian.org/debian-cd/current-live/amd64/iso-hybrid/SHA256SUMS` | endoflife says 13.7 and the files say 13.7.0, so the pattern uses `{cycle}\.\d+\.\d+`. The file lists `.iso.contents` and `.iso.log` beside each image; matching the whole name keeps them out. |
-| Fedora Workstation, Fedora KDE | listing of the release folder | `Fedora-{edition}-{version}-x86_64-CHECKSUM` | The checksum file is named after the compose (`44-1.7`), which no version source gives, so the folder is read instead. **The release number is pinned in two URLs and has to be raised by hand when a new Fedora ships.** `dl.fedoraproject.org` is the master and doesn't redirect; `download.fedoraproject.org` sends you to a mirror. |
+| Fedora Workstation, Fedora KDE | endoflife `fedora`, latest | `Fedora-{edition}-{version}-{compose}-x86_64-CHECKSUM` | The checksum file is named after the compose (`44-1.7`), which no version source gives, so the image is found in the release folder (`{cycle}`) first and the compose read from its name: a named group in `file` (since v0.8.9). It followed the newest release by hand until 2026-11-03 (#6). `dl.fedoraproject.org` is the master and doesn't redirect; `download.fedoraproject.org` sends you to a mirror. If endoflife lists a new Fedora before its images are published, the Monday check fails for it until they are. |
 | Arch Linux | listing of `geo.mirror.pkgbuild.com/iso/latest/sha256sums.txt` | the same file | Monthly, named by date. The folder also holds an unversioned `archlinux-x86_64.iso` copy, which stays unrecognized on purpose. |
 | openSUSE Tumbleweed | listing of `download.opensuse.org/tumbleweed/iso/` | `…-Snapshot{version}-Media.iso.sha256` | Rolling, one snapshot per day. The `-Current` names redirect to whichever snapshot is newest, so the dated name is read from the folder. |
 | Clonezilla Live (stable) | listing of `free.nchc.org.tw/clonezilla-live/stable/CHECKSUMS.TXT` | the same file | Clonezilla is developed at NCHC, whose server carries the stable images and checksums without redirecting. The file has MD5, SHA1 and SHA256 sections; the strongest wins. The older `clonezilla-alternative` entry is the Ubuntu-based build and stays check-only. |
 | GParted Live | listing of `gparted.org/gparted-live/stable/CHECKSUMS.TXT` | the same file, by absolute URL | Images are on SourceForge, checksums on gparted.org: bytes from a mirror, checksums from the origin. It must be the `/project/gparted/gparted-live-stable/{version}/` path — the short `/gparted/<file>` one serves a "your download is starting" web page, which is how the size check caught it at 143 KB. |
 
-### Entries pinned to a release number
+### Entries with a release number written in
 
 These need a catalog edit when the project ships a new release, because the
-checksum file is named after something no version source reports:
+file name carries a number no version source reports and the folder can't be
+listed to find it:
 
-- `fedora-workstation` and `fedora-kde`: the folder `…/releases/44/…` in both
-  `source.url` and `artifact.base`.
+- `pikaos-kde`: "4.0" in `artifact.file` and `artifact.manifest`. PikaOS's
+  folder index is behind a bot check, so it is not read. If PikaOS moves on,
+  the Monday check fails for it.
+
+Fedora was one of these until 2026-11-03 (#6); it follows its newest release
+now.
 
 ### Sizes
 

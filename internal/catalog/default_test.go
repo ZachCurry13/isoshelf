@@ -28,7 +28,17 @@ func TestDefaultCatalog(t *testing.T) {
 	tests = append(tests,
 		test{"linuxmint-22.3-xfce-64bit.iso", "linuxmint-xfce", "22.3"},
 		test{"lmde-7-cinnamon-64bit.iso", "lmde-cinnamon", "7"},
-		test{"Fedora-Workstation-Live-44-1.7.x86_64.iso", "fedora-workstation", "44-1.7"},
+		// The version is the release; the compose after it is only what names the checksum.
+		test{"Fedora-Workstation-Live-44-1.7.x86_64.iso", "fedora-workstation", "44"},
+		test{"Fedora-KDE-Desktop-Live-44-1.7.x86_64.iso", "fedora-kde", "44"},
+		// PikaOS KDE downloads and the other editions are one check-only entry; BigLinux is an entry for each kernel, because an update fetches
+		// one particular file.
+		test{"PikaOS-Nest-KDE-4.0-amd64-v3-26.08.20-4.iso", "pikaos-kde", "26.08.20-4"},
+		test{"PikaOS-Nest-GNOME-4.0-amd64-v3-26.08.20-4.iso", "pikaos-other", "26.08.20-4"},
+		test{"PikaOS-Nest-NVIDIA-KDE-4.0-amd64-v3-26.08.20-4.iso", "pikaos-other", "26.08.20-4"},
+		test{"biglinux_2026-10-03_k612.iso", "biglinux-612", "2026-10-03"},
+		test{"biglinux_2026-10-03_k72.iso", "biglinux-72", "2026-10-03"},
+		test{"AnduinOS-2.0.5-amd64.iso", "anduinos", "2.0.5"},
 		test{"archlinux-2026.09.01-x86_64.iso", "archlinux", "2026.09.01"},
 		test{"clonezilla-live-3.3.3-15-amd64.iso", "clonezilla-stable", "3.3.3-15"},
 		test{"archlinux-x86_64.iso", "", ""},              // the unversioned copy

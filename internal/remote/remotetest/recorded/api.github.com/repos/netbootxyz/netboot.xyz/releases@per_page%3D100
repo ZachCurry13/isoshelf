@@ -614,5 +614,501 @@
     "prerelease": false,
     "published_at": "2025-01-04T22:47:25Z",
     "tag_name": "2.0.84"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.83/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 334264
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.83/netboot.xyz-arm64.img",
+        "digest": null,
+        "name": "netboot.xyz-arm64.img",
+        "size": 1474560
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.83/netboot.xyz-arm64.iso",
+        "digest": null,
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2007040
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.83/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.83/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3500032
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.83/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.83/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2394112
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.83",
+    "name": "2.0.83",
+    "prerelease": false,
+    "published_at": "2024-11-08T14:16:10Z",
+    "tag_name": "2.0.83"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.82/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 334253
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.82/netboot.xyz-arm64.img",
+        "digest": null,
+        "name": "netboot.xyz-arm64.img",
+        "size": 1474560
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.82/netboot.xyz-arm64.iso",
+        "digest": null,
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2007040
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.82/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.82/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3500032
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.82/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.82/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2394112
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.82",
+    "name": "2.0.82",
+    "prerelease": false,
+    "published_at": "2024-09-18T14:29:54Z",
+    "tag_name": "2.0.82"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.81/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 333100
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.81/netboot.xyz-arm64.img",
+        "digest": null,
+        "name": "netboot.xyz-arm64.img",
+        "size": 1474560
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.81/netboot.xyz-arm64.iso",
+        "digest": null,
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2007040
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.81/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.81/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3497984
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.81/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.81/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2392064
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.81",
+    "name": "2.0.81",
+    "prerelease": false,
+    "published_at": "2024-08-10T18:42:05Z",
+    "tag_name": "2.0.81"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.80/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 326614
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.80/netboot.xyz-arm64.img",
+        "digest": null,
+        "name": "netboot.xyz-arm64.img",
+        "size": 1474560
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.80/netboot.xyz-arm64.iso",
+        "digest": null,
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2009088
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.80/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.80/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3497984
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.80/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.80/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2392064
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.80",
+    "name": "2.0.80",
+    "prerelease": false,
+    "published_at": "2024-07-17T11:25:09Z",
+    "tag_name": "2.0.80"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.79/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 327134
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.79/netboot.xyz-arm64.img",
+        "digest": null,
+        "name": "netboot.xyz-arm64.img",
+        "size": 1474560
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.79/netboot.xyz-arm64.iso",
+        "digest": null,
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2009088
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.79/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.79/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3497984
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.79/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.79/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2392064
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.79",
+    "name": "2.0.79",
+    "prerelease": false,
+    "published_at": "2024-05-25T22:56:35Z",
+    "tag_name": "2.0.79"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.78/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 327880
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.78/netboot.xyz-arm64.img",
+        "digest": null,
+        "name": "netboot.xyz-arm64.img",
+        "size": 1474560
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.78/netboot.xyz-arm64.iso",
+        "digest": null,
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2009088
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.78/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.78/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3497984
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.78/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.78/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2392064
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.78",
+    "name": "2.0.78",
+    "prerelease": false,
+    "published_at": "2024-03-31T01:17:55Z",
+    "tag_name": "2.0.78"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.77/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 327857
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.77/netboot.xyz-arm64.img",
+        "digest": null,
+        "name": "netboot.xyz-arm64.img",
+        "size": 1474560
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.77/netboot.xyz-arm64.iso",
+        "digest": null,
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2009088
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.77/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.77/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3495936
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.77/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.77/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2390016
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.77",
+    "name": "2.0.77",
+    "prerelease": false,
+    "published_at": "2024-02-24T16:35:02Z",
+    "tag_name": "2.0.77"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.76/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 328215
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.76/netboot.xyz-arm64.img",
+        "digest": null,
+        "name": "netboot.xyz-arm64.img",
+        "size": 1474560
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.76/netboot.xyz-arm64.iso",
+        "digest": null,
+        "name": "netboot.xyz-arm64.iso",
+        "size": 2009088
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.76/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.76/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3495936
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.76/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.76/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2390016
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.76",
+    "name": "2.0.76",
+    "prerelease": false,
+    "published_at": "2024-01-01T00:04:15Z",
+    "tag_name": "2.0.76"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.75/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 328069
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.75/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.75/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3495936
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.75/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.75/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2390016
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.75",
+    "name": "2.0.75",
+    "prerelease": false,
+    "published_at": "2023-12-03T20:16:00Z",
+    "tag_name": "2.0.75"
+  },
+  {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.74/menus.tar.gz",
+        "digest": null,
+        "name": "menus.tar.gz",
+        "size": 328178
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.74/netboot.xyz-multiarch.img",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.img",
+        "size": 3096576
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.74/netboot.xyz-multiarch.iso",
+        "digest": null,
+        "name": "netboot.xyz-multiarch.iso",
+        "size": 3495936
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.74/netboot.xyz.img",
+        "digest": null,
+        "name": "netboot.xyz.img",
+        "size": 2064384
+      },
+      {
+        "browser_download_url": "https://github.com/netbootxyz/netboot.xyz/releases/download/2.0.74/netboot.xyz.iso",
+        "digest": null,
+        "name": "netboot.xyz.iso",
+        "size": 2390016
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/netbootxyz/netboot.xyz/releases/tag/2.0.74",
+    "name": "2.0.74",
+    "prerelease": false,
+    "published_at": "2023-11-15T08:09:23Z",
+    "tag_name": "2.0.74"
   }
 ]

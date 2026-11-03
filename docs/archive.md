@@ -7,6 +7,38 @@ numbers and file names are as they were at the time.
 
 ## From TODO.md
 
+### The catalog's second step, and Fedora following its newest release (2026-11-03)
+
+[#6] and TODO item 8 are done, and most of the second step: catalog revision
+2026110301, no release needed except for two parts (below: AnduinOS, and the
+plain discs). What was learned:
+- **A file's name can follow from its version alone.** AnduinOS's page links
+  the checksum file, not the image, and the checksum is a bare `SHA256: <hash>`
+  with no name: the listing matches the `.sha256`, so v0.8.10's "take the name
+  from what the listing matched" didn't apply. When the pattern spells exactly
+  one file once the version is filled in, that is the name. It is a code change
+  (v0.9.2), so the AnduinOS download waits for it to be out a while, which the
+  rule about the catalog and unreleased features requires.
+- **A server can serve the file and refuse its checksum.** PikaOS's ISOs and
+  its KDE `.md5` answer; the other editions' `.md5` files get a 403 for every
+  request, and the folder index is behind a bot check. Not a rate limit (it was
+  the same a minute later) and not something to get round: those editions are
+  check-only. Check each checksum file separately, not one per project.
+- **One entry per file when an update downloads one file.** PikaOS has four
+  desktops and BigLinux three kernels, and an entry that matched all of them
+  would have put a KDE image where a GNOME one was. Hence one entry each.
+- **A version that has to match what the source says.** Fedora's `match` used to
+  capture `44-1.7`, the whole compose; with endoflife as the source the version
+  is `44`, so it now captures the release only.
+- **A catalog change can depend on a stylesheet.** The plain disc for the five
+  brands was ready in the catalog, and showed up white on white: a logo with
+  no brand colour is drawn in the tile's text colour, which is the white used
+  for initials. A copy older than the fix would have shown nothing, so the
+  discs wait for the release that draws them muted (v0.9.2), the same as
+  anything else the catalog needs from the program.
+- The recorder fix from v0.8.12 paid off: Bazzite's stable tag was found
+  again on the first re-record.
+
 ### v0.8.10: weak checksums, and the first catch-up from the wish list (2026-10-05)
 
 The wish list's first three were researched on each project's own site.
