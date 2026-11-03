@@ -42,6 +42,6 @@
 				}
 			</script>
 		</div>
-  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"375a5427308e41be855634cb5919bad1","spa":2}' crossorigin="anonymous"></script>
-<script>window.__CF$cv$params={r:'a45de9c5db4ab02e',t:'MTc5MTIxODg5OA==',u:'01a10cf759977127838a8fce1294e256',ut:'EMGXWfZ1hJRfZ9wQjIpWnP9WlkDeOIZ6yhWLMvBWuCQ-1791218899-1.2.1.1-giwMjJNuQzcCrdqYmstCGBOwPKDwANOtMsAJp0DLwkY.VoIb4qqC.UU4vSeU0lKrckFmvV69PLeJC7RiqB092_teCozv5q3QcoGFHP5jkNc',i:60};(function(){if(!document.body)return;var s=document.createElement('script');s.src='/cdn-cgi/challenge-platform/scripts/precursor/main.js';document.head.appendChild(s);})();</script></body>
+  <script>window.__CF$cv$params={r:'a50b41825b81982f',t:'MTc5MzAzNjUyOQ==',u:'01a1794e2f9e77f2b7046fdb73c7409f',ut:'g5WNh8eXW.7XYG6J1EcwCqF2sEtdLThwZVqRjNvroJY-1793036529-1.2.1.1-6fs7sT4I0l2vBn23A9KXKMR2M9KI9sJYfJQqg1UN_6vX6FopdaLIaGSGbH_Qeo4olB7uqJKPduHql9OrPKhO06RmZvpOZiBFcF2f5LC2dGo',i:60};(function(){if(!document.body)return;var s=document.createElement('script');s.src='/cdn-cgi/challenge-platform/scripts/precursor/main.js';document.head.appendChild(s);})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"375a5427308e41be855634cb5919bad1","spa":2}' crossorigin="anonymous"></script>
+</body>
 </html>
