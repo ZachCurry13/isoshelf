@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/peer"
@@ -12,14 +13,17 @@ import (
 )
 
 // The download queue. Add and Update never refuse because something else is
-// downloading: they join the queue, and downloads run one at a time in the
-// queue's order, which the page can change. Once the queue is empty the folder
-// is scanned once, so the list shows what arrived.
+// downloading: they join the queue, and downloads run in the queue's order,
+// which the page can change, up to as many at once as schedule.go allows and
+// never two from the same server. Once the queue is empty the folder is
+// scanned once, so the list shows what arrived.
 //
-// Invariant: while the queue holds a job, s.downloading is set. Whatever
-// clears it calls startNextLocked straight after, under the same lock, so
-// there is never a moment with jobs waiting and nothing running. A scan has
-// its own slot (s.scanning) and neither waits for the other.
+// Invariant: while the queue holds a job and its server is free, something is
+// running. Whatever ends a download, and every report of progress (which is
+// when the speed of the others is known), calls startNextLocked under the
+// same lock, so there is never a moment with a job that could go waiting
+// while nothing does. A scan has its own slot (s.scanning) and neither waits
+// for the other.
 
 // maxFinished is how many finished downloads the page is shown.
 const maxFinished = 20
@@ -41,6 +45,9 @@ type job struct {
 	// copy, when set, is a file to copy from the server rather than an
 	// image to download (fromserver.go).
 	copy *peer.SharedFile
+	// run is the download in progress, once it has started; it is where this
+	// job's progress and speed are kept, since more than one run at a time.
+	run *run
 }
 
 // finishedJob is a download that ended, and how.
@@ -57,7 +64,8 @@ type finishedJob struct {
 }
 
 type downloadsJSON struct {
-	Current  *jobJSON  `json:"current,omitempty"`
+	// Running is every download in progress, oldest first.
+	Running  []jobJSON `json:"running"`
 	Queued   []jobJSON `json:"queued"`
 	Finished []jobJSON `json:"finished"`
 }
@@ -77,11 +85,12 @@ type jobJSON struct {
 	// already in the folder, rather than one that went wrong.
 	Conflict bool       `json:"conflict,omitempty"`
 	At       *time.Time `json:"at,omitempty"`
-	// Stage, Done and Total describe the download running now, and are set
-	// only on Current.
+	// Stage, Done, Total and Speed describe a download in progress, and are
+	// set only on Running ones. Speed is bytes a second.
 	Stage string `json:"stage,omitempty"`
 	Done  int64  `json:"done,omitempty"`
 	Total int64  `json:"total,omitempty"`
+	Speed int64  `json:"speed,omitempty"`
 	// From names where the bytes came from, for the one question a download
 	// raises that isoshelf could always answer and never did: the other
 	// isoshelf on the network, or the internet.
@@ -94,15 +103,15 @@ func (j *job) json() jobJSON {
 
 // downloadsLocked describes the queue; s.mu must be held.
 func (s *Server) downloadsLocked() downloadsJSON {
-	out := downloadsJSON{Queued: []jobJSON{}, Finished: []jobJSON{}}
-	if s.downloading != nil {
-		j := s.downloading.job.json()
+	out := downloadsJSON{Running: []jobJSON{}, Queued: []jobJSON{}, Finished: []jobJSON{}}
+	for _, r := range s.running {
+		j := r.job.json()
 		// The dock draws its own progress from these, since the scan's card
 		// has the s.scanning slot to itself.
-		p := s.downloading.progress
-		j.Stage, j.Done, j.Total = string(p.Stage), p.Done, p.Total
-		j.From = s.downloading.from
-		out.Current = &j
+		p := r.progress
+		j.Stage, j.Done, j.Total, j.Speed = string(p.Stage), p.Done, p.Total, int64(r.speed)
+		j.From = r.from
+		out.Running = append(out.Running, j)
 	}
 	for _, j := range s.queue {
 		out.Queued = append(out.Queued, j.json())
@@ -120,8 +129,10 @@ func (s *Server) downloadsLocked() downloadsJSON {
 
 // queuedLocked reports whether an entry is waiting or downloading.
 func (s *Server) queuedLocked(entry string) bool {
-	if s.downloading != nil && s.downloading.job.entry == entry {
-		return true
+	for _, r := range s.running {
+		if r.job.entry == entry {
+			return true
+		}
 	}
 	for _, j := range s.queue {
 		if j.entry == entry {
@@ -140,7 +151,7 @@ func (s *Server) busyLocked() string {
 	switch {
 	case s.scanning != nil:
 		return "Wait until the scan finishes, or stop it."
-	case s.downloading != nil || len(s.queue) > 0:
+	case len(s.running) > 0 || len(s.queue) > 0:
 		return "Wait until the downloads finish, or stop them."
 	case s.uploads > 0:
 		return "Wait until the file you're adding has finished arriving."
@@ -162,13 +173,29 @@ func (s *Server) scanBusyLocked() string {
 	return ""
 }
 
-// startNextLocked starts the next download if nothing is running. When the
-// queue has just run dry and something arrived, it scans the folder instead,
-// so the list catches up with what is there. s.mu must be held.
+// startNextLocked starts as many waiting downloads as schedule.go allows.
+// When the queue has run dry, nothing is running and something arrived, it
+// scans the folder instead, so the list catches up with what is there. s.mu
+// must be held.
 func (s *Server) startNextLocked() {
 	// Nothing starts while isoshelf restarts into an update: the restart
 	// would cut it off halfway.
-	if s.downloading != nil || s.restartingLocked() {
+	if s.restartingLocked() {
+		return
+	}
+	for len(s.queue) > 0 && s.roomLocked() {
+		i := s.nextLocked()
+		if i < 0 {
+			break // every waiting download's server is busy
+		}
+		j := s.queue[i]
+		s.queue = slices.Delete(s.queue, i, i+1)
+		ctx, cancel := context.WithCancel(context.Background())
+		j.run = &run{kind: "update", job: j, started: s.cfg.Now(), cancel: cancel}
+		s.running = append(s.running, j.run)
+		go s.executeJob(ctx, j)
+	}
+	if len(s.running) > 0 {
 		return
 	}
 	if len(s.queue) == 0 {
@@ -181,13 +208,7 @@ func (s *Server) startNextLocked() {
 			// costs nothing.
 			s.startScanLocked(askIfDue)
 		}
-		return
 	}
-	j := s.queue[0]
-	s.queue = s.queue[1:]
-	ctx, cancel := context.WithCancel(context.Background())
-	s.downloading = &run{kind: "update", job: j, started: s.cfg.Now(), cancel: cancel}
-	go s.executeJob(ctx, j)
 }
 
 // executeJob runs one download and records how it went.
@@ -197,8 +218,8 @@ func (s *Server) executeJob(ctx context.Context, j *job) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	f := finishedJob{job: *j, outcome: "done", message: note, at: s.cfg.Now()}
-	if s.downloading != nil {
-		f.from = s.downloading.from
+	if j.run != nil {
+		f.from = j.run.from
 	}
 	switch {
 	case errors.Is(err, context.Canceled):
@@ -222,7 +243,10 @@ func (s *Server) executeJob(ctx context.Context, j *job) {
 	if len(s.finished) > maxFinished {
 		s.finished = s.finished[:maxFinished]
 	}
-	s.downloading = nil
+	if j.run != nil {
+		s.removeRunLocked(j.run)
+		j.run = nil
+	}
 	s.startNextLocked()
 }
 
@@ -262,8 +286,10 @@ func (s *Server) dropQueued(w http.ResponseWriter, r *http.Request) {
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	if s.downloading != nil && s.downloading.job.id == req.ID {
-		s.downloading.cancel()
+	if r := s.runOfLocked(req.ID); r != nil {
+		// Stopping one leaves the others going; the next waiting one starts when
+		// this one has stopped.
+		r.cancel()
 		writeJSON(w, http.StatusOK, s.downloadsLocked())
 		return
 	}

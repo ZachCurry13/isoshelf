@@ -27,10 +27,10 @@ func useFakeDownloads(s *Server) *fakeDownloads {
 		// The real download reports progress as it goes, and the dock draws
 		// from it now that the scan's card is no longer shared.
 		s.mu.Lock()
-		if s.downloading != nil {
-			s.downloading.progress = inventory.Progress{
+		if j.run != nil {
+			j.run.note(inventory.Progress{
 				Stage: inventory.Stage("downloading"), File: j.name, Done: j.size / 4, Total: j.size,
-			}
+			}, s.cfg.Now())
 		}
 		s.mu.Unlock()
 		select {

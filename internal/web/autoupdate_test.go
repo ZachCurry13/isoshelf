@@ -156,13 +156,13 @@ func TestItQueuesTheUpdatesItFinds(t *testing.T) {
 			t.Errorf("queued %s, which isoshelf only checks and can't download", j.entry)
 		}
 	}
-	running := s.downloading
+	running := len(s.running)
 	s.mu.Unlock()
 
 	if added != updates {
 		t.Errorf("queued %d of %d updates", added, updates)
 	}
-	if !everyOneAutomatic && running == nil {
+	if !everyOneAutomatic && running == 0 {
 		t.Error("a download isoshelf started itself isn't marked as such")
 	}
 	// Asked twice, it doesn't queue the same image again.
@@ -174,8 +174,8 @@ func TestItQueuesTheUpdatesItFinds(t *testing.T) {
 	}
 	s.mu.Lock()
 	s.queue = nil
-	if s.downloading != nil {
-		s.downloading.cancel()
+	for _, r := range s.running {
+		r.cancel()
 	}
 	s.mu.Unlock()
 	waitIdle(t, s)
@@ -202,8 +202,8 @@ func TestItLeavesABusyFolderAlone(t *testing.T) {
 	waitIdle(t, s)
 	s.mu.Lock()
 	s.queue = nil
-	if s.downloading != nil {
-		s.downloading.cancel()
+	for _, r := range s.running {
+		r.cancel()
 	}
 	s.mu.Unlock()
 	waitIdle(t, s)

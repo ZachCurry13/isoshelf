@@ -201,6 +201,11 @@ type Settings struct {
 	// the whole program rests on: nothing is deleted unless the user chose
 	// it. Choosing a number here is that choice, made once, in advance.
 	ArchiveAfter int `json:"archive_after,omitempty"`
+	// DownloadLimit is the most isoshelf may download at, in megabits a second
+	// (what an internet plan is sold in), shared by every download running
+	// together. 0 is no limit, the default. How many run at once follows from
+	// it: see internal/web/schedule.go.
+	DownloadLimit int `json:"download_limit,omitempty"`
 	// ShareImages lets another isoshelf on the network copy images from this
 	// one. Nil and false are both off: sharing hands whole images to whoever
 	// can sign in, which is a different thing from letting them manage the
@@ -270,4 +275,20 @@ func Save(configDir string, s Settings) error {
 		return err
 	}
 	return os.WriteFile(filepath.Join(configDir, FileName), data, 0o644)
+}
+
+// MaxDownloadLimit is the largest limit that can be set, in megabits a second:
+// 100 gigabits is faster than any connection there is, and keeps the figure a
+// page sends, or a hand-edited file holds, from overflowing anything.
+const MaxDownloadLimit = 100_000
+
+// CleanDownloadLimit turns whatever was asked for into a limit that means
+// something: nothing negative, and nothing past MaxDownloadLimit.
+func CleanDownloadLimit(megabits int) int {
+	return min(max(megabits, 0), MaxDownloadLimit)
+}
+
+// BytesPerSecond is the limit in the unit the downloader counts in.
+func BytesPerSecond(megabits int) int64 {
+	return int64(CleanDownloadLimit(megabits)) * 125_000
 }

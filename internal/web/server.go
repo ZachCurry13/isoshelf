@@ -23,6 +23,7 @@ import (
 	"github.com/ZachCurry13/isoshelf/internal/auth"
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/check"
+	"github.com/ZachCurry13/isoshelf/internal/fetch"
 	"github.com/ZachCurry13/isoshelf/internal/inventory"
 	"github.com/ZachCurry13/isoshelf/internal/lastcheck"
 	"github.com/ZachCurry13/isoshelf/internal/scan"
@@ -80,11 +81,16 @@ type Server struct {
 	room   space.Usage
 	roomAt time.Time
 	roomOf string
-	// A scan and a download run side by side, so they have a slot each: the
-	// page is never locked for the length of a queue. Only one scan runs at
-	// a time, and only one download.
-	scanning    *run
-	downloading *run
+	// A scan and the downloads run side by side, so they have slots of their
+	// own: the page is never locked for the length of a queue. Only one scan
+	// runs at a time; how many downloads is decided in schedule.go.
+	scanning *run
+	// running is the downloads in progress, newest last. How many there are
+	// at once, and which, is decided in schedule.go.
+	running []*run
+	// limiter holds every running download to the speed limit in Settings,
+	// together, and is told when the setting changes.
+	limiter *fetch.Limiter
 	// autoQueue marks the scan that the scheduler started, so that when it
 	// finishes its findings go straight into the download queue. autoNote is
 	// the line the page shows about what it did.
@@ -124,11 +130,16 @@ type Server struct {
 // run is a scan, check or download in progress.
 type run struct {
 	kind string
-	// job is the download, when it is one: a run in s.downloading always has
-	// one, a run in s.scanning never does.
+	// job is the download, when it is one: a run in s.running always has one,
+	// a run in s.scanning never does.
 	job      *job
 	started  time.Time
 	progress inventory.Progress
+	// speed is how fast the download has gone over the last second or so, in
+	// bytes a second; sampleAt and sampleDone are the reading it came from.
+	speed      float64
+	sampleAt   time.Time
+	sampleDone int64
 	// from is where the bytes are arriving from, in words: the name of the
 	// other isoshelf, or "the internet". Copying from a peer is the whole
 	// point of setting one up and was invisible while it happened.
@@ -142,6 +153,7 @@ func New(cfg Config) *Server {
 		cfg.Now = time.Now
 	}
 	s := &Server{cfg: cfg, cat: cfg.Catalog, catSource: cfg.CatalogSource, logins: newAttempts()}
+	s.limiter = fetch.NewLimiter(settings.BytesPerSecond(settings.Load(cfg.Dirs.Config).DownloadLimit))
 	// A key isoshelf can't save still works; it just means everyone has to
 	// log in again after a restart, which is better than refusing to start.
 	// Whether it saved is remembered, because a person who has to log in

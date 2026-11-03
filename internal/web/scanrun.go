@@ -150,15 +150,17 @@ func (s *Server) execute(ctx context.Context, target string, profile scan.Profil
 }
 
 // cancel stops what is running. For downloads that means all of them: the
-// one running stops, and the ones waiting are taken off the queue.
+// ones running stop, and the ones waiting are taken off the queue.
 func (s *Server) cancel(w http.ResponseWriter, r *http.Request) {
 	s.mu.Lock()
 	if s.scanning != nil {
 		s.scanning.cancel()
 	}
-	if s.downloading != nil {
+	if len(s.running) > 0 {
 		s.queue = nil
-		s.downloading.cancel()
+		for _, r := range s.running {
+			r.cancel()
+		}
 	}
 	s.mu.Unlock()
 	writeJSON(w, http.StatusOK, map[string]string{"status": "stopping"})

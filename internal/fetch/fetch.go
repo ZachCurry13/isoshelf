@@ -106,6 +106,12 @@ type Client struct {
 	Backoff time.Duration
 	// ProgressEvery limits how often progress is reported.
 	ProgressEvery time.Duration
+	// Limit, when set, caps the speed of this download together with every
+	// other that shares it (v0.10.0). Unlimited lists hosts, as host:port, whose
+	// downloads it does not slow: another isoshelf on the same network is not
+	// the internet connection somebody is rationing.
+	Limit     *Limiter
+	Unlimited []string
 }
 
 // New returns a client for the given isoshelf version.

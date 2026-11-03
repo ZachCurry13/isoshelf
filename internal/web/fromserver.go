@@ -167,11 +167,11 @@ func (s *Server) runCopy(ctx context.Context, j *job) (string, error) {
 		Checksum: &verify.Checksum{Name: c.Name, Algorithm: verify.SHA256, Hex: strings.ToLower(c.SHA256)},
 	}, func(p fetch.Progress) {
 		s.mu.Lock()
-		if s.downloading != nil {
-			s.downloading.progress = inventory.Progress{
+		if r := j.run; r != nil {
+			r.note(inventory.Progress{
 				Stage: inventory.Stage(p.Stage), File: p.Filename, Done: p.Done, Total: p.Total,
-			}
-			s.downloading.from = "your server, " + near.Address
+			}, s.cfg.Now())
+			r.from = "your server, " + near.Address
 		}
 		s.mu.Unlock()
 	})

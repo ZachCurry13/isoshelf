@@ -96,7 +96,7 @@ func (s *Server) emptyArchiveIfDue() {
 	target, st := s.target, s.st
 	// A folder being scanned, downloaded into or uploaded to is left alone:
 	// its archive is about to change, and the next tick is minutes away.
-	busy := target == "" || s.scanning != nil || s.downloading != nil || len(s.queue) > 0 || s.uploads > 0
+	busy := target == "" || s.scanning != nil || len(s.running) > 0 || len(s.queue) > 0 || s.uploads > 0
 	s.mu.Unlock()
 	if busy {
 		return
