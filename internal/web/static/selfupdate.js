@@ -136,10 +136,11 @@ const SELF_SETTINGS = {
   settings: [
     {
       name: "Version",
-      hint: "The version of isoshelf you are running, and what it changed.",
-      words: "version about update release changelog notes what's new news",
+      hint: "The version of isoshelf you are running, what it runs on, and what the version changed.",
+      words: "version about update release changelog notes what's new news system os windows linux running since uptime mode catalog revision",
       control: () => el("div", { class: "setting-controls" },
         el("div", {}, (state && state.version) || "unknown"),
+        ...systemFacts().map((line) => el("div", { class: "muted" }, line)),
         state && state.release_notes
           ? el("a", { class: "btn small", href: state.release_notes, target: "_blank", rel: "noopener noreferrer" },
             "What's new")

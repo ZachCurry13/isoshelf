@@ -41,7 +41,7 @@ type Origin struct {
 	Checked   string    `json:"checked,omitempty"`
 	CheckedAt time.Time `json:"checked_at,omitzero"`
 	// Replaced is the version of the file this one took the place of, when
-	// an update put it where an older file of the same name was (v0.8.11).
+	// an update put it where an older file of the same name was (v0.8.13).
 	// The note about the file that left goes at the next scan, because its
 	// name is in the folder again, so this is what keeps the update in the
 	// history.

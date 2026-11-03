@@ -324,14 +324,14 @@ alone is not an update.
     download is, in bytes; measured by `record -sizes`, refused if too small
     or too large to be an image).
   - For the UI: `category` (desktop, gaming, server, boards, security,
-    rescue, windows, other — "boards" is the Raspberry Pi and other
+    rescue, windows, other â "boards" is the Raspberry Pi and other
     single-board computers, "gaming" includes handhelds), `family` (groups one
     product's tracks), `site`, `forum`, `popular` (a hand-picked hint from
     public round-ups, not a rating), and `icon` + `icon_color` (a Simple Icons
     name and brand color).
   - `caution`: one line of fact worth knowing before using the image
     (support ended on a date, an unofficial modification, a preview that
-    expires), at most 200 characters. The page shows a ⚠ beside the name,
+    expires), at most 200 characters. The page shows a â  beside the name,
     with the same mark for anything the online check finds is end of life,
     and a key under the list when any row has one. It is never a block:
     people keep old images on purpose. Keep cautions to verifiable facts about
@@ -840,12 +840,12 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   read the folder again and ask every project again. Scanning without going
   online is what turning the setting off does, not a second button.
 - The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
-  images, Archive, History, Usage and Tools (the last two since v0.8.8).
+  images, Archive, History and Tools (Tools since v0.8.8).
   A link unfolds the part it jumps to (`openSection` in `summary.js`, which
   opens only that part's own `<details>` - never one inside it, which is
   how the Filter menu once opened by itself). Above the list, one line says what wants doing
   (`renderTodo` in `summary.js`, v0.7.0; it was a card for each until then):
-  `41 updates · 13 older · 3 unrecognized · Archive 20.9 GB [Update 31]`.
+  `41 updates Â· 13 older Â· 3 unrecognized Â· Archive 20.9 GB [Update 31]`.
   Each count shows exactly those images; Update all is the one button. The list is a favorite star and four columns - image (file,
   size and date underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
   row opens the details panel: everything about one image, its links, and
@@ -856,7 +856,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   hash, the hashes decide (`ItemJSON.SHA256`). Counted on the line above the
   list and filterable; each says what it matches, and while the filter is
   on its row has **Make sure** (`/api/hash`: an ordinary scan hashing those
-  files, only on request) and **Remove this copy…** (the usual removal).
+  files, only on request) and **Remove this copyâ¦** (the usual removal).
 - **Dismissing an update** (v0.8.2, #56, `dismiss.js`): for 7, 30 or 90
   days, or for good (`Track.DismissedUntil`, `DismissedForever`). A date,
   not a version: it holds whatever comes out meanwhile. The row stays,
@@ -948,7 +948,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   the page polls twice a second during a scan and a NAS answers over the
   network. A folder that won't say leaves the line out.
 - A row's links (download page, website, forum, release notes), its Update
-  button and Remove live in the details panel; the "…" menu the rows used to
+  button and Remove live in the details panel; the "â¦" menu the rows used to
   carry went with the v0.3.0 redesign.
 - The page is one script per part, all plain scripts sharing the same names
   and loaded in the order `index.html` lists them: `app.js` (what isoshelf has
@@ -965,8 +965,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
   (dragging a file onto the page, or picking one), `selfupdate.js` (isoshelf
-  updating its own program), `usage.js` (the Usage section: what the folder
-  saw week by week, and where isoshelf runs) and `report.js` (the
+  updating its own program), `history.js` (the History timeline), `system.js` (where isoshelf runs, in Settings) and `report.js` (the
   prefilled bug report). They were one 2,544-line
   `app.js` until v0.3.1; the split is what keeps changing one corner from
   meaning reading all of it.
@@ -979,24 +978,34 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   ones fetched earlier from `<config>/logos`, then fetches from the CDN once
   and remembers misses. Entries without one get colored initials, drawn from
   the name.
-- **Archive** lists files still in `.isoshelf/removed`, with Restore;
-  **History** lists images that have left, with Download again for catalog
-  ones. Both fold (the archive since v0.8.8), their headings saying how many
-  and how much; Empty archive is inside, so emptying is a second step.
+- **Archive** lists files still in `.isoshelf/removed`, with Restore.
+  **History** (v0.8.13, `history.go`, `state/history.go`, `static/history.js`)
+  is a timeline of what arrived (downloaded, copied from a server, added from
+  a computer), what an update changed (one event, "updated 7.12 → 7.13"),
+  and what left (archived, deleted, replaced, gone), newest first with dates
+  and sizes, the last 30 days unless asked for more; images that left offer
+  Download again. Both fold, their headings saying how much; Empty archive
+  is inside the archive, so emptying is a second step. History records
+  nothing of its own: `State.Events` works it out from each file's `Origin`
+  (or `PlacedAt` for downloads older than origins) and each `Past` note's
+  `Arrived`, `Gone` and `GoneAt`. An arrival and an older file of the same
+  image leaving within an hour are one update; `Origin.Replaced` says what
+  an update that kept the same filename replaced, because that file's note
+  is dropped at the next scan when its name is back in the folder. A file
+  already in the folder when isoshelf first read it, or an image that left
+  before v0.8.6, has lost its half of the story and shows what is left.
+  `GET /api/history?days=` is asked again only when a scan, a download or
+  the archive changes, because it reads every record rather than riding on
+  the page's twice-a-second state.
 - **What's new** (v0.8.8): the version in Settings links to its release
   notes (`releaseNotes`, a release's own page, or the changelog for a
   development build), and a newer version's notice links to that version's.
-- **Usage** (v0.8.6, `usage.go`, `state/usage.go`, `static/usage.js`) is a
-  folded section: the last 8 weeks, Monday to Sunday where isoshelf runs,
-  with what arrived by `Origin.How` (or `PlacedAt` for downloads older than
-  origins), what left by `Gone`, and scans from `History`; then the facts
-  about this isoshelf that are otherwise spread across Settings. It records
-  nothing of its own: it is worked out from what the folder's records already
-  hold, so it can't disagree with them, and an image that leaves keeps its
-  `Arrived` so its download still counts. `GET /api/usage` is asked only
-  while the section is open, and again when a scan, a download or the
-  archive changes, because it reads every record rather than riding on the
-  page's twice-a-second state.
+- **Where this isoshelf runs** (v0.8.13, `system.go`, `static/system.js`):
+  the system, how it was started, how long it has run and the image list
+  revision, under the version in Settings → isoshelf itself, from `System`
+  in the page state. They were the second half of a Usage section (v0.8.6
+  to v0.8.12: weeks of arrivals and departures, which the maintainer found
+  little use) that History replaced.
 - Downloads (`queue.go`): Add, Update, Update all and Download again join a
   queue that runs one at a time, and the queue drains into one rescan. The
   page shows it in a bar along the bottom (Steam-like): the running download

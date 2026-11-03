@@ -256,7 +256,7 @@ func TestRunSameFilename(t *testing.T) {
 		t.Fatal(err)
 	}
 	st := state.New(scan.Ventoy)
-	if err := st.Placed(dir, "fixed.iso", state.FileRecord{Entry: "fixed"}); err != nil {
+	if err := st.Placed(dir, "fixed.iso", state.FileRecord{Entry: "fixed", Version: "1"}); err != nil {
 		t.Fatal(err)
 	}
 	rc, fc := clients(t, fixedSite(t))
@@ -278,6 +278,16 @@ func TestRunSameFilename(t *testing.T) {
 	}
 	if !slices.Equal(res.Removed, []string{"fixed.iso"}) {
 		t.Errorf("removed = %v", res.Removed)
+	}
+
+	// The history: one note, saying it was replaced and which version it was,
+	// and the new file saying what it replaced. Removing the file must not leave
+	// a second, empty note behind it.
+	if past := st.Archive(); len(past) != 1 || past[0].Gone != state.GoneReplaced || past[0].Version != "1" {
+		t.Errorf("notes about files that left: %+v, want one, replaced, version 1", past)
+	}
+	if got := st.Files["fixed.iso"].Origin.Replaced; got != "1" {
+		t.Errorf("the new file replaced version %q, want 1", got)
 	}
 
 	// With no answer at all it still refuses, because that is the page asking

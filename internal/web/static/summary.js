@@ -111,7 +111,7 @@ function jumpTo(id) {
 }
 
 // openSection unfolds a part of the page that folds away - the archive,
-// history, usage, tools - by its own <details>, never one inside it. It once
+// history, tools - by its own <details>, never one inside it. It once
 // opened the first <details> it found, and in the list of images that is the
 // Filter menu, which opened every time a count was clicked.
 function openSection(id) {

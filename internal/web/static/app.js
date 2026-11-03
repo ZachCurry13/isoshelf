@@ -292,7 +292,6 @@ function render() {
   renderCatalog();
   renderArchive();
   renderHistory();
-  renderUsage();
   renderDetails();
   sayHowTheCheckWent();
   sayWhetherTheyMatched();
