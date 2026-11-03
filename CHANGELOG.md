@@ -6,6 +6,35 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.9.3] - 2026-11-03
+
+### Security
+For anyone who reaches isoshelf from the internet, through a tunnel or a proxy.
+Three things, found by trying to get in as a stranger; none was a way past an
+existing login, and every route was checked and still refuses without one.
+- **A stranger can no longer choose the first password.** On a server with no
+  login set yet, the setup form was shown to whoever reached the address first,
+  so after a fresh install, or a config folder that went missing, the first
+  visitor would have become the owner. The form is now for whoever has the link
+  in the log; anybody else gets a refusal that says where the link is. Setting
+  `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` still means there is never a time
+  without a login.
+- **The cookies are marked Secure when the visitor is on https**, as they are
+  behind a tunnel, so a browser that is ever sent to the `http://` address of the
+  same name doesn't give its 30-day session away in the clear.
+- **A stranger's wrong passwords no longer make you wait too**, if you tell
+  isoshelf it sits behind a proxy it can trust: set `ISOSHELF_TRUST_PROXY=true`
+  and each visitor is told apart by the address the proxy reports
+  (`CF-Connecting-IP` for Cloudflare). It is off by default, because where nothing
+  is in front, those headers are whatever the visitor writes. Without it, as
+  before, every visitor behind a tunnel looks like the tunnel.
+
+### Added
+- Tests that send **every route** the server has, with every method and no
+  login, and expect a refusal from each; and that forged, altered and expired
+  sessions are refused. A route added outside the guard now fails the build.
+- A section in docs/docker.md on reaching isoshelf through a tunnel.
+
 ## [v0.9.2] - 2026-11-03
 
 ### Fixed

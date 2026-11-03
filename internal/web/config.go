@@ -31,6 +31,13 @@ type Config struct {
 	// cookie, the header on every change and the same-origin check all still
 	// apply, and they are what actually keeps other people out.
 	AnyHost bool
+	// TrustProxy says isoshelf sits behind a proxy it can rely on - a
+	// Cloudflare tunnel, a reverse proxy on the same machine - and so may take
+	// the visitor's own address from the headers the proxy sets (v0.9.3). It is
+	// only for slowing down guessing, so that a stranger's wrong tries don't make
+	// the owner wait. Off by default, because where nothing sits in front, those
+	// headers are whatever the visitor writes.
+	TrustProxy bool
 	// Now defaults to time.Now.
 	Now func() time.Time
 	// SelfUpdate is what isoshelf needs to update its own program.

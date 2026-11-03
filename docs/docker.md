@@ -23,20 +23,22 @@ You don't have to set anything else.
 
 ## Getting in: a username and password
 
-**Open the address and isoshelf asks you to choose a username and password.**
-That is the first run: pick them, and from then on every device on your
-network signs in with them. A sign-in lasts a month and survives restarts, so
-updating the app doesn't sign you out.
+**On a fresh install, open the link in the log, then choose a username and
+password in Settings.** From then on every device on your network signs in
+with them. A sign-in lasts a month and survives restarts, so updating the app
+doesn't sign you out.
 
 Two things worth knowing:
 
-- **Until somebody sets them, whoever opens the address first is the one who
-  chooses.** isoshelf says so in its log, with the address, so it isn't a
-  surprise. Do it as soon as the app is up rather than later.
-- **To skip that window entirely**, set `ISOSHELF_USERNAME` and
-  `ISOSHELF_PASSWORD` before it ever starts — in the app's environment
-  variables, where you are already filling in a form. isoshelf then has a
-  login from its very first second and never offers to set one.
+- **Until somebody sets them, the link in the log is the only way in.** A
+  stranger who finds the address gets a refusal that says where the link is,
+  not the chance to choose the password (before v0.9.3 the first visitor
+  could). Choose your login as soon as the app is up rather than later.
+- **Best of all, set `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` before it
+  ever starts** — in the app's environment variables, where you are already
+  filling in a form. isoshelf then has a login from its very first second, and
+  keeps it: they are applied at every start, so even a container recreated
+  with an empty config folder is never without one.
 
 Settings → *Sign-in* changes the username or password later, signs
 this browser out, or signs every browser out at once.
@@ -77,7 +79,32 @@ has to answer to the machine's address, or you could never reach it.
   is the same exposure as every other NAS app; over the internet it is not
   good enough. If you want it reachable from outside your house, put it
   behind a VPN, or a reverse proxy with `https`. isoshelf works behind a
-  proxy on `https` without any extra configuration.
+  proxy on `https` without any extra configuration, and marks its cookies
+  Secure when the visitor is on `https`.
+
+### Reaching it from the internet, through a tunnel
+
+A Cloudflare tunnel (or any reverse proxy) is a good way in, because nothing
+on your router is opened. These are worth doing, roughly in this order:
+
+1. **Set `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD`** (above), with a long
+   passphrase. There is then never a moment when a stranger could choose it.
+2. **Turn on "Always Use HTTPS"** for the hostname in Cloudflare, so nobody is
+   ever on `http://` at all.
+3. **Put Cloudflare Access in front** (Zero Trust, free for a few people). It
+   asks for its own sign-in, an emailed code is enough, before a request
+   reaches isoshelf. Then isoshelf's login is the second door, not the only one.
+4. **Set `ISOSHELF_TRUST_PROXY=true`** if the tunnel is the only way to reach
+   isoshelf (its port isn't also open on your network). isoshelf then takes
+   each visitor's own address from `CF-Connecting-IP`, so a stranger's wrong
+   guesses make only the stranger wait. Without it every visitor looks like
+   the tunnel, and five wrong guesses from anyone make *you* wait too. Don't
+   set it if the port is reachable directly: then anyone could write that
+   header.
+5. **Keep "Allow downloads" and image sharing off** in Settings unless you
+   use them from outside: they hand whole images to whoever is signed in.
+6. **Stay current.** The weekly audit on GitHub says when a release is needed
+   for a security fix.
 
 ## Docker Compose
 
@@ -117,10 +144,10 @@ don't.
 3. **Image**: repository `ghcr.io/zachcurry13/isoshelf`, tag `latest`. You can
    pin a version instead — `vX.Y.Z`, whichever is current — if you would rather decide when it
    changes.
-4. **Environment variables**: none needed — the first time you open it,
-   isoshelf asks you to choose a username and password. To have them set
-   before it ever starts, add `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD`
-   here.
+4. **Environment variables**: none are needed, but add `ISOSHELF_USERNAME`
+   and `ISOSHELF_PASSWORD` here: isoshelf then has a login from its first
+   second and is never without one. Without them you choose a login after
+   opening the link in the log (step 8).
 5. **Networking**: publish container port `8765` on host port `8765`. Pick a
    different host port if something else is already using it.
 6. **Storage**: two host-path mounts.
@@ -131,12 +158,13 @@ don't.
    defaults to 1000 because that is the common one everywhere else; isoshelf
    runs happily as any user, so set this to whatever owns your datasets.)
 8. Install it and wait for it to go green, then open
-   `http://your-truenas:8765/` and choose a username and password. (If you
-   set them in step 4, sign in with those instead.)
+   `http://your-truenas:8765/` and sign in with the login from step 4. (If you
+   left them out, open the link in the app's **Logs** instead, then choose a
+   username and password in Settings.)
 
 Until you set that password, the app's **Logs** hold a link with a secret on
-the end, which is how a fresh install can be opened at all. It stops working
-as soon as a password exists.
+the end, which is the only way a fresh install can be opened. It stops
+working as soon as a password exists.
 
 ### If downloads fail with "permission denied"
 

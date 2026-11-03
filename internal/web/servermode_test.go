@@ -179,7 +179,7 @@ func TestTheServerSaysSoInTheTab(t *testing.T) {
 	}
 
 	rec := httptest.NewRecorder()
-	server.writeLoginPage(rec, nil, "", http.StatusOK)
+	server.writeLoginPage(rec, httptest.NewRequest(http.MethodGet, "/login", nil), nil, "", http.StatusOK)
 	if !strings.Contains(rec.Body.String(), "<title>Set up isoshelf server</title>") {
 		t.Error("the setup page a server shows doesn't name itself a server")
 	}

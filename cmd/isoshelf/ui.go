@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 	"sync/atomic"
 
 	"github.com/ZachCurry13/isoshelf/internal/appdir"
@@ -95,6 +96,7 @@ func serveUI(ctx context.Context, e *env, opts options) (err error) {
 		Version:       version,
 		Token:         token,
 		AnyHost:       anyHost,
+		TrustProxy:    trustProxy(e),
 		Target:        opts.folder,
 		Now:           e.now,
 		SelfUpdate: web.SelfUpdateConfig{
@@ -161,6 +163,19 @@ func warnAboutFolders(e *env, folder string, anyHost bool, config string) {
 	checkWritable(e.stderr, config, folder)
 }
 
+// trustProxyEnv is the environment variable that says isoshelf sits behind a
+// proxy it can rely on. See web.Config.TrustProxy.
+const trustProxyEnv = "ISOSHELF_TRUST_PROXY"
+
+// trustProxy reads trustProxyEnv: anything that spells yes.
+func trustProxy(e *env) bool {
+	switch strings.ToLower(strings.TrimSpace(e.getenv(trustProxyEnv))) {
+	case "1", "true", "yes", "on":
+		return true
+	}
+	return false
+}
+
 // printAddress says where the page is.
 func printAddress(e *env, anyHost bool, addr net.Addr, url, token string, dirs appdir.Dirs) {
 	port := addr.(*net.TCPAddr).Port
@@ -174,7 +189,7 @@ func printAddress(e *env, anyHost bool, addr net.Addr, url, token string, dirs a
 	if haveLogin(dirs) {
 		fmt.Fprintf(e.stdout, "Sign in with the username and password you set. Forgotten them? Set\nISOSHELF_USERNAME and ISOSHELF_PASSWORD and restart, or run\n\"isoshelf password\" on this machine.\n")
 	} else {
-		fmt.Fprintf(e.stdout, "The first thing it asks is to choose a username and password. Until\nsomebody does, this link gets in without one:\n\n  http://<this-machine>:%d/?token=%s\n\nIt stops working the moment a password is set.\n", port, token)
+		fmt.Fprintf(e.stdout, "No username and password are set yet, so this link is the only way in, and\nit gets in without one:\n\n  http://<this-machine>:%d/?token=%s\n\nOpen it, then choose a username and password in Settings. It stops working\nthe moment a password is set. Don't put this address on the internet until\nthen: set ISOSHELF_USERNAME and ISOSHELF_PASSWORD instead and there is\nnever a time without one.\n", port, token)
 	}
 }
 

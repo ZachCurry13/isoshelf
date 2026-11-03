@@ -51,7 +51,7 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		tokenWorks := !s.loginInstead()
 		if token := r.URL.Query().Get("token"); tokenWorks && token != "" && r.Method == http.MethodGet && r.URL.Path == "/" {
 			if s.validToken(token) {
-				http.SetCookie(w, &http.Cookie{Name: cookieName, Value: token, Path: "/", HttpOnly: true, SameSite: http.SameSiteStrictMode})
+				http.SetCookie(w, &http.Cookie{Name: cookieName, Value: token, Path: "/", HttpOnly: true, Secure: isHTTPS(r), SameSite: http.SameSiteStrictMode})
 				http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			}
@@ -64,8 +64,16 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		}
 		if !hasToken && !s.signedIn(r) {
 			// The login page is the one thing served to somebody who is not
-			// through yet, so it serves itself: no token, no session.
-			if r.URL.Path == loginPath && s.canLogIn() {
+			// through yet, so it serves itself: no token, no session. But only
+			// when there is a login to give. Until somebody has set one, the
+			// form that would set it is not for strangers: it used to be, and
+			// the first person to reach the address chose the password, which on
+			// a server open to the internet is whoever arrives first after a
+			// fresh install or a lost config folder (v0.9.3). A login is set by
+			// someone who has the link, or by ISOSHELF_USERNAME and
+			// ISOSHELF_PASSWORD, both of which need the machine.
+			haveLogin := s.account() != nil
+			if r.URL.Path == loginPath && haveLogin {
 				s.handleLogin(w, r)
 				return
 			}
@@ -73,7 +81,7 @@ func (s *Server) guard(next http.Handler) http.Handler {
 			// request from the page's own code is not: it would follow the
 			// redirect and get a login page where it expected an answer, so
 			// it is refused in the usual way and the page says so.
-			if s.canLogIn() && r.Method == http.MethodGet && wantsHTML(r) {
+			if haveLogin && r.Method == http.MethodGet && wantsHTML(r) {
 				http.Redirect(w, r, loginPath, http.StatusSeeOther)
 				return
 			}
@@ -89,6 +97,12 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		// send the header and an Origin that means something.
 		if r.URL.Path == loginPath {
 			if r.Method == http.MethodPost {
+				s.handleLogin(w, r)
+				return
+			}
+			// With no login set yet, somebody who has the link may ask for the
+			// form that sets one.
+			if r.Method == http.MethodGet && s.account() == nil {
 				s.handleLogin(w, r)
 				return
 			}
@@ -128,7 +142,10 @@ keeps everyone else on the network out.</p>
 <p><b>The link is in this container's log.</b> On TrueNAS: Apps, then isoshelf,
 then its Logs. With Docker: <code>docker logs isoshelf</code>. Look for a line
 beginning <code>http://</code> with <code>?token=</code> in it, and open the
-whole thing. Once you have, this address will work on its own.</p>`
+whole thing. Once you have, this address will work on its own.</p>
+<p>To sign in with a username and password instead, set them once you are in
+(Settings, then Sign-in), or set <code>ISOSHELF_USERNAME</code> and
+<code>ISOSHELF_PASSWORD</code> where isoshelf runs and restart it.</p>`
 	}
 	return `<!doctype html><meta charset="utf-8"><title>isoshelf</title>
 <body style="font-family:system-ui,sans-serif;max-width:34rem;margin:3rem auto;padding:0 1rem;line-height:1.5">
@@ -154,6 +171,26 @@ func sameOrigin(origin, host string) bool {
 		return false
 	}
 	return (u.Scheme == "http" || u.Scheme == "https") && u.Host == host
+}
+
+// isHTTPS says whether the browser is talking to this server over https,
+// directly or through a proxy that ends the encryption for it - which is what
+// a Cloudflare tunnel does: the browser says https, and the request arrives
+// here as plain http with the proxy's word for it in a header.
+//
+// It decides only whether a cookie is marked Secure, which makes the cookie
+// stricter, never looser, so believing a header is safe even when somebody
+// made it up: all they can do is make their own cookie harder to send.
+// Without the mark, a browser that is ever sent to the http:// address of the
+// same name gives the session cookie away in the clear (v0.9.3).
+func isHTTPS(r *http.Request) bool {
+	if r.TLS != nil {
+		return true
+	}
+	if proto, _, _ := strings.Cut(r.Header.Get("X-Forwarded-Proto"), ","); strings.EqualFold(strings.TrimSpace(proto), "https") {
+		return true
+	}
+	return strings.Contains(r.Header.Get("CF-Visitor"), `"scheme":"https"`)
 }
 
 func isLocalhost(hostport string) bool {

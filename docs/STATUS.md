@@ -245,22 +245,21 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.9.2 (2026-11-03)
+## Latest change: v0.9.3 (2026-11-03)
 
-- **A file's name can come from the pattern** when its checksum file names none and
-  the pattern spells exactly one file (AnduinOS: its page links the checksum, not the
-  image). **A logo with no colour is drawn muted**, not white-on-white. Both are
-  what the catalog was waiting for.
-- **Catalog revision 2026110301 (no release needed)**: the second step. Fedora
-  follows its newest release (#6); AtlasOS is `unlisted`; PikaOS KDE and BigLinux
-  (three kernels) download, MD5-only and marked weak; PikaOS's other editions stay
-  check-only (the server refuses their `.md5` files to a program); four sizes
-  refreshed.
-- **Next:** AnduinOS as a download and the plain discs (`icon = "disc"`), once
-  v0.9.2 has been out a while; the logo audit (item 9); then #4, #2, #3, #5, #11,
-  #12. Spacing as tokens (item 20) waits until someone wants to change the density.
+- **Security, for isoshelf reached from the internet** (the maintainer opened it
+  to a Cloudflare tunnel, so a review was done by trying to get in as a stranger):
+  every route refuses without a login (now a test); the first-run setup form is
+  for whoever has the link, not the first visitor; cookies are Secure on https;
+  `ISOSHELF_TRUST_PROXY` tells visitors apart behind a proxy so a stranger's
+  guesses don't lock out the owner. docs/docker.md has a tunnel section.
+- The catalog is still revision 2026110301: AnduinOS as a download and the plain
+  discs wait for v0.9.2 to have been out a while.
+- **Next:** the download queue (#4, on branch `parallel-downloads`: two at once,
+  never two from one server, a speed limit in Mbit/s that decides how many); the
+  logo audit (item 9); then #2, #3, #5, #11, #12.
 
-Earlier releases, v0.9.1 back to the start, are written up in
+Earlier releases, v0.9.2 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

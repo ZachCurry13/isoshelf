@@ -92,12 +92,15 @@ somebody's files on the network:
   for isoshelf's own files. Neither has a sensible default, and the second
   one is the one people forget — without it, settings and the username and
   password are lost every time the app updates.
-- **Offer the username and password, and say they are optional.** Since
-  v0.4.5 isoshelf asks for them the first time the page is opened, so the
-  form needs nothing. `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` set them
-  ahead of time and close the window where whoever arrives first chooses, so
-  they belong on the form - as two ordinary fields, with the password one
-  marked `private: true`.
+- **Offer the username and password, and say they are optional.** Without
+  them isoshelf is opened with the link in its log, and the login is chosen
+  in Settings (since v0.9.3 a stranger who finds the address can't do it:
+  before, whoever arrived first chose). `ISOSHELF_USERNAME` and
+  `ISOSHELF_PASSWORD` set them ahead of time, and are applied at every start so
+  there is never a moment without a login, so they belong on the form - as
+  two ordinary fields, with the password one marked `private: true`. Someone
+  who will reach it through a tunnel should also set `ISOSHELF_TRUST_PROXY`
+  (see docs/docker.md).
 - **Do not ask for a token.** isoshelf makes one on first start and keeps it
   in its config folder. A box on an install form marked "token" gets
   `password` typed into it. `ISOSHELF_TOKEN` exists for people who want to

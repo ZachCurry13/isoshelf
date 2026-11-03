@@ -49,15 +49,24 @@ broken is a security report, not a feature request.
   header so a hostile website can't reach it by DNS rebinding, requires a
   custom header and a same-origin `Origin` for anything that changes state,
   and never inserts text from your drive as HTML.
-- **On a server, nothing but a bare "ok" health check answers until you
-  sign in.** Run in a container or on a network address, isoshelf asks for
-  a username and password to be chosen the first time it's opened, and until
-  then whoever opens it first is the one who chooses; it says so in its log.
-  Set `ISOSHELF_USERNAME` and `ISOSHELF_PASSWORD` before the first start to
-  close that window. The log also has a link with a random secret on the end,
-  which stops working as soon as a password exists. The same checks on
-  changes apply. It is one login, not user accounts: keep it on a network you
-  trust.
+- **On a server, nothing but a bare "ok" health check and the login form
+  answers until you sign in.** Run in a container or on a network address,
+  isoshelf takes a username and password. A test sends every route the
+  server has, with every method, to a server that has a login and gets no
+  answer but a refusal; another checks forged, altered and expired sessions.
+  Until a login is set, the only way in is the link in the log, with a random
+  secret on the end, and the form that sets one is for whoever has it: a
+  stranger who finds the address gets a refusal, not the chance to choose the
+  password (before v0.9.3 the first visitor could). Set `ISOSHELF_USERNAME` and
+  `ISOSHELF_PASSWORD` and there is never a time without a login; the link
+  stops working as soon as one exists. Passwords are kept as PBKDF2-SHA256
+  hashes, changing one signs every other browser out, and the same checks on
+  changes apply. It is one login, not user accounts.
+- **Behind a tunnel or a proxy, the cookies are marked Secure** when the
+  visitor is on https, so a browser that is ever sent to the `http://` address
+  doesn't hand its session over in the clear; and, if you tell isoshelf it is
+  behind a proxy it can trust (`ISOSHELF_TRUST_PROXY`), a stranger's wrong
+  guesses make only the stranger wait, not you.
 - **The catalog it downloads is validated before use.** A catalog that doesn't
   parse, has an unknown key, a pattern that won't compile, or a schema from the
   future is refused, and the previous one is kept.

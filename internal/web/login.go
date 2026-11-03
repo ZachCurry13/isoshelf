@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -20,12 +21,14 @@ import (
 // NAS: a login box, set once, used from every device, with nothing to find in
 // a log afterwards.
 //
-// Nobody has one until somebody sets one. Until then, a server shows the
-// setup form to whoever opens it - which is how every NAS app does its first
-// run, and which is worth being plain about: on first start, the first person
-// to reach the address chooses the password. isoshelf says so in its log,
-// with the address, so it is not a surprise. Setting ISOSHELF_USERNAME and
-// ISOSHELF_PASSWORD before it ever starts skips that window entirely.
+// Nobody has one until somebody sets one. Until then the only way in is the
+// link with its secret on the end, printed in the log, and the setup form is
+// for whoever opened that. It used to be shown to whoever reached the address
+// first, which is how a NAS app's first run often goes and which is a way to
+// lose the whole thing to a stranger on a server that faces the internet:
+// after a fresh install, or a config folder that went missing, the first
+// visitor would have chosen the password (v0.9.3). Setting ISOSHELF_USERNAME
+// and ISOSHELF_PASSWORD means there is never a moment without one.
 //
 // The link's secret keeps working after a password is set. It is the way back
 // in for somebody who has forgotten theirs, and it is no weaker than the
@@ -112,14 +115,42 @@ func (a *attempts) success(addr string) {
 }
 
 // addrOf is who is knocking, for the lockout. It is the connection's own
-// address: isoshelf is not behind a load balancer it controls, so a header
-// saying otherwise is somebody's claim rather than a fact.
-func addrOf(r *http.Request) string {
+// address unless isoshelf has been told it sits behind a proxy it trusts
+// (ISOSHELF_TRUST_PROXY): otherwise a header saying who the visitor is
+// would be somebody's claim rather than a fact, and a guesser could change
+// it with every guess.
+//
+// Behind a tunnel the connection is always the tunnel's, so without that every
+// visitor in the world is one address: five wrong guesses from a stranger make
+// the owner wait too. Told to trust the proxy, isoshelf takes the visitor's own
+// address from what the proxy says it saw (v0.9.3).
+func (s *Server) addrOf(r *http.Request) string {
+	if s.cfg.TrustProxy {
+		if ip := proxiedAddr(r); ip != "" {
+			return ip
+		}
+	}
 	host, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
 		return r.RemoteAddr
 	}
 	return host
+}
+
+// proxiedAddr is the visitor's address as the proxy reports it, or "" when it
+// reports nothing usable. Cloudflare sets CF-Connecting-IP itself, replacing
+// anything the visitor sent. Failing that, the last entry of X-Forwarded-For
+// is the one the nearest proxy added; the ones before it are whatever the
+// visitor chose to write.
+func proxiedAddr(r *http.Request) string {
+	if ip := net.ParseIP(strings.TrimSpace(r.Header.Get("CF-Connecting-IP"))); ip != nil {
+		return ip.String()
+	}
+	parts := strings.Split(r.Header.Get("X-Forwarded-For"), ",")
+	if ip := net.ParseIP(strings.TrimSpace(parts[len(parts)-1])); ip != nil {
+		return ip.String()
+	}
+	return ""
 }
 
 // account is the login as it is on disk right now, or nil if nobody has set
@@ -151,13 +182,14 @@ func (s *Server) loginInstead() bool {
 	return s.account() != nil
 }
 
-// canLogIn says whether the username-and-password door is open at all: once
-// somebody has set a login, and on a server that hasn't got one yet, where
-// the first person to arrive is the one who sets it.
+// canLogIn says whether logins are in play at all: once somebody has set one,
+// and on a server that hasn't yet, where one is expected. It decides whether
+// to warn about a signing key that won't survive a restart; it does not open
+// the login form to anyone (see the guard).
 //
-// A desktop with no login set never shows the setup form. There the browser
-// opens itself with the link, nobody outside the machine can reach it, and a
-// form asking to invent a password would be a question with no purpose.
+// A desktop with no login set has none of this. There the browser opens
+// itself with the link, nobody outside the machine can reach it, and a form
+// asking to invent a password would be a question with no purpose.
 func (s *Server) canLogIn() bool {
 	return s.account() != nil || s.cfg.AnyHost
 }
@@ -188,9 +220,9 @@ func (s *Server) mintSession(user string) string {
 }
 
 // setSession puts the cookie on, or takes it off when user is empty.
-func (s *Server) setSession(w http.ResponseWriter, user string) {
+func (s *Server) setSession(w http.ResponseWriter, r *http.Request, user string) {
 	c := &http.Cookie{
-		Name: sessionCookie, Path: "/", HttpOnly: true,
+		Name: sessionCookie, Path: "/", HttpOnly: true, Secure: isHTTPS(r),
 		SameSite: http.SameSiteStrictMode,
 	}
 	if user == "" {
@@ -204,10 +236,10 @@ func (s *Server) setSession(w http.ResponseWriter, user string) {
 
 // formToken sets the value this form and its cookie must agree on, and
 // returns it for the page to write into the form.
-func (s *Server) formToken(w http.ResponseWriter) string {
+func (s *Server) formToken(w http.ResponseWriter, r *http.Request) string {
 	value := rand.Text()
 	http.SetCookie(w, &http.Cookie{
-		Name: formCookie, Value: value, Path: loginPath, HttpOnly: true,
+		Name: formCookie, Value: value, Path: loginPath, HttpOnly: true, Secure: isHTTPS(r),
 		SameSite: http.SameSiteStrictMode, MaxAge: int(time.Hour / time.Second),
 	})
 	return value
@@ -227,16 +259,16 @@ func formIsOurs(r *http.Request) bool {
 func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	have := s.account()
 	if r.Method == http.MethodGet {
-		s.writeLoginPage(w, have, "", http.StatusOK)
+		s.writeLoginPage(w, r, have, "", http.StatusOK)
 		return
 	}
 	if err := r.ParseForm(); err != nil {
-		s.writeLoginPage(w, have, "That didn't arrive properly. Try again.", http.StatusBadRequest)
+		s.writeLoginPage(w, r, have, "That didn't arrive properly. Try again.", http.StatusBadRequest)
 		return
 	}
 	// A form on somebody else's site can produce neither half of this.
 	if !formIsOurs(r) {
-		s.writeLoginPage(w, have, "That form had gone stale. Try again.", http.StatusForbidden)
+		s.writeLoginPage(w, r, have, "That form had gone stale. Try again.", http.StatusForbidden)
 		return
 	}
 	user, password := r.PostFormValue("user"), r.PostFormValue("password")
@@ -244,30 +276,30 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	if have == nil {
 		// Nobody has a login yet: this is the one time the form sets one.
 		if again := r.PostFormValue("again"); again != password {
-			s.writeLoginPage(w, nil, "Those two passwords aren't the same.", http.StatusOK)
+			s.writeLoginPage(w, r, nil, "Those two passwords aren't the same.", http.StatusOK)
 			return
 		}
 		if err := auth.Set(s.cfg.Dirs.Config, user, password); err != nil {
-			s.writeLoginPage(w, nil, err.Error(), http.StatusOK)
+			s.writeLoginPage(w, r, nil, err.Error(), http.StatusOK)
 			return
 		}
-		s.setSession(w, user)
+		s.setSession(w, r, user)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 
-	who := addrOf(r)
+	who := s.addrOf(r)
 	if wait := s.logins.wait(who, s.cfg.Now()); wait > 0 {
-		s.writeLoginPage(w, have, "Too many tries. Wait "+plainDuration(wait)+" and try again.", http.StatusTooManyRequests)
+		s.writeLoginPage(w, r, have, "Too many tries. Wait "+plainDuration(wait)+" and try again.", http.StatusTooManyRequests)
 		return
 	}
 	if !have.Matches(user, password) {
 		s.logins.failure(who, s.cfg.Now())
-		s.writeLoginPage(w, have, "That username and password don't match.", http.StatusUnauthorized)
+		s.writeLoginPage(w, r, have, "That username and password don't match.", http.StatusUnauthorized)
 		return
 	}
 	s.logins.success(who)
-	s.setSession(w, have.User)
+	s.setSession(w, r, have.User)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
@@ -282,7 +314,7 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 // it must work with no JavaScript; nothing inside the page does, so this
 // goes through the same door as every other change and the Origin is real.
 func (s *Server) signOut(w http.ResponseWriter, r *http.Request) {
-	s.setSession(w, "")
+	s.setSession(w, r, "")
 	writeJSON(w, http.StatusOK, map[string]any{"status": "signed out"})
 }
 

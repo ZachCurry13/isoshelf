@@ -167,11 +167,13 @@ isoshelf manages files you care about, so it is deliberately cautious:
 
 On your PC, isoshelf opens in your web browser and only your own computer can
 reach it. In a container it has to answer to the machine's address instead, so
-there it asks you to choose a username and password the first time you open
-it — one login, not user accounts. Until you do, whoever opens it first gets
-to choose, so do it straight away (or set them before it starts; the
-walkthrough says how). Keep it on a network you trust.
-[docs/docker.md](docs/docker.md) is the walkthrough.
+there you sign in with a username and password — one login, not user accounts.
+Until you have set one, the only way in is the link it prints in its log, so a
+stranger who finds the address gets nothing; open that link and choose a login
+in Settings, or set them before it starts and there is never a time without
+one (the walkthrough says how). Reaching it from outside your house, through
+a tunnel or a proxy, has a few more things worth doing: the walkthrough has
+those too. [docs/docker.md](docs/docker.md) is the walkthrough.
 
 > **New to all this?** [Ventoy](https://www.ventoy.net) turns one USB stick
 > into a boot menu of every ISO you drop on it (more on it below), and

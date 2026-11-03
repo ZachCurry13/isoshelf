@@ -55,15 +55,19 @@ Flags for ui:
   --port N                  listen on this port (default: any free port)
   --listen ADDRESS          listen on this address instead of localhost, so
                             the page can be opened from another machine. It
-                            then asks for a username and password the first
-                            time it is opened. Use it on a network you trust.
+                            then takes a username and password, which you
+                            choose once you have opened the link it prints, or
+                            set in ISOSHELF_USERNAME and ISOSHELF_PASSWORD.
+                            Use it on a network you trust.
   --no-browser              don't open the browser; just print the link
   --catalog FILE            use this catalog instead of the built-in one
 
 isoshelf only writes to the .isoshelf folder inside the folder you give it,
 and to its own settings folder. Set GITHUB_TOKEN to raise GitHub's rate limit,
 and ISOSHELF_TOKEN to fix the secret in the link instead of making a new one
-each time isoshelf starts.
+each time isoshelf starts. Behind a tunnel or a proxy you control, set
+ISOSHELF_TRUST_PROXY=true so a stranger's wrong passwords make only the
+stranger wait.
 `
 
 func main() {
