@@ -256,8 +256,10 @@ keeps its item numbers, since decisions refer to them.
   are in (Actions to Node 24 versions, Alpine 3.24); `edge` built fine.
 - **The weekly catalog task merges its own pull request** when it passes a
   checklist (2026-11-03; #96 was the first, reviewed by hand). Held back, it
-  comments why. The recorder keeps only the 10 newest GitHub releases, so
-  Bazzite's stable tag has scrolled out of its recordings (kept old by hand).
+  comments why. The recorder now also keeps stable releases buried under a
+  project's test builds (Bazzite's stable tag had scrolled out of the first
+  ten, so its recording was kept old by hand); the next weekly run re-records
+  it.
 - **Next:** Usage folded into History and Settings (v0.8.13, on the
   `history-timeline` branch); then the catalog's second step.
 
