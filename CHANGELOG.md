@@ -6,6 +6,26 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.8.13] - 2026-11-03
+
+### Changed
+- **History is a timeline.** It lists what arrived in the folder (downloaded,
+  copied from your server, added from a computer), what an update changed
+  (one line, "Updated 7.12 → 7.13", rather than a download and a separate
+  removal) and what left it (archived, deleted, replaced, gone), newest first,
+  with dates and sizes. The last 30 days by default, or 90 days, or
+  everything. Folded, it says how much: "last 30 days: 4 updated, 2 added, 1
+  removed". Images that left still offer *Download again*.
+- **The Usage section is gone**, and so is its link in the top bar. The
+  week-by-week table wasn't much use; the facts about where isoshelf runs
+  (the system, how it was started, how long it has been running, the image
+  list revision) are now under the version in *Settings → isoshelf itself*.
+
+### Fixed
+- When an update replaced a file of the same name, the note about the old
+  file was empty: no version, no size, no date it arrived. It keeps them now,
+  and the new file records which version it replaced.
+
 ## [v0.8.12] - 2026-10-26
 
 ### Fixed
@@ -40,8 +60,8 @@ last number rises for improvements to what it already does, like v0.3.3.
 ### Added
 - **A Download button on each image** (#84, by @paulbmueller): saves the
   file onto the computer you are using, the way to get an image off a NAS
-  without fetching it from the project again. Off unless *Settings → Images
-  → Allow downloads* is on, and off means the server refuses too, not just
+  without fetching it from the project again. Off unless *Settings â Images
+  â Allow downloads* is on, and off means the server refuses too, not just
   that the button is hidden. Only files isoshelf lists can be downloaded.
 
 ### Fixed
@@ -163,7 +183,7 @@ CHANGELOG.md has the details.
   When the same image and version are in the folder twice, the line above
   the list counts them, and clicking the count shows them, each saying which
   file it matches. **Make sure** reads them and compares, only when you press
-  it; **Remove this copy…** removes one the usual way, archive first.
+  it; **Remove this copyâ¦** removes one the usual way, archive first.
 - **A word about sharing**, beside the sharing switch and in the README:
   the licenses of the images you share are yours to mind, as with any file
   share.
@@ -244,7 +264,7 @@ name, not a guess.
   button that gets it back: **Restore** when its file is still in the
   archive, which is instant, **Download again** when isoshelf can download
   it, checked like any other download, or **Download page** when it can't.
-  Click the missing count and **Download all…** fetches every one isoshelf
+  Click the missing count and **Download allâ¦** fetches every one isoshelf
   can, from the same checklist as Update all.
 - **Stop expecting it**, in a missing image's details, for one you removed
   on purpose. It leaves the missing list straight away, and its star with
@@ -272,14 +292,14 @@ images start.
   answer of its own gives way to the one in Settings. The page says once how
   many changed.
 - **One line says what wants doing**, instead of a row of cards:
-  "41 updates · 13 older · 3 unrecognized · Archive 20.9 GB", each count
+  "41 updates Â· 13 older Â· 3 unrecognized Â· Archive 20.9 GB", each count
   showing exactly those images when clicked, and **Update all** at the end.
   Filtering to older versions offers **Review and clear**.
 - **The 64-bit badge is gone from ordinary rows.** Nearly every row said it,
   which hid the few where it matters; 32-bit, ARM and Multi still show.
 - **On a server, the folder card is one line** - when it last checked, how
   much the images use, how much room is left - and Refresh. The folder, its
-  type and **Choose folder…** are in Settings, under **This folder**. A
+  type and **Choose folderâ¦** are in Settings, under **This folder**. A
   desktop or portable isoshelf keeps the whole card.
 
 ### Added
@@ -293,14 +313,14 @@ images start.
 - **Clicking a count opened the Filter menu** as well as filtering the list
   (the cards' *Show them* did the same), and the list it jumped to landed
   under the tabs at the top.
-- **"About … to download" added up the files already there**, not the
+- **"About â¦ to download" added up the files already there**, not the
   downloads. It now uses the size the catalog gives for each image.
 
 ## [v0.6.1] - 2026-09-24
 
 ### Added
 - **Adding a file shows its speed and time left**, the way downloads do:
-  "1.2 GB of 4.0 GB · 30% · 85 MB/s · about 1 min left".
+  "1.2 GB of 4.0 GB Â· 30% Â· 85 MB/s Â· about 1 min left".
 - **A one-line install for Linux**, in the README under *Getting it*. It
   downloads the newest release for your machine (x86-64 or ARM), checks it
   against the release's checksums, and puts it in `~/.local/bin` without
@@ -386,7 +406,7 @@ images start.
   said "Make bootable can fix this (rename:.img)"; there is no such button
   yet. It now says what to do: "Rename it to end in .img and it will boot."
 - **A short file name left a gap before its size**, and on a computer the
-  line under each name ended in a stray "·".
+  line under each name ended in a stray "Â·".
 - **A long path in Settings pushed the panel sideways.**
 - **The list of remembered folders could be one scan behind** right after a
   scan finished. The same race made one test fail about one run in 300 on
@@ -466,8 +486,8 @@ images start.
 ## [v0.4.16] - 2026-09-23
 
 ### Added
-- **The archive can empty itself after 7, 30 or 90 days.** Settings →
-  *Updates and old files* → **Empty the archive by itself**. Off unless you
+- **The archive can empty itself after 7, 30 or 90 days.** Settings â
+  *Updates and old files* â **Empty the archive by itself**. Off unless you
   choose a number, and it stays off through an upgrade: the archive is how
   every removal and every replaced file is undone, so a timer that started
   deleting on its own would break the rule isoshelf rests on - nothing is
@@ -608,7 +628,7 @@ images start.
 - **Copy an image from another isoshelf on your network instead of the
   internet.** If the isoshelf on your NAS already holds the file, the one on
   your laptop takes it from there - a minute over your own network instead of
-  an hour over the wire. **Settings → Copy from another isoshelf first**: give
+  an hour over the wire. **Settings â Copy from another isoshelf first**: give
   it the address and the login for it.
   - **Nothing about verification changes, which is what makes it safe to
     prefer.** The checksum still comes from the project's own HTTPS site,
@@ -772,8 +792,8 @@ images start.
 ### Added
 - **The folders isoshelf remembers, in the folder chooser.** Each one now says
   when you last looked at it, how many images it held and how much room they
-  took, and the end of its path rather than the start - `…/tank/isos` and
-  `…/template/iso` tell each other apart in a way `/mnt/tank/…` twice over
+  took, and the end of its path rather than the start - `â¦/tank/isos` and
+  `â¦/template/iso` tell each other apart in a way `/mnt/tank/â¦` twice over
   does not. **Forget** takes one off the list; it throws away isoshelf's copy
   of what it found there and nothing else, so opening the folder again reads
   everything back from the folder itself.
@@ -973,7 +993,7 @@ Fixes and tidying from a run through the whole page on a full drive.
   to fill the row.
 - **A download that would land on top of a file you have now asks.** It used
   to fail with advice and a *Try again* button that failed the same way. It
-  now offers the two answers — *Archive the old one* or *Replace it* — and
+  now offers the two answers â *Archive the old one* or *Replace it* â and
   says plainly that nothing in the folder has changed meanwhile.
 
 ### Changed
@@ -985,11 +1005,11 @@ Fixes and tidying from a run through the whole page on a full drive.
 - **No *Download again* on a file that's still in the archive.** Restoring it
   is instant, costs nothing and gives back the very file that was there.
 - **The downloads bar says how much is left**, not just how many: "12 waiting
-  · 31.4 GB to download".
-- **The folder line says what the images take up**: "42.5 GB in images · 68
+  Â· 31.4 GB to download".
+- **The folder line says what the images take up**: "42.5 GB in images Â· 68
   GB free of 252 GB".
-- **Every file in a release carries its version** —
-  `isoshelf-v0.3.3-windows-amd64.exe` — so two downloads can be told apart.
+- **Every file in a release carries its version** â
+  `isoshelf-v0.3.3-windows-amd64.exe` â so two downloads can be told apart.
   The copies inside the portable zip keep the plain name, because that is
   what you run from the drive and what a future self-update replaces in
   place. Releases up to v0.3.0 attached plain names, so a link straight to
@@ -1010,7 +1030,7 @@ page is right the moment it opens instead of after you press a button.
 - **One Refresh button** in place of *Scan* and *Check for updates*. It reads
   the folder again and asks every project again, however recently it
   answered.
-- **Settings → Checking for updates**: *Check for updates by itself*, which
+- **Settings â Checking for updates**: *Check for updates by itself*, which
   turns all of that off and leaves isoshelf offline until you press Refresh,
   and *Tell me when a new isoshelf is out*, which was only a command-line
   flag before. The first says underneath when the projects were last asked.
@@ -1036,8 +1056,8 @@ search box, and nothing in it has to be touched for isoshelf to work.
   contrast* for a bright room or tired eyes; *Larger text*, a size up for the
   whole page without the browser's zoom; and *Less movement*, which stops the
   spinners and bars while isoshelf works.
-- **What happens to the file an update replaces** — replace it, move it to
-  the archive, or keep both — for every image that hasn't been given its own
+- **What happens to the file an update replaces** â replace it, move it to
+  the archive, or keep both â for every image that hasn't been given its own
   answer in its panel. This setting existed in the file but nothing read it;
   now it's the one the page starts from.
 - **Where things are:** the folder isoshelf is watching, with the button to
@@ -1057,9 +1077,9 @@ search box, and nothing in it has to be touched for isoshelf to work.
 - The settings file has one owner (`internal/settings`) rather than a second
   copy of the fields in the web server. A choice made on the page could
   quietly erase one made on the command line; it can't now.
-- The page is now one script per part of it — the list, the details panel,
+- The page is now one script per part of it â the list, the details panel,
   downloads, updating and identifying, the folder chooser, the archive, and
-  Settings — instead of one 2,544-line file. Nothing about the page changed;
+  Settings â instead of one 2,544-line file. Nothing about the page changed;
   it is a change for whoever works on it next.
 
 ### Removed
@@ -1085,13 +1105,13 @@ about an image is one click away instead of spread across ten columns.
   the same checklist, with the newer file named beside each one.
 - **A details panel.** Click any image: where it came from, its file, size
   and dates, the version here and the newest published, its links, what
-  happens to old copies, and the buttons for it. The "…" menu is gone, and
+  happens to old copies, and the buttons for it. The "â¦" menu is gone, and
   with it the way it used to get cut off at the bottom of the list.
-- **Plain status words** — *Update ready*, *Old release*, *Check by hand*,
-  *Won't boot here*, *Unknown file* — each explaining itself when you hover
+- **Plain status words** â *Update ready*, *Old release*, *Check by hand*,
+  *Won't boot here*, *Unknown file* â each explaining itself when you hover
   or tap, with a full key behind "What do the statuses mean?".
 - **One Filter menu** with tick boxes for updates, favourites, older
-  versions and ⚠ marks, plus the kinds and architectures this folder
+  versions and â  marks, plus the kinds and architectures this folder
   actually holds. Whatever is on shows as a chip you can remove, so a short
   list always says why it's short.
 - **A jump bar** across the top: Your images, Add images, Archive, History,
@@ -1131,7 +1151,7 @@ about an image is one click away instead of spread across ten columns.
   never over them.
 
 ### Fixed
-- The "…" links menu no longer gets cut off near the bottom of the list: it
+- The "â¦" links menu no longer gets cut off near the bottom of the list: it
   opens upwards when there's no room below, and closes when you scroll.
 - "Show them" on older copies becomes **Show all images** while those are
   showing, so the list never gets stuck with just them.
@@ -1151,7 +1171,7 @@ about an image is one click away instead of spread across ten columns.
   running, with its speed and time left. Open it to change the order (drag,
   or use the arrows), take one off the queue, or stop them all.
 - **Buttons say what's happening.** An Add or Update button turns into
-  *Queued #2*, *Downloading 45%* or *Added ✓*, and after a failure offers
+  *Queued #2*, *Downloading 45%* or *Added â*, and after a failure offers
   *Try again*. A stopped download offers *Carry on*, and picks up where it
   stopped.
 - **Update all** puts every update on the queue at once, and asks once what
@@ -1201,8 +1221,8 @@ because Kali offers it only as a torrent. See
 ## [v0.2.6] - 2026-09-18
 
 ### Added
-- **A ⚠ mark for images worth knowing about**, with a one-line key under the
-  list — like the symbols on a menu. It marks releases that no longer get
+- **A â  mark for images worth knowing about**, with a one-line key under the
+  list â like the symbols on a menu. It marks releases that no longer get
   security fixes, and a few images with a note: CentOS 7 (end of life since
   June 2024), Windows 10 (out of support since October 2025), AtlasOS (an
   unofficial modification of Windows) and Windows Insider Preview builds
@@ -1222,7 +1242,7 @@ because Kali offers it only as a torrent. See
 
 ### Added
 - **Two new kinds:** *Gaming and handhelds*, and *Raspberry Pi and other
-  boards* — which is where the Pi filter lives. "Desktop Linux" is now just
+  boards* â which is where the Pi filter lives. "Desktop Linux" is now just
   *Desktop*.
 - **Seven more images**, 86 in all: Omarchy; Nobara in its Official (KDE),
   GNOME and Steam Handheld editions; NixOS; EndeavourOS; and Zorin OS Core.
@@ -1241,8 +1261,8 @@ because Kali offers it only as a torrent. See
 
 ### Added
 - **Older copies are easy to clear.** When a folder holds more than one
-  version of the same image — one downloaded by hand next to one isoshelf
-  fetched, say — a line above the list says how many and how much room they
+  version of the same image â one downloaded by hand next to one isoshelf
+  fetched, say â a line above the list says how many and how much room they
   use, with **Show them** and **Clear them**. Clearing asks once, lists every
   file it means, and offers archive or delete as usual.
 - An **Older copies** filter beside Updates and Favorites.
@@ -1257,7 +1277,7 @@ because Kali offers it only as a torrent. See
 ## [v0.2.3] - 2026-09-18
 
 ### Added
-- **Sort by any column** — status, image, version, latest, file, size, and
+- **Sort by any column** â status, image, version, latest, file, size, and
   the replace switch. Click again to reverse. Empty cells always sort last.
 - **Size has its own column**, so "what's using all the room" is one click.
 - **Update all** has its own line above the list, saying how many images
@@ -1277,7 +1297,7 @@ because Kali offers it only as a torrent. See
 ## [v0.2.2] - 2026-09-18
 
 ### Added
-- The folder chooser shows each drive's name ("Z: — red14") and how many
+- The folder chooser shows each drive's name ("Z: â red14") and how many
   images a place holds.
 - **Bookmarks** for folders you use often.
 

@@ -31,7 +31,8 @@
 <script src="/static/upload.js" defer></script>
 <script src="/static/report.js" defer></script>
 <script src="/static/selfupdate.js" defer></script>
-<script src="/static/usage.js" defer></script>
+<script src="/static/history.js" defer></script>
+<script src="/static/system.js" defer></script>
 </head>
 <body>
 <header class="topbar">
@@ -55,7 +56,6 @@
   <a href="#more" id="jump-more">Add images</a>
   <a href="#archive" id="jump-archive">Archive</a>
   <a href="#history" id="jump-history">History</a>
-  <a href="#usage" id="jump-usage">Usage</a>
   <a href="#tools" id="jump-tools">Tools</a>
 </nav>
 
@@ -240,28 +240,19 @@
     </details>
   </section>
 
-  <!-- Images that are gone: a record only, with a way to get them back. -->
-  <section class="card more" id="history">
+  <!-- What arrived, what an update changed and what left, newest first. Folded
+       to one line; asked for again only when something changed (history.js). -->
+  <section class="card more" id="history" hidden>
     <details id="history-details">
       <summary>
         <span class="more-title">History</span>
         <span class="muted" id="history-count"></span>
       </summary>
-      <p class="muted more-hint">Images that have left this folder: deleted, replaced by an update, or gone some other way. The files aren't here any more, but isoshelf can download the ones it knows again.</p>
+      <div class="archive-head">
+        <p class="muted more-hint">What arrived in this folder, what an update changed, and what left it, newest first. A file that has left isn't here any more, but isoshelf can download the ones it knows again.</p>
+        <select id="history-range" aria-label="How far back"></select>
+      </div>
       <ul class="catalog" id="history-list"></ul>
-    </details>
-  </section>
-
-  <!-- Usage: what this folder saw, week by week, and where isoshelf is
-       running. Folded, and asked for only while open (usage.js). -->
-  <section class="card more" id="usage">
-    <details id="usage-details">
-      <summary>
-        <span class="more-title">Usage</span>
-        <span class="muted">the last 8 weeks, and this isoshelf</span>
-      </summary>
-      <div id="usage-weeks"></div>
-      <dl class="usage-system" id="usage-system"></dl>
     </details>
   </section>
 

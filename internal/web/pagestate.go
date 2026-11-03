@@ -17,7 +17,9 @@ type stateJSON struct {
 	// notes, which are its changelog section, or the whole changelog for a
 	// build that isn't a release (v0.8.8).
 	ReleaseNotes string `json:"release_notes"`
-	Portable     bool   `json:"portable"`
+	// System is where this isoshelf runs, for the Version row in Settings.
+	System   systemJSON `json:"system"`
+	Portable bool       `json:"portable"`
 	// Server is true when isoshelf answers to more than localhost - a NAS,
 	// a container, anything somebody opens from another machine. The page
 	// uses it to name the browser tab, because somebody running one on their
@@ -149,6 +151,7 @@ func (s *Server) stateLocked(recent []rememberedJSON, room space.Usage) stateJSO
 	out := stateJSON{
 		Version:         s.cfg.Version,
 		ReleaseNotes:    releaseNotes(s.cfg.Version),
+		System:          s.systemLocked(),
 		Portable:        s.cfg.Dirs.Portable,
 		Server:          s.cfg.AnyHost,
 		Target:          s.target,

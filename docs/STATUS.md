@@ -47,7 +47,7 @@ and plain words on the surface; everything adjustable in Settings.
    manually", "Won't boot from here") with a hover explanation and a key.
 5. Filters: one Filter menu with checkmarks, active filters as removable chips
    plus "Clear all".
-6. Rows: slim; file and size under the name, version as "old → new", one
+6. Rows: slim; file and size under the name, version as "old â new", one
    action.
 7. Actions: a details panel for each image (links, switch, Update, Remove).
 8. Update dialog: Replace pre-selected, sizes as the change ("about +6 MB"),
@@ -60,7 +60,7 @@ and plain words on the surface; everything adjustable in Settings.
 10. Records: the user chooses per folder (in the folder, in isoshelf's folder,
     or a folder they pick), plus a remembered-folders list with last used,
     size and Forget.
-11. Date column: "Updated …" for images isoshelf replaced, else "Added …".
+11. Date column: "Updated â¦" for images isoshelf replaced, else "Added â¦".
 12. Catalog: fill the gaps in DistroWatch's 12-month top 50, up to three a
     week through the routine, each checked on the project's own site.
 13. isoshelf updates itself with one click ("Update now"): waits for
@@ -245,25 +245,20 @@ Then TODO.md and STATUS.md shed their finished work into the new
 `docs/archive.md` (about 750 and 650 lines down to about 225 and 365). TODO.md
 keeps its item numbers, since decisions refer to them.
 
-## Latest change: v0.8.12 (2026-10-26)
+## Latest change: v0.8.13 (2026-11-03)
 
-- **Updating by itself skips check-only images** (#78): Tails, MX Linux and
-  the rest failed every automatic run with "no download source yet".
-- **The maintenance protocol, all three parts**: Go named by its line (1.27)
-  so builds take the newest patch; `audit.yml` scans the code and the newest
-  released program weekly into one `audit` issue; Claude applies only
-  hole-fixing patch or minor updates, never merges. Dependabot's six updates
-  are in (Actions to Node 24 versions, Alpine 3.24); `edge` built fine.
-- **The weekly catalog task merges its own pull request** when it passes a
-  checklist (2026-11-03; #96 was the first, reviewed by hand). Held back, it
-  comments why. The recorder now also keeps stable releases buried under a
-  project's test builds (Bazzite's stable tag had scrolled out of the first
-  ten, so its recording was kept old by hand); the next weekly run re-records
-  it.
-- **Next:** Usage folded into History and Settings (v0.8.13, on the
-  `history-timeline` branch); then the catalog's second step.
+- **History is a timeline** of what arrived, what an update changed (one
+  event, "updated 7.12 → 7.13") and what left, newest first with dates
+  and sizes; **Usage is gone**, its system facts now under the version in
+  Settings. Worked out from the records already kept, nothing new stored
+  except `Origin.Replaced`.
+- Fixed on the way: a same-name update left an *empty* note about the old
+  file (no version, size or arrival).
+- **Next:** the catalog's second step (Fedora through groups, #6; discs;
+  AtlasOS unlisted; PikaOS, BigLinux and AnduinOS as downloads), then #4, #2,
+  #3, #5, #11, #12. The weekly task now merges its own catalog pull request.
 
-Earlier releases, v0.8.11 back to the start, are written up in
+Earlier releases, v0.8.12 back to the start, are written up in
 [archive.md](archive.md).
 
 [#3]: https://github.com/ZachCurry13/isoshelf/issues/3

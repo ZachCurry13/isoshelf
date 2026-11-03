@@ -624,7 +624,23 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   chose that direction in v0.3.7, over renaming the old file, because then
   nothing that exists is disturbed. See `internal/update/keepboth.go`.)*
 
-## From STATUS.md: releases v0.8.11 and older
+## From STATUS.md: releases v0.8.12 and older
+
+### v0.8.12 (2026-10-26, and the days after)
+
+- **Updating by itself skips check-only images** (#78): Tails, MX Linux and
+  the rest failed every automatic run with "no download source yet".
+- **The maintenance protocol, all three parts**: Go named by its line (1.27)
+  so builds take the newest patch; `audit.yml` scans the code and the newest
+  released program weekly into one `audit` issue; Claude applies only
+  hole-fixing patch or minor updates, never merges. Dependabot's six updates
+  are in (Actions to Node 24 versions, Alpine 3.24); `edge` built fine.
+- **The weekly catalog task merges its own pull request** when it passes a
+  checklist (2026-11-03; #96 was the first, reviewed by hand). Held back, it
+  comments why. The recorder now also keeps stable releases buried under a
+  project's test builds (Bazzite's stable tag had scrolled out of the first
+  ten, so its recording was kept old by hand); the next weekly run re-records
+  it.
 
 ### v0.8.11 (2026-10-26)
 

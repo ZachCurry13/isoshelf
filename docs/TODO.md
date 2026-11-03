@@ -234,7 +234,7 @@ Then:
   `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,
   `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `duplicates.js`, `folders.js`, `thisfolder.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
-  `upload.js`, `report.js`, `selfupdate.js` and `usage.js`. Read the one you
+  `upload.js`, `report.js`, `selfupdate.js`, `history.js` and `system.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
   `internal/web/static_test.go`, and in every list of them - which
   `internal/docs` checks, because this list was stale for four releases.

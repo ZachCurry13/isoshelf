@@ -1,13 +1,10 @@
 "use strict";
 
-// Two different things, kept apart on the page as well: the archive, which
-// is files still on the drive that can be restored, and history, which is a
-// record of images that have left.
+// The archive: files still on the drive that can be restored. What happened
+// in the folder is History, in history.js.
 
-// ---- Archive and history ---------------------------------------------------
+// ---- Archive ---------------------------------------------------------------
 
-// Two different things, so two sections: files still on the drive that you
-// can restore, and a record of images that have left.
 async function renderArchive() {
   const past = await archiveItems();
   if (!past) return;
@@ -17,20 +14,10 @@ async function renderArchive() {
     ? `${plural(here.length, "file")} · ${formatBytes(here.reduce((sum, i) => sum + (i.size || 0), 0))}`
     : "";
   $("archive-empty").disabled = scanning() || downloading();
-  $("archive-list").replaceChildren(...here.map((item) => pastItem(item, true)));
+  $("archive-list").replaceChildren(...here.map((item) => pastItem(item)));
 }
 
-async function renderHistory() {
-  const past = await archiveItems();
-  if (!past) return;
-  const gone = past.filter((item) => !item.on_disk);
-  $("history").hidden = gone.length === 0;
-  $("jump-history").hidden = gone.length === 0;
-  $("history-count").textContent = plural(gone.length, "image");
-  $("history-list").replaceChildren(...gone.map((item) => pastItem(item, false)));
-}
-
-// archiveItems fetches the archive once per draw, for both sections.
+// archiveItems fetches the archive once per draw.
 let archiveCache = { at: 0, items: null };
 
 async function archiveItems() {
@@ -46,31 +33,22 @@ async function archiveItems() {
   }
 }
 
-function pastItem(item, onDisk) {
+function pastItem(item) {
   const when = item.gone_at ? timeAgo(item.gone_at) : "";
   const parts = [GONE_LABEL[item.gone] || item.gone, when, formatBytes(item.size)];
-  if (onDisk && !item.restorable) {
+  if (!item.restorable) {
     // It's here and it's using room, but its name is taken by the file that
     // replaced it, so there is nowhere to put it back to yet.
     parts.push("another file has its name now — remove that one to restore this");
   }
   const detail = parts.filter(Boolean).join(" · ");
   const buttons = [];
-  if (onDisk && item.restorable) {
+  if (item.restorable) {
     buttons.push(el("button", {
       type: "button", class: "btn small primary", disabled: scanning(),
       title: "Move it back into this folder",
       onclick: () => restore(item),
     }, "Restore"));
-  }
-  // A file still in the archive doesn't need downloading again: restoring it
-  // is instant, costs nothing and gives back the very file that was there.
-  if (item.downloadable && !onDisk) {
-    buttons.push(jobButton(item.entry, el("button", {
-      type: "button", class: "btn small",
-      title: "Download the current version again",
-      onclick: () => queueDownload(item.entry, "keep"),
-    }, "Download again"), false));
   }
   if (item.page) {
     buttons.push(el("a", {

@@ -40,6 +40,24 @@ type Origin struct {
 	// and CheckedAt when. Empty means nothing has shown it is the release.
 	Checked   string    `json:"checked,omitempty"`
 	CheckedAt time.Time `json:"checked_at,omitzero"`
+	// Replaced is the version of the file this one took the place of, when
+	// an update put it where an older file of the same name was (v0.8.13).
+	// The note about the file that left goes at the next scan, because its
+	// name is in the folder again, so this is what keeps the update in the
+	// history.
+	Replaced string `json:"replaced,omitempty"`
+}
+
+// arrival is how a file came to be here: its Origin, or for a download from
+// before v0.8.0, which kept only an address and a date, what those say.
+func (r FileRecord) arrival() Origin {
+	if r.Origin.How != "" {
+		return r.Origin
+	}
+	if !r.PlacedAt.IsZero() {
+		return Origin{How: OriginDownload, From: r.SourceURL, At: r.PlacedAt}
+	}
+	return Origin{}
 }
 
 // MarkChecked records that the file at path matched the checksum published
