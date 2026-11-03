@@ -15,8 +15,8 @@
 }
 .btn:hover:not(:disabled) { background: var(--surface-2); border-color: color-mix(in srgb, var(--border), var(--text) 18%); }
 .btn:disabled { opacity: 0.5; cursor: default; }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
-.btn.primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.primary { background: var(--primary-bg); border-color: var(--primary-border); color: var(--primary-fg); }
+.btn.primary:hover:not(:disabled) { background: var(--primary-bg-hover); border-color: var(--primary-bg-hover); }
 .btn.small { padding: 3px 9px; font-size: 0.9286rem; }
 
 input[type="search"], input[type="text"], select {
@@ -62,10 +62,10 @@ input[type="search"], input[type="text"], select {
 .switch .track::after {
   content: ""; position: absolute; top: 2px; left: 2px;
   width: 14px; height: 14px; border-radius: 50%;
-  background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: var(--knob-bg); box-shadow: var(--shadow);
   transition: transform 0.15s;
 }
-.switch input:checked + .track { background: var(--accent); border-color: var(--accent); }
+.switch input:checked + .track { background: var(--accent-fill); border-color: var(--accent-fill); }
 .switch input:checked + .track::after { transform: translateX(14px); }
 .switch input:focus-visible + .track { outline: 3px solid var(--focus); outline-offset: 1px; }
 .switch input:disabled { cursor: default; }

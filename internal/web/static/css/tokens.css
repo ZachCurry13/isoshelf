@@ -1,66 +1,98 @@
-/* The look, in one place: every colour, the radius, the font size and the mono font, under the names the rest of the stylesheet uses. A different design is a different version of this file. */
+/* The look, in one place: isoshelf's own names for colour, shape and type,
+   each one defined from a Primer token (https://primer.style/product/primitives).
 
-/* The colors. Each one says its light value and its dark value; which is
-   used follows color-scheme below, so "Dark" in Settings is one line, not a
-   second copy of the whole palette. */
+   This file is the seam. Every other stylesheet here uses only the names
+   defined below and never a Primer name, a colour or a shadow of its own, so a
+   different design is a different set of values in this file (and, if it comes
+   from another system, its own generated file beside primer.css). The test in
+   internal/web checks both halves: nothing else uses a raw colour, and every
+   name used anywhere is defined.
+
+   The Primer names below are real; primer.css (generated, not edited) defines
+   them for four themes - light, dark, and the two high-contrast ones - and is
+   switched by three attributes on <html> that Settings sets:
+   data-color-mode (auto, light or dark), data-light-theme and data-dark-theme.
+   Higher contrast is not a set of overrides here but two more Primer themes. */
+
 :root {
-  /* Neutral greys and one accent. The dark values are designed first and the
-     light ones follow from them, because this page is read in the dark more
-     often than in the light: a NAS is somewhere else in the house.
+  /* Surfaces and text. The page and its cards are the same colour, told apart
+     by a border, as on GitHub; --surface-2 is the quiet step used for table
+     headings and panels, --inset for a field set into the page. */
+  --bg: var(--bgColor-default);
+  --surface: var(--bgColor-default);
+  --surface-2: var(--bgColor-muted);
+  --inset: var(--bgColor-inset);
+  --text: var(--fgColor-default);
+  --muted: var(--fgColor-muted);
+  --border: var(--borderColor-default);
+  --border-muted: var(--borderColor-muted);
 
-     The accent is isoshelf's own blue - the one in its logo since v0.3.0 -
-     one step calmer. The greys are neutral rather than tinted, so nothing
-     here reads as borrowed from another product. What makes the page look
-     like a tool is the density and the restraint, not the colour. */
-  --bg: light-dark(#f3f4f6, #0d0f12);
-  --surface: light-dark(#ffffff, #14171c);
-  --surface-2: light-dark(#f7f8fa, #191d23);
-  --text: light-dark(#14171c, #e1e4e9);
-  --muted: light-dark(#646a73, #8e949d);
-  --border: light-dark(#e0e2e6, #262a31);
-  --accent: light-dark(#2c62d6, #5b8cf5);
-  --accent-hover: light-dark(#2350b4, #7aa2f7);
-  --accent-text: light-dark(#ffffff, #0b1020);
-  --focus: light-dark(#93b4fb, #3e63b8);
-  /* Flat: depth comes from the step between --bg and --surface, which is the
-     only kind of depth a dark page can actually show. */
-  --shadow: none;
+  /* The accent is for links and marks (--accent), and for something filled
+     with it (--accent-fill, with --on-accent for the words on it): a progress
+     bar, a switch that is on, a count. Primer picks a different blue for each
+     in the dark theme, which is why they are two names. */
+  --accent: var(--fgColor-accent);
+  --accent-fill: var(--bgColor-accent-emphasis);
+  --on-accent: var(--fgColor-onEmphasis);
+  --accent-muted: var(--bgColor-accent-muted);
+  --focus: var(--focus-outlineColor);
 
-  --ok-fg: light-dark(#17803d, #6fd48f);      --ok-bg: light-dark(#dcf5e3, #16311f);
-  --update-fg: light-dark(#9a5b00, #f2c15a);  --update-bg: light-dark(#fff0cc, #3a2c0c);
-  --bad-fg: light-dark(#c42b2b, #ff8a85);     --bad-bg: light-dark(#fde3e2, #3d1717);
-  --eol-fg: light-dark(#7a3cc2, #c9a2f5);     --eol-bg: light-dark(#efe4fb, #2e1e45);
-  --warn-fg: light-dark(#b4530a, #ffb07a);    --warn-bg: light-dark(#ffe8d4, #3b2210);
-  --missing-fg: light-dark(#1d4fd6, #93b0ff); --missing-bg: light-dark(#e1e9ff, #1b2747);
-  --manual-fg: light-dark(#45566b, #a9b6c8);  --manual-bg: light-dark(#e6ebf1, #232b36);
-  --muted-fg: light-dark(#626b79, #9aa3b1);   --muted-bg: light-dark(#eceff3, #242a33);
+  /* Buttons: the ordinary one, and the one that does the thing (green, as in
+     Primer: blue is for links). */
+  --button-bg: var(--button-default-bgColor-rest);
+  --button-bg-hover: var(--button-default-bgColor-hover);
+  --button-border: var(--button-default-borderColor-rest);
+  --primary-bg: var(--button-primary-bgColor-rest);
+  --primary-bg-hover: var(--button-primary-bgColor-hover);
+  --primary-fg: var(--button-primary-fgColor-rest);
+  --primary-border: var(--button-primary-borderColor-rest);
 
-  --radius: 6px;
-  --mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
-  /* No theme chosen: follow whatever this computer is set to. */
-  color-scheme: light dark;
-  /* The size everything else is measured against. Settings can raise it. */
+  /* Fields, and the on/off switch. */
+  --control-bg: var(--control-bgColor-rest);
+  --control-border: var(--control-borderColor-rest);
+  --track-bg: var(--controlTrack-bgColor-rest);
+  --knob-bg: var(--controlKnob-bgColor-rest);
+
+  /* The bar at the top. */
+  --header-bg: var(--header-bgColor);
+  --header-fg: var(--header-fgColor-default);
+
+  /* Depth: flat for things that sit in the page, a shadow for things that float
+     above it, and a veil behind a dialog. */
+  --shadow: var(--shadow-resting-small);
+  --shadow-menu: var(--shadow-floating-medium);
+  --shadow-dialog: var(--shadow-floating-large);
+  --backdrop: var(--overlay-backdrop-bgColor);
+
+  /* What a status means, as a word colour and a tint to sit it on. */
+  --ok-fg: var(--fgColor-success);          --ok-bg: var(--bgColor-success-muted);
+  --update-fg: var(--fgColor-attention);    --update-bg: var(--bgColor-attention-muted);
+  --bad-fg: var(--fgColor-danger);          --bad-bg: var(--bgColor-danger-muted);
+  --eol-fg: var(--fgColor-done);            --eol-bg: var(--bgColor-done-muted);
+  --warn-fg: var(--fgColor-severe);         --warn-bg: var(--bgColor-severe-muted);
+  --missing-fg: var(--fgColor-accent);      --missing-bg: var(--bgColor-accent-muted);
+  --manual-fg: var(--fgColor-muted);        --manual-bg: var(--bgColor-neutral-muted);
+  --muted-fg: var(--fgColor-muted);         --muted-bg: var(--bgColor-neutral-muted);
+  --star: var(--fgColor-attention);
+
+  /* Shape. */
+  --radius: var(--borderRadius-medium);
+  --radius-sm: var(--borderRadius-small);
+  --radius-lg: var(--borderRadius-large);
+  --radius-full: var(--borderRadius-full);
+
+  /* Type. The size everything else is measured against is the one number
+     below, in rem everywhere else, so Larger text raises all of it. */
+  --font: var(--fontStack-system);
+  --mono: var(--fontStack-monospace);
   font-size: 14px;
 }
 
-/* The theme, from Settings. Nothing set means the two lines above. */
-:root[data-theme="light"] { color-scheme: light; }
-:root[data-theme="dark"] { color-scheme: dark; }
-
-/* Larger text, from Settings: everything on the page is measured in rem, so
-   raising this one number raises all of it. */
+/* Larger text, from Settings. */
 :root[data-text="large"] { font-size: 16px; }
 
-/* Higher contrast, from Settings: darker words, firmer edges, and a focus
-   ring nobody can miss. */
-:root[data-contrast="high"] {
-  --text: light-dark(#000000, #ffffff);
-  --muted: light-dark(#3b4250, #c9d2de);
-  --border: light-dark(#8791a1, #79839a);
-  --surface-2: light-dark(#eef1f5, #222935);
-  --accent: light-dark(#0b47c4, #a6c6ff);
-  --accent-hover: light-dark(#083795, #c2d8ff);
-  --focus: light-dark(#0b47c4, #a6c6ff);
-  --muted-fg: light-dark(#3b4250, #c9d2de);
-}
-
+/* Which of the two the browser draws its own controls in (scrollbars, form
+   fields, the picker). "auto" follows this computer, as Primer's own themes do. */
+[data-color-mode="light"] { color-scheme: light; }
+[data-color-mode="dark"] { color-scheme: dark; }
+[data-color-mode="auto"] { color-scheme: light dark; }

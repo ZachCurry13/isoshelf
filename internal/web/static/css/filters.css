@@ -5,7 +5,7 @@
 .filter-menu > summary::-webkit-details-marker { display: none; }
 .filter-count {
   display: inline-block; min-width: 18px; margin-left: 4px; padding: 0 5px;
-  border-radius: 99px; background: var(--accent); color: var(--accent-text);
+  border-radius: 99px; background: var(--accent-fill); color: var(--on-accent);
   font-size: 0.7857rem; font-weight: 700; text-align: center;
 }
 /* The filters scroll and the footer stays put, so a long list on a short

@@ -9,7 +9,7 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   background: var(--surface);
   border-top: 1px solid var(--border);
-  box-shadow: 0 -4px 16px rgba(16, 24, 40, 0.08);
+  box-shadow: var(--shadow);
 }
 .dock-bar {
   display: flex; align-items: center; gap: 14px;
@@ -98,6 +98,6 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
   color: var(--fg);
   background: var(--surface);
   border: 1px solid var(--border); border-radius: var(--radius);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+  box-shadow: var(--shadow-menu);
 }
 

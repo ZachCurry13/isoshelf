@@ -6,7 +6,7 @@
   width: min(400px, 100vw);
   display: flex; flex-direction: column;
   background: var(--surface); border-left: 1px solid var(--border);
-  box-shadow: -8px 0 30px rgba(10, 14, 22, 0.18);
+  box-shadow: var(--shadow-dialog);
 }
 .details-head {
   display: flex; align-items: flex-start; gap: 10px;
