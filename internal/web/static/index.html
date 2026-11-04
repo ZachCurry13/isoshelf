@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="/static/css/feedback.css">
 <link rel="stylesheet" href="/static/css/controls.css">
 <link rel="stylesheet" href="/static/css/status.css">
+<link rel="stylesheet" href="/static/css/labels.css">
 <link rel="stylesheet" href="/static/css/images.css">
 <link rel="stylesheet" href="/static/css/logos.css">
 <link rel="stylesheet" href="/static/css/catalog.css">
@@ -27,8 +28,12 @@
 <link rel="stylesheet" href="/static/css/dialogs.css">
 <link rel="stylesheet" href="/static/css/downloads.css">
 <link rel="stylesheet" href="/static/css/accessibility.css">
+<script src="/static/icons.js" defer></script>
 <script src="/static/app.js" defer></script>
 <script src="/static/images.js" defer></script>
+<script src="/static/logotile.js" defer></script>
+<script src="/static/menus.js" defer></script>
+<script src="/static/imagerow.js" defer></script>
 <script src="/static/summary.js" defer></script>
 <script src="/static/details.js" defer></script>
 <script src="/static/checklist.js" defer></script>
@@ -46,6 +51,7 @@
 <script src="/static/duplicates.js" defer></script>
 <script src="/static/folders.js" defer></script>
 <script src="/static/thisfolder.js" defer></script>
+<script src="/static/jumpnav.js" defer></script>
 <script src="/static/archive.js" defer></script>
 <script src="/static/settings.js" defer></script>
 <script src="/static/settinglist.js" defer></script>
@@ -59,6 +65,7 @@
 <script src="/static/system.js" defer></script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to the images</a>
 <header class="topbar">
   <div class="brand">
     <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
@@ -71,24 +78,16 @@
   <a id="app-update" class="app-update" hidden target="_blank" rel="noopener noreferrer"></a>
   <span id="self-update" class="self-update" hidden></span>
   <button type="button" class="btn small settings-button" id="settings-open" aria-expanded="false">
-    <span class="gear" aria-hidden="true">⚙</span> Settings
+    <svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#gear-16"/></svg> Settings
   </button>
 </header>
 
-<nav class="jump" id="jump" aria-label="Sections">
-  <a href="#images" id="jump-images">Your images</a>
-  <a href="#more" id="jump-more">Add images</a>
-  <a href="#archive" id="jump-archive">Archive</a>
-  <a href="#history" id="jump-history">History</a>
-  <a href="#tools" id="jump-tools">Tools</a>
-</nav>
-
-<main>
-  <section class="card target" id="folder-card">
-    <div class="target-info">
-      <div class="eyebrow">Folder</div>
-      <div class="target-path" id="target-path">No folder chosen yet</div>
-      <div class="target-meta">
+<main id="main" tabindex="-1">
+  <section class="page-header" id="folder-card" aria-labelledby="page-title">
+    <div class="page-header-main">
+      <h1 class="page-title" id="page-title"><span id="target-name">No folder chosen yet</span></h1>
+      <div class="page-description">
+        <span class="title-parent" id="target-parent"></span>
         <label class="inline-select">Type
           <select id="profile" disabled>
             <option value="folder">Folder of images</option>
@@ -100,12 +99,20 @@
         <span id="space" class="muted"></span>
       </div>
     </div>
-    <div class="target-actions">
+    <div class="page-actions">
       <button type="button" class="btn" id="choose">Choose folder…</button>
       <button type="button" class="btn primary" id="refresh" disabled
         title="Read the folder again and ask every project for its newest version">Refresh</button>
     </div>
   </section>
+
+  <nav class="jump" id="jump" aria-label="Sections">
+    <a href="#images" id="jump-images"><span class="tab-label" data-label="Your images">Your images</span></a>
+    <a href="#more" id="jump-more"><span class="tab-label" data-label="Add images">Add images</span></a>
+    <a href="#archive" id="jump-archive"><span class="tab-label" data-label="Archive">Archive</span></a>
+    <a href="#history" id="jump-history"><span class="tab-label" data-label="History">History</span></a>
+    <a href="#tools" id="jump-tools"><span class="tab-label" data-label="Tools">Tools</span></a>
+  </nav>
 
   <section class="card run" id="run" hidden>
     <div class="run-text">
@@ -150,25 +157,10 @@
       <span class="muted" id="shown"></span>
     </div>
     <div class="chips" id="chips" hidden></div>
-    <div class="table-wrap">
-      <table id="table">
-        <thead>
-          <tr>
-            <th class="col-star"><span class="sr-only">Favorite</span></th>
-            <th id="col-image" class="sortable" aria-sort="none">Image</th>
-            <th id="col-version" class="sortable" aria-sort="none">Version</th>
-            <th id="col-status" class="sortable" aria-sort="none">Status</th>
-            <th id="col-added" class="sortable col-added" aria-sort="none">Added</th>
-            <th class="col-actions"><span class="sr-only">Actions</span></th>
-            <th class="col-get">Download</th>
-          </tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
-    </div>
+    <ul class="rows" id="rows"></ul>
     <div class="empty" id="empty" hidden></div>
     <p class="legend" id="legend" hidden>
-      <span class="caution" aria-hidden="true">⚠</span>
+      <svg class="octicon caution" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#alert-16"/></svg>
       Worth knowing before you use it: the release no longer gets security fixes,
       or there's a note about it. Fine to keep for a VM, an old PC or tinkering —
       hover over the mark to see why.
@@ -178,7 +170,7 @@
 
   <section class="card more" id="more">
     <details id="more-details">
-      <summary>
+      <summary><svg class="octicon chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#chevron-right-16"/></svg>
         <span class="more-title">Add images</span>
         <span class="muted" id="more-count"></span>
       </summary>
@@ -225,7 +217,7 @@
       <p class="muted more-hint" id="catalog-request"></p>
       <!-- Files your server has that the catalog doesn't know (v0.8.1). -->
       <details class="server-only" id="server-only" hidden>
-        <summary>Also on your server <span class="muted" id="server-only-count"></span></summary>
+        <summary><svg class="octicon chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#chevron-right-16"/></svg>Also on your server <span class="muted" id="server-only-count"></span></summary>
         <ul class="catalog" id="server-only-list"></ul>
       </details>
     </details>
@@ -252,7 +244,7 @@
     <!-- Folded like History (v0.8.8): one line until it's opened, and
          emptying it is always a second, deliberate step. -->
     <details id="archive-details">
-      <summary>
+      <summary><svg class="octicon chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#chevron-right-16"/></svg>
         <span class="more-title">Archive</span>
         <span class="muted" id="archive-count"></span>
       </summary>
@@ -268,7 +260,7 @@
        to one line; asked for again only when something changed (history.js). -->
   <section class="card more" id="history" hidden>
     <details id="history-details">
-      <summary>
+      <summary><svg class="octicon chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#chevron-right-16"/></svg>
         <span class="more-title">History</span>
         <span class="muted" id="history-count"></span>
       </summary>
@@ -287,7 +279,7 @@
        same four are in README.md, and internal/docs checks they agree. -->
   <section class="card more" id="tools">
     <details id="tools-details">
-      <summary>
+      <summary><svg class="octicon chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#chevron-right-16"/></svg>
         <span class="more-title">Tools that go with these</span>
       </summary>
       <p class="muted more-hint">isoshelf keeps the images current. Writing one
@@ -332,7 +324,7 @@
         <div class="muted" id="details-sub"></div>
       </div>
     </div>
-    <button type="button" class="btn small icon" id="details-close" aria-label="Close">✕</button>
+    <button type="button" class="btn small icon" id="details-close" aria-label="Close details"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#x-16"/></svg></button>
   </header>
   <div class="details-body" id="details-body"></div>
 </aside>
@@ -346,7 +338,7 @@
         <div class="muted">Every setting here has a sensible default</div>
       </div>
     </div>
-    <button type="button" class="btn small icon" id="settings-close" aria-label="Close">✕</button>
+    <button type="button" class="btn small icon" id="settings-close" aria-label="Close settings"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#x-16"/></svg></button>
   </header>
   <div class="settings-find">
     <input type="search" id="settings-search" placeholder="Search settings…" aria-label="Search settings">
@@ -402,12 +394,12 @@
     <div class="identify-body">
       <div id="identify-guesses"></div>
       <details id="identify-all">
-        <summary>Choose it from the catalog</summary>
+        <summary><svg class="octicon chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#chevron-right-16"/></svg>Choose it from the catalog</summary>
         <input type="search" id="identify-search" placeholder="Search the catalog…" aria-label="Search the catalog">
         <ul class="catalog" id="identify-list"></ul>
       </details>
       <details id="identify-mine">
-        <summary>Name it myself</summary>
+        <summary><svg class="octicon chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#chevron-right-16"/></svg>Name it myself</summary>
         <p class="muted more-hint">For images no list will ever know: one you built, one you customized, or a
           distribution isoshelf hasn't been told about. It is saved to your own catalog file, and isoshelf
           will recognize this filename from now on. It can't be checked for updates: that needs an
@@ -462,11 +454,11 @@
         Press Refresh.</p>
     </header>
     <div class="picker-path">
-      <button type="button" class="btn small" id="picker-up" title="Up one folder">↑ Up</button>
+      <button type="button" class="btn small" id="picker-up" aria-label="Up one folder"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#arrow-up-16"/></svg> Up</button>
       <input type="text" id="picker-input" spellcheck="false" autocomplete="off" aria-label="Folder path">
       <button type="button" class="btn small" id="picker-go">Go</button>
       <button type="button" class="btn small" id="picker-refresh" title="Look again, for a drive plugged in since isoshelf started">Refresh</button>
-      <button type="button" class="btn small" id="picker-pin">☆ Bookmark</button>
+      <button type="button" class="btn small" id="picker-pin"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#bookmark-16"/></svg> Bookmark</button>
     </div>
     <div class="picker-body">
       <nav class="picker-roots" id="picker-roots" aria-label="Places"></nav>

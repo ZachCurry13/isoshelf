@@ -13,6 +13,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--sp-8);
   min-height: var(--control-md);
   line-height: var(--leading);
   padding: 0 var(--sp-16);

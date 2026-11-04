@@ -1,33 +1,29 @@
-/* The folder card: which folder, its type, room left, and the buttons for it. */
+/* The page header (Primer's PageHeader): the folder as the title of the page, its type, room left, and the buttons for it. */
 
-/* Folder card */
-
-.target {
+.page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: var(--sp-16);
-  padding: var(--sp-12) var(--sp-16);
   flex-wrap: wrap;
 }
-.target-info { flex: 1 1 360px; min-width: 0; }
-.eyebrow { font-size: var(--text-small); font-weight: 600; color: var(--muted); }
-.target-path { font-family: var(--mono); font-size: var(--text-small); margin: var(--sp-2) 0 var(--sp-6); overflow-wrap: anywhere; }
-.target-meta { display: flex; align-items: center; gap: var(--sp-16); flex-wrap: wrap; }
-.target-actions { display: flex; gap: var(--sp-8); flex-wrap: wrap; }
+.page-header-main { flex: 1 1 360px; min-width: 0; }
+.page-title {
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: 600;
+  line-height: 1.625;
+  overflow-wrap: anywhere;
+}
+.page-description { display: flex; align-items: center; gap: var(--sp-4) var(--sp-16); flex-wrap: wrap; }
+.title-parent { font-family: var(--mono); font-size: var(--text-small); color: var(--muted); overflow-wrap: anywhere; }
+.title-parent:empty { display: none; }
+.page-actions { display: flex; gap: var(--sp-8); flex-wrap: wrap; }
 /* On a server, one line: the folder, its type and choosing another are in
    Settings, under This folder. */
-.target.compact { padding: var(--sp-8) var(--sp-12) var(--sp-8) var(--sp-16); }
-.target.compact .eyebrow, .target.compact .target-path,
-.target.compact .inline-select, .target.compact #choose { display: none; }
-.target.compact .target-meta { gap: var(--sp-6); }
-.target.compact #space:not(:empty)::before { content: "· "; }
-@media (max-width: 767px) {
-  .target.compact .target-actions { width: auto; }
-  /* The two halves wrap onto lines of their own here. */
-  .target.compact #space::before { content: none; }
-}
+.page-header.compact .inline-select, .page-header.compact #choose { display: none; }
 
 @media (max-width: 767px) {
-  .target-actions { width: 100%; }
-  .target-actions .btn { flex: 1; }
+  .page-actions { width: 100%; }
+  .page-actions .btn { flex: 1; }
 }

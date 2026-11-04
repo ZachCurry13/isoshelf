@@ -46,27 +46,49 @@
 /* On the dark bar a red word is hard to read, so the failure sits on its own tint. */
 .self-update-failed { color: var(--bad-fg); background: var(--bad-bg); padding: var(--sp-2) var(--sp-8); border-radius: var(--radius-sm); font-weight: 500; overflow-wrap: anywhere; }
 
-/* Primer's UnderlineNav: tabs along a rule, an underline under the one you point
-   at. These are links to parts of this page, so none of them is "selected". */
+/* Primer's UnderlineNav: tabs along a rule, each with its words and a count,
+   an underline under the one you point at and a heavier one under the one you
+   are on (marked aria-current by jumpnav.js). They are links to parts of this
+   one page. */
 .jump {
   position: sticky; top: 0; z-index: 15;
-  display: flex; gap: 0; flex-wrap: wrap;
-  padding: 0 var(--sp-12);
+  display: flex; gap: var(--sp-4);
+  min-height: var(--sp-48);
+  overflow-x: auto;
   background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  box-shadow: inset 0 -1px 0 var(--border-muted);
 }
-/* A part of the page jumped to stops below the bar rather than under it. */
-main > section[id] { scroll-margin-top: 52px; }
 .jump a {
-  padding: var(--sp-12) var(--sp-12) var(--sp-8);
-  border-bottom: 2px solid transparent;
+  position: relative;
+  display: flex; align-items: center; gap: var(--sp-8);
+  padding: 0 var(--sp-8);
+  border-radius: var(--radius);
   color: var(--text); font-size: var(--text-medium); text-decoration: none;
+  white-space: nowrap;
 }
-.jump a:hover { border-bottom-color: var(--tab-hover); text-decoration: none; }
+/* The underline sits on the rule under the bar. */
+.jump a::after { content: ""; position: absolute; left: var(--sp-8); right: var(--sp-8); bottom: 0; height: 2px; background: transparent; border-radius: var(--radius-full); }
+.jump a:hover { text-decoration: none; }
+.jump a:hover::after { background: var(--tab-hover); }
+.jump a[aria-current]::after { background: var(--tab-active); }
+.jump a[aria-current] { font-weight: 600; }
+/* The words are set once in the heavy weight, unseen, so that the bar doesn't
+   shift when a tab becomes the current one. */
+.tab-label { display: inline-flex; flex-direction: column; }
+.tab-label::after { content: attr(data-label); height: 0; overflow: hidden; visibility: hidden; font-weight: 600; }
+/* A part of the page jumped to stops below the bar rather than under it. */
+main > section[id] { scroll-margin-top: calc(var(--sp-48) + var(--sp-8)); }
+
+.skip-link {
+  position: absolute; left: var(--sp-8); top: calc(-1 * var(--sp-48)); z-index: 30;
+  padding: var(--sp-8) var(--sp-16);
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-menu);
+}
+.skip-link:focus { top: var(--sp-8); }
 
 .settings-button { margin-left: auto; }
 
 @media (max-width: 767px) {
   .topbar { padding: var(--sp-12) var(--sp-12); }
-  .jump { padding: 0 var(--sp-6); }
 }

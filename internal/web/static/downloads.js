@@ -207,7 +207,7 @@ function jobButton(entry, idle, fresh) {
       // Once the folder has been looked at again, the list shows the file
       // itself and the tick has done its job.
       if (!fresh || arrivedSinceScan(at.job)) {
-        return el("span", { class: "job-done" }, at.job.update ? "Updated ✓" : "Added ✓");
+        return el("span", { class: "job-done" }, icon("check-16"), at.job.update ? "Updated" : "Added");
       }
       return idle;
     default:

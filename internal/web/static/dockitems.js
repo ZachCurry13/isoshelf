@@ -104,7 +104,7 @@ function entryInfo(job) {
 function queuedItem(job, i, count) {
   const what = job.update ? "replaces the copy here" : "adds it to this folder";
   const li = el("li", { class: "dock-item queued", draggable: "true", "data-id": job.id },
-    el("span", { class: "grip", "aria-hidden": "true", title: "Drag to change the order" }, "⠇"),
+    el("span", { class: "grip", "aria-hidden": "true" }, icon("grabber-16")),
     el("span", { class: "place" }, i + 1),
     logoTile(entryInfo(job)),
     el("div", { class: "info" },
@@ -115,22 +115,22 @@ function queuedItem(job, i, count) {
         type: "button", class: "btn small icon", disabled: i === 0,
         title: "Move up", "aria-label": `Move ${job.name} up`, "data-focus": `${job.id}:up`,
         onclick: () => moveJob(job, i - 1),
-      }, "↑"),
+      }, icon("arrow-up-16")),
       el("button", {
         type: "button", class: "btn small icon", disabled: i === count - 1,
         title: "Move down", "aria-label": `Move ${job.name} down`, "data-focus": `${job.id}:down`,
         onclick: () => moveJob(job, i + 1),
-      }, "↓"),
+      }, icon("arrow-down-16")),
       el("button", {
         type: "button", class: "btn small icon", disabled: i === 0,
         title: "Next in line", "aria-label": `Download ${job.name} next`, "data-focus": `${job.id}:top`,
         onclick: () => moveJob(job, 0),
-      }, "⤒"),
+      }, icon("move-to-top-16")),
       el("button", {
         type: "button", class: "btn small icon",
         title: "Take it off the queue", "aria-label": `Take ${job.name} off the queue`, "data-focus": `${job.id}:drop`,
         onclick: () => dropJob(job),
-      }, "✕")));
+      }, icon("x-16"))));
 
   // Dragging: drop above or below another waiting download.
   li.addEventListener("dragstart", (e) => {
@@ -172,9 +172,9 @@ function queuedItem(job, i, count) {
 }
 
 const OUTCOME = {
-  done: ["✓", "s-ok"],
-  failed: ["✕", "s-bad"],
-  stopped: ["■", "s-muted"],
+  done: ["check-16", "s-ok"],
+  failed: ["x-16", "s-bad"],
+  stopped: ["stop-16", "s-muted"],
 };
 
 function finishedItem(job) {
@@ -183,16 +183,16 @@ function finishedItem(job) {
   if (job.from) what += ` from ${job.from}`;
   // Done, but with something to know: a file nothing could check.
   if (job.outcome === "done" && job.message) {
-    [mark, tone] = ["!", "s-warn"];
+    [mark, tone] = ["alert-16", "s-warn"];
     what += `. ${job.message}`;
   }
   if (job.outcome === "failed") what = job.conflict ? job.message : `Failed: ${job.message}`;
-  if (job.conflict) [mark, tone] = ["?", "s-update"];
+  if (job.conflict) [mark, tone] = ["question-16", "s-update"];
   if (job.outcome === "stopped") what = "Stopped. What has downloaded so far is kept, so Resume continues from there.";
   // Only the latest try gets the button, and not once it is queued again.
   const again = job.outcome !== "done" && jobFor(job.entry).job.id === job.id;
   return el("li", { class: "dock-item finished" },
-    el("span", { class: `pill ${tone} mark`, "aria-hidden": "true" }, mark),
+    el("span", { class: `pill ${tone} mark`, "aria-hidden": "true" }, mark ? icon(mark) : null),
     el("div", { class: "info" },
       el("div", { class: "name" }, job.name),
       el("div", { class: "kind" }, what, job.at ? ` · ${timeAgo(job.at)}` : "")),

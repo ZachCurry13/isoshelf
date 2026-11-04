@@ -60,7 +60,7 @@ function pastItem(item) {
     logoTile(item),
     el("div", { class: "info" },
       el("div", {}, el("span", { class: "name" }, item.name),
-        item.version ? el("span", { class: "arch" }, item.version) : null),
+        item.version ? el("span", { class: "label" }, item.version) : null),
       el("div", { class: "file" }, item.path),
       el("div", { class: "kind" }, detail)),
     el("div", { class: "past-actions" }, buttons));
@@ -70,10 +70,11 @@ function pastItem(item) {
 // section, and no link to a section that has nothing in it.
 function renderJump() {
   const images = state.report ? state.report.items.length : 0;
-  $("jump-images").textContent = images ? `Your images (${images})` : "Your images";
+  setTab("jump-images", "Your images", images);
   const missing = catalog ? catalog.filter((e) => !e.on_target && !e.unlisted).length : 0;
-  $("jump-more").textContent = missing ? `Add images (${missing})` : "Add images";
+  setTab("jump-more", "Add images", missing);
   const archived = state.removed ? state.removed.files : 0;
   $("jump-archive").hidden = !archived;
-  $("jump-archive").textContent = archived ? `Archive (${archived})` : "Archive";
+  setTab("jump-archive", "Archive", archived);
+  if (markTab) markTab();
 }

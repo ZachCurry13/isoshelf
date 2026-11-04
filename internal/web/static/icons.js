@@ -1,0 +1,31 @@
+"use strict";
+
+// Octicons, GitHub's icon set, drawn from the sprite static/octicons.svg
+// (docs/design-system.md, "Icons"). An icon is used at the size it is drawn -
+// 16 px, or 12 px where the name ends in -12 - and takes the colour of the text
+// around it. Which names exist is internal/web/octicons.
+
+const SVG_NS = "http://www.w3.org/2000/svg";
+
+// icon makes one icon. A decorative icon, the usual case, is hidden from
+// assistive technology; pass a label only when the icon alone says something,
+// and then it is announced as an image with that name.
+function icon(name, label) {
+  const size = name.endsWith("-12") ? 12 : 16;
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("class", "octicon");
+  svg.setAttribute("width", String(size));
+  svg.setAttribute("height", String(size));
+  svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+  svg.setAttribute("focusable", "false");
+  if (label) {
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", label);
+  } else {
+    svg.setAttribute("aria-hidden", "true");
+  }
+  const use = document.createElementNS(SVG_NS, "use");
+  use.setAttribute("href", `/static/octicons.svg#${name}`);
+  svg.append(use);
+  return svg;
+}

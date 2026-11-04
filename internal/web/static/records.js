@@ -128,7 +128,7 @@ function recordsNote() {
       "and the archive never move.";
   }
   const done = recordsResult && recordsResult.target === state.target ? recordsDone(recordsResult) : "";
-  return [done ? el("div", { class: "records-done", role: "status" }, done) : null, where];
+  return [done ? el("div", { class: "records-done", role: "status" }, icon("check-16"), done) : null, where];
 }
 
 // recordsControl is the three answers, plus the box for the third one. The

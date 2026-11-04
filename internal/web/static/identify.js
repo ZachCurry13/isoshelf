@@ -134,7 +134,7 @@ function renderGuesses(guesses) {
         el("div", {},
           el("span", { class: "name" }, guess.name),
           archBadge(guess.arch, true),
-          guess.version ? el("span", { class: "arch" }, guess.version) : null,
+          guess.version ? el("span", { class: "label" }, guess.version) : null,
           el("span", { class: `pill ${guess.sure ? "s-ok" : "s-muted"}` }, sureness(guess.score))),
         el("div", { class: "kind" }, `Because ${guess.reason}.`)),
       el("button", {

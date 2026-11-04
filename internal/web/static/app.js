@@ -270,7 +270,12 @@ function render() {
 
   // On a server the folder card is one line; the folder is in Settings.
   $("folder-card").classList.toggle("compact", Boolean(state.server && state.target));
-  $("target-path").textContent = state.target || "No folder chosen yet";
+  // The folder is the title of the page: its own name large, the rest of the
+  // path beside it. On a server the path isn't shown (it is in Settings).
+  const [parentPath, folderName] = state.server && state.target
+    ? ["", "Images on this server"] : folderTitle(state.target);
+  $("target-parent").textContent = parentPath;
+  $("target-name").textContent = folderName;
   $("profile").value = state.profile || "ventoy";
   $("profile").disabled = engaged || !state.target;
   $("choose").disabled = engaged;
@@ -289,7 +294,6 @@ function render() {
   renderFirstRun();
   renderTodo();
   renderFilters();
-  renderHeadings();
   renderRows();
   renderFooter();
   renderCatalog();
@@ -355,6 +359,7 @@ function timeAgo(iso) {
 // ---- Wiring ----------------------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
+  markTab = followScroll();
   // An open menu is pinned to the window; scrolling would leave it behind.
   document.addEventListener("scroll", closeMenus, true);
   window.addEventListener("resize", closeMenus);
@@ -399,7 +404,6 @@ document.addEventListener("DOMContentLoaded", () => {
     view.sort = e.target.value;
     view.desc = false;
     saveView();
-    renderHeadings();
     renderRows();
   });
   $("more-search").addEventListener("input", renderCatalog);

@@ -107,7 +107,7 @@ function eventRow(e) {
     logoTile(e),
     el("div", { class: "info" },
       el("div", {}, el("span", { class: "name" }, e.name),
-        version ? el("span", { class: "arch" }, version) : null),
+        version ? el("span", { class: "label" }, version) : null),
       el("div", { class: "file" }, e.path),
       el("div", { class: "kind", title: e.at ? new Date(e.at).toLocaleString() : "" }, detail.join(" · "))),
     el("div", { class: "past-actions" }, buttons));

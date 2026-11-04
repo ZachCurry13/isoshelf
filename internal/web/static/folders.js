@@ -65,7 +65,7 @@ async function browse(path) {
   const pinned = bookmarks.some((b) => b.toLowerCase() === pickerPath.toLowerCase());
   const pin = $("picker-pin");
   pin.disabled = !pickerPath;
-  pin.textContent = pinned ? "★ Bookmarked" : "☆ Bookmark";
+  pin.replaceChildren(icon(pinned ? "bookmark-fill-16" : "bookmark-16"), pinned ? " Bookmarked" : " Bookmark");
   pin.title = pinned
     ? "Forget this folder"
     : "Keep this folder at the top of the list, so it doesn't have to be found again";
@@ -141,13 +141,13 @@ function rememberedRow(folder, bookmarked) {
       el("button", {
         type: "button", class: "remembered-open", title: folder.path,
         onclick: () => browse(folder.path),
-      }, bookmarked ? `★ ${shortPath(folder.path)}` : shortPath(folder.path)),
+      }, bookmarked ? [icon("bookmark-fill-16"), ` ${shortPath(folder.path)}`] : shortPath(folder.path)),
       el("button", {
         type: "button", class: "remembered-forget",
         "aria-label": `Forget ${folder.path}`,
         title: "Take this folder off the list. Nothing in it is touched.",
         onclick: () => forgetFolder(folder),
-      }, "✕")),
+      }, icon("x-16"))),
     detail ? el("div", { class: "remembered-detail" }, detail) : null);
 }
 

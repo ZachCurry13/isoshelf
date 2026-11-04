@@ -1,50 +1,31 @@
-/* Status colours, and the mark beside a status word. */
+/* Status colours, and the pill that carries a status word. */
 
 /* Status colors */
 
-.s-ok { --fg: var(--ok-fg); --bgc: var(--ok-bg); }
-.s-update { --fg: var(--update-fg); --bgc: var(--update-bg); }
-.s-bad { --fg: var(--bad-fg); --bgc: var(--bad-bg); }
-.s-eol { --fg: var(--eol-fg); --bgc: var(--eol-bg); }
-.s-warn { --fg: var(--warn-fg); --bgc: var(--warn-bg); }
-.s-missing { --fg: var(--missing-fg); --bgc: var(--missing-bg); }
-.s-manual { --fg: var(--manual-fg); --bgc: var(--manual-bg); }
-.s-muted { --fg: var(--muted-fg); --bgc: var(--muted-bg); }
+.s-ok { --fg: var(--ok-fg); --bgc: var(--ok-bg); --bd: var(--ok-border); }
+.s-update { --fg: var(--update-fg); --bgc: var(--update-bg); --bd: var(--update-border); }
+.s-bad { --fg: var(--bad-fg); --bgc: var(--bad-bg); --bd: var(--bad-border); }
+.s-eol { --fg: var(--eol-fg); --bgc: var(--eol-bg); --bd: var(--eol-border); }
+.s-warn { --fg: var(--warn-fg); --bgc: var(--warn-bg); --bd: var(--warn-border); }
+.s-missing { --fg: var(--missing-fg); --bgc: var(--missing-bg); --bd: var(--missing-border); }
+.s-manual { --fg: var(--manual-fg); --bgc: var(--manual-bg); --bd: var(--neutral-border); }
+.s-muted { --fg: var(--muted-fg); --bgc: var(--muted-bg); --bd: var(--neutral-border); }
 
-/* A status is a coloured mark beside plain words, not a filled chip.
-   Ten filled chips in one column compete with each other and with the names
-   beside them, and nothing wins; a dot says the same thing and lets the word
-   be read. The two that must interrupt you keep their tint - see below. */
+/* A status is Primer's Label: a small outlined pill, its edge and words in the
+   colour of what it means, and the words always there (never the colour
+   alone). Higher contrast fills it, which is what that setting is for. */
 .pill {
-  display: inline-block;
-  position: relative;
-  padding: 0 0 0 var(--sp-12);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 0 var(--sp-6);
   font-size: var(--text-small);
   font-weight: 500;
+  line-height: 1.5;
   white-space: nowrap;
-  color: var(--text);
-  background: none;
-}
-.pill::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.45em;
-  width: 7px;
-  height: 7px;
-  border-radius: var(--radius-full);
-  background: var(--fg);
-}
-
-/* The two worth interrupting for: a file that doesn't match its checksum, and
-   an update waiting to be taken. */
-.pill.s-bad, .pill.s-update {
-  padding: var(--sp-2) var(--sp-8) var(--sp-2) var(--sp-20);
-  border-radius: var(--radius-sm);
-  font-weight: 600;
   color: var(--fg);
-  background: var(--bgc);
+  background: none;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-full);
 }
-.pill.s-bad::before, .pill.s-update::before { left: 8px; top: 0.55em; }
 .pill + .pill { margin-left: var(--sp-8); }
-

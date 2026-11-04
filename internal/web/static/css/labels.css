@@ -1,0 +1,33 @@
+/* Primer's Label (a small outlined pill for a tag) and Counter (a number on a tab or a button). A status is a Label too: see status.css. */
+
+.label {
+  display: inline-block;
+  padding: 0 var(--sp-6);
+  font-size: var(--text-small);
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: var(--muted);
+  border: 1px solid var(--neutral-border);
+  border-radius: var(--radius-full);
+}
+.label--success { color: var(--ok-fg); border-color: var(--ok-border); }
+.label--attention { color: var(--update-fg); border-color: var(--update-border); }
+.label--danger { color: var(--bad-fg); border-color: var(--bad-border); }
+.label--done { color: var(--eol-fg); border-color: var(--eol-border); }
+.label--severe { color: var(--warn-fg); border-color: var(--warn-border); }
+.label--accent { color: var(--missing-fg); border-color: var(--missing-border); }
+
+.counter {
+  display: inline-block;
+  min-width: 20px;
+  padding: 0 var(--sp-6);
+  font-size: var(--text-small);
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--text);
+  background: var(--manual-bg);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+}

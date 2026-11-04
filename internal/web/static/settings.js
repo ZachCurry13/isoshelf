@@ -192,7 +192,7 @@ function settingRow(setting) {
   return el("div", { class: "setting" },
     el("div", { class: "setting-name" },
       setting.name,
-      justSaved(setting) ? el("span", { class: "saved-mark" }, "Saved") : null),
+      justSaved(setting) ? el("span", { class: "saved-mark" }, icon("check-16"), "Saved") : null),
     el("div", { class: "setting-hint" }, setting.hint),
     el("div", { class: "setting-control" }, setting.control()),
     note ? el("div", { class: "muted setting-note" }, note) : null);
