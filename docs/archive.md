@@ -1420,3 +1420,11 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 - `fetch.Limiter` paces all downloads from one clock, can be changed while
   they run, and leaves hosts in `Client.Unlimited` (a LAN peer) alone.
 - Logo audit (TODO item 9): findings in `docs/catalog-sources.md`.
+
+## v0.11.0: the page follows Primer's manual
+
+- Why: the maintainer found that v0.9.0 had taken Primer's colours and type but not its structure or spacing, so the page did
+  not look like the draft they chose or like GitHub ("what's the point of having a design guide if you don't follow it").
+- What: three researchers read primer.style into `docs/primer-guidelines.md`; three audits of the page against it are
+  `docs/primer-audit.md` (about 60 findings and 79 wording fixes); the build followed it package by package. Tests now hold the
+  spacing scale and the icons.

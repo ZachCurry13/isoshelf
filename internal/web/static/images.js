@@ -256,6 +256,7 @@ function isOlder(item) {
 }
 
 function renderRows() {
+  $("rows").removeAttribute("aria-busy");
   const savedFocus = rememberRowFocus();
   const rows = $("rows");
   rows.replaceChildren();

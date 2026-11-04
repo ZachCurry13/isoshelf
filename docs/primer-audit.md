@@ -132,9 +132,6 @@ Every item above was done, except these, which are open or a decision, so that
 nobody reading this is told the page is more finished than it is:
 
 **Open (not done):**
-- **Loading skeletons** (C22, loading pattern). The list is drawn from state the
-  server already has, so there is no waiting to cover, but the manual asks for a
-  skeleton where there is one (the first draw, the Add images list).
 - **Contrast was not measured** (F15) for the muted text and the pills in every
   one of the twelve themes; the colours are Primer's, used as Primer uses them.
 - **A measure of about 80 characters** (F11) is held only where the page sets one

@@ -79,3 +79,15 @@
 @media (min-width: 768px) and (max-width: 1011px) {
   .row { grid-template-columns: minmax(0, 1fr) 8rem 9rem auto; gap: var(--sp-12); }
 }
+
+/* Primer's loading skeleton: the shape of a row, in place until the first real ones are drawn. */
+.skeleton { cursor: default; }
+.skeleton:hover { background: none; }
+.skeleton-box { display: block; background: var(--surface-2); border-radius: var(--radius); }
+.skeleton-tile { width: 24px; height: 24px; flex: none; }
+.skeleton-line { width: 40%; height: 14px; margin: var(--sp-4) 0; }
+.skeleton-short { width: 25%; }
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton-box { animation: skeleton-pulse 1.4s ease-in-out infinite; }
+}
+@keyframes skeleton-pulse { 50% { opacity: 0.5; } }
