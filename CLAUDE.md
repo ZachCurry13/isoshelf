@@ -15,13 +15,14 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/web`: HTTP server and the embedded page. `static/index.html` loads
   one script per part of the page: `app.js` (state, asking, drawing, wiring),
   `images.js`, `summary.js` (the line saying what wants doing), `details.js`,
-  `checklist.js`, `downloads.js`, `actions.js`, `catalog.js` (Add images),
+  `checklist.js`, `downloads.js` (the queue), `dockitems.js`, `dockprogress.js`
+  (the downloads bar), `notices.js`, `actions.js`, `catalog.js` (Add images),
   `identify.js` (What is this?), `missing.js` (getting a missing image back),
   `origin.js` (where a file came from, and Check it), `fromserver.js`
   (copying from your server), `dismiss.js` (dismissing an update),
   `duplicates.js` (copies of one image),
   `folders.js`, `thisfolder.js` (the This folder group in Settings),
-  `archive.js`, `settings.js` (the panel), `settinglist.js` (what each
+  `archive.js`, `settings.js` (the panel), `settinglist.js`, `updatesettings.js` (what each
   setting is), `access.js` (sign-in and sharing), `records.js` (where a
   folder's records live), `upload.js`, `report.js`, `selfupdate.js`
   (isoshelf updating its own program), `history.js` (what arrived, was

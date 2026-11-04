@@ -120,7 +120,7 @@
                 <span class="badge badge-subtle-primary p-1">Open Source</span>
                 <span class="badge badge-subtle-primary p-1">Free</span>
                 <h1 id="main-slogan" class="my-4 text-white" style="font-size: 3rem;">
-                    <span class='text-primary'>AnduinOS</span> is Ubuntu's package base + <span class='text-primary'>Flatpak</span> app experience
+                    No telemetry integrated! Choose <span class='text-primary'>AnduinOS</span> to regain your privacy
                 </h1>
                 <p class="text-lg text-white-50">AnduinOS is a custom Ubuntu-based Linux distribution that offers a familiar and easy-to-use experience for anyone moving to Linux.</p>
 
@@ -790,377 +790,176 @@
 
             <div class="app-wall-scroller">
                 <div class="app-wall-grid">
-                        <div class="app-icon-wrapper" data-name="IntelliJ IDEA">
-                            <img src="/img/apps/idea.svg" alt="IntelliJ IDEA" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Mixxx">
-                            <img src="/img/apps/mixxx.svg" alt="Mixxx" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Slack">
-                            <img src="/img/apps/slack.svg" alt="Slack" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Krusader">
-                            <img src="/img/apps/krusader-user.svg" alt="Krusader" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Transmission">
-                            <img src="/img/apps/transmission.svg" alt="Transmission" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Emacs">
-                            <img src="/img/apps/emacs.svg" alt="Emacs" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Bitwarden">
-                            <img src="/img/apps/bitwarden.svg" alt="Bitwarden" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Yuzu">
-                            <img src="/img/apps/yuzu.svg" alt="Yuzu" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Java">
-                            <img src="/img/apps/java.svg" alt="Java" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="QQ">
-                            <img src="/img/apps/qq.svg" alt="QQ" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Telegram">
-                            <img src="/img/apps/telegram.svg" alt="Telegram" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GnuCash">
-                            <img src="/img/apps/gnucash-icon.svg" alt="GnuCash" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Qt Creator">
-                            <img src="/img/apps/qtcreator.svg" alt="Qt Creator" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Zoom">
-                            <img src="/img/apps/zoom.svg" alt="Zoom" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Discord">
-                            <img src="/img/apps/discord.svg" alt="Discord" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="pgAdmin">
-                            <img src="/img/apps/pgadmin.svg" alt="pgAdmin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Bitwig Studio">
-                            <img src="/img/apps/bitwig-studio.svg" alt="Bitwig Studio" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DeaDBeeF">
-                            <img src="/img/apps/deadbeef.svg" alt="DeaDBeeF" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Simple Screen Recorder">
-                            <img src="/img/apps/simplescreenrecorder.svg" alt="Simple Screen Recorder" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LMMS">
-                            <img src="/img/apps/lmms.svg" alt="LMMS" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Calibre">
-                            <img src="/img/apps/calibre-gui.svg" alt="Calibre" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="qBittorrent">
-                            <img src="/img/apps/qbittorrent.svg" alt="qBittorrent" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="XMind">
-                            <img src="/img/apps/xmind.svg" alt="XMind" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Beyond Compare">
-                            <img src="/img/apps/bcompare.svg" alt="Beyond Compare" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WPS Office">
-                            <img src="/img/apps/wps-office-kingsoft.svg" alt="WPS Office" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Opera">
-                            <img src="/img/apps/opera.svg" alt="Opera" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="RStudio">
-                            <img src="/img/apps/rstudio.svg" alt="RStudio" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="KeePassXC">
-                            <img src="/img/apps/keepassxc.svg" alt="KeePassXC" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="UNetbootin">
-                            <img src="/img/apps/unetbootin.svg" alt="UNetbootin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="FreeTube">
-                            <img src="/img/apps/freetube.svg" alt="FreeTube" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WhatsApp">
-                            <img src="/img/apps/whatsapp.svg" alt="WhatsApp" loading="lazy" />
-                        </div>
                         <div class="app-icon-wrapper" data-name="Eclipse">
                             <img src="/img/apps/eclipse.svg" alt="Eclipse" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Clash Verge">
-                            <img src="/img/apps/clash-verge.svg" alt="Clash Verge" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="RetroArch">
-                            <img src="/img/apps/retroarch.svg" alt="RetroArch" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Notion">
-                            <img src="/img/apps/notion.svg" alt="Notion" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GIMP">
-                            <img src="/img/apps/gimp.svg" alt="GIMP" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GNS3">
-                            <img src="/img/apps/gns3.svg" alt="GNS3" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DOSBox">
-                            <img src="/img/apps/dosbox.svg" alt="DOSBox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WeChat">
-                            <img src="/img/apps/wechat.svg" alt="WeChat" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Master PDF Editor">
-                            <img src="/img/apps/masterpdfeditor.svg" alt="Master PDF Editor" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Dia">
-                            <img src="/img/apps/dia.svg" alt="Dia" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Clementine">
-                            <img src="/img/apps/clementine.svg" alt="Clementine" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Alacritty">
-                            <img src="/img/apps/alacritty.svg" alt="Alacritty" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Code::Blocks">
-                            <img src="/img/apps/codeblocks.svg" alt="Code::Blocks" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LastPass">
-                            <img src="/img/apps/lastpass.svg" alt="LastPass" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GParted">
-                            <img src="/img/apps/gparted.svg" alt="GParted" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="CLion">
-                            <img src="/img/apps/clion.svg" alt="CLion" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Logseq">
-                            <img src="/img/apps/logseq.svg" alt="Logseq" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Fritzing">
-                            <img src="/img/apps/fritzing.svg" alt="Fritzing" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="MuseScore">
-                            <img src="/img/apps/musescore.svg" alt="MuseScore" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Android Studio">
-                            <img src="/img/apps/android-studio.svg" alt="Android Studio" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Timeshift">
-                            <img src="/img/apps/timeshift.svg" alt="Timeshift" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Visual Studio Code">
-                            <img src="/img/apps/visual-studio-code.svg" alt="Visual Studio Code" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="7-Zip">
-                            <img src="/img/apps/7zip.svg" alt="7-Zip" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Docker">
-                            <img src="/img/apps/docker.svg" alt="Docker" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Dota 2">
-                            <img src="/img/apps/dota2.svg" alt="Dota 2" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Vivaldi">
-                            <img src="/img/apps/vivaldi.svg" alt="Vivaldi" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DBeaver">
-                            <img src="/img/apps/dbeaver.svg" alt="DBeaver" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VeraCrypt">
-                            <img src="/img/apps/veracrypt.svg" alt="VeraCrypt" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Kodi">
-                            <img src="/img/apps/kodi.svg" alt="Kodi" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VMware Workstation">
-                            <img src="/img/apps/vmware-workstation.svg" alt="VMware Workstation" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Stacer">
-                            <img src="/img/apps/stacer.svg" alt="Stacer" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Krita">
-                            <img src="/img/apps/calligrakrita.svg" alt="Krita" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VSCodium">
-                            <img src="/img/apps/vscodium.svg" alt="VSCodium" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Caffeine">
-                            <img src="/img/apps/caffeine.svg" alt="Caffeine" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreOffice">
-                            <img src="/img/apps/libreoffice.svg" alt="LibreOffice" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="QQ Music">
-                            <img src="/img/apps/qqmusic.svg" alt="QQ Music" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Disk Usage Analyzer">
-                            <img src="/img/apps/baobab.svg" alt="Disk Usage Analyzer" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Liferea">
-                            <img src="/img/apps/liferea.svg" alt="Liferea" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="MySQL Workbench">
-                            <img src="/img/apps/mysql-workbench.svg" alt="MySQL Workbench" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="0 A.D.">
-                            <img src="/img/apps/0ad.svg" alt="0 A.D." loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="AnyDesk">
-                            <img src="/img/apps/anydesk.svg" alt="AnyDesk" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VLC">
-                            <img src="/img/apps/vlc.svg" alt="VLC" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Google Chrome">
-                            <img src="/img/apps/google-chrome.svg" alt="Google Chrome" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Wireshark">
-                            <img src="/img/apps/wireshark.svg" alt="Wireshark" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Signal">
-                            <img src="/img/apps/signal-desktop.svg" alt="Signal" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Flameshot">
-                            <img src="/img/apps/flameshot.svg" alt="Flameshot" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DataGrip">
-                            <img src="/img/apps/datagrip.svg" alt="DataGrip" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Shotcut">
-                            <img src="/img/apps/shotcut.svg" alt="Shotcut" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="OBS Studio">
-                            <img src="/img/apps/obs.svg" alt="OBS Studio" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreOffice Writer">
-                            <img src="/img/apps/libreoffice-writer.svg" alt="LibreOffice Writer" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Barrier">
-                            <img src="/img/apps/barrier.svg" alt="Barrier" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Firefox">
-                            <img src="/img/apps/firefox.svg" alt="Firefox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="bauh">
-                            <img src="/img/apps/bauh.svg" alt="bauh" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="RubyMine">
-                            <img src="/img/apps/rubymine.svg" alt="RubyMine" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="gPodder">
-                            <img src="/img/apps/gpodder.svg" alt="gPodder" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Baidu Netdisk">
-                            <img src="/img/apps/baidunetdisk.svg" alt="Baidu Netdisk" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="aMule">
-                            <img src="/img/apps/amule.svg" alt="aMule" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Remmina">
-                            <img src="/img/apps/remmina.svg" alt="Remmina" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreOffice Impress">
-                            <img src="/img/apps/libreoffice-impress.svg" alt="LibreOffice Impress" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Neovim">
-                            <img src="/img/apps/neovim.svg" alt="Neovim" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="FileZilla">
-                            <img src="/img/apps/filezilla.svg" alt="FileZilla" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Spotify">
-                            <img src="/img/apps/spotify-client.svg" alt="Spotify" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="Jami">
                             <img src="/img/apps/jami.svg" alt="Jami" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Atom">
-                            <img src="/img/apps/atom.svg" alt="Atom" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="Simplenote">
+                            <img src="/img/apps/simplenote.svg" alt="Simplenote" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Python">
-                            <img src="/img/apps/python.svg" alt="Python" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="QQ">
+                            <img src="/img/apps/qq.svg" alt="QQ" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Zotero">
-                            <img src="/img/apps/zotero.svg" alt="Zotero" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="qBittorrent">
+                            <img src="/img/apps/qbittorrent.svg" alt="qBittorrent" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Heroic Games Launcher">
-                            <img src="/img/apps/heroic.svg" alt="Heroic Games Launcher" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GitHub">
-                            <img src="/img/apps/github.svg" alt="GitHub" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="BleachBit">
-                            <img src="/img/apps/bleachbit.svg" alt="BleachBit" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Okular">
-                            <img src="/img/apps/okular.svg" alt="Okular" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Inkscape">
-                            <img src="/img/apps/inkscape.svg" alt="Inkscape" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="QGIS">
-                            <img src="/img/apps/qgis.svg" alt="QGIS" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Figma">
-                            <img src="/img/apps/figma.svg" alt="Figma" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Rider">
-                            <img src="/img/apps/rider.svg" alt="Rider" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="File Roller">
-                            <img src="/img/apps/file-roller.svg" alt="File Roller" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Jupyter">
-                            <img src="/img/apps/jupyter.svg" alt="Jupyter" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Aegisub">
-                            <img src="/img/apps/aegisub.svg" alt="Aegisub" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LocalSend">
-                            <img src="/img/apps/localsend.svg" alt="LocalSend" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Joplin">
-                            <img src="/img/apps/joplin.svg" alt="Joplin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Scribus">
-                            <img src="/img/apps/scribus.svg" alt="Scribus" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Diagrams.net">
-                            <img src="/img/apps/draw-io.svg" alt="Diagrams.net" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="digiKam">
-                            <img src="/img/apps/digikam.svg" alt="digiKam" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="AbiWord">
-                            <img src="/img/apps/abiword.svg" alt="AbiWord" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Sublime Text">
-                            <img src="/img/apps/sublime-text.svg" alt="Sublime Text" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Obsidian">
-                            <img src="/img/apps/obsidian.svg" alt="Obsidian" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GNOME Boxes">
-                            <img src="/img/apps/gnome-boxes.svg" alt="GNOME Boxes" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Darktable">
-                            <img src="/img/apps/darktable.svg" alt="Darktable" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Typora">
-                            <img src="/img/apps/typora.svg" alt="Typora" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreOffice Calc">
-                            <img src="/img/apps/libreoffice-calc.svg" alt="LibreOffice Calc" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="EasyTAG">
-                            <img src="/img/apps/easytag.svg" alt="EasyTAG" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="Wireshark">
+                            <img src="/img/apps/wireshark.svg" alt="Wireshark" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="Steam">
                             <img src="/img/apps/steam.svg" alt="Steam" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Factorio">
-                            <img src="/img/apps/factorio.svg" alt="Factorio" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="Firefox">
+                            <img src="/img/apps/firefox.svg" alt="Firefox" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="OpenShot">
-                            <img src="/img/apps/openshot.svg" alt="OpenShot" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="7-Zip">
+                            <img src="/img/apps/7zip.svg" alt="7-Zip" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DataGrip">
+                            <img src="/img/apps/datagrip.svg" alt="DataGrip" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LocalSend">
+                            <img src="/img/apps/localsend.svg" alt="LocalSend" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Opera">
+                            <img src="/img/apps/opera.svg" alt="Opera" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Logseq">
+                            <img src="/img/apps/logseq.svg" alt="Logseq" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jellyfin">
+                            <img src="/img/apps/jellyfin.svg" alt="Jellyfin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Sublime Text">
+                            <img src="/img/apps/sublime-text.svg" alt="Sublime Text" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LastPass">
+                            <img src="/img/apps/lastpass.svg" alt="LastPass" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Element">
+                            <img src="/img/apps/element-desktop.svg" alt="Element" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dota 2">
+                            <img src="/img/apps/dota2.svg" alt="Dota 2" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WPS Office">
+                            <img src="/img/apps/wps-office-kingsoft.svg" alt="WPS Office" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="IntelliJ IDEA">
+                            <img src="/img/apps/idea.svg" alt="IntelliJ IDEA" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RubyMine">
+                            <img src="/img/apps/rubymine.svg" alt="RubyMine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GNOME Boxes">
+                            <img src="/img/apps/gnome-boxes.svg" alt="GNOME Boxes" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Cheese">
+                            <img src="/img/apps/cheese.svg" alt="Cheese" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="UNetbootin">
+                            <img src="/img/apps/unetbootin.svg" alt="UNetbootin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Kdenlive">
+                            <img src="/img/apps/kdenlive.svg" alt="Kdenlive" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jupyter">
+                            <img src="/img/apps/jupyter.svg" alt="Jupyter" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Liferea">
+                            <img src="/img/apps/liferea.svg" alt="Liferea" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GParted">
+                            <img src="/img/apps/gparted.svg" alt="GParted" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Visual Studio Code">
+                            <img src="/img/apps/visual-studio-code.svg" alt="Visual Studio Code" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Prism Launcher">
+                            <img src="/img/apps/prismlauncher.svg" alt="Prism Launcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dropbox">
+                            <img src="/img/apps/dropbox.svg" alt="Dropbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Bitwig Studio">
+                            <img src="/img/apps/bitwig-studio.svg" alt="Bitwig Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Syncthing-GTK">
+                            <img src="/img/apps/syncthing-gtk.svg" alt="Syncthing-GTK" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Anki">
+                            <img src="/img/apps/anki.svg" alt="Anki" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Vivaldi">
+                            <img src="/img/apps/vivaldi.svg" alt="Vivaldi" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Discord">
+                            <img src="/img/apps/discord.svg" alt="Discord" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Calibre">
+                            <img src="/img/apps/calibre-gui.svg" alt="Calibre" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="BleachBit">
+                            <img src="/img/apps/bleachbit.svg" alt="BleachBit" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Slack">
+                            <img src="/img/apps/slack.svg" alt="Slack" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Simple Screen Recorder">
+                            <img src="/img/apps/simplescreenrecorder.svg" alt="Simple Screen Recorder" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Caffeine">
+                            <img src="/img/apps/caffeine.svg" alt="Caffeine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Rhythmbox">
+                            <img src="/img/apps/rhythmbox.svg" alt="Rhythmbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Arduino IDE">
+                            <img src="/img/apps/arduino.svg" alt="Arduino IDE" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Python">
+                            <img src="/img/apps/python.svg" alt="Python" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Scribus">
+                            <img src="/img/apps/scribus.svg" alt="Scribus" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Transmission">
+                            <img src="/img/apps/transmission.svg" alt="Transmission" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Clementine">
+                            <img src="/img/apps/clementine.svg" alt="Clementine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Timeshift">
+                            <img src="/img/apps/timeshift.svg" alt="Timeshift" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DeaDBeeF">
+                            <img src="/img/apps/deadbeef.svg" alt="DeaDBeeF" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Diagrams.net">
+                            <img src="/img/apps/draw-io.svg" alt="Diagrams.net" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="K3b">
+                            <img src="/img/apps/k3b.svg" alt="K3b" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Blender">
+                            <img src="/img/apps/blender.svg" alt="Blender" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Geany">
+                            <img src="/img/apps/geany.svg" alt="Geany" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Writer">
+                            <img src="/img/apps/libreoffice-writer.svg" alt="LibreOffice Writer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="OBS Studio">
+                            <img src="/img/apps/obs.svg" alt="OBS Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Meld">
+                            <img src="/img/apps/meld.svg" alt="Meld" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GnuCash">
+                            <img src="/img/apps/gnucash-icon.svg" alt="GnuCash" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="TeamViewer">
                             <img src="/img/apps/teamviewer.svg" alt="TeamViewer" loading="lazy" />
@@ -1168,533 +967,533 @@
                         <div class="app-icon-wrapper" data-name="PyCharm">
                             <img src="/img/apps/pycharm.svg" alt="PyCharm" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Postman">
-                            <img src="/img/apps/postman.svg" alt="Postman" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="MPV">
-                            <img src="/img/apps/mpv.svg" alt="MPV" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Anki">
-                            <img src="/img/apps/anki.svg" alt="Anki" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Flatseal">
-                            <img src="/img/apps/flatseal.svg" alt="Flatseal" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Virt-Manager">
-                            <img src="/img/apps/virt-manager.svg" alt="Virt-Manager" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WebStorm">
-                            <img src="/img/apps/webstorm.svg" alt="WebStorm" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Dropbox">
-                            <img src="/img/apps/dropbox.svg" alt="Dropbox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Rhythmbox">
-                            <img src="/img/apps/rhythmbox.svg" alt="Rhythmbox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GUFW">
-                            <img src="/img/apps/gufw.svg" alt="GUFW" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GoLand">
-                            <img src="/img/apps/goland.svg" alt="GoLand" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Geany">
-                            <img src="/img/apps/geany.svg" alt="Geany" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Element">
-                            <img src="/img/apps/element-desktop.svg" alt="Element" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Microsoft Edge">
-                            <img src="/img/apps/microsoft-edge.svg" alt="Microsoft Edge" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Syncthing-GTK">
-                            <img src="/img/apps/syncthing-gtk.svg" alt="Syncthing-GTK" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Cheese">
-                            <img src="/img/apps/cheese.svg" alt="Cheese" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Vim">
-                            <img src="/img/apps/vim.svg" alt="Vim" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Todoist">
-                            <img src="/img/apps/todoist.svg" alt="Todoist" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Blender">
-                            <img src="/img/apps/blender.svg" alt="Blender" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Simplenote">
-                            <img src="/img/apps/simplenote.svg" alt="Simplenote" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="HandBrake">
-                            <img src="/img/apps/hb-icon.svg" alt="HandBrake" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Brave">
-                            <img src="/img/apps/brave.svg" alt="Brave" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Minecraft">
-                            <img src="/img/apps/minecraft.svg" alt="Minecraft" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Prism Launcher">
-                            <img src="/img/apps/prismlauncher.svg" alt="Prism Launcher" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="K3b">
-                            <img src="/img/apps/k3b.svg" alt="K3b" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Dolphin Emulator">
-                            <img src="/img/apps/dolphin-emu.svg" alt="Dolphin Emulator" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreCAD">
-                            <img src="/img/apps/librecad.svg" alt="LibreCAD" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="ScummVM">
-                            <img src="/img/apps/scummvm.svg" alt="ScummVM" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="D&#xE9;j&#xE0; Dup">
-                            <img src="/img/apps/deja-dup.svg" alt="D&#xE9;j&#xE0; Dup" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Arduino IDE">
-                            <img src="/img/apps/arduino.svg" alt="Arduino IDE" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Deluge">
-                            <img src="/img/apps/deluge.svg" alt="Deluge" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Meld">
-                            <img src="/img/apps/meld.svg" alt="Meld" loading="lazy" />
-                        </div>
                         <div class="app-icon-wrapper" data-name="Chromium">
                             <img src="/img/apps/chromium.svg" alt="Chromium" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Pidgin">
-                            <img src="/img/apps/pidgin.svg" alt="Pidgin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VirtualBox">
-                            <img src="/img/apps/virtualbox.svg" alt="VirtualBox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Ardour">
-                            <img src="/img/apps/ardour.svg" alt="Ardour" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Google Earth">
-                            <img src="/img/apps/google-earth.svg" alt="Google Earth" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Anbox">
-                            <img src="/img/apps/anbox.svg" alt="Anbox" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="Skype">
                             <img src="/img/apps/skype.svg" alt="Skype" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Audacious">
-                            <img src="/img/apps/audacious.svg" alt="Audacious" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="gPodder">
+                            <img src="/img/apps/gpodder.svg" alt="gPodder" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Git">
-                            <img src="/img/apps/git.svg" alt="Git" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="Google Earth">
+                            <img src="/img/apps/google-earth.svg" alt="Google Earth" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Waterfox">
-                            <img src="/img/apps/waterfox.svg" alt="Waterfox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Thunderbird">
-                            <img src="/img/apps/thunderbird.svg" alt="Thunderbird" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Balean Etcher">
-                            <img src="/img/apps/etcher.svg" alt="Balean Etcher" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Kdenlive">
-                            <img src="/img/apps/kdenlive.svg" alt="Kdenlive" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="KiCad">
-                            <img src="/img/apps/kicad.svg" alt="KiCad" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Jellyfin">
-                            <img src="/img/apps/jellyfin.svg" alt="Jellyfin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DingTalk">
-                            <img src="/img/apps/dingtalk.svg" alt="DingTalk" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WPS Office">
-                            <img src="/img/apps/wps-office-wpsmain.svg" alt="WPS Office" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Audacity">
-                            <img src="/img/apps/audacity.svg" alt="Audacity" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="AnyDesk">
+                            <img src="/img/apps/anydesk.svg" alt="AnyDesk" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="GitKraken">
                             <img src="/img/apps/gitkraken.svg" alt="GitKraken" loading="lazy" />
                         </div>
+                        <div class="app-icon-wrapper" data-name="VMware Workstation">
+                            <img src="/img/apps/vmware-workstation.svg" alt="VMware Workstation" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Git">
+                            <img src="/img/apps/git.svg" alt="Git" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Stacer">
+                            <img src="/img/apps/stacer.svg" alt="Stacer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GUFW">
+                            <img src="/img/apps/gufw.svg" alt="GUFW" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Java">
+                            <img src="/img/apps/java.svg" alt="Java" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Remmina">
+                            <img src="/img/apps/remmina.svg" alt="Remmina" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Thunderbird">
+                            <img src="/img/apps/thunderbird.svg" alt="Thunderbird" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VLC">
+                            <img src="/img/apps/vlc.svg" alt="VLC" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GitHub">
+                            <img src="/img/apps/github.svg" alt="GitHub" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="CLion">
+                            <img src="/img/apps/clion.svg" alt="CLion" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="KeePassXC">
+                            <img src="/img/apps/keepassxc.svg" alt="KeePassXC" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Android Studio">
+                            <img src="/img/apps/android-studio.svg" alt="Android Studio" loading="lazy" />
+                        </div>
                         <div class="app-icon-wrapper" data-name="Insomnia">
                             <img src="/img/apps/insomnia.svg" alt="Insomnia" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dia">
+                            <img src="/img/apps/dia.svg" alt="Dia" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QGIS">
+                            <img src="/img/apps/qgis.svg" alt="QGIS" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VSCodium">
+                            <img src="/img/apps/vscodium.svg" alt="VSCodium" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Clash Verge">
+                            <img src="/img/apps/clash-verge.svg" alt="Clash Verge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Flatseal">
+                            <img src="/img/apps/flatseal.svg" alt="Flatseal" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Todoist">
+                            <img src="/img/apps/todoist.svg" alt="Todoist" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Beyond Compare">
+                            <img src="/img/apps/bcompare.svg" alt="Beyond Compare" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Pidgin">
+                            <img src="/img/apps/pidgin.svg" alt="Pidgin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="FreeTube">
+                            <img src="/img/apps/freetube.svg" alt="FreeTube" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MySQL Workbench">
+                            <img src="/img/apps/mysql-workbench.svg" alt="MySQL Workbench" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WebStorm">
+                            <img src="/img/apps/webstorm.svg" alt="WebStorm" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="KiCad">
+                            <img src="/img/apps/kicad.svg" alt="KiCad" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Virt-Manager">
+                            <img src="/img/apps/virt-manager.svg" alt="Virt-Manager" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Joplin">
+                            <img src="/img/apps/joplin.svg" alt="Joplin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Waterfox">
+                            <img src="/img/apps/waterfox.svg" alt="Waterfox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Spotify">
+                            <img src="/img/apps/spotify-client.svg" alt="Spotify" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="aMule">
+                            <img src="/img/apps/amule.svg" alt="aMule" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Atom">
+                            <img src="/img/apps/atom.svg" alt="Atom" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VeraCrypt">
+                            <img src="/img/apps/veracrypt.svg" alt="VeraCrypt" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Typora">
+                            <img src="/img/apps/typora.svg" alt="Typora" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DBeaver">
+                            <img src="/img/apps/dbeaver.svg" alt="DBeaver" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WeChat">
+                            <img src="/img/apps/wechat.svg" alt="WeChat" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Google Chrome">
+                            <img src="/img/apps/google-chrome.svg" alt="Google Chrome" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Balean Etcher">
+                            <img src="/img/apps/etcher.svg" alt="Balean Etcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Code::Blocks">
+                            <img src="/img/apps/codeblocks.svg" alt="Code::Blocks" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Krusader">
+                            <img src="/img/apps/krusader-user.svg" alt="Krusader" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Okular">
+                            <img src="/img/apps/okular.svg" alt="Okular" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Disk Usage Analyzer">
+                            <img src="/img/apps/baobab.svg" alt="Disk Usage Analyzer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WhatsApp">
+                            <img src="/img/apps/whatsapp.svg" alt="WhatsApp" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Audacity">
+                            <img src="/img/apps/audacity.svg" alt="Audacity" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Bitwarden">
+                            <img src="/img/apps/bitwarden.svg" alt="Bitwarden" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Master PDF Editor">
+                            <img src="/img/apps/masterpdfeditor.svg" alt="Master PDF Editor" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Calc">
+                            <img src="/img/apps/libreoffice-calc.svg" alt="LibreOffice Calc" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreCAD">
+                            <img src="/img/apps/librecad.svg" alt="LibreCAD" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice">
+                            <img src="/img/apps/libreoffice.svg" alt="LibreOffice" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Heroic Games Launcher">
+                            <img src="/img/apps/heroic.svg" alt="Heroic Games Launcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Kodi">
+                            <img src="/img/apps/kodi.svg" alt="Kodi" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QQ Music">
+                            <img src="/img/apps/qqmusic.svg" alt="QQ Music" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GIMP">
+                            <img src="/img/apps/gimp.svg" alt="GIMP" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Qt Creator">
+                            <img src="/img/apps/qtcreator.svg" alt="Qt Creator" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Microsoft Edge">
+                            <img src="/img/apps/microsoft-edge.svg" alt="Microsoft Edge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DOSBox">
+                            <img src="/img/apps/dosbox.svg" alt="DOSBox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="bauh">
+                            <img src="/img/apps/bauh.svg" alt="bauh" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Emacs">
+                            <img src="/img/apps/emacs.svg" alt="Emacs" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Zoom">
+                            <img src="/img/apps/zoom.svg" alt="Zoom" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RetroArch">
+                            <img src="/img/apps/retroarch.svg" alt="RetroArch" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DingTalk">
+                            <img src="/img/apps/dingtalk.svg" alt="DingTalk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Aegisub">
+                            <img src="/img/apps/aegisub.svg" alt="Aegisub" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Factorio">
+                            <img src="/img/apps/factorio.svg" alt="Factorio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="pgAdmin">
+                            <img src="/img/apps/pgadmin.svg" alt="pgAdmin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Zotero">
+                            <img src="/img/apps/zotero.svg" alt="Zotero" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Darktable">
+                            <img src="/img/apps/darktable.svg" alt="Darktable" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Figma">
+                            <img src="/img/apps/figma.svg" alt="Figma" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Rider">
+                            <img src="/img/apps/rider.svg" alt="Rider" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GNS3">
+                            <img src="/img/apps/gns3.svg" alt="GNS3" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Brave">
+                            <img src="/img/apps/brave.svg" alt="Brave" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="FileZilla">
+                            <img src="/img/apps/filezilla.svg" alt="FileZilla" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Alacritty">
+                            <img src="/img/apps/alacritty.svg" alt="Alacritty" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="File Roller">
+                            <img src="/img/apps/file-roller.svg" alt="File Roller" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Minecraft">
+                            <img src="/img/apps/minecraft.svg" alt="Minecraft" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Obsidian">
+                            <img src="/img/apps/obsidian.svg" alt="Obsidian" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="EasyTAG">
+                            <img src="/img/apps/easytag.svg" alt="EasyTAG" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dolphin Emulator">
+                            <img src="/img/apps/dolphin-emu.svg" alt="Dolphin Emulator" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Krita">
+                            <img src="/img/apps/calligrakrita.svg" alt="Krita" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Baidu Netdisk">
+                            <img src="/img/apps/baidunetdisk.svg" alt="Baidu Netdisk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Neovim">
+                            <img src="/img/apps/neovim.svg" alt="Neovim" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Docker">
+                            <img src="/img/apps/docker.svg" alt="Docker" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="0 A.D.">
+                            <img src="/img/apps/0ad.svg" alt="0 A.D." loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Impress">
+                            <img src="/img/apps/libreoffice-impress.svg" alt="LibreOffice Impress" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Postman">
+                            <img src="/img/apps/postman.svg" alt="Postman" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="AbiWord">
+                            <img src="/img/apps/abiword.svg" alt="AbiWord" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Ardour">
+                            <img src="/img/apps/ardour.svg" alt="Ardour" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Telegram">
+                            <img src="/img/apps/telegram.svg" alt="Telegram" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WPS Office">
+                            <img src="/img/apps/wps-office-wpsmain.svg" alt="WPS Office" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VirtualBox">
+                            <img src="/img/apps/virtualbox.svg" alt="VirtualBox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="OpenShot">
+                            <img src="/img/apps/openshot.svg" alt="OpenShot" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Fritzing">
+                            <img src="/img/apps/fritzing.svg" alt="Fritzing" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="D&#xE9;j&#xE0; Dup">
+                            <img src="/img/apps/deja-dup.svg" alt="D&#xE9;j&#xE0; Dup" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="XMind">
+                            <img src="/img/apps/xmind.svg" alt="XMind" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Deluge">
+                            <img src="/img/apps/deluge.svg" alt="Deluge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="HandBrake">
+                            <img src="/img/apps/hb-icon.svg" alt="HandBrake" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Anbox">
+                            <img src="/img/apps/anbox.svg" alt="Anbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Audacious">
+                            <img src="/img/apps/audacious.svg" alt="Audacious" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="digiKam">
+                            <img src="/img/apps/digikam.svg" alt="digiKam" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Yuzu">
+                            <img src="/img/apps/yuzu.svg" alt="Yuzu" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MuseScore">
+                            <img src="/img/apps/musescore.svg" alt="MuseScore" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Mixxx">
+                            <img src="/img/apps/mixxx.svg" alt="Mixxx" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RStudio">
+                            <img src="/img/apps/rstudio.svg" alt="RStudio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Inkscape">
+                            <img src="/img/apps/inkscape.svg" alt="Inkscape" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Barrier">
+                            <img src="/img/apps/barrier.svg" alt="Barrier" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="ScummVM">
+                            <img src="/img/apps/scummvm.svg" alt="ScummVM" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LMMS">
+                            <img src="/img/apps/lmms.svg" alt="LMMS" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Signal">
+                            <img src="/img/apps/signal-desktop.svg" alt="Signal" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Shotcut">
+                            <img src="/img/apps/shotcut.svg" alt="Shotcut" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MPV">
+                            <img src="/img/apps/mpv.svg" alt="MPV" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Notion">
+                            <img src="/img/apps/notion.svg" alt="Notion" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GoLand">
+                            <img src="/img/apps/goland.svg" alt="GoLand" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Vim">
+                            <img src="/img/apps/vim.svg" alt="Vim" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Flameshot">
+                            <img src="/img/apps/flameshot.svg" alt="Flameshot" loading="lazy" />
                         </div>
                 </div>
 
                 <div class="app-wall-grid" aria-hidden="true">
-                        <div class="app-icon-wrapper" data-name="IntelliJ IDEA">
-                            <img src="/img/apps/idea.svg" alt="IntelliJ IDEA" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Mixxx">
-                            <img src="/img/apps/mixxx.svg" alt="Mixxx" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Slack">
-                            <img src="/img/apps/slack.svg" alt="Slack" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Krusader">
-                            <img src="/img/apps/krusader-user.svg" alt="Krusader" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Transmission">
-                            <img src="/img/apps/transmission.svg" alt="Transmission" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Emacs">
-                            <img src="/img/apps/emacs.svg" alt="Emacs" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Bitwarden">
-                            <img src="/img/apps/bitwarden.svg" alt="Bitwarden" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Yuzu">
-                            <img src="/img/apps/yuzu.svg" alt="Yuzu" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Java">
-                            <img src="/img/apps/java.svg" alt="Java" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="QQ">
-                            <img src="/img/apps/qq.svg" alt="QQ" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Telegram">
-                            <img src="/img/apps/telegram.svg" alt="Telegram" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GnuCash">
-                            <img src="/img/apps/gnucash-icon.svg" alt="GnuCash" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Qt Creator">
-                            <img src="/img/apps/qtcreator.svg" alt="Qt Creator" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Zoom">
-                            <img src="/img/apps/zoom.svg" alt="Zoom" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Discord">
-                            <img src="/img/apps/discord.svg" alt="Discord" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="pgAdmin">
-                            <img src="/img/apps/pgadmin.svg" alt="pgAdmin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Bitwig Studio">
-                            <img src="/img/apps/bitwig-studio.svg" alt="Bitwig Studio" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DeaDBeeF">
-                            <img src="/img/apps/deadbeef.svg" alt="DeaDBeeF" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Simple Screen Recorder">
-                            <img src="/img/apps/simplescreenrecorder.svg" alt="Simple Screen Recorder" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LMMS">
-                            <img src="/img/apps/lmms.svg" alt="LMMS" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Calibre">
-                            <img src="/img/apps/calibre-gui.svg" alt="Calibre" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="qBittorrent">
-                            <img src="/img/apps/qbittorrent.svg" alt="qBittorrent" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="XMind">
-                            <img src="/img/apps/xmind.svg" alt="XMind" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Beyond Compare">
-                            <img src="/img/apps/bcompare.svg" alt="Beyond Compare" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WPS Office">
-                            <img src="/img/apps/wps-office-kingsoft.svg" alt="WPS Office" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Opera">
-                            <img src="/img/apps/opera.svg" alt="Opera" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="RStudio">
-                            <img src="/img/apps/rstudio.svg" alt="RStudio" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="KeePassXC">
-                            <img src="/img/apps/keepassxc.svg" alt="KeePassXC" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="UNetbootin">
-                            <img src="/img/apps/unetbootin.svg" alt="UNetbootin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="FreeTube">
-                            <img src="/img/apps/freetube.svg" alt="FreeTube" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WhatsApp">
-                            <img src="/img/apps/whatsapp.svg" alt="WhatsApp" loading="lazy" />
-                        </div>
                         <div class="app-icon-wrapper" data-name="Eclipse">
                             <img src="/img/apps/eclipse.svg" alt="Eclipse" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Clash Verge">
-                            <img src="/img/apps/clash-verge.svg" alt="Clash Verge" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="RetroArch">
-                            <img src="/img/apps/retroarch.svg" alt="RetroArch" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Notion">
-                            <img src="/img/apps/notion.svg" alt="Notion" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GIMP">
-                            <img src="/img/apps/gimp.svg" alt="GIMP" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GNS3">
-                            <img src="/img/apps/gns3.svg" alt="GNS3" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DOSBox">
-                            <img src="/img/apps/dosbox.svg" alt="DOSBox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WeChat">
-                            <img src="/img/apps/wechat.svg" alt="WeChat" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Master PDF Editor">
-                            <img src="/img/apps/masterpdfeditor.svg" alt="Master PDF Editor" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Dia">
-                            <img src="/img/apps/dia.svg" alt="Dia" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Clementine">
-                            <img src="/img/apps/clementine.svg" alt="Clementine" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Alacritty">
-                            <img src="/img/apps/alacritty.svg" alt="Alacritty" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Code::Blocks">
-                            <img src="/img/apps/codeblocks.svg" alt="Code::Blocks" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LastPass">
-                            <img src="/img/apps/lastpass.svg" alt="LastPass" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GParted">
-                            <img src="/img/apps/gparted.svg" alt="GParted" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="CLion">
-                            <img src="/img/apps/clion.svg" alt="CLion" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Logseq">
-                            <img src="/img/apps/logseq.svg" alt="Logseq" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Fritzing">
-                            <img src="/img/apps/fritzing.svg" alt="Fritzing" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="MuseScore">
-                            <img src="/img/apps/musescore.svg" alt="MuseScore" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Android Studio">
-                            <img src="/img/apps/android-studio.svg" alt="Android Studio" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Timeshift">
-                            <img src="/img/apps/timeshift.svg" alt="Timeshift" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Visual Studio Code">
-                            <img src="/img/apps/visual-studio-code.svg" alt="Visual Studio Code" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="7-Zip">
-                            <img src="/img/apps/7zip.svg" alt="7-Zip" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Docker">
-                            <img src="/img/apps/docker.svg" alt="Docker" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Dota 2">
-                            <img src="/img/apps/dota2.svg" alt="Dota 2" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Vivaldi">
-                            <img src="/img/apps/vivaldi.svg" alt="Vivaldi" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DBeaver">
-                            <img src="/img/apps/dbeaver.svg" alt="DBeaver" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VeraCrypt">
-                            <img src="/img/apps/veracrypt.svg" alt="VeraCrypt" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Kodi">
-                            <img src="/img/apps/kodi.svg" alt="Kodi" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VMware Workstation">
-                            <img src="/img/apps/vmware-workstation.svg" alt="VMware Workstation" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Stacer">
-                            <img src="/img/apps/stacer.svg" alt="Stacer" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Krita">
-                            <img src="/img/apps/calligrakrita.svg" alt="Krita" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VSCodium">
-                            <img src="/img/apps/vscodium.svg" alt="VSCodium" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Caffeine">
-                            <img src="/img/apps/caffeine.svg" alt="Caffeine" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreOffice">
-                            <img src="/img/apps/libreoffice.svg" alt="LibreOffice" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="QQ Music">
-                            <img src="/img/apps/qqmusic.svg" alt="QQ Music" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Disk Usage Analyzer">
-                            <img src="/img/apps/baobab.svg" alt="Disk Usage Analyzer" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Liferea">
-                            <img src="/img/apps/liferea.svg" alt="Liferea" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="MySQL Workbench">
-                            <img src="/img/apps/mysql-workbench.svg" alt="MySQL Workbench" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="0 A.D.">
-                            <img src="/img/apps/0ad.svg" alt="0 A.D." loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="AnyDesk">
-                            <img src="/img/apps/anydesk.svg" alt="AnyDesk" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VLC">
-                            <img src="/img/apps/vlc.svg" alt="VLC" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Google Chrome">
-                            <img src="/img/apps/google-chrome.svg" alt="Google Chrome" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Wireshark">
-                            <img src="/img/apps/wireshark.svg" alt="Wireshark" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Signal">
-                            <img src="/img/apps/signal-desktop.svg" alt="Signal" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Flameshot">
-                            <img src="/img/apps/flameshot.svg" alt="Flameshot" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DataGrip">
-                            <img src="/img/apps/datagrip.svg" alt="DataGrip" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Shotcut">
-                            <img src="/img/apps/shotcut.svg" alt="Shotcut" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="OBS Studio">
-                            <img src="/img/apps/obs.svg" alt="OBS Studio" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreOffice Writer">
-                            <img src="/img/apps/libreoffice-writer.svg" alt="LibreOffice Writer" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Barrier">
-                            <img src="/img/apps/barrier.svg" alt="Barrier" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Firefox">
-                            <img src="/img/apps/firefox.svg" alt="Firefox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="bauh">
-                            <img src="/img/apps/bauh.svg" alt="bauh" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="RubyMine">
-                            <img src="/img/apps/rubymine.svg" alt="RubyMine" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="gPodder">
-                            <img src="/img/apps/gpodder.svg" alt="gPodder" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Baidu Netdisk">
-                            <img src="/img/apps/baidunetdisk.svg" alt="Baidu Netdisk" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="aMule">
-                            <img src="/img/apps/amule.svg" alt="aMule" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Remmina">
-                            <img src="/img/apps/remmina.svg" alt="Remmina" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreOffice Impress">
-                            <img src="/img/apps/libreoffice-impress.svg" alt="LibreOffice Impress" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Neovim">
-                            <img src="/img/apps/neovim.svg" alt="Neovim" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="FileZilla">
-                            <img src="/img/apps/filezilla.svg" alt="FileZilla" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Spotify">
-                            <img src="/img/apps/spotify-client.svg" alt="Spotify" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="Jami">
                             <img src="/img/apps/jami.svg" alt="Jami" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Atom">
-                            <img src="/img/apps/atom.svg" alt="Atom" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="Simplenote">
+                            <img src="/img/apps/simplenote.svg" alt="Simplenote" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Python">
-                            <img src="/img/apps/python.svg" alt="Python" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="QQ">
+                            <img src="/img/apps/qq.svg" alt="QQ" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Zotero">
-                            <img src="/img/apps/zotero.svg" alt="Zotero" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="qBittorrent">
+                            <img src="/img/apps/qbittorrent.svg" alt="qBittorrent" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Heroic Games Launcher">
-                            <img src="/img/apps/heroic.svg" alt="Heroic Games Launcher" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GitHub">
-                            <img src="/img/apps/github.svg" alt="GitHub" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="BleachBit">
-                            <img src="/img/apps/bleachbit.svg" alt="BleachBit" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Okular">
-                            <img src="/img/apps/okular.svg" alt="Okular" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Inkscape">
-                            <img src="/img/apps/inkscape.svg" alt="Inkscape" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="QGIS">
-                            <img src="/img/apps/qgis.svg" alt="QGIS" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Figma">
-                            <img src="/img/apps/figma.svg" alt="Figma" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Rider">
-                            <img src="/img/apps/rider.svg" alt="Rider" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="File Roller">
-                            <img src="/img/apps/file-roller.svg" alt="File Roller" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Jupyter">
-                            <img src="/img/apps/jupyter.svg" alt="Jupyter" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Aegisub">
-                            <img src="/img/apps/aegisub.svg" alt="Aegisub" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LocalSend">
-                            <img src="/img/apps/localsend.svg" alt="LocalSend" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Joplin">
-                            <img src="/img/apps/joplin.svg" alt="Joplin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Scribus">
-                            <img src="/img/apps/scribus.svg" alt="Scribus" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Diagrams.net">
-                            <img src="/img/apps/draw-io.svg" alt="Diagrams.net" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="digiKam">
-                            <img src="/img/apps/digikam.svg" alt="digiKam" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="AbiWord">
-                            <img src="/img/apps/abiword.svg" alt="AbiWord" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Sublime Text">
-                            <img src="/img/apps/sublime-text.svg" alt="Sublime Text" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Obsidian">
-                            <img src="/img/apps/obsidian.svg" alt="Obsidian" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GNOME Boxes">
-                            <img src="/img/apps/gnome-boxes.svg" alt="GNOME Boxes" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Darktable">
-                            <img src="/img/apps/darktable.svg" alt="Darktable" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Typora">
-                            <img src="/img/apps/typora.svg" alt="Typora" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreOffice Calc">
-                            <img src="/img/apps/libreoffice-calc.svg" alt="LibreOffice Calc" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="EasyTAG">
-                            <img src="/img/apps/easytag.svg" alt="EasyTAG" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="Wireshark">
+                            <img src="/img/apps/wireshark.svg" alt="Wireshark" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="Steam">
                             <img src="/img/apps/steam.svg" alt="Steam" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Factorio">
-                            <img src="/img/apps/factorio.svg" alt="Factorio" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="Firefox">
+                            <img src="/img/apps/firefox.svg" alt="Firefox" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="OpenShot">
-                            <img src="/img/apps/openshot.svg" alt="OpenShot" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="7-Zip">
+                            <img src="/img/apps/7zip.svg" alt="7-Zip" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DataGrip">
+                            <img src="/img/apps/datagrip.svg" alt="DataGrip" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LocalSend">
+                            <img src="/img/apps/localsend.svg" alt="LocalSend" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Opera">
+                            <img src="/img/apps/opera.svg" alt="Opera" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Logseq">
+                            <img src="/img/apps/logseq.svg" alt="Logseq" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jellyfin">
+                            <img src="/img/apps/jellyfin.svg" alt="Jellyfin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Sublime Text">
+                            <img src="/img/apps/sublime-text.svg" alt="Sublime Text" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LastPass">
+                            <img src="/img/apps/lastpass.svg" alt="LastPass" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Element">
+                            <img src="/img/apps/element-desktop.svg" alt="Element" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dota 2">
+                            <img src="/img/apps/dota2.svg" alt="Dota 2" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WPS Office">
+                            <img src="/img/apps/wps-office-kingsoft.svg" alt="WPS Office" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="IntelliJ IDEA">
+                            <img src="/img/apps/idea.svg" alt="IntelliJ IDEA" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RubyMine">
+                            <img src="/img/apps/rubymine.svg" alt="RubyMine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GNOME Boxes">
+                            <img src="/img/apps/gnome-boxes.svg" alt="GNOME Boxes" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Cheese">
+                            <img src="/img/apps/cheese.svg" alt="Cheese" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="UNetbootin">
+                            <img src="/img/apps/unetbootin.svg" alt="UNetbootin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Kdenlive">
+                            <img src="/img/apps/kdenlive.svg" alt="Kdenlive" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Jupyter">
+                            <img src="/img/apps/jupyter.svg" alt="Jupyter" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Liferea">
+                            <img src="/img/apps/liferea.svg" alt="Liferea" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GParted">
+                            <img src="/img/apps/gparted.svg" alt="GParted" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Visual Studio Code">
+                            <img src="/img/apps/visual-studio-code.svg" alt="Visual Studio Code" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Prism Launcher">
+                            <img src="/img/apps/prismlauncher.svg" alt="Prism Launcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dropbox">
+                            <img src="/img/apps/dropbox.svg" alt="Dropbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Bitwig Studio">
+                            <img src="/img/apps/bitwig-studio.svg" alt="Bitwig Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Syncthing-GTK">
+                            <img src="/img/apps/syncthing-gtk.svg" alt="Syncthing-GTK" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Anki">
+                            <img src="/img/apps/anki.svg" alt="Anki" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Vivaldi">
+                            <img src="/img/apps/vivaldi.svg" alt="Vivaldi" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Discord">
+                            <img src="/img/apps/discord.svg" alt="Discord" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Calibre">
+                            <img src="/img/apps/calibre-gui.svg" alt="Calibre" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="BleachBit">
+                            <img src="/img/apps/bleachbit.svg" alt="BleachBit" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Slack">
+                            <img src="/img/apps/slack.svg" alt="Slack" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Simple Screen Recorder">
+                            <img src="/img/apps/simplescreenrecorder.svg" alt="Simple Screen Recorder" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Caffeine">
+                            <img src="/img/apps/caffeine.svg" alt="Caffeine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Rhythmbox">
+                            <img src="/img/apps/rhythmbox.svg" alt="Rhythmbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Arduino IDE">
+                            <img src="/img/apps/arduino.svg" alt="Arduino IDE" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Python">
+                            <img src="/img/apps/python.svg" alt="Python" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Scribus">
+                            <img src="/img/apps/scribus.svg" alt="Scribus" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Transmission">
+                            <img src="/img/apps/transmission.svg" alt="Transmission" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Clementine">
+                            <img src="/img/apps/clementine.svg" alt="Clementine" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Timeshift">
+                            <img src="/img/apps/timeshift.svg" alt="Timeshift" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DeaDBeeF">
+                            <img src="/img/apps/deadbeef.svg" alt="DeaDBeeF" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Diagrams.net">
+                            <img src="/img/apps/draw-io.svg" alt="Diagrams.net" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="K3b">
+                            <img src="/img/apps/k3b.svg" alt="K3b" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Blender">
+                            <img src="/img/apps/blender.svg" alt="Blender" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Geany">
+                            <img src="/img/apps/geany.svg" alt="Geany" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Writer">
+                            <img src="/img/apps/libreoffice-writer.svg" alt="LibreOffice Writer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="OBS Studio">
+                            <img src="/img/apps/obs.svg" alt="OBS Studio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Meld">
+                            <img src="/img/apps/meld.svg" alt="Meld" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GnuCash">
+                            <img src="/img/apps/gnucash-icon.svg" alt="GnuCash" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="TeamViewer">
                             <img src="/img/apps/teamviewer.svg" alt="TeamViewer" loading="lazy" />
@@ -1702,158 +1501,359 @@
                         <div class="app-icon-wrapper" data-name="PyCharm">
                             <img src="/img/apps/pycharm.svg" alt="PyCharm" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Postman">
-                            <img src="/img/apps/postman.svg" alt="Postman" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="MPV">
-                            <img src="/img/apps/mpv.svg" alt="MPV" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Anki">
-                            <img src="/img/apps/anki.svg" alt="Anki" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Flatseal">
-                            <img src="/img/apps/flatseal.svg" alt="Flatseal" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Virt-Manager">
-                            <img src="/img/apps/virt-manager.svg" alt="Virt-Manager" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WebStorm">
-                            <img src="/img/apps/webstorm.svg" alt="WebStorm" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Dropbox">
-                            <img src="/img/apps/dropbox.svg" alt="Dropbox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Rhythmbox">
-                            <img src="/img/apps/rhythmbox.svg" alt="Rhythmbox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GUFW">
-                            <img src="/img/apps/gufw.svg" alt="GUFW" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="GoLand">
-                            <img src="/img/apps/goland.svg" alt="GoLand" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Geany">
-                            <img src="/img/apps/geany.svg" alt="Geany" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Element">
-                            <img src="/img/apps/element-desktop.svg" alt="Element" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Microsoft Edge">
-                            <img src="/img/apps/microsoft-edge.svg" alt="Microsoft Edge" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Syncthing-GTK">
-                            <img src="/img/apps/syncthing-gtk.svg" alt="Syncthing-GTK" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Cheese">
-                            <img src="/img/apps/cheese.svg" alt="Cheese" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Vim">
-                            <img src="/img/apps/vim.svg" alt="Vim" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Todoist">
-                            <img src="/img/apps/todoist.svg" alt="Todoist" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Blender">
-                            <img src="/img/apps/blender.svg" alt="Blender" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Simplenote">
-                            <img src="/img/apps/simplenote.svg" alt="Simplenote" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="HandBrake">
-                            <img src="/img/apps/hb-icon.svg" alt="HandBrake" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Brave">
-                            <img src="/img/apps/brave.svg" alt="Brave" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Minecraft">
-                            <img src="/img/apps/minecraft.svg" alt="Minecraft" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Prism Launcher">
-                            <img src="/img/apps/prismlauncher.svg" alt="Prism Launcher" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="K3b">
-                            <img src="/img/apps/k3b.svg" alt="K3b" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Dolphin Emulator">
-                            <img src="/img/apps/dolphin-emu.svg" alt="Dolphin Emulator" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="LibreCAD">
-                            <img src="/img/apps/librecad.svg" alt="LibreCAD" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="ScummVM">
-                            <img src="/img/apps/scummvm.svg" alt="ScummVM" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="D&#xE9;j&#xE0; Dup">
-                            <img src="/img/apps/deja-dup.svg" alt="D&#xE9;j&#xE0; Dup" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Arduino IDE">
-                            <img src="/img/apps/arduino.svg" alt="Arduino IDE" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Deluge">
-                            <img src="/img/apps/deluge.svg" alt="Deluge" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Meld">
-                            <img src="/img/apps/meld.svg" alt="Meld" loading="lazy" />
-                        </div>
                         <div class="app-icon-wrapper" data-name="Chromium">
                             <img src="/img/apps/chromium.svg" alt="Chromium" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Pidgin">
-                            <img src="/img/apps/pidgin.svg" alt="Pidgin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="VirtualBox">
-                            <img src="/img/apps/virtualbox.svg" alt="VirtualBox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Ardour">
-                            <img src="/img/apps/ardour.svg" alt="Ardour" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Google Earth">
-                            <img src="/img/apps/google-earth.svg" alt="Google Earth" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Anbox">
-                            <img src="/img/apps/anbox.svg" alt="Anbox" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="Skype">
                             <img src="/img/apps/skype.svg" alt="Skype" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Audacious">
-                            <img src="/img/apps/audacious.svg" alt="Audacious" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="gPodder">
+                            <img src="/img/apps/gpodder.svg" alt="gPodder" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Git">
-                            <img src="/img/apps/git.svg" alt="Git" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="Google Earth">
+                            <img src="/img/apps/google-earth.svg" alt="Google Earth" loading="lazy" />
                         </div>
-                        <div class="app-icon-wrapper" data-name="Waterfox">
-                            <img src="/img/apps/waterfox.svg" alt="Waterfox" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Thunderbird">
-                            <img src="/img/apps/thunderbird.svg" alt="Thunderbird" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Balean Etcher">
-                            <img src="/img/apps/etcher.svg" alt="Balean Etcher" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Kdenlive">
-                            <img src="/img/apps/kdenlive.svg" alt="Kdenlive" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="KiCad">
-                            <img src="/img/apps/kicad.svg" alt="KiCad" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Jellyfin">
-                            <img src="/img/apps/jellyfin.svg" alt="Jellyfin" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="DingTalk">
-                            <img src="/img/apps/dingtalk.svg" alt="DingTalk" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="WPS Office">
-                            <img src="/img/apps/wps-office-wpsmain.svg" alt="WPS Office" loading="lazy" />
-                        </div>
-                        <div class="app-icon-wrapper" data-name="Audacity">
-                            <img src="/img/apps/audacity.svg" alt="Audacity" loading="lazy" />
+                        <div class="app-icon-wrapper" data-name="AnyDesk">
+                            <img src="/img/apps/anydesk.svg" alt="AnyDesk" loading="lazy" />
                         </div>
                         <div class="app-icon-wrapper" data-name="GitKraken">
                             <img src="/img/apps/gitkraken.svg" alt="GitKraken" loading="lazy" />
                         </div>
+                        <div class="app-icon-wrapper" data-name="VMware Workstation">
+                            <img src="/img/apps/vmware-workstation.svg" alt="VMware Workstation" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Git">
+                            <img src="/img/apps/git.svg" alt="Git" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Stacer">
+                            <img src="/img/apps/stacer.svg" alt="Stacer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GUFW">
+                            <img src="/img/apps/gufw.svg" alt="GUFW" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Java">
+                            <img src="/img/apps/java.svg" alt="Java" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Remmina">
+                            <img src="/img/apps/remmina.svg" alt="Remmina" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Thunderbird">
+                            <img src="/img/apps/thunderbird.svg" alt="Thunderbird" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VLC">
+                            <img src="/img/apps/vlc.svg" alt="VLC" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GitHub">
+                            <img src="/img/apps/github.svg" alt="GitHub" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="CLion">
+                            <img src="/img/apps/clion.svg" alt="CLion" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="KeePassXC">
+                            <img src="/img/apps/keepassxc.svg" alt="KeePassXC" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Android Studio">
+                            <img src="/img/apps/android-studio.svg" alt="Android Studio" loading="lazy" />
+                        </div>
                         <div class="app-icon-wrapper" data-name="Insomnia">
                             <img src="/img/apps/insomnia.svg" alt="Insomnia" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dia">
+                            <img src="/img/apps/dia.svg" alt="Dia" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QGIS">
+                            <img src="/img/apps/qgis.svg" alt="QGIS" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VSCodium">
+                            <img src="/img/apps/vscodium.svg" alt="VSCodium" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Clash Verge">
+                            <img src="/img/apps/clash-verge.svg" alt="Clash Verge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Flatseal">
+                            <img src="/img/apps/flatseal.svg" alt="Flatseal" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Todoist">
+                            <img src="/img/apps/todoist.svg" alt="Todoist" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Beyond Compare">
+                            <img src="/img/apps/bcompare.svg" alt="Beyond Compare" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Pidgin">
+                            <img src="/img/apps/pidgin.svg" alt="Pidgin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="FreeTube">
+                            <img src="/img/apps/freetube.svg" alt="FreeTube" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MySQL Workbench">
+                            <img src="/img/apps/mysql-workbench.svg" alt="MySQL Workbench" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WebStorm">
+                            <img src="/img/apps/webstorm.svg" alt="WebStorm" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="KiCad">
+                            <img src="/img/apps/kicad.svg" alt="KiCad" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Virt-Manager">
+                            <img src="/img/apps/virt-manager.svg" alt="Virt-Manager" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Joplin">
+                            <img src="/img/apps/joplin.svg" alt="Joplin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Waterfox">
+                            <img src="/img/apps/waterfox.svg" alt="Waterfox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Spotify">
+                            <img src="/img/apps/spotify-client.svg" alt="Spotify" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="aMule">
+                            <img src="/img/apps/amule.svg" alt="aMule" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Atom">
+                            <img src="/img/apps/atom.svg" alt="Atom" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VeraCrypt">
+                            <img src="/img/apps/veracrypt.svg" alt="VeraCrypt" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Typora">
+                            <img src="/img/apps/typora.svg" alt="Typora" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DBeaver">
+                            <img src="/img/apps/dbeaver.svg" alt="DBeaver" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WeChat">
+                            <img src="/img/apps/wechat.svg" alt="WeChat" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Google Chrome">
+                            <img src="/img/apps/google-chrome.svg" alt="Google Chrome" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Balean Etcher">
+                            <img src="/img/apps/etcher.svg" alt="Balean Etcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Code::Blocks">
+                            <img src="/img/apps/codeblocks.svg" alt="Code::Blocks" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Krusader">
+                            <img src="/img/apps/krusader-user.svg" alt="Krusader" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Okular">
+                            <img src="/img/apps/okular.svg" alt="Okular" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Disk Usage Analyzer">
+                            <img src="/img/apps/baobab.svg" alt="Disk Usage Analyzer" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WhatsApp">
+                            <img src="/img/apps/whatsapp.svg" alt="WhatsApp" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Audacity">
+                            <img src="/img/apps/audacity.svg" alt="Audacity" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Bitwarden">
+                            <img src="/img/apps/bitwarden.svg" alt="Bitwarden" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Master PDF Editor">
+                            <img src="/img/apps/masterpdfeditor.svg" alt="Master PDF Editor" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Calc">
+                            <img src="/img/apps/libreoffice-calc.svg" alt="LibreOffice Calc" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreCAD">
+                            <img src="/img/apps/librecad.svg" alt="LibreCAD" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice">
+                            <img src="/img/apps/libreoffice.svg" alt="LibreOffice" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Heroic Games Launcher">
+                            <img src="/img/apps/heroic.svg" alt="Heroic Games Launcher" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Kodi">
+                            <img src="/img/apps/kodi.svg" alt="Kodi" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="QQ Music">
+                            <img src="/img/apps/qqmusic.svg" alt="QQ Music" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GIMP">
+                            <img src="/img/apps/gimp.svg" alt="GIMP" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Qt Creator">
+                            <img src="/img/apps/qtcreator.svg" alt="Qt Creator" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Microsoft Edge">
+                            <img src="/img/apps/microsoft-edge.svg" alt="Microsoft Edge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DOSBox">
+                            <img src="/img/apps/dosbox.svg" alt="DOSBox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="bauh">
+                            <img src="/img/apps/bauh.svg" alt="bauh" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Emacs">
+                            <img src="/img/apps/emacs.svg" alt="Emacs" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Zoom">
+                            <img src="/img/apps/zoom.svg" alt="Zoom" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RetroArch">
+                            <img src="/img/apps/retroarch.svg" alt="RetroArch" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="DingTalk">
+                            <img src="/img/apps/dingtalk.svg" alt="DingTalk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Aegisub">
+                            <img src="/img/apps/aegisub.svg" alt="Aegisub" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Factorio">
+                            <img src="/img/apps/factorio.svg" alt="Factorio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="pgAdmin">
+                            <img src="/img/apps/pgadmin.svg" alt="pgAdmin" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Zotero">
+                            <img src="/img/apps/zotero.svg" alt="Zotero" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Darktable">
+                            <img src="/img/apps/darktable.svg" alt="Darktable" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Figma">
+                            <img src="/img/apps/figma.svg" alt="Figma" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Rider">
+                            <img src="/img/apps/rider.svg" alt="Rider" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GNS3">
+                            <img src="/img/apps/gns3.svg" alt="GNS3" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Brave">
+                            <img src="/img/apps/brave.svg" alt="Brave" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="FileZilla">
+                            <img src="/img/apps/filezilla.svg" alt="FileZilla" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Alacritty">
+                            <img src="/img/apps/alacritty.svg" alt="Alacritty" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="File Roller">
+                            <img src="/img/apps/file-roller.svg" alt="File Roller" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Minecraft">
+                            <img src="/img/apps/minecraft.svg" alt="Minecraft" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Obsidian">
+                            <img src="/img/apps/obsidian.svg" alt="Obsidian" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="EasyTAG">
+                            <img src="/img/apps/easytag.svg" alt="EasyTAG" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Dolphin Emulator">
+                            <img src="/img/apps/dolphin-emu.svg" alt="Dolphin Emulator" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Krita">
+                            <img src="/img/apps/calligrakrita.svg" alt="Krita" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Baidu Netdisk">
+                            <img src="/img/apps/baidunetdisk.svg" alt="Baidu Netdisk" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Neovim">
+                            <img src="/img/apps/neovim.svg" alt="Neovim" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Docker">
+                            <img src="/img/apps/docker.svg" alt="Docker" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="0 A.D.">
+                            <img src="/img/apps/0ad.svg" alt="0 A.D." loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LibreOffice Impress">
+                            <img src="/img/apps/libreoffice-impress.svg" alt="LibreOffice Impress" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Postman">
+                            <img src="/img/apps/postman.svg" alt="Postman" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="AbiWord">
+                            <img src="/img/apps/abiword.svg" alt="AbiWord" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Ardour">
+                            <img src="/img/apps/ardour.svg" alt="Ardour" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Telegram">
+                            <img src="/img/apps/telegram.svg" alt="Telegram" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="WPS Office">
+                            <img src="/img/apps/wps-office-wpsmain.svg" alt="WPS Office" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="VirtualBox">
+                            <img src="/img/apps/virtualbox.svg" alt="VirtualBox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="OpenShot">
+                            <img src="/img/apps/openshot.svg" alt="OpenShot" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Fritzing">
+                            <img src="/img/apps/fritzing.svg" alt="Fritzing" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="D&#xE9;j&#xE0; Dup">
+                            <img src="/img/apps/deja-dup.svg" alt="D&#xE9;j&#xE0; Dup" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="XMind">
+                            <img src="/img/apps/xmind.svg" alt="XMind" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Deluge">
+                            <img src="/img/apps/deluge.svg" alt="Deluge" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="HandBrake">
+                            <img src="/img/apps/hb-icon.svg" alt="HandBrake" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Anbox">
+                            <img src="/img/apps/anbox.svg" alt="Anbox" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Audacious">
+                            <img src="/img/apps/audacious.svg" alt="Audacious" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="digiKam">
+                            <img src="/img/apps/digikam.svg" alt="digiKam" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Yuzu">
+                            <img src="/img/apps/yuzu.svg" alt="Yuzu" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MuseScore">
+                            <img src="/img/apps/musescore.svg" alt="MuseScore" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Mixxx">
+                            <img src="/img/apps/mixxx.svg" alt="Mixxx" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="RStudio">
+                            <img src="/img/apps/rstudio.svg" alt="RStudio" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Inkscape">
+                            <img src="/img/apps/inkscape.svg" alt="Inkscape" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Barrier">
+                            <img src="/img/apps/barrier.svg" alt="Barrier" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="ScummVM">
+                            <img src="/img/apps/scummvm.svg" alt="ScummVM" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="LMMS">
+                            <img src="/img/apps/lmms.svg" alt="LMMS" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Signal">
+                            <img src="/img/apps/signal-desktop.svg" alt="Signal" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Shotcut">
+                            <img src="/img/apps/shotcut.svg" alt="Shotcut" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="MPV">
+                            <img src="/img/apps/mpv.svg" alt="MPV" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Notion">
+                            <img src="/img/apps/notion.svg" alt="Notion" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="GoLand">
+                            <img src="/img/apps/goland.svg" alt="GoLand" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Vim">
+                            <img src="/img/apps/vim.svg" alt="Vim" loading="lazy" />
+                        </div>
+                        <div class="app-icon-wrapper" data-name="Flameshot">
+                            <img src="/img/apps/flameshot.svg" alt="Flameshot" loading="lazy" />
                         </div>
                 </div>
             </div>
@@ -2573,7 +2573,7 @@
                         <div id="collapseFive" class="collapse" aria-labelledby="faqFive"
                              data-bs-parent="#accordionFaq">
                             <div class="card-body py-3">
-                                Please contact us with email at <a href="/cdn-cgi/l/email-protection#d1bdb4b0b5b4a3a2b9b8a191b0b8a4a3a2beb7a5ffb2bebc"><span class="__cf_email__" data-cfemail="6d01080c09081f1e05041d2d0c04181f1e020b19430e0200">[email&#160;protected]</span></a>
+                                Please contact us with email at <a href="/cdn-cgi/l/email-protection#214d4440454453524948516140485453524e47550f424e4c"><span class="__cf_email__" data-cfemail="1f737a7e7b7a6d6c77766f5f7e766a6d6c70796b317c7072">[email&#160;protected]</span></a>
                                 for any questions. Please join our <a
                                     href="https://discord.gg/YGBzvmyBrR">Discord channel</a>
                                 for community support.
@@ -2798,7 +2798,7 @@
                                     &#x395;&#x3BB;&#x3BB;&#x3B7;&#x3BD;&#x3B9;&#x3BA;&#x3AC; (&#x395;&#x3BB;&#x3BB;&#x3AC;&#x3B4;&#x3B1;)
                                 </option>
                         </select>
-                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8BOMYwq5gsZKsFnyqJ2OCZeabzQDLgXswNBGHFFiKqUGAaGyAur4Gq3aTo68Dubu57LoQY1g5grKnoeSPe00YXGAQY5PRxhj8Umo7-TueJ3mvEKpGk558LLuHaQcVvWVHnf0nGgT2Uj5MxzsYt2ajNM" /></form>
+                    <input name="__RequestVerificationToken" type="hidden" value="CfDJ8BOMYwq5gsZKsFnyqJ2OCZcCvcxtCdK9w5xe4GjfH4eq5I1FEfh6KIE191vfPQEgc0199Mimkkn2oYagv2HJY0bMTBFJKi8tl7Yu_0tY5s9Pz_USeIQTjw0w6LVLHJQNKLJJw3HJ1fqs_sY1wAQyuCc" /></form>
                 </div>
             </div>
             <div class="col-12 col-md-4 col-lg-2 mb-3 mb-md-0">
@@ -2923,6 +2923,6 @@
     <script src="/js/index.js?v=5QPAYSJUrfWAXHDD2GdE6gicbJVuF-Goy3HM-lj3kbQ" defer></script>
 
 
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a54e857e4d98c102',t:'MTc5Mzc0MTg1OQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a54e857e4d98c102',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a54f4b76a8820ca3',t:'MTc5Mzc0OTk2OA=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a54f4b76a8820ca3',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>

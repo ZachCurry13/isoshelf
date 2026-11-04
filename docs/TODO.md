@@ -11,25 +11,10 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next: AnduinOS as a download, and the plain discs, once v0.9.2 has been out a
-release or so.** v0.9.2 teaches the resolver to take the file's name from the
-pattern when the checksum file names none (AnduinOS's checksum is a bare
-`SHA256: <hash>` and its page links that file but not the image), and draws a
-logo that has no colour in the muted colour instead of white; a copy older than
-that can't resolve the entry, and would show a disc nobody can see, so the
-catalog waits. The change is in the entry: put back
-`[entry.artifact]` with `base = "https://cf.anduinos.com/"`, `file =
-'AnduinOS-{version}-amd64\.iso'`, `manifest = "AnduinOS-{version}-amd64.sha256"`
-and a `size`, and check it with `record`. The plain discs are `icon = "disc"` on the
-six Ubuntu entries, the three Windows ones, NiceHash OS and AtlasOS (item 9).
-The rest of the second step is done (2026-11-03, catalog revision 2026110301):
-Fedora follows its newest release ([#6]); AtlasOS is `unlisted` (item 8); PikaOS KDE and BigLinux's
-three kernels download, marked weak - PikaOS's other editions stay check-only
-because the server refuses their `.md5` files to automated requests. The logo
-audit is done too (v0.10.0, item 9). Possibly a Nobara KDE entry (its page lists a plain KDE edition the
-catalog doesn't have). Then the list under *After those*. Finished work is in
+**Next:** possibly a Nobara KDE entry (its page lists a plain KDE edition the
+catalog doesn't have), then the list under *After those*. AnduinOS downloads
+and the plain discs are in (catalog revision 2026110303). Finished work is in
 `docs/archive.md`.
-
 19. **Default credentials, where the project publishes them** (the
    maintainer, 2026-09-23: "if any of these systems have default passwords
    like below, that should be noted - user demo: demo, user root: root").
@@ -77,14 +62,6 @@ catalog doesn't have). Then the list under *After those*. Finished work is in
    after v0.8.3 has been the latest. **The first is in** (catalog revision
    2026092901): MX Linux's 32-bit ISO. The weekly catalog job can add the
    rest, read from each project's own download page.
-9. **Logos by trademark policy - the last part.** The audit is done (v0.10.0,
-   catalog revision 2026110302; findings in `docs/catalog-sources.md`): only
-   Debian, Arch and NixOS keep their logo, 25 became the plain disc. What is
-   left is the entries that name no logo at all - the six Ubuntu ones, the
-   three Windows ones, NiceHash OS and AtlasOS - which should name
-   `icon = "disc"` once v0.9.2 has been out a while (before it a logo with no
-   colour came out white). NixOS is the one judgement call: its logos are CC BY
-   4.0 but the repository is silent on the trademark; drop it if anyone asks.
 
 **Around 1.0, not before:** signing the Windows program so the "unknown
 publisher" warning goes (the maintainer, 2026-09-23: GitHub users are used to
@@ -221,9 +198,9 @@ Then:
   (`go test ./cmd/isoshelf/ -run SamePort -count=1`) before believing it.
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
-  `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`,
+  `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`, `dockitems.js`, `dockprogress.js`, `notices.js`,
   `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `duplicates.js`, `folders.js`, `thisfolder.js`,
-  `archive.js`, `settings.js`, `settinglist.js`, `access.js`, `records.js`,
+  `archive.js`, `settings.js`, `settinglist.js`, `updatesettings.js`, `access.js`, `records.js`,
   `upload.js`, `report.js`, `selfupdate.js`, `history.js` and `system.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in
   `internal/web/static_test.go`, and in every list of them - which

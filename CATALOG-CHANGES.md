@@ -12,6 +12,9 @@ requests are looked at every Monday.
 ## 2026-11-03
 
 ### Added
+- **AnduinOS** now downloads (revision 2026110303). Its checksum is a bare line
+  with no file name, so isoshelf takes the name from the pattern (isoshelf
+  v0.9.2 and later; older copies keep showing it as a check-only entry).
 - **BigLinux** now downloads, in three entries, one for each kernel the project
   publishes (Linux 6.12, 6.18 and 7.2). The checksum is an MD5 from BigLinux's
   own site: it catches a broken download but not a changed one, so isoshelf
@@ -22,6 +25,12 @@ requests are looked at every Monday.
   their checksums to a program.
 
 ### Changed
+- **PikaOS KDE** is a check-only entry again, like the project's other
+  editions: PikaOS's server started refusing the checksum file to GitHub's
+  check runners, so it can no longer be checked before it goes in. A copy that
+  already downloaded it keeps the file.
+- The six Ubuntu entries, the three Windows ones, NiceHash OS and AtlasOS show
+  the plain disc instead of initials.
 - **Logos by each project's own rules** (revision 2026110302). Of the 28
   projects whose logo isoshelf showed, only three publish a policy that
   clearly lets a program like this show it to refer to the project: Debian

@@ -384,9 +384,9 @@ alone is not an update.
   checking each one live before it goes in.
   Why each entry is set up the way it is, and the wish list:
   `docs/catalog-sources.md`.
-- A few entries write a release number into a file name because nothing gives
-  it (PikaOS's "4.0"). If the project moves on, the Monday check says so;
-  `docs/catalog-sources.md` lists them. Fedora used to be one (#6) and follows
+- An entry may write a release number into a file name when nothing gives
+  it; if the project moves on, the Monday check says so, and
+  `docs/catalog-sources.md` lists them (none today). Fedora used to be one (#6) and follows
   its newest release now, through the endoflife source and a named group in
   the file pattern.
 - Every catalog URL is the final address: tests can't replay redirects, and a
@@ -978,14 +978,14 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
   filters, rows), `summary.js` (the line saying what wants doing, and the
   question a container asks once), `details.js` (the panel), `checklist.js`
-  (the checklist), `downloads.js` (the queue), `actions.js` (updating,
+  (the checklist), `downloads.js` (the queue), `dockitems.js` and `dockprogress.js` (the downloads bar), `notices.js`, `actions.js` (updating,
   removing), `catalog.js` (the Add images tab), `identify.js` (What is this?),
   `missing.js` (getting a missing image back, or not expecting it),
   `origin.js` (where each file came from, and Check it), `fromserver.js`
   (copying from your server in Add images), `dismiss.js` (dismissing an
   update for a while or for good), `duplicates.js` (copies of one image),
   `folders.js` (the chooser), `thisfolder.js` (This folder in Settings), `archive.js`, `settings.js` (the Settings
-  panel), `settinglist.js` (what each setting is), `access.js` (sign-in and
+  panel), `settinglist.js` and `updatesettings.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
   (dragging a file onto the page, or picking one), `selfupdate.js` (isoshelf
   updating its own program), `history.js` (the History timeline), `system.js` (where isoshelf runs, in Settings) and `report.js` (the

@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026110302 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026110303 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -27,6 +27,7 @@ popular = true
 page = "https://ubuntu.com/download"
 category = "desktop"
 family = "ubuntu"
+icon = "disc"
 site = "https://ubuntu.com/"
 forum = "https://discourse.ubuntu.com/"
 
@@ -408,6 +409,7 @@ size = 2927861760
 page = "https://ubuntu.com/download/server"
 category = "server"
 family = "ubuntu"
+icon = "disc"
 site = "https://ubuntu.com/server"
 forum = "https://discourse.ubuntu.com/"
 
@@ -577,6 +579,7 @@ size = 526973752
 page = "https://ubuntu.com/download/iot"
 category = "server"
 family = "ubuntu-core"
+icon = "disc"
 site = "https://ubuntu.com/core"
 forum = "https://forum.snapcraft.io/"
 fixup = "extract"
@@ -601,6 +604,7 @@ size = 414236656
 page = "https://ubuntu.com/download/raspberry-pi-core"
 category = "boards"
 family = "ubuntu-core"
+icon = "disc"
 site = "https://ubuntu.com/core"
 forum = "https://forum.snapcraft.io/"
 fixup = "extract"
@@ -625,6 +629,7 @@ size = 503153704
 page = "https://ubuntu.com/download/iot"
 category = "server"
 family = "ubuntu-core"
+icon = "disc"
 site = "https://ubuntu.com/core"
 forum = "https://forum.snapcraft.io/"
 fixup = "extract"
@@ -648,6 +653,7 @@ size = 238129880
 page = "https://ubuntu.com/download/raspberry-pi-core"
 category = "boards"
 family = "ubuntu-core"
+icon = "disc"
 site = "https://ubuntu.com/core"
 forum = "https://forum.snapcraft.io/"
 fixup = "extract"
@@ -1141,6 +1147,7 @@ samples = ["Win11_English_x64.iso", "Win11_23H2_English_x64v2.iso", "Windows11.i
 page = "https://www.microsoft.com/software-download/windows11"
 category = "windows"
 family = "windows"
+icon = "disc"
 forum = "https://answers.microsoft.com/en-us/windows"
 
 [entry.source]
@@ -1156,6 +1163,7 @@ caution = "A preview build: it stops working when the build expires, and isn't m
 page = "https://www.microsoft.com/en-us/software-download/windowsinsiderpreviewiso"
 category = "windows"
 family = "windows"
+icon = "disc"
 forum = "https://answers.microsoft.com/en-us/windows"
 
 [entry.source]
@@ -1171,6 +1179,7 @@ caution = "Microsoft ended support for Windows 10 on 14 October 2025: no more se
 page = "https://www.microsoft.com/software-download/windows10"
 category = "windows"
 family = "windows"
+icon = "disc"
 forum = "https://answers.microsoft.com/en-us/windows"
 
 [entry.source]
@@ -1246,6 +1255,7 @@ samples = ["nhos-1.2.8.img"]
 page = "https://www.nicehash.com/nhos"
 category = "other"
 family = "nicehash"
+icon = "disc"
 site = "https://www.nicehash.com/"
 
 [entry.source]
@@ -1277,6 +1287,7 @@ caution = "An unofficial modification of Windows, not made or supported by Micro
 page = "https://atlasos.net/"
 category = "windows"
 family = "atlas"
+icon = "disc"
 unlisted = true
 site = "https://atlasos.net/"
 
@@ -2042,14 +2053,13 @@ channel = "latest"
 # name, and its page links that checksum file but not the image (the image
 # comes from a "thank you" page that gives cf.anduinos.com/AnduinOS-<version>-
 # amd64.iso). Pairing the two needs the file name to come from the pattern,
-# which isoshelf does from v0.9.2; this becomes a download once that has been
-# out a while (docs/TODO.md). Until then it checks for updates and links to
-# the download.
+# which isoshelf does from v0.9.2, so it downloads.
 id = "anduinos"
 name = "AnduinOS"
 arch = "x86_64"
 match = 'AnduinOS-(?P<version>\d+\.\d+\.\d+)-amd64\.iso'
-samples = ["AnduinOS-2.0.4-amd64.iso"]
+samples = ["AnduinOS-2.0.5-amd64.iso"]
+size = 2364674048
 page = "https://www.anduinos.com/#download-links"
 category = "desktop"
 family = "anduinos"
@@ -2060,16 +2070,17 @@ type = "listing"
 url = "https://www.anduinos.com/"
 regex = 'AnduinOS-(?P<version>\d+\.\d+\.\d+)-amd64\.sha256'
 
-# PikaOS lists an MD5 for each ISO on its own site (iso.pika-os.com). An MD5
-# catches a broken download but not a changed one, so isoshelf downloads what
-# it can check, and marks it weak (v0.8.10): never called verified. Only the
-# KDE edition qualifies: the server answers an automated request for the other
-# editions' .md5 files with 403, as it does for the folder's index (a bot
-# check, not something to get round), so those are links. Each is its own
-# entry because an update downloads one specific file, and must not put a KDE
-# image where a GNOME one was. The release number ("4.0") is written into the
-# file name here, since the folder can't be listed to find it; if PikaOS moves
-# on, the Monday check says so rather than anything going quietly wrong.
+[entry.artifact]
+base = "https://cf.anduinos.com/"
+file = 'AnduinOS-{version}-amd64\.iso'
+manifest = "AnduinOS-{version}-amd64.sha256"
+
+# PikaOS lists an MD5 for each ISO on its own site (iso.pika-os.com), but the
+# server answers an automated request for those files with 403, as it does for
+# the folder's index (a bot check, not something to get round). It let the KDE
+# one through at first and it was downloaded, marked weak; on 2026-11-03 it
+# began refusing GitHub's check runners too, so KDE is a link like the rest.
+# Each is its own entry so the editions are never mixed up.
 
 [[entry]]
 id = "pikaos-kde"
@@ -2077,7 +2088,6 @@ name = "PikaOS KDE"
 arch = "x86_64"
 match = 'PikaOS-Nest-KDE-[\d.]+-amd64-v3-(?P<version>\d+\.\d+\.\d+-\d+)\.iso'
 samples = ["PikaOS-Nest-KDE-4.0-amd64-v3-26.08.20-4.iso"]
-size = 3262828544
 page = "https://pika-os.com/#editions"
 category = "gaming"
 family = "pikaos"
@@ -2088,11 +2098,6 @@ caution = "Built for x86-64-v3: it needs a processor with AVX2, roughly 2013 or 
 type = "listing"
 url = "https://pika-os.com/"
 regex = 'PikaOS-Nest-KDE-[\d.]+-amd64-v3-(?P<version>\d+\.\d+\.\d+-\d+)\.iso'
-
-[entry.artifact]
-base = "https://iso.pika-os.com/"
-file = 'PikaOS-Nest-KDE-4\.0-amd64-v3-{version}\.iso'
-manifest = "PikaOS-Nest-KDE-4.0-amd64-v3-{version}.md5"
 
 [[entry]]
 # Every other edition shares the KDE one's version. One entry for the lot
