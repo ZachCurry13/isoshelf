@@ -22,7 +22,7 @@
 .rows { list-style: none; margin: 0; padding: 0; }
 .row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 10rem 13rem auto;
+  grid-template-columns: minmax(0, 1fr) 9rem 12rem auto;
   align-items: center;
   gap: var(--sp-16);
   padding: var(--sp-8) var(--sp-16);
@@ -73,4 +73,9 @@
   .row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-8); }
   .row-version { color: var(--muted); }
   .row-actions { justify-content: flex-start; }
+}
+
+/* Under Primer's large breakpoint the name needs the room: narrower columns, the status pills stacking. */
+@media (min-width: 768px) and (max-width: 1011px) {
+  .row { grid-template-columns: minmax(0, 1fr) 8rem 9rem auto; gap: var(--sp-12); }
 }

@@ -19,7 +19,7 @@ done, change its mark to **done** and say which release.
 Nothing is wrong in colour, radius, weights, mono for file names, the sentence case
 of labels, or the absence of toasts, "click here", "oops" and exclamation marks.
 
-## Package 1 - foundations (spacing, size, focus, breakpoints, motion)
+## Package 1 - foundations (spacing, size, focus, breakpoints, motion) - done in v0.11.0, see the result at the end
 
 1. **Spacing is off Primer's scale.** 9 distinct values (1, 3, 5, 7, 9, 10, 14, 18, 52 px)
    in about 109 of 330 spacing declarations; 10px is the page's real unit (F6, F7).
@@ -40,7 +40,7 @@ of labels, or the absence of toasts, "click here", "oops" and exclamation marks.
 9. **Targets:** row checkboxes and the star have no size rule; keep every target at
    least 24px (F27).
 
-## Package 2 - icons
+## Package 2 - icons - done in v0.11.0
 
 10. **No Octicons.** Icons are text glyphs (gear, x, warning triangle, up and down
     arrows, a caret, a star); two SVGs are drawn at 14px, which is not an Octicon size
@@ -52,7 +52,7 @@ of labels, or the absence of toasts, "click here", "oops" and exclamation marks.
 12. **Disclosures** use a custom caret; Primer says a chevron for show-more, an
     ellipsis for truncated text and a kebab for menus (P6).
 
-## Package 3 - structure
+## Package 3 - structure - done in v0.11.0, see the result at the end
 
 13. **No PageHeader and no `h1`.** The brand is a span; there is no skip link (F13,
     C1, P5).
@@ -72,7 +72,7 @@ of labels, or the absence of toasts, "click here", "oops" and exclamation marks.
 19. **Truncation** (dock names, picker rows) has no full text for keyboard or tooltip
     (C21).
 
-## Package 4 - behaviour
+## Package 4 - behaviour - done in v0.11.0, see the result at the end
 
 20. **Settings mixes save models.** Toggles and selects save at once; the speed limit
     saves on blur; there is a Reset button and a Check now button; "Saved" disappears
@@ -101,7 +101,7 @@ of labels, or the absence of toasts, "click here", "oops" and exclamation marks.
     focus the safe button (F24).
 29. **Table sort headers** may not be keyboard-reachable (F23).
 
-## Package 5 - wording (79 findings)
+## Package 5 - wording (79 findings) - done in v0.11.0
 
 30. Punctuation on labels and buttons: ellipses on 7 buttons ("Remove…", "Choose
     folder…"), two colons on labels, trailing periods on status text (15).
@@ -125,3 +125,36 @@ of labels, or the absence of toasts, "click here", "oops" and exclamation marks.
   a single-select of common values plus the current custom one.
 - Filtering becomes a labelled filter panel; the sort stays a select.
 - Octicons are bundled (MIT notice in the repository).
+
+## Result, v0.11.0
+
+Every item above was done, except these, which are open or a decision, so that
+nobody reading this is told the page is more finished than it is:
+
+**Open (not done):**
+- **Loading skeletons** (C22, loading pattern). The list is drawn from state the
+  server already has, so there is no waiting to cover, but the manual asks for a
+  skeleton where there is one (the first draw, the Add images list).
+- **Contrast was not measured** (F15) for the muted text and the pills in every
+  one of the twelve themes; the colours are Primer's, used as Primer uses them.
+- **A measure of about 80 characters** (F11) is held only where the page sets one
+  (the first-run text); long hints in Settings run the width of the panel.
+- **Truncation and tooltip rules** (C16, C21) could not be read in the manual. Text
+  now wraps rather than truncates, and the tooltip is a CSS version of Primer's:
+  short, dark, on hover and keyboard focus, on icon-only buttons.
+
+**Decided, with the reason:**
+- **The tab bar is links to places on one page**, not tabs that swap panels, so it
+  is an UnderlineNav and the current one is `aria-current="location"` (Primer's
+  example says `page`, which is right for navigation between pages and wrong for
+  this).
+- **The Filter menu stays a menu holding a list of choices**, applied at once and
+  closed by Close, with its count on the trigger: Primer's non-modal SelectPanel in
+  effect, though it is built on `details` and not a component of its own.
+- **One column at every width.** Primer allows two columns from 768 px; a list of
+  files with a status and buttons on each row has nothing to put in a second one
+  (a side pane was drawn and dropped: it is not in the chosen draft).
+- **The search box has an accessible label but no visible one**, as Primer's own
+  SearchInput does in a toolbar; the Sort menu has a visible label.
+- **Reset and Check now in Settings are actions, not settings**, so they are not
+  a second save model; every setting saves at once and says so aloud.
