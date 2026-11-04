@@ -96,7 +96,7 @@ func (s *Server) copyFromPeer(w http.ResponseWriter, r *http.Request) {
 		SHA256 string `json:"sha256"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Name == "" || req.SHA256 == "" {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	s.mu.Lock()

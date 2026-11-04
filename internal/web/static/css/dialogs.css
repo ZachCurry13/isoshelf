@@ -58,3 +58,12 @@
 @media (max-width: 767px) {
   .pick-note { white-space: normal; }
 }
+/* On a phone every dialog fills the screen, as Primer asks of one that has fields to fill in. */
+@media (max-width: 767px) {
+  .ask, .picker {
+    width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0;
+    border: none; border-radius: 0;
+  }
+  .ask-form, .picker-form { height: 100%; max-height: none; }
+  .ask-body { flex: 1 1 auto; }
+}

@@ -31,8 +31,8 @@ function dismissField(item) {
     return el("div", {},
       el("div", {}, d.forever
         ? (item.updates === "download"
-          ? "Dismissed for good: Update all and updating by itself leave this image alone."
-          : "Dismissed for good.")
+          ? "Dismissed for good. Update all and updating by itself leave this image alone."
+          : "Dismissed for good")
         : `Dismissed until ${untilDate(d.until)}. It comes back then, whatever version is out.`),
       el("button", { type: "button", class: "btn small", onclick: () => setDismiss(item.entry, "") }, "Undo"));
   }
@@ -90,9 +90,9 @@ function dismissedControl() {
 }
 
 // untilDate is a day still to come, as "24 Oct" (with the year when it isn't
-// this one). shortDate is for days gone by, and called a month away "today".
+// this one).
 function untilDate(iso) {
   const then = new Date(iso);
-  const year = then.getFullYear() === new Date().getFullYear() ? undefined : "numeric";
-  return then.toLocaleDateString(undefined, { day: "numeric", month: "short", year });
+
+  return plainDate(then);
 }

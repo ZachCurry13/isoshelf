@@ -441,6 +441,11 @@ download again.
 The few distro logos shown (Debian, Arch Linux, NixOS) come from [Simple Icons](https://simpleicons.org) (CC0 1.0) and
 are used only to identify the projects they belong to, where each project's own terms allow it; every other project shows a plain disc.
 
+The icons are GitHub's [Octicons](https://primer.style/octicons) (MIT, &copy;
+GitHub, Inc.; the licence is kept in `internal/web/octicons`), and the look is
+[Primer](https://primer.style), GitHub's design system (MIT), taken as its design
+tokens. isoshelf is not made or endorsed by GitHub.
+
 isoshelf is an independent project. It isn't affiliated with or endorsed by
 Ventoy, Proxmox, TrueNAS or any of the distributions it tracks. All names and
 trademarks belong to their owners, and are used only to say which image a file

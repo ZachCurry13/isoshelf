@@ -82,7 +82,7 @@ type settingsRequest struct {
 func (s *Server) setSettings(w http.ResponseWriter, r *http.Request) {
 	var req settingsRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	current := s.updateSettings(func(c *settings.Settings) { req.applyTo(c) })
@@ -176,12 +176,12 @@ func (s *Server) setBookmark(w http.ResponseWriter, r *http.Request) {
 		Remove bool   `json:"remove"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	path := strings.TrimSpace(req.Path)
 	if path == "" {
-		writeError(w, http.StatusBadRequest, "Which folder?")
+		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
 	}
 	current := s.loadSettings()

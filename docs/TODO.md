@@ -197,8 +197,8 @@ Then:
   longer (2026-10-05), and passed in 6 seconds run alone. Rerun it alone
   (`go test ./cmd/isoshelf/ -run SamePort -count=1`) before believing it.
 - **The page is one script per part**, not one script. `app.js` was 2,544
-  lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
-  `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`, `dockitems.js`, `dockprogress.js`, `notices.js`,
+  lines until v0.3.1; it is now `icons.js`, `jumpnav.js`, `app.js` (state, asking, drawing, wiring),
+  `images.js`, `logotile.js`, `menus.js`, `imagerow.js`, `blankslate.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`, `dockitems.js`, `dockprogress.js`, `notices.js`,
   `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `duplicates.js`, `folders.js`, `thisfolder.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `updatesettings.js`, `access.js`, `records.js`,
   `upload.js`, `report.js`, `selfupdate.js`, `history.js` and `system.js`. Read the one you

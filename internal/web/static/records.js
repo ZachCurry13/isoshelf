@@ -89,7 +89,7 @@ function askRecords(plan, change) {
       "Its history, the images you starred and what each file turned out to be move " +
       `from one file to the other. Your images, the archive and part-finished downloads ` +
       `stay in ${state.target}.` + away,
-      [{ label: "Move them", value: true, primary: true }, cancel],
+      [{ label: "Move records", value: true, primary: true }, cancel],
       el("dl", { class: "records-move" },
         el("dt", {}, "From"), el("dd", {}, plan.from),
         el("dt", {}, "To"), el("dd", {}, plan.to)));
@@ -98,10 +98,10 @@ function askRecords(plan, change) {
     ? ` The ones in ${plan.from_dir}, saved ${timeAgo(plan.from_saved)}, stay where they ` +
       "are: delete them yourself if you don't want them."
     : "";
-  return ask("Use the records already there?",
+  return ask("Use existing records?",
     `isoshelf already has records for this folder in ${plan.to_dir}, saved ` +
     `${timeAgo(plan.to_saved)}. It will use those.` + left,
-    [{ label: "Use those", value: true, primary: true }, cancel]);
+    [{ label: "Use these records", value: true, primary: true }, cancel]);
 }
 
 // recordsDone says what the last move did, in a line.
@@ -139,7 +139,7 @@ function recordsControl() {
   const chosen = recordsChoice === null ? (now.location || "folder") : recordsChoice;
   const rows = [
     el("select", {
-      "aria-label": "Where this folder's records are kept",
+      "aria-label": "Records location",
       onchange: (e) => {
         const value = e.target.value;
         if (value === "custom") {

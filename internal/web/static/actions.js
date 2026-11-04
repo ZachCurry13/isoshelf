@@ -30,7 +30,22 @@ function ask(title, text, choices, body) {
       buttons.append(el("button", {
         type: "button",
         class: `btn${choice.primary ? " primary" : ""}${choice.danger ? " danger" : ""}`,
-        onclick: () => { dialog.close(); resolve(choice.value); },
+        onclick: async () => {
+          // A choice with run keeps the dialog open while it works, and if it
+          // fails says so at the top of the dialog (Primer: the dialog stays
+          // until its action has finished). Returning false keeps it open
+          // quietly, for a field that has just been marked wrong.
+          if (choice.run) {
+            try {
+              if ((await choice.run()) === false) return;
+            } catch (err) {
+              showNotice(err.message, true);
+              return;
+            }
+          }
+          dialog.close();
+          resolve(choice.value);
+        },
       }, choice.label));
     }
     dialog.addEventListener("close", () => resolve(null), { once: true });
@@ -79,7 +94,7 @@ async function updateAll() {
       detail: `${item.version || "?"} → ${item.latest || "newest"}`,
       note: isPinned(item) ? "keeps this pinned file" : CHOICE_WORD[choiceFor(item)],
     })),
-    actions: [{ label: "Update them", value: "go", primary: true }],
+    actions: [{ label: "Update images", value: "go", primary: true }],
   });
   if (!answer) return;
   const chosen = new Set(answer.ids);
@@ -98,11 +113,11 @@ async function removeItem(item) {
   // said, since a pin means somebody once wanted this file kept.
   const pinned = isPinned(item) ? "This file is pinned. " : "";
   const how = await ask(
-    `Remove ${item.path}?`,
-    `${pinned}This file uses ${formatBytes(item.size)}. Archiving keeps it in this folder, under Archive, where you can restore it or delete it later — the space is not freed until you do.`,
+    "Remove this image?",
+    `${pinned}${item.path} uses ${formatBytes(item.size)}. Archiving keeps it in this folder, under Archive, where you can restore it or delete it later — the space is not freed until you do.`,
     [
-      { label: "Archive it", value: "move-aside", primary: true },
-      { label: "Delete it now", value: "delete", danger: true },
+      { label: "Archive image", value: "move-aside", primary: true },
+      { label: "Delete image", value: "delete", danger: true },
       { label: "Cancel", value: null },
     ]);
   if (!how) return;
@@ -125,7 +140,7 @@ async function emptyRemoved() {
   const confirmed = await ask(
     "Empty the archive?",
     `${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)} will be deleted permanently. This frees the space.`,
-    [{ label: "Delete them", value: "yes", danger: true }, { label: "Cancel", value: null }]);
+    [{ label: "Delete files", value: "yes", danger: true }, { label: "Cancel", value: null }]);
   if (!confirmed) return;
   try {
     state = await api("POST", "/api/removed/empty");

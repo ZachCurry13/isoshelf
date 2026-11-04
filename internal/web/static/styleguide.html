@@ -108,6 +108,9 @@
     <button class="linkish" type="button">a link-looking button</button>
     <span class="summary"><button class="chip" type="button"><span class="count">3</span> updates</button><button class="chip" type="button" aria-pressed="true"><span class="count">1</span> missing</button></span>
   </div></div>
+  <h3>Danger button and tooltip</h3>
+  <p>The danger button is for what deletes for good, and only ever behind a question. A tooltip names an icon-only button, on hover and on keyboard focus.</p>
+  <div class="card"><div class="demo"><button class="btn danger" type="button">Delete files</button><button class="btn small icon" type="button" aria-label="Close panel" data-tooltip="Close"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#x-16"/></svg></button><button class="btn small" type="button" aria-disabled="true" aria-description="Wait for what isoshelf is doing to finish.">Refresh</button></div></div>
 </section>
 
 <section data-css="feedback">
@@ -121,48 +124,77 @@
     <div class="notice">Something worth knowing, in the attention colours.</div>
     <div class="notice error">Something that went wrong, in the danger colours.</div>
   </div>
+  <h3>Banner</h3>
+  <p>Feedback about the page: an icon for how serious it is, a title that says it. An error has no dismiss button; the rest do.</p>
+  <div class="card"><div class="guide-pad">
+    <div class="banner banner--critical" role="alert"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#stop-16"/></svg><div class="banner-title">Couldn't save the setting. Check that the folder can be written to, then try again.</div><button class="btn small" type="button">Report this</button></div>
+    <div class="banner banner--warning" role="status"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#alert-16"/></svg><div class="banner-title">The catalog couldn't be refreshed. The list from earlier is shown.</div><button class="btn small icon" type="button" aria-label="Dismiss message" data-tooltip="Dismiss" data-tooltip-end><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#x-16"/></svg></button></div>
+    <div class="banner banner--success" role="status"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#check-circle-16"/></svg><div class="banner-title">Tails 7.16 added to this folder.</div><button class="btn small icon" type="button" aria-label="Dismiss message" data-tooltip="Dismiss" data-tooltip-end><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#x-16"/></svg></button></div>
+    <div class="banner banner--info" role="status"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#info-16"/></svg><div class="banner-title">isoshelf checks for updates when the page opens.</div><button class="btn small icon" type="button" aria-label="Dismiss message" data-tooltip="Dismiss" data-tooltip-end><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#x-16"/></svg></button></div>
+  </div></div>
+  <h3>Blank slate</h3>
+  <p>Where there is nothing yet: a title, one line, and at most one thing to press.</p>
+  <div class="card"><div class="blankslate"><h4 class="blankslate-title">No images in this folder</h4><p>Add some from the catalog, or drop a file onto this page.</p><div class="blankslate-actions"><button class="btn primary" type="button">Add images</button></div></div></div>
+  <h3>Field error</h3>
+  <p>What is wrong, under the field, with a small icon; the field is marked invalid.</p>
+  <div class="card"><div class="guide-pad"><label>Name <input type="text" aria-invalid="true" aria-describedby="sg-err" value=""></label><p class="field-error" id="sg-err"><svg class="octicon" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#alert-fill-12"/></svg><span>Enter a name for this image.</span></p></div></div>
 </section>
 
 <section data-css="topbar">
-  <h2>Top bar and jump bar</h2>
-  <p>Primer's header, dark in every theme, and its UnderlineNav.</p>
+  <h2>Top bar, page header and tab bar</h2>
+  <p>Primer's header, dark in every theme; under it the page header (the folder is the one h1) and an UnderlineNav with a count on each tab and a heavier underline under the current one.</p>
   <div class="card clip">
     <header class="topbar">
       <div class="brand">
         <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path class="logo-disc" fill-rule="evenodd" d="M16 4a10 10 0 1 1 0 20a10 10 0 1 1 0-20zm0 7a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path><rect class="logo-shelf" x="3" y="26" width="26" height="3" rx="1.5"></rect></svg>
-        <span class="brand-name">isoshelf</span><span class="version">v0.9.0</span>
+        <span class="brand-name">isoshelf</span><span class="version">v0.11.0</span>
       </div>
-      <a class="app-update" href="#">isoshelf v0.9.1 is available</a>
-      <button type="button" class="btn small settings-button">⚙ Settings</button>
+      <a class="app-update" href="#">isoshelf v0.11.1 is available</a>
+      <button type="button" class="btn small settings-button"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#gear-16"/></svg> Settings</button>
     </header>
-    <nav class="jump"><a href="#">Your images (4)</a><a href="#">Add images</a><a href="#">History</a><a href="#">Tools</a></nav>
+    <div class="guide-pad">
+      <section class="page-header">
+        <div class="page-header-main">
+          <h3 class="page-title"><span>ISOs</span></h3>
+          <div class="page-description"><span class="title-parent">E:\</span><span class="label">Ventoy drive</span><span class="muted">47 GB free of 128 GB</span></div>
+        </div>
+        <div class="page-actions"><button class="btn" type="button">Choose folder…</button><button class="btn primary" type="button">Refresh</button></div>
+      </section>
+      <nav class="jump" aria-label="Sections (example)">
+        <a href="#" aria-current="location"><span class="tab-label" data-label="Your images">Your images</span><span class="counter">4</span></a>
+        <a href="#"><span class="tab-label" data-label="Add images">Add images</span><span class="counter">91</span></a>
+        <a href="#"><span class="tab-label" data-label="History">History</span></a>
+        <a href="#"><span class="tab-label" data-label="Tools">Tools</span></a>
+      </nav>
+    </div>
   </div>
 </section>
 
 <section data-css="target">
-  <h2>Folder card</h2>
-  <p>Which folder, what kind, how much room.</p>
-  <div class="card target">
-    <div class="target-info">
-      <div class="eyebrow">Folder</div>
-      <div class="target-path">E:\ISOs</div>
-      <div class="target-meta"><span>Ventoy drive</span><span class="muted">47 GB free of 128 GB</span></div>
-    </div>
-    <div class="target-actions"><button class="btn" type="button">Choose folder…</button><button class="btn primary" type="button">Refresh</button></div>
-  </div>
+  <h2>Page header</h2>
+  <p>The folder as the title of the page: its own name large, the rest of the path in mono beside it, then its type, room left and the buttons for it.</p>
+  <div class="card"><div class="guide-pad">
+    <section class="page-header">
+      <div class="page-header-main">
+        <h3 class="page-title"><span>Downloads</span></h3>
+        <div class="page-description"><span class="title-parent">/mnt/tank/proxmox/template/iso/</span><span class="label">Proxmox ISO storage</span><span class="muted">1.2 TB free of 4 TB</span></div>
+      </div>
+      <div class="page-actions"><button class="btn" type="button">Choose folder…</button><button class="btn primary" type="button">Refresh</button></div>
+    </section>
+  </div></div>
 </section>
 
 <section data-css="images">
   <h2>The list of images</h2>
-  <p>Table, rows, version and status columns, the star, and a pinned file. On a phone each row becomes a card.</p>
-  <div class="card images"><div class="table-wrap">
-    <table id="table"><thead><tr><th class="col-star"></th><th>Image</th><th>Version</th><th>Status</th><th>Added</th><th></th></tr></thead>
-    <tbody>
-      <tr class="row"><td class="col-star"><button class="star" type="button" aria-pressed="true" aria-label="Pinned">★</button></td><td><div class="image-cell"><span class="logo initials" data-brand="#8250df">Ta</span><div class="image-text"><div class="name">Tails <span class="arch">amd64</span></div><div class="under"><span class="file">tails-amd64-7.13.iso</span><span class="size">· 1.4 GB</span></div></div></div></td><td class="version-cell">7.13 → <span class="latest-new">7.16</span></td><td><span class="pill s-update">Update available</span></td><td class="added-cell col-added">today</td><td class="row-actions"><button class="btn small primary" type="button">Update</button><button class="btn small" type="button">Details</button></td></tr>
-      <tr class="row"><td class="col-star"><button class="star" type="button" aria-label="Pin">☆</button></td><td><div class="image-cell"><span class="logo initials" data-brand="#1a7f37">LM</span><div class="image-text"><div class="name">Linux Mint Cinnamon <span class="caution" title="A note">⚠</span></div><div class="under"><span class="file">linuxmint-22.3-cinnamon-64bit.iso</span><span class="size">· 2.9 GB</span></div></div></div></td><td class="version-cell">22.3</td><td><span class="pill s-ok">Up to date</span></td><td class="added-cell col-added">3 days ago</td><td class="row-actions"><button class="btn small" type="button">Details</button></td></tr>
-      <tr class="row dismissed"><td class="col-star"></td><td><div class="image-cell"><span class="logo initials" data-brand="#bc4c00">Ub</span><div class="image-text"><div class="name">Ubuntu Desktop</div><div class="under"><span class="file">ubuntu-22.04.5-desktop-amd64.iso</span></div></div></div></td><td class="version-cell">22.04.5</td><td><span class="pill s-eol">End of life</span></td><td class="added-cell col-added">today</td><td class="row-actions"><button class="btn small" type="button">Details</button></td></tr>
-    </tbody></table>
-  </div></div>
+  <p>A Primer box: a header strip with the search, filter and sort, and a row for each image with its version, status and buttons. On a phone a row stacks.</p>
+  <div class="card images">
+    <div class="toolbar"><input type="search" placeholder="Search your images…" aria-label="Search your images (example)"><button class="btn" type="button"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#filter-16"/></svg> Filter <span class="counter">2</span></button><span class="muted" role="status">4 images</span></div>
+    <ul class="rows">
+      <li class="row"><div class="row-main"><button class="star" type="button" aria-pressed="true" aria-label="Unstar Tails" data-tooltip="Unstar"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#star-fill-16"/></svg></button><span class="logo initials" data-brand="#8250df">Ta</span><div class="row-text"><div class="name-line"><span class="name">Tails</span><span class="pin-mark" role="img" aria-label="Pinned"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#pin-16"/></svg></span><span class="label">x86_64</span></div><div class="under"><span class="file">tails-amd64-7.13.iso</span> · <span>1.4 GB</span> · <span>Added 3 days ago</span></div></div></div><div class="row-version">7.13<span class="latest-new"> → 7.16</span></div><div class="row-status"><span class="pill s-update">Update available</span></div><div class="row-actions"><button class="btn small primary" type="button">Update</button><a class="btn small icon" href="#" aria-label="Download tails-amd64-7.13.iso" data-tooltip="Save on this computer"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#download-16"/></svg></a><button class="btn small" type="button">Details</button></div></li>
+      <li class="row"><div class="row-main"><button class="star" type="button" aria-pressed="false" aria-label="Star Linux Mint" data-tooltip="Star"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#star-16"/></svg></button><span class="logo initials" data-brand="#1a7f37">LM</span><div class="row-text"><div class="name-line"><span class="name">Linux Mint Cinnamon</span></div><div class="under"><span class="file">linuxmint-22.3-cinnamon-64bit.iso</span> · <span>2.9 GB</span></div></div></div><div class="row-version">22.3</div><div class="row-status"><span class="pill s-ok">Up to date</span></div><div class="row-actions"><button class="btn small" type="button">Details</button></div></li>
+      <li class="row dismissed"><div class="row-main"><button class="star" type="button" aria-pressed="false" aria-label="Star Ubuntu Desktop"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#star-16"/></svg></button><span class="logo initials" data-brand="#bc4c00">Ub</span><div class="row-text"><div class="name-line"><span class="name">Ubuntu Desktop</span><span class="caution" role="img" aria-label="Worth knowing: the release is no longer supported"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#alert-16"/></svg></span></div><div class="under"><span class="file">ubuntu-22.04.5-desktop-amd64.iso</span> · <span>4.7 GB</span></div></div></div><div class="row-version">22.04.5</div><div class="row-status"><span class="pill s-muted">Dismissed for a week</span><span class="pill s-eol">End of life</span></div><div class="row-actions"><button class="btn small" type="button">Details</button></div></li>
+    </ul>
+  </div>
 </section>
 
 <section data-css="logos">

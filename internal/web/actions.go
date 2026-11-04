@@ -23,7 +23,7 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 		Removal string `json:"removal"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 
@@ -35,7 +35,7 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
 	case entry == nil:
-		writeError(w, http.StatusBadRequest, "Unknown image.")
+		writeError(w, http.StatusBadRequest, "isoshelf doesn't know that image. Scan the folder again.")
 		return
 	case s.queuedLocked(entry.ID):
 		writeError(w, http.StatusConflict, entry.Name+" is already in the downloads.")
@@ -173,7 +173,7 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 		How   string   `json:"how"` // "move-aside" or "delete"
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	s.mu.Lock()
@@ -186,7 +186,7 @@ func (s *Server) remove(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusConflict, s.scanningLocked())
 		return
 	case len(req.Paths) == 0:
-		writeError(w, http.StatusBadRequest, "Nothing to remove.")
+		writeError(w, http.StatusBadRequest, "Nothing was chosen to remove. Pick an image and try again.")
 		return
 	}
 	for _, p := range req.Paths {

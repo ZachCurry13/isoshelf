@@ -6,6 +6,47 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.11.0] - 2026-11-04
+
+### The page now follows GitHub's design manual, all of it
+v0.9.0 took Primer's colours and type; this takes the rest, so that someone who
+knows Primer would find nothing out of line. The audit that found what was
+missing, and the checklist it was made against, are `docs/primer-audit.md` and
+`docs/primer-guidelines.md`.
+- **Layout like the design you chose.** A 1012 px column, a page header whose
+  title is the folder (its parent path, type and room left beside it, Choose
+  folder and Refresh on the right), then a tab bar with a count on each tab and
+  a heavier underline under the one you are on. The list is a bordered box with a
+  header strip (search, Filter, sort) and a row for each image; a status is an
+  outlined pill with its words. There is a skip link, and the page has one `h1`.
+- **Icons.** GitHub's Octicons, at the sizes they are drawn, in place of text
+  symbols. Disclosures carry a chevron.
+- **Spacing and size.** Every gap is on Primer's scale, buttons and fields are
+  32 px (28 px small), the focus ring is Primer's, and there is one breakpoint
+  at 768 px. A test fails if a stray value is added.
+- **Feedback.** Messages are Banners: an icon for how serious, a title, an
+  error stays and offers Report this, anything else can be dismissed. Empty
+  places say what to do and offer one button. A field's error is under the
+  field, and a dialog stays open when its action fails.
+- **Settings** are real switches and a pick-one list for the speed limit; each
+  saves at once and says so aloud. A control that can't be used right now says
+  why instead of going dead.
+- **Keyboard and screen readers.** The queue can be reordered with the
+  keyboard (Space, arrows, Escape), every step announced; the results count is
+  announced as you filter; focus stays put when the list redraws; every dialog
+  has a title, a close button, and fills the screen on a phone; delete buttons
+  are red and the quiet button sits on the left.
+- **Wording** follows Primer's content rules: no dots or ellipses on buttons,
+  specific confirm titles, errors that say how to put it right, labels of three
+  words or fewer, and times that read "2 hours ago".
+- **Motion and contrast.** Transitions only run when the system allows motion,
+  and Windows' forced-colours mode is handled.
+
+### Under the hood
+- `images.js` is split into `imagerow.js`, `logotile.js` and `menus.js`;
+  `icons.js`, `jumpnav.js` and `blankslate.js` are new. The old table, the
+  column sorting (use the Sort menu) and an unused links menu are gone.
+
 ## [v0.10.1] - 2026-11-03
 
 ### Fixed

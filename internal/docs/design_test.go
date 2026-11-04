@@ -64,16 +64,25 @@ func TestDesignSystemNamesThePinnedPrimerVersion(t *testing.T) {
 	}
 }
 
-// Every test the document says enforces a rule has to exist.
+// Every test the document says enforces a rule has to exist, in the web
+// package's tests.
 func TestDesignSystemOnlyNamesTestsThatExist(t *testing.T) {
 	doc := designDoc(t)
-	web, err := os.ReadFile(filepath.Join(repoRoot(t), "internal", "web", "css_test.go"))
-	if err != nil {
-		t.Fatal(err)
+	files, err := filepath.Glob(filepath.Join(repoRoot(t), "internal", "web", "*_test.go"))
+	if err != nil || len(files) == 0 {
+		t.Fatalf("no test files found in internal/web: %v", err)
+	}
+	var web strings.Builder
+	for _, f := range files {
+		b, err := os.ReadFile(f)
+		if err != nil {
+			t.Fatal(err)
+		}
+		web.Write(b)
 	}
 	for _, m := range regexp.MustCompile("`(Test[A-Za-z]+)`").FindAllStringSubmatch(doc, -1) {
-		if !strings.Contains(string(web), "func "+m[1]+"(") {
-			t.Errorf("docs/design-system.md names %s, which isn't in internal/web/css_test.go", m[1])
+		if !strings.Contains(web.String(), "func "+m[1]+"(") {
+			t.Errorf("docs/design-system.md names %s, which isn't in a test in internal/web", m[1])
 		}
 	}
 }

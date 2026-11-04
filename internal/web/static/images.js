@@ -19,7 +19,7 @@ const STATUS_WORDS = {
   "unrecognized": ["Unrecognized", "isoshelf doesn't know what this file is. It can try to identify it, or you can name it yourself."],
   "checksum mismatch": ["Checksum mismatch", "The file doesn't match the checksum the project publishes - usually a broken download, sometimes a changed file."],
   "unverified": ["Unverified", "The project publishes no checksum for this file, so nothing can prove it arrived intact."],
-  "check failed": ["Check failed", "isoshelf couldn't reach the project this time. The note says what went wrong."],
+  "check failed": ["Couldn't check", "isoshelf couldn't reach the project this time. The note says what went wrong."],
   "unknown": ["Not identified", "isoshelf hasn't worked out enough about this file to say what it is."],
   "not checked": ["Not checked yet", "Press Check now and isoshelf will ask each project what the newest version is."],
 };
@@ -44,7 +44,7 @@ function showMeanings() {
       el("dd", {}, help),
     ])));
   const buttons = $("ask-buttons");
-  buttons.replaceChildren(el("button", { type: "button", class: "btn primary", onclick: () => dialog.close() }, "Got it"));
+  buttons.replaceChildren(el("button", { type: "button", class: "btn primary", onclick: () => dialog.close() }, "Close"));
   dialog.showModal();
 }
 
@@ -203,14 +203,14 @@ function renderChips() {
     view.status === "missing" && downloadableMissing().length
       ? el("button", {
           type: "button", class: "btn small", onclick: downloadMissing,
-        }, "Download all…")
+        }, "Download all")
       : null,
     // Older versions are shown to be cleared, so the list offers that.
     view.show.older && state.report
       ? el("button", {
           type: "button", class: "btn small", disabled: scanning(),
           onclick: () => reviewOlder(state.report.items.filter(shown)),
-        }, "Review and clear…")
+        }, "Review and clear")
       : null,
     chips.length > 1
       ? el("button", { type: "button", class: "linkish", onclick: clearFilters }, "Clear all")
@@ -256,6 +256,7 @@ function isOlder(item) {
 }
 
 function renderRows() {
+  const savedFocus = rememberRowFocus();
   const rows = $("rows");
   rows.replaceChildren();
   const empty = $("empty");
@@ -274,6 +275,7 @@ function renderRows() {
   const items = sortItems(state.report.items.filter(shown));
 
   for (const item of items) rows.append(renderRow(item));
+  restoreRowFocus(savedFocus);
   // Like the key on a menu: only there when something in the list has the mark.
   $("legend").hidden = !items.some((item) => cautionOf(item));
 

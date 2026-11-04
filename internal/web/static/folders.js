@@ -155,12 +155,12 @@ function rememberedRow(folder, bookmarked) {
 // the word sounds bigger than it is - so the question says exactly what goes.
 async function forgetFolder(folder) {
   const yes = await ask(
-    `Forget ${folder.path}?`,
-    "This takes it off the list and throws away isoshelf's copy of what it found there. " +
-    "The folder, the images in it, its archive and its own records are not touched — " +
-    "open it again and isoshelf reads them back.",
+    "Forget this folder?",
+    `${folder.path} comes off the list, and isoshelf throws away its copy of what it found there. ` +
+    "The folder, the images in it, its archive and its own records are not touched. " +
+    "Open it again and isoshelf reads them back.",
     [
-      { label: "Forget it", value: "yes", primary: true },
+      { label: "Forget folder", value: "yes", primary: true },
       { label: "Cancel", value: null },
     ]);
   if (!yes) return;

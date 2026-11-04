@@ -1,7 +1,7 @@
 "use strict";
 
-// The small menus: the "…" links menu on a row, how they open, close and sit
-// on the window, and the link that reports a project's moved download.
+// The small menus: how they open, close and sit on the window, and the link
+// that reports a project's moved download.
 
 // problemLink reports an image whose source has moved or broken. Projects
 // rearrange their download folders without warning, and the person who hits
@@ -21,25 +21,6 @@ function problemLink(item) {
     "where the project publishes its checksums now.",
   ].filter((line) => line !== null).join("\n");
   return ["Report a problem", `${state.report_url}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=catalog`];
-}
-
-// linksMenu holds the project pages, out of the way until asked for.
-function linksMenu(item) {
-  const links = [
-    ["Download page", item.page],
-    ["Website", item.site],
-    ["Forum", item.forum],
-    ["Release notes", item.release],
-    problemLink(item),
-  ].filter((link) => link && link[1]);
-  if (!links.length) return null;
-
-  const menu = el("details", { class: "menu" },
-    el("summary", { title: "Links", "aria-label": `Links for ${item.name}` }, "\u2026"),
-    el("div", { class: "menu-items" },
-      links.map(([label, url]) => el("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, label))));
-  wireMenu(menu);
-  return menu;
 }
 
 // wireMenu makes a menu behave: only one open at a time, and pinned to the

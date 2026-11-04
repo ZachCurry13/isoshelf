@@ -11,7 +11,7 @@ function renderRow(item) {
   // the usual set because recent scans saw them keep an outline star.
   const star = el("button", {
     type: "button",
-    class: "star",
+    class: "star", "data-rowfocus": "star",
     "aria-pressed": track.starred ? "true" : "false",
     "data-tooltip": track.starred ? "Unstar" : "Star",
     "aria-description": track.starred
@@ -45,7 +45,7 @@ function renderRow(item) {
     under.push(el("span", { class: "file", title: item.path }, breakable(item.path)));
     if (item.size) under.push(el("span", {}, formatBytes(item.size)));
     if (item.added) {
-      under.push(el("span", { title: new Date(item.added).toLocaleString() },
+      under.push(el("span", { title: plainDateTime(new Date(item.added)) },
         `${item.placed ? "Updated" : "Added"} ${shortDate(item.added)}`));
     }
   } else {
@@ -74,7 +74,7 @@ function renderRow(item) {
   const actions = [];
   if (item.entry && item.updates === "download" && item.status === "update available" && !isDismissed(item)) {
     actions.push(jobButton(item.entry, el("button", {
-      type: "button", class: "btn small primary",
+      type: "button", class: "btn small primary", "data-rowfocus": "action",
       title: `Download ${item.latest || "the newest version"} and put it in this folder`,
       onclick: () => updateItem(item),
     }, "Update"), true));
@@ -83,7 +83,7 @@ function renderRow(item) {
     if (back) actions.push(back);
   } else if (item.path && !item.entry) {
     actions.push(el("button", {
-      type: "button", class: "btn small primary", disabled: scanning(),
+      type: "button", class: "btn small primary", "data-rowfocus": "action", disabled: scanning(),
       title: "Let isoshelf identify this file",
       "aria-label": `Identify ${item.path}`,
       onclick: () => openIdentify(item),
@@ -99,14 +99,15 @@ function renderRow(item) {
     }, icon("download-16")));
   }
   actions.push(el("button", {
-    type: "button", class: "btn small", "aria-label": `Everything about ${item.name}`,
+    type: "button", class: "btn small", "data-rowfocus": "details", "aria-label": `Everything about ${item.name}`,
     title: "Links, settings and everything else about this image",
     onclick: () => openDetails(item),
-  }, "Details"));
+  }, "Show details"));
 
   // The whole row opens the details panel; the buttons in it don't.
   return el("li", {
     class: `row${detailsKey(item) === detailsOpen ? " picked" : ""}${isDismissed(item) ? " dismissed" : ""}`,
+    "data-key": detailsKey(item),
     onclick: (e) => {
       if (e.target.closest("button, a, input, label, summary")) return;
       openDetails(item);
@@ -139,10 +140,27 @@ function cautionOf(item) {
 
 // shortDate reads like a person: "today", "3 days ago", then "12 Mar 2025".
 function shortDate(iso) {
-  const then = new Date(iso);
-  const days = Math.floor((Date.now() - then.getTime()) / 86400000);
-  if (days < 1) return "today";
-  if (days === 1) return "yesterday";
-  if (days < 7) return `${days} days ago`;
-  return then.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+  return agoWords(iso, true);
+}
+
+// rememberRowFocus and restoreRowFocus keep the keyboard where it was when the
+// list is drawn again, which happens after almost anything: on the same
+// control of the same image if it is still there, and otherwise on its
+// neighbour, so that removing an image doesn't drop focus to the top of the
+// page (Primer: after content is removed, move focus somewhere logical).
+function rememberRowFocus() {
+  const active = document.activeElement;
+  const rows = $("rows");
+  if (!active || !rows || !rows.contains(active) || !active.dataset.rowfocus) return null;
+  const row = active.closest(".row");
+  return { key: row.dataset.key, act: active.dataset.rowfocus, index: [...rows.children].indexOf(row) };
+}
+
+function restoreRowFocus(saved) {
+  if (!saved) return;
+  const rows = [...$("rows").children];
+  const same = rows.find((row) => row.dataset.key === saved.key);
+  const row = same || rows[Math.min(saved.index, rows.length - 1)];
+  const control = row && (row.querySelector(`[data-rowfocus="${saved.act}"]`) || row.querySelector("[data-rowfocus]"));
+  (control || $("search")).focus();
 }

@@ -97,11 +97,11 @@ async function api(method, path, body) {
   try {
     response = await fetch(path, options);
   } catch {
-    throw new Error("isoshelf isn't responding. Is it still running?");
+    throw new Error("isoshelf isn't responding. Check that it is still running, then reload the page.");
   }
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data.error || `${response.status} ${response.statusText}`);
+    throw new Error(data.error || `isoshelf answered with an error (${response.status} ${response.statusText}). Reload the page and try again.`);
   }
   return data;
 }
@@ -347,14 +347,40 @@ function formatBytes(bytes) {
   return `${bytes.toFixed(i === 0 || bytes >= 100 ? 0 : 1)} ${units[i]}`;
 }
 
-function timeAgo(iso) {
-  const seconds = Math.round((Date.now() - new Date(iso).getTime()) / 1000);
+// plainDate is a day as people write it, "12 Mar 2025", leaving the year off
+// when it is this one.
+function plainDate(date) {
+  const year = date.getFullYear() === new Date().getFullYear() ? undefined : "numeric";
+  return date.toLocaleDateString(undefined, { day: "numeric", month: "short", year });
+}
+
+// agoWords says how long ago something was in words: minutes, hours, days and
+// weeks for about a month, then the date.
+function agoWords(iso, today) {
+  const then = new Date(iso);
+  const seconds = Math.round((Date.now() - then.getTime()) / 1000);
+  if (today && seconds < 86400) return "today";
   if (seconds < 60) return "just now";
+  const number = (n, unit) => `${n} ${unit}${n === 1 ? "" : "s"} ago`;
   const minutes = Math.round(seconds / 60);
-  if (minutes < 60) return `${minutes} min ago`;
+  if (minutes < 60) return number(minutes, "minute");
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours} h ago`;
-  return new Date(iso).toLocaleString();
+  if (seconds < 86400) return number(Math.max(hours, 1), "hour");
+  const days = Math.floor(seconds / 86400);
+  if (days === 1) return "yesterday";
+  if (days < 7) return number(days, "day");
+  if (days < 30) return number(Math.floor(days / 7), "week");
+  return plainDate(then);
+}
+
+// plainDateTime is a date and time for a tooltip, with am and pm in lowercase.
+function plainDateTime(date) {
+  return date.toLocaleString().replace(/\b([AP])M\b/g, (m) => m.toLowerCase());
+}
+
+// timeAgo is for things that just happened.
+function timeAgo(iso) {
+  return agoWords(iso, false);
 }
 
 // ---- Wiring ----------------------------------------------------------------

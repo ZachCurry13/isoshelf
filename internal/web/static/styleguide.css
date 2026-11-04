@@ -42,3 +42,4 @@
 .guide .settings-demo { padding: 0 16px 8px; }
 .guide .bar-62 { width: 62%; }
 .guide .bar-35 { width: 35%; }
+.guide-pad { padding: var(--sp-16); display: grid; gap: var(--sp-16); }

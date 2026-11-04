@@ -101,9 +101,9 @@
       </div>
     </div>
     <div class="page-actions">
-      <button type="button" class="btn" id="choose">Choose folder…</button>
+      <button type="button" class="btn" id="choose">Choose folder</button>
       <button type="button" class="btn primary" id="refresh" aria-disabled="true"
-        title="Read the folder again and ask every project for its newest version">Refresh</button>
+        title="Read the folder again and ask every project for its newest version"><svg class="octicon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><use href="/static/octicons.svg#sync-16"/></svg> Refresh</button>
     </div>
   </section>
 
@@ -141,7 +141,7 @@
           <div class="filter-items" id="filter-items"></div>
           <div class="filter-foot">
             <button type="button" class="linkish" id="filter-clear">Clear all</button>
-            <button type="button" class="btn small primary" id="filter-done">Done</button>
+            <button type="button" class="btn small primary" id="filter-done">Close</button>
           </div>
         </div>
       </details>
@@ -234,7 +234,7 @@
         <p class="muted">Drag an image anywhere onto this page, or choose one. It goes
           straight into this folder, and isoshelf identifies it afterwards.</p>
       </div>
-      <button type="button" class="btn" id="upload-choose">Choose a file…</button>
+      <button type="button" class="btn" id="upload-choose">Choose a file</button>
       <input type="file" id="upload-input" multiple hidden
         accept=".iso,.wim,.img,.vhd,.vhdx,.efi,.xz,.gz,.zip"
         aria-label="Choose an image file to add to this folder">
@@ -409,8 +409,8 @@
           will recognize this filename from now on. It can't be checked for updates: that needs an
           official place to read checksums from.</p>
         <div class="mine-form">
-          <label>Name
-            <input type="text" id="mine-name" maxlength="80" spellcheck="false" placeholder="Windows Server 2022">
+          <label>Name <span class="muted">(required)</span>
+            <input type="text" id="mine-name" maxlength="80" spellcheck="false" required aria-required="true" placeholder="Windows Server 2022">
           </label>
           <label>Kind
             <select id="mine-category">
@@ -454,7 +454,7 @@
     <header class="picker-head">
       <h1 id="picker-title">Choose a folder</h1>
       <p class="muted">A Ventoy drive, any folder of images (a NAS share, your downloads, card
-        images waiting to be written), or Proxmox ISO storage. Just plugged a drive in?
+        images waiting to be written), or Proxmox ISO storage. Plugged in a drive?
         Press Refresh.</p>
     </header>
     <div class="picker-path">

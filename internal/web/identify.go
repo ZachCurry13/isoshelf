@@ -74,7 +74,7 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 		Version string `json:"version"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 
@@ -107,7 +107,7 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 	} else {
 		entry := s.cat.Entry(req.Entry)
 		if entry == nil {
-			writeError(w, http.StatusBadRequest, "Unknown image.")
+			writeError(w, http.StatusBadRequest, "isoshelf doesn't know that image. Scan the folder again.")
 			return
 		}
 		if err := s.st.Assign(req.Path, entry.ID, req.Version); err != nil {
@@ -121,7 +121,7 @@ func (s *Server) identifyFile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := s.saveStateLocked(base); err != nil {
-		writeError(w, http.StatusInternalServerError, "Couldn't save that: "+err.Error())
+		writeError(w, http.StatusInternalServerError, "Couldn't save that ("+err.Error()+"). Check that the folder isn't read-only and has room, then try again.")
 		return
 	}
 	// The report is built from the state, so it has to be built again. Only

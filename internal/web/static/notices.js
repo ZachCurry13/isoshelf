@@ -93,3 +93,29 @@ function fillNotice(notice, message, isError, kind) {
   notice.replaceChildren(...parts);
   notice.hidden = false;
 }
+
+// fieldError says what is wrong with one field, next to it (Primer's form
+// validation): the message under the field with a small alert icon, the field
+// marked invalid and described by the message, and focus on the field. A
+// message says what is wrong and how to put it right. clearFieldError takes
+// it away again as soon as the person edits the field.
+function fieldError(input, message) {
+  const id = `${input.id}-error`;
+  let box = document.getElementById(id);
+  if (!box) {
+    box = el("p", { class: "field-error", id });
+    input.after(box);
+    input.addEventListener("input", () => clearFieldError(input), { once: true });
+  }
+  box.replaceChildren(icon("alert-fill-12"), el("span", {}, message));
+  input.setAttribute("aria-invalid", "true");
+  input.setAttribute("aria-describedby", id);
+  input.focus();
+}
+
+function clearFieldError(input) {
+  input.removeAttribute("aria-invalid");
+  input.removeAttribute("aria-describedby");
+  const box = document.getElementById(`${input.id}-error`);
+  if (box) box.remove();
+}

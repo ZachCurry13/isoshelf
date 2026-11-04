@@ -52,3 +52,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .bar-fill { transition: width 0.3s ease; }
 }
+
+/* The message under a field that is wrong, and the field itself. */
+.field-error { display: flex; align-items: center; gap: var(--sp-4); margin: var(--sp-4) 0 0; font-size: var(--text-small); color: var(--bad-fg); }
+input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--bad-border); }

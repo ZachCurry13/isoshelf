@@ -17,14 +17,14 @@ const FOLDER_SETTINGS = {
   short: "Folder",
   settings: [
     {
-      name: "The folder isoshelf is watching",
+      name: "Watched folder",
       fields: ["target"],
       hint: "The images in this folder are the ones the page is about.",
-      words: "folder drive target ventoy nas path choose change another location",
+      words: "the folder isoshelf is watching folder drive target ventoy nas path choose change another location",
       control: () => el("div", { class: "setting-controls" },
         el("div", { class: "file" }, (state && state.target) || "No folder chosen yet"),
         el("button", { type: "button", class: "btn small", disabled: cantSwitch(), onclick: openPicker },
-          "Choose folder…")),
+          "Choose folder")),
     },
     {
       // On a desktop the type is on the folder card; on a server the card is
@@ -41,11 +41,11 @@ const FOLDER_SETTINGS = {
         el("option", { value, selected: value === (state.profile || "ventoy") || undefined }, text))),
     },
     {
-      name: "Where this folder's records are kept",
+      name: "Records location",
       hint: "What isoshelf has worked out about this folder: its history, the images " +
         "you starred, and what each file turned out to be. Normally kept in the folder " +
         "itself, so the drive carries them with it.",
-      words: "records state history stars where kept read-only folder drive",
+      words: "where this folder's records are kept records state history stars where kept read-only folder drive",
       available: () => state && state.target,
       control: () => recordsControl(),
       note: () => recordsNote(),

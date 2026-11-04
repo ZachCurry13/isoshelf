@@ -44,18 +44,18 @@ func (s *Server) setLogin(w http.ResponseWriter, r *http.Request) {
 		Again    string `json:"again"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	have := s.account()
 	// Changing it means proving you still know it. A browser somebody left
 	// open should not be enough.
 	if have != nil && !have.Matches(have.User, req.Current) {
-		writeError(w, http.StatusForbidden, "That isn't the current password.")
+		writeError(w, http.StatusForbidden, "The current password doesn't match. Check it and try again.")
 		return
 	}
 	if req.Password != req.Again {
-		writeError(w, http.StatusBadRequest, "Those two passwords aren't the same.")
+		writeError(w, http.StatusBadRequest, "The two passwords don't match. Type them again.")
 		return
 	}
 	user := req.User
@@ -67,7 +67,7 @@ func (s *Server) setLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := auth.Set(s.cfg.Dirs.Config, user, req.Password); err != nil {
-		writeError(w, http.StatusInternalServerError, "Couldn't save the login: "+err.Error())
+		writeError(w, http.StatusInternalServerError, "Couldn't save the login ("+err.Error()+"). Check that isoshelf's own folder can be written to, then try again.")
 		return
 	}
 	// This browser keeps its place; every other one is asked again, because

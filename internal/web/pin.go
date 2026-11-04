@@ -22,7 +22,7 @@ func (s *Server) setPin(w http.ResponseWriter, r *http.Request) {
 		Pinned bool   `json:"pinned"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	s.mu.Lock()
@@ -45,7 +45,7 @@ func (s *Server) setPin(w http.ResponseWriter, r *http.Request) {
 	err := s.saveStateLocked(base)
 	s.mu.Unlock()
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "Couldn't save the pin: "+err.Error())
+		writeError(w, http.StatusInternalServerError, "Couldn't save the pin ("+err.Error()+"). Check that the folder isn't read-only and has room, then try again.")
 		return
 	}
 	s.getState(w, r)

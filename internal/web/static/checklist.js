@@ -63,8 +63,8 @@ async function reviewOlder(older) {
       note: newest[item.entry] ? `newer here: ${newest[item.entry]}` : "",
     })),
     actions: [
-      { label: "Archive them", value: "move-aside", primary: true },
-      { label: "Delete them", value: "delete" },
+      { label: "Archive images", value: "move-aside", primary: true },
+      { label: "Delete files", value: "delete" },
     ],
   });
   if (!answer) return;

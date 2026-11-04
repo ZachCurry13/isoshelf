@@ -119,7 +119,7 @@ function renderDetails() {
     buttons.push(el("button", {
       type: "button", class: "btn", disabled: scanning(),
       onclick: () => removeItem(item),
-    }, "Remove…"));
+    }, "Remove"));
   }
   parts.push(el("div", { class: "details-buttons" }, buttons.filter(Boolean)));
   $("details-body").replaceChildren(...parts.filter(Boolean));

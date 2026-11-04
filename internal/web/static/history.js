@@ -52,7 +52,7 @@ async function loadHistory(key) {
     drawHistory();
   } catch (err) {
     historyKey = "";
-    $("history-list").replaceChildren(el("li", { class: "muted" }, `Couldn't read the history: ${err.message}`));
+    $("history-list").replaceChildren(el("li", { class: "muted" }, `Couldn't read the history (${err.message}). Reload the page and try again.`));
   }
 }
 
@@ -109,7 +109,7 @@ function eventRow(e) {
       el("div", {}, el("span", { class: "name" }, e.name),
         version ? el("span", { class: "label" }, version) : null),
       el("div", { class: "file" }, e.path),
-      el("div", { class: "kind", title: e.at ? new Date(e.at).toLocaleString() : "" }, detail.join(" · "))),
+      el("div", { class: "kind", title: e.at ? plainDateTime(new Date(e.at)) : "" }, detail.join(" · "))),
     el("div", { class: "past-actions" }, buttons));
 }
 

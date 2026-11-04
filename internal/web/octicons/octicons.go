@@ -30,20 +30,12 @@ const Version = "19.42.0"
 // isn't here can't be asked for, and one nothing asks for is a line to delete.
 var Names = []string{
 	// 16 px, the default.
-	"alert-16", "archive-16", "arrow-down-16", "arrow-right-16", "arrow-up-16",
-	"bookmark-16", "bookmark-fill-16", "check-16", "check-circle-16",
-	"check-circle-fill-16", "chevron-down-16", "chevron-right-16", "chevron-up-16",
-	"circle-slash-16", "clock-16", "copy-16", "database-16",
-	"device-desktop-16", "download-16", "file-16", "file-directory-16", "filter-16",
-	"gear-16", "globe-16", "grabber-16", "history-16", "info-16",
-	"kebab-horizontal-16", "key-16", "move-to-top-16", "link-external-16", "lock-16", "package-16",
-	"pin-16", "plus-16", "question-16", "search-16", "server-16", "shield-check-16",
-	"sign-out-16", "star-16", "star-fill-16", "stop-16", "sync-16", "tools-16",
-	"trash-16", "unverified-16", "upload-16", "verified-16", "x-16", "x-circle-16",
-	"x-circle-fill-16",
+	"alert-16", "arrow-down-16", "arrow-up-16", "bookmark-16", "bookmark-fill-16",
+	"check-16", "check-circle-16", "chevron-right-16", "download-16", "filter-16",
+	"gear-16", "grabber-16", "info-16", "move-to-top-16", "pin-16", "question-16",
+	"star-16", "star-fill-16", "stop-16", "sync-16", "x-16",
 	// 12 px, for condensed places only.
-	"alert-fill-12", "check-circle-fill-12", "chevron-down-12", "chevron-right-12",
-	"no-entry-fill-12", "x-circle-fill-12",
+	"alert-fill-12",
 }
 
 // SourceURL is where an icon is published.

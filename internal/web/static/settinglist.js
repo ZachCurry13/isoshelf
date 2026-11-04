@@ -44,27 +44,27 @@ function settingGroups() {
 }
 
 const LIST_SETTINGS = {
-  title: "The list of images",
+  title: "Image list",
   short: "Images",
   settings: [
       {
-        name: "Keep the list of images up to date",
+        name: "Update the catalog",
         fields: ["catalog_auto"],
         hint: "New images without waiting for a new isoshelf. Only ever read from " +
           "this project's own repository.",
-        words: "catalog list update images automatic",
+        words: "catalog list update images automatic keep up to date",
         available: () => state && state.catalog && state.catalog.can_auto,
         control: () => el("div", { class: "setting-controls" },
-          switchRow("Keep the list of images up to date", state.catalog.auto, (on) => ({ catalog_auto: on })),
+          switchRow("Update the catalog", state.catalog.auto, (on) => ({ catalog_auto: on })),
           el("button", { type: "button", class: "btn small", onclick: refreshCatalog }, "Check now")),
         note: () => catalogNote(),
       },
       {
-        name: "Your own list of images",
+        name: "Your own images",
         hint: "isoshelf never changes a list you wrote yourself.",
-        words: "catalog own yours custom toml",
+        words: "catalog own yours custom toml list of images",
         available: () => state && state.catalog && !state.catalog.can_auto,
-        control: () => el("div", { class: "muted" }, catalogNote() || "In use."),
+        control: () => el("div", { class: "muted" }, catalogNote() || "In use"),
       },
       {
         name: "Allow downloads",

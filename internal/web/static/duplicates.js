@@ -69,7 +69,7 @@ function duplicateActions(item) {
   out.push(el("button", {
     type: "button", class: "btn small", disabled: scanning(),
     onclick: () => removeItem(item),
-  }, "Remove this copy…"));
+  }, "Remove this copy"));
   return out;
 }
 

@@ -24,11 +24,11 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		Dismiss *string `json:"dismiss"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	if req.OldFiles != nil && *req.OldFiles != "replace" && *req.OldFiles != "archive" && *req.OldFiles != "keep" {
-		writeError(w, http.StatusBadRequest, `old_files must be "replace", "archive" or "keep".`)
+		writeError(w, http.StatusBadRequest, `That choice for old files wasn't understood. Reload the page and try again.`)
 		return
 	}
 	days := 0
@@ -38,7 +38,7 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		case "7", "30", "90":
 			days, _ = strconv.Atoi(d)
 		default:
-			writeError(w, http.StatusBadRequest, `dismiss must be "7", "30", "90", "forever" or "".`)
+			writeError(w, http.StatusBadRequest, `That way of dismissing wasn't understood. Reload the page and try again.`)
 			return
 		}
 	}
@@ -52,7 +52,7 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
 	case s.cat.Entry(req.Entry) == nil:
-		writeError(w, http.StatusBadRequest, "Unknown image.")
+		writeError(w, http.StatusBadRequest, "isoshelf doesn't know that image. Scan the folder again.")
 		return
 	}
 	base := s.st.Clone()
@@ -83,7 +83,7 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 	s.st.SetTrack(req.Entry, t)
 	s.dropMissingLocked(req.Entry)
 	if err := s.saveStateLocked(base); err != nil {
-		writeError(w, http.StatusInternalServerError, "Couldn't save the setting: "+err.Error())
+		writeError(w, http.StatusInternalServerError, "Couldn't save the setting ("+err.Error()+"). Check that the folder isn't read-only and has room, then try again.")
 		return
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"tracks": s.st.Tracks, "usual_set": nonNil(s.st.UsualSet())})

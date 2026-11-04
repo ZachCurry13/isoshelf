@@ -126,7 +126,7 @@ func (s *Server) setPeer(w http.ResponseWriter, r *http.Request) {
 		Forget bool  `json:"forget"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	if req.Forget {

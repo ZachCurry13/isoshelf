@@ -143,7 +143,7 @@ async function finish(file, req, trouble) {
     return;
   }
 
-  record(file.name, "failed", trouble || answer.error || `Failed (${req.status}).`);
+  record(file.name, "failed", trouble || answer.error || `The upload failed (error ${req.status}). Check that the folder has room and isn't read-only, then try again.`);
   sendNext();
 }
 
