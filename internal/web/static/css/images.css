@@ -1,151 +1,93 @@
-/* The list of images: the table, its rows and columns, the toolbar above it, and the phone layout where each row becomes a card. */
+/* The list of images: a Primer box whose header strip is the toolbar and whose rows are the images, the marks on a row, and the phone layout where a row stacks. */
 
-/* Table */
+/* The box and its header strip */
 
 .images { overflow: hidden; }
-.toolbar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
-.toolbar input { flex: 0 1 320px; }
-
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 5px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
-/* Hairlines between rows, a full rule under the heading: the eye should be
-   able to run along a row without being cut into boxes. */
-tbody td { border-bottom: 1px solid color-mix(in srgb, var(--border), transparent 45%); }
-tbody tr:hover { background: color-mix(in srgb, var(--accent), transparent 94%); }
-/* A heading that reads as a heading rather than as a first row. */
-th {
-  font-size: var(--text-small);
-  font-weight: 600;
-  color: var(--muted);
+.toolbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-8);
+  padding: var(--sp-8) var(--sp-16);
   background: var(--surface-2);
-  position: sticky;
-  top: 0;
-  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
 }
-tbody tr:hover td { background: var(--surface-2); }
-tbody tr:last-child td { border-bottom: none; }
-
-.col-star { width: 36px; padding-right: 0; }
-/* Left to itself the name column took most of a wide window, and short
-   names sat in a sea of nothing. A share, not a fixed width, so a narrow
-   window still gives names room; long ones wrap at their separators. */
-#col-image { width: 32%; }
-td.replace { text-align: center; }
-
-.name { font-weight: 600; }
-.name a { color: inherit; }
-.name a:hover { color: var(--accent); }
-.arch { margin-left: 6px; font-size: var(--text-small); color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0 4px; font-weight: 500; }
-/* A pinned file: kept whatever updates come. */
-.pin-mark { margin-left: 6px; color: var(--accent); display: inline-flex; }
-.pin-icon { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -2px; }
-td.version-cell { font-family: var(--mono); font-size: var(--text-small); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.latest-new { font-weight: 600; color: var(--update-fg); }
-.file { font-family: var(--mono); font-size: var(--text-small); overflow-wrap: break-word; min-width: 170px; }
-.size { color: var(--muted); font-size: var(--text-small); }
-.note { color: var(--muted); font-size: var(--text-small); margin-top: 3px; max-width: 520px; overflow-wrap: anywhere; }
-
-.star {
-  font: inherit;
-  font-size: var(--text-large);
-  line-height: 1;
-  background: none;
-  border: none;
-  color: var(--muted);
-  cursor: pointer;
-  padding: 2px;
-  opacity: 0.55;
-}
-.star:hover { opacity: 1; }
-.star[aria-pressed="true"] { color: var(--star); opacity: 1; }
-.star:disabled { visibility: hidden; }
-
-.empty { padding: 40px 16px; text-align: center; color: var(--muted); display: grid; gap: 10px; justify-items: center; }
-
-/* Row actions and dialogs */
-
-.col-actions { width: 1%; }
-/* When the file arrived. The same fact appears under the name on a phone,
-   where there are no columns, so exactly one of the two is ever showing. */
-.col-added { width: 1%; white-space: nowrap; }
-.col-get { width: 1%; white-space: nowrap; text-align: center; }
-#table.no-downloads .col-get { display: none; }
-.icon-btn { display: inline-flex; align-items: center; justify-content: center; padding: 4px 8px; }
-.download-icon { width: 16px; height: 16px; vertical-align: middle; }
-td.added-cell { color: var(--muted); font-variant-numeric: tabular-nums; }
-.added-inline { display: none; }
-.row-actions { white-space: nowrap; text-align: right; }
-.row-actions .btn + .btn { margin-left: 6px; }
-
-/* Logos, links menu and the filter bar */
-
-.toolbar { flex-wrap: wrap; }
+.toolbar input { flex: 0 1 320px; }
 /* Measured in em, not pixels, so the cap grows with Larger text. At a fixed
    190px the longest sort ("Needs attention first") was cut off for exactly
    the people who turned that setting on. */
 .toolbar select { max-width: 14em; }
-.check { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); white-space: nowrap; }
+.check { display: inline-flex; align-items: center; gap: var(--sp-6); color: var(--muted); white-space: nowrap; }
 .check input[type="checkbox"], .check input[type="radio"] { flex: none; width: auto; margin: 0; }
 
-.image-cell { display: flex; align-items: flex-start; gap: 10px; }
-.image-text { min-width: 0; }
+/* The rows: the name and what is under it, the version, the status, the buttons. */
 
-/* Sortable column headings */
-th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
-th.sortable:hover { color: var(--text); }
-th.sortable.sorted::after { content: " ▲"; font-size: var(--text-small); color: var(--accent); }
-th.sortable.sorted[aria-sort="descending"]::after { content: " ▼"; }
-
-/* The mark for images worth knowing about, and its key under the list. */
-.caution { color: var(--warn-fg); margin: 0 4px; cursor: help; }
-.legend { margin: 10px 16px 4px; font-size: var(--text-small); color: var(--muted); }
-.legend .caution { margin-left: 0; }
-
-/* A name wraps as a whole; its badges go on the line below, never dangling
-   off the end of a wrapped name. */
-.image-text { min-width: 200px; }
-.name-line .name { overflow-wrap: break-word; }
-.meta-line {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
-  margin-top: 3px; font-size: var(--text-small);
+.rows { list-style: none; margin: 0; padding: 0; }
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 9rem 12rem auto;
+  align-items: center;
+  gap: var(--sp-16);
+  padding: var(--sp-8) var(--sp-16);
+  cursor: pointer;
 }
-.meta-line .arch { margin-left: 0; }
+.row + .row { border-top: 1px solid var(--border-muted); }
+.row:hover { background: var(--surface-2); }
+.row.picked { background: var(--accent-muted); }
+.row-main { display: flex; align-items: flex-start; gap: var(--sp-8); min-width: 0; }
+.row-text { min-width: 0; }
+.name-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4) var(--sp-8); }
+.name { font-weight: 600; overflow-wrap: break-word; }
+.name a { color: inherit; }
+.name a:hover { color: var(--accent); }
+.row-version { font-family: var(--mono); font-size: var(--text-small); font-variant-numeric: tabular-nums; }
+.latest-new { font-weight: 600; color: var(--update-fg); }
+.row-status { display: flex; flex-wrap: wrap; gap: var(--sp-4); }
+.row-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-8); }
 
-/* Slim rows: the file, its size and its date live under the name. */
-tbody tr.row { cursor: pointer; }
-tbody tr.picked td { background: color-mix(in srgb, var(--accent), transparent 92%); }
-.under {
-  display: flex; flex-wrap: wrap; gap: 4px;
-  margin-top: 3px; font-size: var(--text-small); color: var(--muted);
-}
-/* No minimum width here: the one .file carries for tables left a gap after
-   every short file name, before its size. */
+/* The file, its size and its date, in one line under the name. */
+.under { display: flex; flex-wrap: wrap; gap: var(--sp-4); margin-top: var(--sp-4); font-size: var(--text-small); color: var(--muted); }
 .under .file { font-family: var(--mono); font-size: var(--text-small); overflow-wrap: anywhere; min-width: 0; }
-.version-cell .latest-new { font-weight: 600; }
+.size { color: var(--muted); font-size: var(--text-small); }
+.note { color: var(--muted); font-size: var(--text-small); margin-top: var(--sp-4); max-width: 520px; overflow-wrap: anywhere; }
+.meta-line { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-6); margin-top: var(--sp-4); font-size: var(--text-small); }
 
-/* On a phone the list stops being a table: each image is a small card, with
-   its version and status under the name and the buttons below. */
-@media (max-width: 720px) {
-  .table-wrap { overflow-x: visible; }
-  #table thead { display: none; }
-  #table, #table tbody, #table tr, #table td { display: block; width: auto; }
-  #table tr.row {
-    position: relative;
-    padding: 10px 14px 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  #table td { border: 0; padding: 2px 0; }
-  #table td.col-star { position: absolute; top: 10px; right: 10px; padding: 0; }
-  #table .version-cell { font-size: var(--text-small); color: var(--muted); }
-  #table .col-added { display: none; }
-  .added-inline { display: inline; }
-  .row-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .image-cell { padding-right: 28px; }
-}
+/* A pinned file: kept whatever updates come. */
+.pin-mark { color: var(--accent); display: inline-flex; }
+
+/* The star, and the mark for images worth knowing about with its key under the list. */
+.star { display: inline-flex; background: none; border: none; color: var(--muted); cursor: pointer; padding: var(--sp-2); }
+.star:hover { color: var(--text); }
+.star[aria-pressed="true"] { color: var(--star); }
+.star:disabled { visibility: hidden; }
+.caution { color: var(--warn-fg); display: inline-flex; cursor: help; }
+.legend { margin: var(--sp-12) var(--sp-16) var(--sp-4); font-size: var(--text-small); color: var(--muted); }
+.legend .caution { margin-right: var(--sp-4); }
+
+.empty { text-align: center; }
 
 /* A dismissed update (v0.8.2): still listed, greyed, until it's undone. */
-tr.row.dismissed td:not(.row-actions) { opacity: 0.6; }
-.dismissed-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.dismissed-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.row.dismissed > :not(.row-actions) { opacity: 0.6; }
+.dismissed-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-4); }
+.dismissed-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-6); }
 
+/* On a phone a row stacks: the name, then its version and status, then the buttons. */
+@media (max-width: 767px) {
+  .row { grid-template-columns: minmax(0, 1fr); gap: var(--sp-8); }
+  .row-version { color: var(--muted); }
+  .row-actions { justify-content: flex-start; }
+}
+
+/* Under Primer's large breakpoint the name needs the room: narrower columns, the status pills stacking. */
+@media (min-width: 768px) and (max-width: 1011px) {
+  .row { grid-template-columns: minmax(0, 1fr) 8rem 9rem auto; gap: var(--sp-12); }
+}
+
+/* Primer's loading skeleton: the shape of a row, in place until the first real ones are drawn. */
+.skeleton { cursor: default; }
+.skeleton:hover { background: none; }
+.skeleton-box { display: block; background: var(--surface-2); border-radius: var(--radius); }
+.skeleton-tile { width: 24px; height: 24px; flex: none; }
+.skeleton-line { width: 40%; height: 14px; margin: var(--sp-4) 0; }
+.skeleton-short { width: 25%; }
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton-box { animation: skeleton-pulse 1.4s ease-in-out infinite; }
+}
+@keyframes skeleton-pulse { 50% { opacity: 0.5; } }

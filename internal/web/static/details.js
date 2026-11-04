@@ -52,7 +52,7 @@ function renderDetails() {
     el("div", {}, el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}` }, statusWord(item.status))),
     el("div", { class: "muted" }, statusHelp(item.status)),
     item.note ? el("div", { class: "note" }, item.note) : null,
-    cautionOf(item) ? el("div", { class: "note" }, `⚠ ${cautionOf(item)}`) : null,
+    cautionOf(item) ? el("div", { class: "note" }, icon("alert-16"), ` ${cautionOf(item)}`) : null,
   ]));
 
   if (item.path) {
@@ -119,7 +119,7 @@ function renderDetails() {
     buttons.push(el("button", {
       type: "button", class: "btn", disabled: scanning(),
       onclick: () => removeItem(item),
-    }, "Remove…"));
+    }, "Remove"));
   }
   parts.push(el("div", { class: "details-buttons" }, buttons.filter(Boolean)));
   $("details-body").replaceChildren(...parts.filter(Boolean));

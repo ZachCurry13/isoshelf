@@ -24,7 +24,7 @@ func (s *Server) addMyImage(w http.ResponseWriter, r *http.Request) {
 		Page     string `json:"page"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 
@@ -72,7 +72,7 @@ func (s *Server) addMyImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := s.saveStateLocked(base); err != nil {
-		writeError(w, http.StatusInternalServerError, "Couldn't save that: "+err.Error())
+		writeError(w, http.StatusInternalServerError, "Couldn't save that ("+err.Error()+"). Check that the folder isn't read-only and has room, then try again.")
 		return
 	}
 	s.report = check.Offline(s.scan, s.st, s.cat)

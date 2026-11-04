@@ -68,7 +68,7 @@ function pendingBytes() {
 function downloadProgress(run = downloads().running[0]) {
   // The download carries its own progress, so the page can draw it and a
   // scan's card at the same time.
-  if (!run) return { text: "Starting…", fraction: null, short: "Starting…" };
+  if (!run) return { text: "Starting…", fraction: null, short: "Starting" };
   if (run.stage === "downloading" && run.total > 0) {
     const fraction = run.done / run.total;
     const pct = `${Math.floor(fraction * 100)}%`;
@@ -86,17 +86,17 @@ function downloadProgress(run = downloads().running[0]) {
     return { text, fraction, short: `Downloading ${pct}` };
   }
   if (run.stage === "downloading") {
-    return { text: run.from ? `Downloading from ${run.from}…` : "Downloading…", fraction: null, short: "Downloading…" };
+    return { text: run.from ? `Downloading from ${run.from}…` : "Downloading…", fraction: null, short: "Downloading" };
   }
   if (run.stage === "verifying") {
     return {
       text: "Verifying it against the published checksum…",
       fraction: run.total > 0 ? run.done / run.total : null,
-      short: "Verifying…",
+      short: "Verifying",
     };
   }
   if (run.stage === "placing") return { text: "Putting it in place…", fraction: 1, short: "Almost done" };
-  return { text: "Finding the download…", fraction: null, short: "Starting…" };
+  return { text: "Finding the download…", fraction: null, short: "Starting" };
 }
 
 // downloadRate is how fast a download is going, in bytes a second. isoshelf
@@ -164,8 +164,8 @@ async function stopDownloads() {
   const waiting = d.queued.length;
   const answer = await ask(
     "Stop all downloads?",
-    `Stops the download running now${waiting ? `, and takes ${plural(waiting, "image")} off the queue` : ""}. What has downloaded so far is kept, so adding it again continues from there.`,
-    [{ label: "Stop them", value: "yes", primary: true }, { label: "Keep going", value: null }]);
+    `${d.running.length ? `Stops ${d.running.map((job) => job.name).join(", ")}` : "Stops the download running now"}${waiting ? `, and takes ${plural(waiting, "image")} off the queue` : ""}. What has downloaded so far is kept, so adding it again continues from there.`,
+    [{ label: "Stop downloads", value: "yes", primary: true }, { label: "Keep going", value: null }]);
   if (!answer) return;
   try {
     await api("POST", "/api/cancel");
@@ -207,7 +207,7 @@ function jobButton(entry, idle, fresh) {
       // Once the folder has been looked at again, the list shows the file
       // itself and the tick has done its job.
       if (!fresh || arrivedSinceScan(at.job)) {
-        return el("span", { class: "job-done" }, at.job.update ? "Updated ✓" : "Added ✓");
+        return el("span", { class: "job-done" }, icon("check-16"), at.job.update ? "Updated" : "Added");
       }
       return idle;
     default:

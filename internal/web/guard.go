@@ -41,7 +41,7 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		h.Set("Content-Security-Policy", "default-src 'self'; img-src 'self' data:; frame-ancestors 'none'")
 
 		if !s.cfg.AnyHost && !isLocalhost(r.Host) {
-			http.Error(w, "isoshelf only answers on localhost", http.StatusForbidden)
+			http.Error(w, "isoshelf only answers on this computer. Open it at 127.0.0.1 or localhost.", http.StatusForbidden)
 			return
 		}
 		// A login replaces the link's secret rather than sitting beside it.
@@ -112,7 +112,7 @@ func (s *Server) guard(next http.Handler) http.Handler {
 		if r.Method != http.MethodGet && r.Method != http.MethodHead {
 			origin := r.Header.Get("Origin")
 			if r.Header.Get(requestHeader) != "1" || !sameOrigin(origin, r.Host) {
-				writeError(w, http.StatusForbidden, "request refused")
+				writeError(w, http.StatusForbidden, "isoshelf refused that request. Reload the page and try again.")
 				return
 			}
 		}

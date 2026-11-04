@@ -1,11 +1,11 @@
-/* Progress bars, spinner and the notice line. */
+/* Progress bars, the spinner, the Banner and the blank slate. */
 
 /* Progress */
 
-.run { display: flex; align-items: center; gap: 16px; padding: 12px 20px; }
-.run-text { display: flex; align-items: center; gap: 10px; min-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.run { display: flex; align-items: center; gap: var(--sp-16); padding: var(--sp-12) var(--sp-20); }
+.run-text { display: flex; align-items: center; gap: var(--sp-8); min-width: 260px; overflow-wrap: anywhere; }
 .bar { flex: 1; height: 8px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-full); overflow: hidden; }
-.bar-fill { height: 100%; width: 0; background: var(--accent-fill); border-radius: var(--radius-full); transition: width 0.3s ease; }
+.bar-fill { height: 100%; width: 0; background: var(--accent-fill); border-radius: var(--radius-full); }
 .bar.indeterminate .bar-fill { width: 30%; animation: slide 1.2s ease-in-out infinite; }
 @keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(340%); } }
 
@@ -18,21 +18,41 @@
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.notice {
-  padding: 10px 14px;
+/* Primer's Banner: an icon for how serious it is, a title that says it, and what can be done. Only the icon is coloured; the words are the page's own. */
+.banner {
+  display: flex; align-items: flex-start; gap: var(--sp-8);
+  padding: var(--sp-12) var(--sp-16);
+  background: var(--bgc);
+  border: 1px solid var(--bd);
   border-radius: var(--radius);
-  background: var(--update-bg);
-  color: var(--update-fg);
-  border: 1px solid color-mix(in srgb, var(--update-fg), transparent 70%);
 }
-.notice.error { background: var(--bad-bg); color: var(--bad-fg); border-color: color-mix(in srgb, var(--bad-fg), transparent 70%); }
+.banner > .octicon { color: var(--fg); margin-top: var(--sp-2); }
+.banner-title { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.banner--critical { --fg: var(--bad-fg); --bgc: var(--bad-bg); --bd: var(--bad-border); }
+.banner--warning { --fg: var(--update-fg); --bgc: var(--update-bg); --bd: var(--update-border); }
+.banner--success { --fg: var(--ok-fg); --bgc: var(--ok-bg); --bd: var(--ok-border); }
+.banner--info { --fg: var(--missing-fg); --bgc: var(--missing-bg); --bd: var(--missing-border); }
 
 /* The same message, inside a dialog. A modal is drawn above the whole page,
    so a notice left behind it cannot be seen at all. */
-.dialog-notice { margin: 0 20px 12px; flex: none; }
-.picker-head + .dialog-notice, .ask-form > .dialog-notice { margin-top: 12px; }
+.dialog-notice { margin: 0 var(--sp-20) var(--sp-12); flex: none; }
+.picker-head + .dialog-notice, .ask-form > .dialog-notice { margin-top: var(--sp-12); }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .run { flex-wrap: wrap; }
   .run-text { min-width: 0; flex-basis: 100%; }
 }
+
+/* Primer's Blankslate: what to say where there is nothing yet, and the one thing to do about it. */
+.blankslate { padding: var(--sp-32); text-align: center; }
+.blankslate-title { margin: 0; font-size: var(--text-large); font-weight: 600; }
+.blankslate p { margin: var(--sp-4) auto var(--sp-16); max-width: 480px; color: var(--muted); }
+.blankslate-actions { display: flex; justify-content: center; gap: var(--sp-8); flex-wrap: wrap; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .bar-fill { transition: width 0.3s ease; }
+}
+
+/* The message under a field that is wrong, and the field itself. */
+.field-error { display: flex; align-items: center; gap: var(--sp-4); margin: var(--sp-4) 0 0; font-size: var(--text-small); color: var(--bad-fg); }
+input[aria-invalid="true"], select[aria-invalid="true"] { border-color: var(--bad-border); }

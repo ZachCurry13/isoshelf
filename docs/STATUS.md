@@ -282,3 +282,9 @@ Earlier releases, v0.9.2 back to the start, are written up in
   Settings paces them and lets a third start while there is room (#4).
 - Logo audit: only Debian, Arch and NixOS keep a logo; 25 became the plain disc.
 - Next: AnduinOS as a download, the remaining plain discs, #2, #3, #5.
+
+## Latest (v0.11.0, 2026-11-04)
+- The page follows Primer's manual throughout: page header and `h1`, tab bar with counts, the list as a box of rows,
+  outlined status pills, Octicons, Primer's spacing scale (a test holds it), Banner, Blankslate, switches, dialogs, wording.
+- `docs/primer-guidelines.md` is the manual as a checklist; `docs/primer-audit.md` is the page checked against it, with what
+  is open or decided at the end. Next: read the pages the researchers couldn't (tab ARIA, truncation, tooltip), measure contrast.

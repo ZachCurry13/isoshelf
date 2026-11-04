@@ -61,18 +61,18 @@ function proofOf(item, o) {
   }
   if (!item.entry) return { text: "Nothing to check it against until isoshelf knows what it is." };
   if (item.updates !== "download") {
-    return { text: "Not checked: the project publishes no checksum isoshelf can read." };
+    return { text: "Not checked because the project publishes no checksum isoshelf can read." };
   }
   if (item.weak_checksum) {
-    return { text: "Not checked: the project publishes only an MD5 or SHA-1, which shows a download isn't damaged but not that a file is the project's own." };
+    return { text: "Not checked because the project publishes only an MD5 or SHA-1, which shows a download isn't damaged but not that a file is the project's own." };
   }
   if (item.older || item.status === "update available") {
-    return { text: "Not checked: the project publishes a checksum for its newest release only, and this is an older one." };
+    return { text: "Not checked because the project publishes a checksum for its newest release only, and this is an older one." };
   }
   if (item.hashed && state.report && state.report.checked) {
     return { text: "Not the newest release, which is the only one the project publishes a checksum for." };
   }
-  return { text: "Not checked.", check: true };
+  return { text: "Not checked", check: true };
 }
 
 function hostOf(url) {

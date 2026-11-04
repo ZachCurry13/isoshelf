@@ -150,7 +150,7 @@ func TestSettingUpALoginAndUsingIt(t *testing.T) {
 // anything is written.
 func TestSettingUpRefusesWhatCannotWork(t *testing.T) {
 	for _, c := range []struct{ why, password, again, want string }{
-		{"two different passwords", "a+good+long+password", "something+else", "Those two passwords aren"},
+		{"two different passwords", "a+good+long+password", "something+else", "The two passwords don"},
 		{"a short password", "short", "short", "8 characters"},
 	} {
 		s := serverMode(t, true)
@@ -302,7 +302,7 @@ func TestTheLoginPageEscapesWhatItShows(t *testing.T) {
 // Signing out has to work, and it did not: it was a plain form posted to
 // /login, and this server sends Referrer-Policy: no-referrer, so browsers
 // send "Origin: null" on a form post and the same-origin check refused every
-// sign-out with "request refused". It goes through the ordinary door now,
+// sign-out with "refused that request". It goes through the ordinary door now,
 // where the page's own code sends a real Origin and the header.
 func TestSigningOut(t *testing.T) {
 	s := serverMode(t, true)
@@ -330,7 +330,7 @@ func TestSigningOut(t *testing.T) {
 	if out.Code != http.StatusOK {
 		t.Fatalf("signing out: %d %s", out.Code, out.Body)
 	}
-	if strings.Contains(out.Body.String(), "request refused") {
+	if strings.Contains(out.Body.String(), "refused that request") {
 		t.Errorf("signing out was refused: %s", out.Body)
 	}
 	// The cookie is cleared, so the browser holding it is out.
@@ -385,7 +385,7 @@ func TestPostingToLoginWhileSignedInIsALogin(t *testing.T) {
 	}
 	out := httptest.NewRecorder()
 	s.ServeHTTP(out, req)
-	if strings.Contains(out.Body.String(), "request refused") {
+	if strings.Contains(out.Body.String(), "refused that request") {
 		t.Errorf("signing in while already signed in was refused: %d %s", out.Code, out.Body)
 	}
 }

@@ -65,7 +65,7 @@ async function browse(path) {
   const pinned = bookmarks.some((b) => b.toLowerCase() === pickerPath.toLowerCase());
   const pin = $("picker-pin");
   pin.disabled = !pickerPath;
-  pin.textContent = pinned ? "★ Bookmarked" : "☆ Bookmark";
+  pin.replaceChildren(icon(pinned ? "bookmark-fill-16" : "bookmark-16"), pinned ? " Bookmarked" : " Bookmark");
   pin.title = pinned
     ? "Forget this folder"
     : "Keep this folder at the top of the list, so it doesn't have to be found again";
@@ -141,13 +141,13 @@ function rememberedRow(folder, bookmarked) {
       el("button", {
         type: "button", class: "remembered-open", title: folder.path,
         onclick: () => browse(folder.path),
-      }, bookmarked ? `★ ${shortPath(folder.path)}` : shortPath(folder.path)),
+      }, bookmarked ? [icon("bookmark-fill-16"), ` ${shortPath(folder.path)}`] : shortPath(folder.path)),
       el("button", {
         type: "button", class: "remembered-forget",
         "aria-label": `Forget ${folder.path}`,
-        title: "Take this folder off the list. Nothing in it is touched.",
+        "data-tooltip": "Forget this folder", "aria-description": "Takes this folder off the list. Nothing in it is touched.",
         onclick: () => forgetFolder(folder),
-      }, "✕")),
+      }, icon("x-16"))),
     detail ? el("div", { class: "remembered-detail" }, detail) : null);
 }
 
@@ -155,12 +155,12 @@ function rememberedRow(folder, bookmarked) {
 // the word sounds bigger than it is - so the question says exactly what goes.
 async function forgetFolder(folder) {
   const yes = await ask(
-    `Forget ${folder.path}?`,
-    "This takes it off the list and throws away isoshelf's copy of what it found there. " +
-    "The folder, the images in it, its archive and its own records are not touched — " +
-    "open it again and isoshelf reads them back.",
+    "Forget this folder?",
+    `${folder.path} comes off the list, and isoshelf throws away its copy of what it found there. ` +
+    "The folder, the images in it, its archive and its own records are not touched. " +
+    "Open it again and isoshelf reads them back.",
     [
-      { label: "Forget it", value: "yes", primary: true },
+      { label: "Forget folder", value: "yes", primary: true },
       { label: "Cancel", value: null },
     ]);
   if (!yes) return;

@@ -6,7 +6,7 @@
   cursor: pointer;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 4px 10px;
+  padding: var(--sp-4) var(--sp-12);
   font-weight: 600;
   line-height: 1.1;
   color: var(--muted);
@@ -20,9 +20,9 @@
   top: calc(100% + 4px);
   z-index: 10;
   min-width: 170px;
-  padding: 6px;
+  padding: var(--sp-6);
   display: grid;
-  gap: 2px;
+  gap: var(--sp-2);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -30,6 +30,6 @@
   text-align: left;
 }
 .menu-items.pinned { position: fixed; top: auto; z-index: 30; overflow-y: auto; overscroll-behavior: contain; }
-.menu-items a { padding: 6px 10px; border-radius: var(--radius); color: var(--text); }
+.menu-items a { padding: var(--sp-6) var(--sp-12); border-radius: var(--radius); color: var(--text); }
 .menu-items a:hover { background: color-mix(in srgb, var(--accent), transparent 88%); text-decoration: none; }
 

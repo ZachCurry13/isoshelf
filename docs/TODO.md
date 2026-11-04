@@ -11,7 +11,7 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next:** possibly a Nobara KDE entry (its page lists a plain KDE edition the
+**Next:** the open items at the end of `docs/primer-audit.md` (contrast in every theme, the pages of the manual that could not be read), possibly a Nobara KDE entry (its page lists a plain KDE edition the
 catalog doesn't have), then the list under *After those*. AnduinOS downloads
 and the plain discs are in (catalog revision 2026110303). Finished work is in
 `docs/archive.md`.
@@ -197,8 +197,8 @@ Then:
   longer (2026-10-05), and passed in 6 seconds run alone. Rerun it alone
   (`go test ./cmd/isoshelf/ -run SamePort -count=1`) before believing it.
 - **The page is one script per part**, not one script. `app.js` was 2,544
-  lines until v0.3.1; it is now `app.js` (state, asking, drawing, wiring),
-  `images.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`, `dockitems.js`, `dockprogress.js`, `notices.js`,
+  lines until v0.3.1; it is now `icons.js`, `jumpnav.js`, `app.js` (state, asking, drawing, wiring),
+  `images.js`, `logotile.js`, `menus.js`, `imagerow.js`, `blankslate.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`, `dockitems.js`, `dockprogress.js`, `notices.js`,
   `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `duplicates.js`, `folders.js`, `thisfolder.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `updatesettings.js`, `access.js`, `records.js`,
   `upload.js`, `report.js`, `selfupdate.js`, `history.js` and `system.js`. Read the one you

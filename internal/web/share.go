@@ -54,7 +54,7 @@ func (s *Server) shareHave(w http.ResponseWriter, r *http.Request) {
 // one exactly as it would from a project's site.
 func (s *Server) shareFile(w http.ResponseWriter, r *http.Request) {
 	if !s.sharing() {
-		http.Error(w, "this isoshelf isn't sharing its images", http.StatusForbidden)
+		http.Error(w, "This isoshelf isn't sharing its images. Turn on sharing in Settings.", http.StatusForbidden)
 		return
 	}
 	path, _ := s.sharedFile(r.PathValue("name"), strings.ToLower(r.URL.Query().Get("sha256")))
@@ -154,7 +154,7 @@ func (s *Server) setSharing(w http.ResponseWriter, r *http.Request) {
 		Share *bool `json:"share"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Share == nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	s.updateSettings(func(c *settings.Settings) { c.ShareImages = req.Share })

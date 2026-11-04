@@ -14,47 +14,47 @@
 }
 .picker::backdrop { background: var(--backdrop); }
 .picker-form { display: flex; flex-direction: column; max-height: inherit; }
-.picker-head { padding: 18px 20px 8px; }
-.picker-head h2 { margin: 0 0 2px; font-size: var(--text-large); }
+.picker-head { padding: var(--sp-16) var(--sp-20) var(--sp-8); }
+.picker-head h1 { font-weight: 600; margin: 0 0 var(--sp-2); font-size: var(--text-large); }
 .picker-head p { margin: 0; }
-.picker-path { display: flex; gap: 8px; padding: 8px 20px 12px; }
+.picker-path { display: flex; gap: var(--sp-8); padding: var(--sp-8) var(--sp-20) var(--sp-12); }
 .picker-path input { flex: 1; font-family: var(--mono); font-size: var(--text-small); }
 .picker-body { display: flex; min-height: 300px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
-.picker-roots { width: 220px; flex: none; border-right: 1px solid var(--border); padding: 8px; overflow-y: auto; background: var(--surface-2); }
-.picker-roots h3 { font-size: var(--text-small); color: var(--muted); margin: 10px 8px 4px; }
+.picker-roots { width: 220px; flex: none; border-right: 1px solid var(--border); padding: var(--sp-8); overflow-y: auto; background: var(--surface-2); }
+.picker-roots h3 { font-size: var(--text-small); color: var(--muted); margin: var(--sp-12) var(--sp-8) var(--sp-4); }
 .picker-roots button, .picker-list button {
   font: inherit; display: block; width: 100%; text-align: left;
   background: none; border: none; color: var(--text);
-  padding: 6px 8px; border-radius: var(--radius); cursor: pointer;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: var(--sp-6) var(--sp-8); border-radius: var(--radius); cursor: pointer;
+  overflow-wrap: anywhere;
 }
 .picker-roots button:hover, .picker-list button:hover { background: color-mix(in srgb, var(--accent), transparent 88%); }
 /* A folder isoshelf remembers: its path, what it held under that, and a way
    to take it off the list. The path button takes the room the ✕ doesn't. */
-.remembered-row { display: flex; align-items: center; gap: 2px; }
+.remembered-row { display: flex; align-items: center; gap: var(--sp-2); }
 .remembered-row .remembered-open { flex: 1; min-width: 0; }
 .remembered-row .remembered-forget {
-  flex: none; width: auto; padding: 6px; color: var(--muted); opacity: 0;
+  flex: none; width: auto; padding: var(--sp-6); color: var(--muted); opacity: 0;
 }
 .remembered:hover .remembered-forget, .remembered-forget:focus-visible { opacity: 1; }
 .remembered-detail {
   font-size: var(--text-small); color: var(--muted);
-  padding: 0 8px 6px; margin-top: -4px;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: 0 var(--sp-8) var(--sp-6); margin-top: calc(-1 * var(--sp-4));
+  overflow-wrap: anywhere;
 }
 /* Nothing hides on a touch screen, where there is no hovering to do it with. */
 @media (hover: none) {
   .remembered-row .remembered-forget { opacity: 1; }
 }
 
-.picker-list { flex: 1; overflow-y: auto; padding: 8px; }
+.picker-list { flex: 1; overflow-y: auto; padding: var(--sp-8); }
 .picker-list ul { list-style: none; margin: 0; padding: 0; }
-.picker-list button::before { content: "📁"; margin-right: 8px; }
-.picker-error { color: var(--bad-fg); padding: 8px; }
-.picker-empty { color: var(--muted); padding: 8px; }
-.picker-foot { display: flex; align-items: center; gap: 8px; padding: 12px 20px; }
+.picker-list button::before { content: "📁"; margin-right: var(--sp-8); }
+.picker-error { color: var(--bad-fg); padding: var(--sp-8); }
+.picker-empty { color: var(--muted); padding: var(--sp-8); }
+.picker-foot { display: flex; align-items: center; gap: var(--sp-8); padding: var(--sp-12) var(--sp-20); }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .picker-body { flex-direction: column; }
   .picker-roots { width: auto; max-height: 130px; border-right: none; border-bottom: 1px solid var(--border); }
 }

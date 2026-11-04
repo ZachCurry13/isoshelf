@@ -25,7 +25,7 @@ function renderCatalogStatus(footer) {
     // The list changes separately from isoshelf, so it says when it last did
     // and where the changes are written down.
     cat.changed ? el("span", { class: "muted" },
-      `List last changed ${new Date(cat.changed + "T12:00:00").toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })} · `,
+      `List last changed ${agoWords(cat.changed + "T12:00:00", true)} · `,
       el("a", { href: cat.changes_url, target: "_blank", rel: "noopener noreferrer" }, "What's new")) : null);
 
   if (cat.can_auto) {

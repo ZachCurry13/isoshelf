@@ -21,11 +21,11 @@ func (s *Server) forgetFolder(w http.ResponseWriter, r *http.Request) {
 		ID   string `json:"id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	if strings.TrimSpace(req.Path) == "" || strings.TrimSpace(req.ID) == "" {
-		writeError(w, http.StatusBadRequest, "Which folder?")
+		writeError(w, http.StatusBadRequest, "Choose a folder first.")
 		return
 	}
 	s.mu.Lock()
@@ -36,7 +36,7 @@ func (s *Server) forgetFolder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := state.Forget(s.cfg.Dirs.Config, req.ID); err != nil {
-		writeError(w, http.StatusInternalServerError, "Couldn't forget that folder: "+err.Error())
+		writeError(w, http.StatusInternalServerError, "Couldn't forget that folder ("+err.Error()+"). Try again.")
 		return
 	}
 	s.updateSettings(func(c *settings.Settings) {

@@ -22,7 +22,7 @@ async function reportProblem(what, detail) {
     try {
       reportFacts = await api("GET", "/api/report");
     } catch (err) {
-      showNotice(`Couldn't gather the details for a report: ${err.message}`, true);
+      showNotice(`Couldn't gather the details for a report (${err.message}). Reload the page and try again.`, true);
       return;
     }
   }
@@ -61,7 +61,7 @@ async function reportProblem(what, detail) {
   body.append(
     el("p", { class: "muted" },
       "This opens GitHub's bug form in a new tab with the boxes below already " +
-      "filled in. Nothing is sent until you press submit there, and you can " +
+      "filled in. Nothing is sent until you select Submit new issue there, and you can " +
       "change or delete any of it first."),
     box,
     el("div", { class: "setting-controls" }, copy, toggle),

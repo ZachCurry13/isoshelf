@@ -858,15 +858,15 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
 - One **Refresh** button (v0.3.2) replaced *Scan* and *Check for updates*:
   read the folder again and ask every project again. Scanning without going
   online is what turning the setting off does, not a second button.
-- The page (v0.3.0) is one page with a sticky jump bar: Your images, Add
+- The page (v0.3.0) is one page: a page header whose one `h1` is the folder, then a sticky tab bar (Primer's UnderlineNav, a count on each tab and the current one marked) with: Your images, Add
   images, Archive, History and Tools (Tools since v0.8.8).
   A link unfolds the part it jumps to (`openSection` in `summary.js`, which
   opens only that part's own `<details>` - never one inside it, which is
   how the Filter menu once opened by itself). Above the list, one line says what wants doing
   (`renderTodo` in `summary.js`, v0.7.0; it was a card for each until then):
   `41 updates Â· 13 older Â· 3 unrecognized Â· Archive 20.9 GB [Update 31]`.
-  Each count shows exactly those images; Update all is the one button. The list is a favorite star and four columns - image (file,
-  size and date underneath), version ("22.04 -> 24.04"), status, actions - and clicking a
+  Each count shows exactly those images; Update all is the one button. The list is a Primer box - a header strip with the search, Filter and sort, and a row for each image: a favorite star, the image (file,
+  size and date underneath), version ("22.04 -> 24.04"), status as an outlined Label, buttons. Clicking a
   row opens the details panel: everything about one image, its links, and
   the pin below. Statuses are shown in plain words (`STATUS_WORDS`), each
   explaining itself; the report keeps its own words for the CLI and JSON.
@@ -974,8 +974,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   button and Remove live in the details panel; the "â¦" menu the rows used to
   carry went with the v0.3.0 redesign.
 - The page is one script per part, all plain scripts sharing the same names
-  and loaded in the order `index.html` lists them: `app.js` (what isoshelf has
-  said, how the page asks, what gets drawn, the wiring), `images.js` (statuses,
+  and loaded in the order `index.html` lists them: `icons.js` (Octicons), `jumpnav.js` (the tab bar), `app.js` (what isoshelf has
+  said, how the page asks, what gets drawn, the wiring), `images.js` (statuses, `logotile.js`, `menus.js`, `imagerow.js` (one image), `blankslate.js`,
   filters, rows), `summary.js` (the line saying what wants doing, and the
   question a container asks once), `details.js` (the panel), `checklist.js`
   (the checklist), `downloads.js` (the queue), `dockitems.js` and `dockprogress.js` (the downloads bar), `notices.js`, `actions.js` (updating,

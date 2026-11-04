@@ -276,7 +276,7 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	if have == nil {
 		// Nobody has a login yet: this is the one time the form sets one.
 		if again := r.PostFormValue("again"); again != password {
-			s.writeLoginPage(w, r, nil, "Those two passwords aren't the same.", http.StatusOK)
+			s.writeLoginPage(w, r, nil, "The two passwords don't match. Type them again.", http.StatusOK)
 			return
 		}
 		if err := auth.Set(s.cfg.Dirs.Config, user, password); err != nil {

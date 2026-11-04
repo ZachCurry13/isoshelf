@@ -9,12 +9,12 @@ const UPDATE_SETTINGS = {
   short: "Updates",
   settings: [
       {
-        name: "Check for updates automatically",
+        name: "Check automatically",
         fields: ["auto_check"],
         hint: "Asks each project for its newest version when the page opens, and " +
           "remembers the answer for a day.",
-        words: "automatic online check updates network offline internet",
-        control: () => switchRow("Check for updates automatically", state && state.auto_check,
+        words: "automatic online check for updates network offline internet",
+        control: () => switchRow("Check automatically", state && state.auto_check,
           (on) => ({ auto_check: on })),
         note: () => (state && state.checked_at)
           ? `Last asked ${timeAgo(state.checked_at)}.`
@@ -40,12 +40,12 @@ const UPDATE_SETTINGS = {
           : "",
       },
       {
-        name: "What happens to the file an update replaces",
+        name: "Replaced files",
         fields: ["old_files"],
         hint: "For every image. To keep one exact file whatever happens, pin it " +
           "in its own panel.",
-        words: "replace archive delete keep both old copies updates pin pinned",
-        control: () => choiceRow("What happens to the file an update replaces", [
+        words: "what happens to the file an update replaces replace archive delete keep both old copies updates pin pinned",
+        control: () => choiceRow("Replaced files", [
           ["replace", "Replace it"],
           ["archive", "Move it to the archive"],
           ["keep", "Keep both"],
@@ -54,11 +54,21 @@ const UPDATE_SETTINGS = {
       {
         name: "Download speed limit",
         fields: ["download_limit"],
-        hint: "The most of your internet connection isoshelf may use. Leave it empty " +
-          "to use all you have; with a limit, it also downloads more than one image at once when there is room.",
+        hint: "The most of your internet connection isoshelf may use. Choose No limit " +
+          "to use all you have; with a limit it also downloads more than one image at once when there is room.",
         words: "download speed limit bandwidth megabits mbit throttle slow internet parallel several at once",
-        control: () => numberRow("Download speed limit", state && state.download_limit, "Mbit/s",
-          (download_limit) => ({ download_limit })),
+        control: () => {
+          // A pick-one list, so it saves the way every other setting here does.
+          // A value set some other way (an older copy, the config file) is
+          // kept in the list rather than quietly replaced.
+          const now = (state && state.download_limit) || 0;
+          const speeds = [10, 25, 50, 100, 200, 300, 500, 1000];
+          if (now && !speeds.includes(now)) speeds.push(now);
+          speeds.sort((a, b) => a - b);
+          return choiceRow("Download speed limit",
+            [["0", "No limit"], ...speeds.map((n) => [String(n), `${n.toLocaleString()} Mbit/s`])],
+            String(now), (value) => ({ download_limit: Number(value) }));
+        },
         note: () => "Only downloads from the internet are limited. Copying from another isoshelf on your network is not.",
       },
       {
@@ -70,12 +80,12 @@ const UPDATE_SETTINGS = {
         control: () => dismissedControl(),
       },
       {
-        name: "Empty the archive by itself",
+        name: "Empty archive automatically",
         fields: ["archive_after"],
         hint: "Delete archived files once they have waited this long. Off unless " +
           "you choose a number: the archive is how a removal is undone.",
-        words: "archive empty delete timer days automatic old removed space free",
-        control: () => choiceRow("Empty the archive by itself", [
+        words: "archive empty the archive by itself delete timer days automatic old removed space free",
+        control: () => choiceRow("Empty archive automatically", [
           [0, "Never"],
           [7, "After 7 days"],
           [30, "After 30 days"],

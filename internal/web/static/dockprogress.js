@@ -56,7 +56,7 @@ function renderDockProgress() {
   }
   for (const button of document.querySelectorAll("[data-downloading]")) {
     const run = d.running.find((job) => job.entry === button.dataset.downloading);
-    button.textContent = run ? downloadProgress(run).short : "Starting…";
+    button.textContent = run ? downloadProgress(run).short : "Starting";
   }
   fitDock();
 }

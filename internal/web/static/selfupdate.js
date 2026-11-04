@@ -65,7 +65,7 @@ function selfUpdateParts(u, latest) {
       // Said here rather than in the page's message line, which every
       // refresh redraws: the reason has to stay until somebody acts on it.
       return [
-        el("span", { class: "self-update-failed" }, `The update didn't work: ${u.error}`),
+        el("span", { class: "self-update-failed" }, `The update didn't work (${u.error}). Try again, or download the new version from the releases page.`),
         el("button", { type: "button", class: "btn small", onclick: startSelfUpdate }, "Try again"),
       ];
   }
@@ -117,7 +117,7 @@ function announceSelfUpdate(u) {
   flashNotice(`isoshelf updated itself from ${u.from} to ${state.version}.`);
 }
 
-// selfUpdateNote is the line under "Tell me about new isoshelf versions":
+// selfUpdateNote is the line under "New version notices":
 // why this isoshelf can't update itself, when it can't.
 function selfUpdateNote() {
   const u = (state && state.self_update) || {};
@@ -151,12 +151,12 @@ const SELF_SETTINGS = {
           : null),
     },
     {
-      name: "Tell me about new isoshelf versions",
+      name: "New version notices",
       fields: ["app_update_check"],
       hint: "Checks GitHub for a newer isoshelf and says so in the top bar. Nothing " +
         "about you is sent, and nothing is installed until you press Update now.",
-      words: "isoshelf version update release new notify github self upgrade restart",
-      control: () => switchRow("Tell me about new isoshelf versions", state && state.app_update_check,
+      words: "tell me about new isoshelf versions isoshelf version update release new notify github self upgrade restart",
+      control: () => switchRow("New version notices", state && state.app_update_check,
         (on) => ({ app_update_check: on })),
       note: () => selfUpdateNote(),
     },
@@ -172,7 +172,7 @@ const SELF_SETTINGS = {
     {
       name: "Report a bug",
       hint: "Shows the details, lets you copy them, and opens GitHub's form. " +
-        "Nothing is sent until you press submit.",
+        "Nothing is sent until you select Submit new issue on GitHub.",
       words: "bug problem issue report help support broken",
       available: () => state && state.report_url,
       control: () => el("div", { class: "setting-controls" },

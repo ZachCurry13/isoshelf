@@ -11,16 +11,20 @@ function look() {
   return (state && state.appearance) || {};
 }
 
-// switchRow is the control most settings use: a tick box that saves itself.
-// Most save through /api/settings, which is what change describes; the few
-// with a request of their own pass instead, and change is then unused.
+// switchRow is the control most settings use: Primer's ToggleSwitch, which
+// applies the setting at once and says so (nothing to press). It is labelled
+// with what it controls, not with its state. Most save through /api/settings,
+// which is what change describes; the few with a request of their own pass
+// instead, and change is then unused.
 function switchRow(label, on, change, instead) {
-  return el("label", { class: "check" },
-    el("input", {
-      type: "checkbox", checked: Boolean(on),
-      onchange: (e) => (instead ? instead(e.target.checked) : saveSetting(change(e.target.checked))),
-    }),
-    " ", label);
+  return el("span", { class: "switch-row" },
+    el("span", { class: "switch-label" }, label),
+    el("label", { class: "switch" },
+      el("input", {
+        type: "checkbox", role: "switch", "aria-label": label, checked: Boolean(on),
+        onchange: (e) => (instead ? instead(e.target.checked) : saveSetting(change(e.target.checked))),
+      }),
+      el("span", { class: "track", "aria-hidden": "true" })));
 }
 
 // choiceRow is a list to pick from, saved the moment it changes.
@@ -29,21 +33,6 @@ function choiceRow(label, options, current, change) {
     "aria-label": label,
     onchange: (e) => saveSetting(change(e.target.value)),
   }, options.map(([value, text]) => el("option", { value, selected: value === current || undefined }, text)));
-}
-
-// numberRow is a whole number in a box, saved when the box is left or Enter
-// is pressed. Empty means 0, which the setting takes to mean "none".
-function numberRow(label, value, unit, change) {
-  return el("label", { class: "inline-select" },
-    el("input", {
-      type: "text", inputmode: "numeric", class: "number-input", "aria-label": label,
-      value: value > 0 ? String(value) : "", placeholder: "No limit", maxlength: "6",
-      onchange: (e) => {
-        const n = parseInt(e.target.value.replace(/\D/g, ""), 10);
-        saveSetting(change(Number.isFinite(n) ? n : 0));
-      },
-    }),
-    unit);
 }
 
 // settingGroups is every group, in the order the panel shows them. A
@@ -55,27 +44,27 @@ function settingGroups() {
 }
 
 const LIST_SETTINGS = {
-  title: "The list of images",
+  title: "Image list",
   short: "Images",
   settings: [
       {
-        name: "Keep the list of images up to date",
+        name: "Update the catalog",
         fields: ["catalog_auto"],
         hint: "New images without waiting for a new isoshelf. Only ever read from " +
           "this project's own repository.",
-        words: "catalog list update images automatic",
+        words: "catalog list update images automatic keep up to date",
         available: () => state && state.catalog && state.catalog.can_auto,
         control: () => el("div", { class: "setting-controls" },
-          switchRow("Keep the list of images up to date", state.catalog.auto, (on) => ({ catalog_auto: on })),
+          switchRow("Update the catalog", state.catalog.auto, (on) => ({ catalog_auto: on })),
           el("button", { type: "button", class: "btn small", onclick: refreshCatalog }, "Check now")),
         note: () => catalogNote(),
       },
       {
-        name: "Your own list of images",
+        name: "Your own images",
         hint: "isoshelf never changes a list you wrote yourself.",
-        words: "catalog own yours custom toml",
+        words: "catalog own yours custom toml list of images",
         available: () => state && state.catalog && !state.catalog.can_auto,
-        control: () => el("div", { class: "muted" }, catalogNote() || "In use."),
+        control: () => el("div", { class: "muted" }, catalogNote() || "In use"),
       },
       {
         name: "Allow downloads",

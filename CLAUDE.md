@@ -13,8 +13,8 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/{auth,peer}`: the username and password on a network; copying an image from another isoshelf
 - `internal/appupdate`: isoshelf's own releases: the update notice, the signature check, and swapping in the new program
 - `internal/web`: HTTP server and the embedded page. `static/index.html` loads
-  one script per part of the page: `app.js` (state, asking, drawing, wiring),
-  `images.js`, `summary.js` (the line saying what wants doing), `details.js`,
+  one script per part of the page: `icons.js` (Octicons), `jumpnav.js` (the tab bar), `app.js` (state, asking, drawing, wiring),
+  `images.js`, `logotile.js`, `menus.js`, `imagerow.js` (one image), `blankslate.js`, `summary.js` (the line saying what wants doing), `details.js`,
   `checklist.js`, `downloads.js` (the queue), `dockitems.js`, `dockprogress.js`
   (the downloads bar), `notices.js`, `actions.js`, `catalog.js` (Add images),
   `identify.js` (What is this?), `missing.js` (getting a missing image back),
@@ -31,7 +31,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/remote/remotetest/recorded`: recorded HTTP responses the tests replay
 - `internal/sampledrive`: real filenames used as test fixtures; its `mkdrive` command writes them to a real folder for trying the page against a full drive
 - `internal/docs`: no code, just the test that keeps this repository's own claims about itself true
-- `docs/design.md` (full rules and design), `docs/design-system.md` (the look: tokens, stylesheets, how to change them), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/archive.md` (finished work moved out of those two), `docs/HANDOFF.md` (the 2026-09-29 handoff to a model on the maintainer's own computer), `docs/catalog-sources.md`
+- `docs/design.md` (full rules and design), `docs/design-system.md` (the look: tokens, stylesheets, how to change them), `docs/primer-guidelines.md` and `docs/primer-audit.md` (Primer's manual as a checklist, and the page checked against it), `docs/STATUS.md` (where things stand), `docs/TODO.md` (what's next - read this first in a new session), `docs/archive.md` (finished work moved out of those two), `docs/HANDOFF.md` (the 2026-09-29 handoff to a model on the maintainer's own computer), `docs/catalog-sources.md`
 
 ## Run and test
 - `go build ./... && go vet ./... && go test ./...` must pass before a commit (CI also checks `gofmt -l .`)
@@ -166,5 +166,6 @@ people have downloaded. Work never happens directly on it.
   or `vX.Y.Z`. A test (`internal/docs`) fails the build if a release file name
   carrying a real version reappears outside the changelogs.
 - **The look lives in `css/tokens.css`.** A rule uses isoshelf's names from there and never a colour, a shadow or a Primer name of its own; tests fail if it does (`internal/web/css_test.go`). Change the look by changing values there, and read `docs/design-system.md` first. `static/styleguide.html` shows every token and component in every theme: look at a change there.
+- **The page follows Primer's manual, all of it, not only its colours** (the maintainer, 2026-11-04: "what's the point of having a design guide if you don't follow it"). `docs/primer-guidelines.md` is the manual as a checklist and `docs/primer-audit.md` is the page checked against it. A new or changed piece of the page uses Primer's component for the job (Banner, Blankslate, Label, Counter, UnderlineNav, Box and rows, ActionMenu or SelectPanel, ToggleSwitch, Dialog), Primer's spacing scale (`--sp-N`), Octicons, and Primer's content rules (sentence case, no punctuation on buttons, errors that say how to fix it). Check it against the checklist and `static/styleguide.html`, and against the chosen draft's look, before calling it done; add anything new to the style guide.
 - Commit and push after each step; keep README and docs current.
 - Never stop or restart the maintainer's preview (port 8765) without asking; test downloads in a scratch folder.

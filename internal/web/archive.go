@@ -99,7 +99,7 @@ func (s *Server) restore(w http.ResponseWriter, r *http.Request) {
 		Name string `json:"name"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	s.mu.Lock()

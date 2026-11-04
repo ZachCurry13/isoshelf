@@ -22,7 +22,7 @@ func (s *Server) setTarget(w http.ResponseWriter, r *http.Request) {
 		Profile string `json:"profile"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	s.mu.Lock()

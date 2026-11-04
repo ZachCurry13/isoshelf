@@ -105,6 +105,11 @@ const SAVED_FOR = 3000;
 
 function saved(fields) {
   savedFields = fields;
+  // Said aloud too: the mark is only seen, and Primer asks that a save be
+  // told in words to everyone.
+  const live = $("settings-status");
+  live.textContent = "";
+  setTimeout(() => { live.textContent = "Setting saved"; }, 50);
   savedAt = Date.now();
   clearTimeout(savedTimer);
   // One redraw when the mark's time is up, rather than polling to notice:
@@ -192,7 +197,7 @@ function settingRow(setting) {
   return el("div", { class: "setting" },
     el("div", { class: "setting-name" },
       setting.name,
-      justSaved(setting) ? el("span", { class: "saved-mark" }, "Saved") : null),
+      justSaved(setting) ? el("span", { class: "saved-mark" }, icon("check-16"), "Saved") : null),
     el("div", { class: "setting-hint" }, setting.hint),
     el("div", { class: "setting-control" }, setting.control()),
     note ? el("div", { class: "muted setting-note" }, note) : null);
@@ -219,7 +224,7 @@ function closeSettings() {
 // resetSettings puts the switches back without forgetting the folder anyone
 // is working in, so it is safe to press when the page looks wrong.
 async function resetSettings() {
-  const answer = await ask("Put every setting back?",
+  const answer = await ask("Reset settings?",
     "Everything in Settings goes back to how isoshelf comes out of the box. " +
     "Your folder, your pinned folders and everything isoshelf has learned about your images stay as they are.",
     [{ label: "Cancel", value: null }, { label: "Reset to defaults", value: "reset", primary: true }]);

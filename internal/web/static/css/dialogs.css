@@ -14,46 +14,56 @@
   box-shadow: var(--shadow-dialog);
 }
 .ask::backdrop { background: var(--backdrop); }
-.ask-form { display: flex; flex-direction: column; max-height: inherit; padding: 20px; }
+.ask-form { display: flex; flex-direction: column; max-height: inherit; padding: var(--sp-20); }
 .ask-body { overflow-y: auto; min-height: 0; }
-.ask h2 { margin: 0 0 6px; font-size: var(--text-large); }
-.ask p { margin: 0 0 16px; color: var(--muted); overflow-wrap: anywhere; }
-.ask-buttons { display: flex; flex: none; gap: 8px; flex-wrap: wrap; justify-content: flex-end; padding-top: 16px; }
+.ask-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-8); margin-bottom: var(--sp-8); }
+.ask h1 { margin: 0; font-size: var(--text-large); font-weight: 600; }
+.ask p { margin: 0 0 var(--sp-16); color: var(--muted); overflow-wrap: anywhere; }
+.ask-buttons { display: flex; flex: none; gap: var(--sp-8); flex-wrap: wrap; justify-content: flex-end; padding-top: var(--sp-16); }
 /* The two files a records move is between, one to a line: a path run into a
    sentence is the part nobody reads. */
-.records-move { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; }
+.records-move { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-4) var(--sp-12); margin: 0; }
 .records-move dt { color: var(--muted); }
 .records-move dd { margin: 0; font-family: var(--mono); font-size: var(--text-small); overflow-wrap: anywhere; }
 
 /* The checklist, shared by "update all" and "review older versions". */
 .pick { width: min(620px, calc(100vw - 32px)); }
-.pick-body { overflow-y: auto; padding: 4px 20px 12px; }
-.pick-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.pick-body { overflow-y: auto; padding: var(--sp-4) var(--sp-20) var(--sp-12); }
+.pick-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); }
 .pick-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius);
+  display: flex; align-items: center; gap: var(--sp-8);
+  padding: var(--sp-8) var(--sp-12); border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface-2); cursor: pointer;
 }
 .pick-item .info { display: grid; flex: 1; min-width: 0; }
 .pick-item .kind { font-size: var(--text-small); color: var(--muted); overflow-wrap: anywhere; }
 .pick-note { font-size: var(--text-small); white-space: nowrap; }
 
-.meanings { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0; text-align: left; }
+.meanings { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-6) var(--sp-12); margin: 0; text-align: left; }
 .meanings dd { margin: 0; color: var(--muted); font-size: var(--text-small); }
 
 /* What a bug report would say, shown before anything opens. */
-.report { display: grid; gap: 10px; margin: 10px 0; }
+.report { display: grid; gap: var(--sp-8); margin: var(--sp-12) 0; }
 /* The report itself, exactly as it would be pasted. Selectable rather than
    pretty: on a phone, long-pressing this is how the text gets copied when
    the clipboard button can't do it. */
 .report-text {
   font: inherit; font-size: var(--text-small); width: 100%; box-sizing: border-box;
   color: var(--text); background: var(--surface);
-  border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: var(--radius); padding: var(--sp-8) var(--sp-12);
   resize: vertical; white-space: pre; overflow-wrap: normal;
 }
 .report-said { font-size: var(--text-small); min-height: 1.2em; }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .pick-note { white-space: normal; }
+}
+/* On a phone every dialog fills the screen, as Primer asks of one that has fields to fill in. */
+@media (max-width: 767px) {
+  .ask, .picker {
+    width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0;
+    border: none; border-radius: 0;
+  }
+  .ask-form, .picker-form { height: 100%; max-height: none; }
+  .ask-body { flex: 1 1 auto; }
 }

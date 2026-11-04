@@ -30,7 +30,7 @@ func (s *Server) logo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err != nil {
-		http.Error(w, "couldn't fetch that logo", http.StatusBadGateway)
+		http.Error(w, "Couldn't get that logo. Try again later.", http.StatusBadGateway)
 		return
 	}
 	w.Header().Set("Content-Type", "image/svg+xml")

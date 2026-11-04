@@ -15,15 +15,17 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 .muted { color: var(--muted); }
+/* An Octicon (icons.js): the colour of the text around it, at the size it is drawn. */
+.octicon { display: inline-block; flex: none; fill: currentColor; vertical-align: text-bottom; overflow: visible; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 [hidden] { display: none !important; }
 
 main {
-  max-width: 1280px;
+  max-width: 1012px;
   margin: 0 auto;
-  padding: 14px 20px 40px;
+  padding: var(--sp-16) var(--sp-16) var(--sp-40);
   display: grid;
-  gap: 12px;
+  gap: var(--sp-16);
 }
 /* A grid item won't shrink below its own content unless it is told it may.
    Without this one line, anything inside a card that refuses to get narrower
@@ -39,16 +41,27 @@ main > * { min-width: 0; }
 }
 
 button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible {
-  outline: 3px solid var(--focus);
-  outline-offset: 1px;
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
 }
 
-.footer { color: var(--muted); font-size: var(--text-small); display: grid; gap: 4px; }
+.footer { color: var(--muted); font-size: var(--text-small); display: grid; gap: var(--sp-4); }
 
 .spacer { flex: 1; }
 
-.footer-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.footer-row { display: flex; align-items: center; gap: var(--sp-8); flex-wrap: wrap; }
 
-@media (max-width: 720px) {
-  main { padding: 12px 12px 32px; }
+@media (max-width: 767px) {
+  main { padding: var(--sp-16) var(--sp-16) var(--sp-32); }
+}
+
+/* Every summary here is drawn by a rule of its own, so the browser's marker
+   (a triangle, which Primer says never to use) is switched off, and a
+   disclosure carries a chevron that turns when it opens. */
+summary { list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary > .chevron { color: var(--muted); margin-right: var(--sp-8); }
+details[open] > summary > .chevron { transform: rotate(90deg); }
+@media (prefers-reduced-motion: no-preference) {
+  summary > .chevron { transition: transform 0.15s; }
 }

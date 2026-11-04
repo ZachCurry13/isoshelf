@@ -11,7 +11,7 @@ function loginControl() {
   const login = (state && state.login) || {};
   const buttons = [
     el("button", { type: "button", class: "btn small", onclick: changeLogin },
-      login.user ? "Change username or password" : "Set a username and password"),
+      login.user ? "Change sign-in" : "Set a login"),
   ];
   if (login.user) {
     buttons.push(
@@ -51,23 +51,30 @@ async function changeLogin() {
     "Every other browser is signed out when this changes, so a changed password " +
     "means a changed password everywhere."));
 
-  const go = await ask(login.user ? "Change the login" : "Set a username and password", "", [
-    { label: "Save", value: "go", primary: true },
+  const go = await ask(login.user ? "Change sign-in" : "Set a login", "", [
+    {
+      label: "Save", value: "go", primary: true,
+      run: async () => {
+        // Said next to the field it is about, and the dialog stays open.
+        if (!user.value.trim()) { fieldError(user, "Enter a username."); return false; }
+        if (!password.value) { fieldError(password, "Enter a password."); return false; }
+        if (password.value !== again.value) {
+          fieldError(again, "The two passwords don't match. Type the second one again.");
+          return false;
+        }
+        state = await api("POST", "/api/login", {
+          user: user.value,
+          current: current ? current.value : "",
+          password: password.value,
+          again: again.value,
+        });
+      },
+    },
     { label: "Cancel", value: "" },
   ], body);
   if (!go) return;
-  try {
-    state = await api("POST", "/api/login", {
-      user: user.value,
-      current: current ? current.value : "",
-      password: password.value,
-      again: again.value,
-    });
-    render();
-    showNotice("Saved. Everywhere else has been signed out.", false);
-  } catch (err) {
-    showNotice(err.message, true);
-  }
+  render();
+  showNotice("Saved. Every other browser has been signed out.", false);
 }
 
 // signOut ends this browser's session, then goes to the login page.
@@ -153,7 +160,7 @@ async function savePeer(change) {
   try {
     state = await api("POST", "/api/peer", change);
     render();
-    showNotice(change.forget ? "Forgotten." : "Saved.", false);
+    showNotice(change.forget ? "Forgotten" : "Saved", false);
   } catch (err) {
     showNotice(err.message, true);
   }
@@ -194,15 +201,15 @@ const NETWORK_SETTINGS = {
         : "Nobody has set one yet, so anyone who can reach this address can use isoshelf.",
     },
     {
-      name: "Copy from another isoshelf first",
+      name: "Other isoshelfs",
       hint: "If the isoshelf on your NAS already has an image, take it from there " +
         "instead of downloading it again over the internet.",
-      words: "local network nas peer server copy share fast lan source",
+      words: "copy from another isoshelf first local network nas peer server copy share fast lan source",
       control: () => peerControl(),
       note: () => peerNote(),
     },
     {
-      name: "Share this folder with other isoshelfs",
+      name: "Share this folder",
       // Only a server can be reached by another isoshelf: a desktop or
       // portable one answers this computer alone, so offering to share from
       // it was a switch that could never do anything.
@@ -210,8 +217,8 @@ const NETWORK_SETTINGS = {
       fields: ["share"],
       hint: "Offers the images in this folder to another isoshelf on your network that " +
         "signs in. Off unless you turn it on.",
-      words: "share serve local network nas peer host offer",
-      control: () => switchRow("Share this folder with other isoshelfs",
+      words: "share this folder with other isoshelfs serve local network nas peer host offer",
+      control: () => switchRow("Share this folder",
         state && state.peer && state.peer.sharing, null, shareImages),
       note: () => (state && state.peer && state.peer.sharing)
         ? "Anyone who can sign in to this isoshelf can copy whole images from it. Scans " +

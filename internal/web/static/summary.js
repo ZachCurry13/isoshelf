@@ -99,7 +99,7 @@ function renderTodo() {
 function summaryPart(n, word, tone, onclick, notes) {
   return el("button", {
     type: "button", class: `summary-part ${tone}`,
-    title: notes.filter(Boolean).join(". ") + ". Click to show them.",
+    title: notes.filter(Boolean).join(". ") + ". Show them",
     onclick,
   }, el("b", {}, String(n)), ` ${word}`);
 }
@@ -177,17 +177,17 @@ function renderFirstRun() {
     },
   }, label);
   box.replaceChildren(
-    el("div", { class: "first-run-title", id: "first-run-title" }, "Update the images by themselves?"),
+    el("div", { class: "first-run-title", id: "first-run-title" }, "Update automatically?"),
     el("p", {}, "isoshelf can look for updates on a schedule, then download each one, verify it " +
       "and put it in place with nothing to press. A pinned file stays where it is."),
     el("p", {}, firstRunNow()),
     el("div", { class: "first-run-buttons" },
       answer("Every day", { auto_update: true, auto_update_every: "day" }, "The images will update every day."),
       answer("Every week", { auto_update: true, auto_update_every: "week" }, "The images will update every week."),
-      answer("No, I'll press Update", { auto_update: false }, "Updates will wait for you to press Update.")));
+      answer("Update by hand", { auto_update: false }, "Updates will wait for you to press Update.")));
 }
 
-// firstRunNow says what yes does straight away, because it does: the first
+// firstRunNow says what choosing a schedule does straight away, because it does: the first
 // run starts the moment it is turned on. Found by answering it on a test
 // folder and watching it set off to update everything in it.
 function firstRunNow() {
@@ -197,8 +197,8 @@ function firstRunNow() {
     archive: "each old file moves to the archive",
     keep: "the old files stay beside the new ones",
   }[state.old_files || "replace"];
-  if (!updates.length) return `Yes also runs once now, then on the schedule. When updates come, ${gone}.`;
+  if (!updates.length) return `Choosing a schedule also runs once now, then on the schedule. When updates come, ${gone}.`;
   const bytes = updates.reduce((sum, it) => sum + downloadSize(it), 0);
-  return `Yes starts the first run now: ${plural(updates.length, "update")}` +
+  return `Choosing a schedule starts the first run now: ${plural(updates.length, "update")}` +
     `${bytes ? `, about ${formatBytes(bytes)} to download` : ""}, and ${gone}.`;
 }

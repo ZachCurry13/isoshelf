@@ -94,7 +94,7 @@ async function downloadMissing() {
     text: "Each one is the newest version, downloaded and verified before it goes in this folder. Untick any you don't want back.",
     sizeLabel: "downloading about",
     rows: items.map((item) => ({ id: item.entry, size: downloadSize(item), name: item.name, detail: item.latest || "" })),
-    actions: [{ label: "Download them", value: "go", primary: true }],
+    actions: [{ label: "Download images", value: "go", primary: true }],
   });
   if (!answer) return;
   for (const entry of answer.ids) {

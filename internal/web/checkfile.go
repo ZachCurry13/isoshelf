@@ -19,7 +19,7 @@ func (s *Server) checkFile(w http.ResponseWriter, r *http.Request) {
 		Path string `json:"path"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Path == "" {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	s.mu.Lock()
@@ -49,7 +49,7 @@ func (s *Server) hashFiles(w http.ResponseWriter, r *http.Request) {
 		Paths []string `json:"paths"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || len(req.Paths) == 0 {
-		writeError(w, http.StatusBadRequest, "bad request")
+		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
 		return
 	}
 	s.mu.Lock()

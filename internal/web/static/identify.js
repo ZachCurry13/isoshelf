@@ -62,9 +62,10 @@ function renderReportLink(item, label) {
 
 // saveMyName writes the user's own name for a file into their own catalog.
 async function saveMyName() {
-  const name = $("mine-name").value.trim();
+  const input = $("mine-name");
+  const name = input.value.trim();
   if (!name) {
-    showNotice("Give the image a name first.", true);
+    fieldError(input, "Enter a name for this image.");
     return;
   }
   let result;
@@ -124,7 +125,7 @@ function renderGuesses(guesses) {
     return;
   }
   box.append(el("p", { class: "muted" },
-    guesses.length === 1 ? "This is probably:" : "This is probably one of these:"));
+    guesses.length === 1 ? "Most likely match" : "Most likely matches"));
 
   const list = el("ul", { class: "guesses" });
   for (const guess of guesses) {
@@ -134,13 +135,13 @@ function renderGuesses(guesses) {
         el("div", {},
           el("span", { class: "name" }, guess.name),
           archBadge(guess.arch, true),
-          guess.version ? el("span", { class: "arch" }, guess.version) : null,
+          guess.version ? el("span", { class: "label" }, guess.version) : null,
           el("span", { class: `pill ${guess.sure ? "s-ok" : "s-muted"}` }, sureness(guess.score))),
         el("div", { class: "kind" }, `Because ${guess.reason}.`)),
       el("button", {
         type: "button", class: "btn small primary",
         onclick: () => confirmIdentity(guess.entry, guess.version),
-      }, "Confirm")));
+      }, "Use this match")));
   }
   box.append(list);
 }

@@ -68,6 +68,7 @@ comes from. The look of the page is these values and nothing else.
 | `--header-fg` | words on it | `header-fgColor-default` |
 | `--header-fg-strong` | the name and the mark on it | `fgColor-onEmphasis` |
 | `--tab-hover` | the underline under a jump-bar link you point at | `underlineNav-borderColor-hover` |
+| `--tab-active` | the underline under the tab you are on | `underlineNav-borderColor-active` |
 | `--shadow` | a thing resting on the page | `shadow-resting-small` |
 | `--shadow-menu` | a menu | `shadow-floating-medium` |
 | `--shadow-dialog` | a dialog or the details panel | `shadow-floating-large` |
@@ -81,10 +82,16 @@ comes from. The look of the page is these values and nothing else.
 | `--manual-fg`, `--manual-bg` | download manually | `fgColor-muted`, `bgColor-neutral-muted` |
 | `--muted-fg`, `--muted-bg` | couldn't check | `fgColor-muted`, `bgColor-neutral-muted` |
 | `--star` | a starred image | `fgColor-attention` |
+| `--ok-border`, `--update-border`, `--bad-border`, `--eol-border`, `--warn-border`, `--missing-border` | the edge of a Label or Banner of that meaning | `borderColor-success-emphasis`, `-attention-emphasis`, `-danger-emphasis`, `-done-emphasis`, `-severe-emphasis`, `-accent-emphasis` |
+| `--neutral-border` | the edge of a plain Label | `borderColor-default` |
+| `--danger-fg`, `--danger-fg-hover`, `--danger-bg-hover`, `--danger-border-hover` | the danger button, for what deletes for good | `button-danger-fgColor-rest`, `-fgColor-hover`, `-bgColor-hover`, `-borderColor-hover` |
 | `--radius` | buttons, fields, cards, rows | `borderRadius-medium` (6 px) |
 | `--radius-sm` | small tags | `borderRadius-small` (3 px) |
 | `--radius-lg` | dialogs | `borderRadius-large` (12 px) |
 | `--radius-full` | pills, bars, counts | `borderRadius-full` |
+| `--sp-2`, `--sp-4`, `--sp-6`, `--sp-8`, `--sp-12`, `--sp-16`, `--sp-20`, `--sp-24`, `--sp-28`, `--sp-32`, `--sp-36`, `--sp-40`, `--sp-44`, `--sp-48`, `--sp-64` | every padding, margin and gap: Primer's spacing scale in px at the default size (8 condensed, 16 normal, 24 spacious) | `base-size-2` ... `base-size-64`, written here against this page's 14 px root |
+| `--control-sm`, `--control-md` | the height of a small (28 px) and an ordinary (32 px) button, field or select | `control-small-size`, `control-medium-size` |
+| `--text-title` | the one title of the page: 20 px | written here (Primer's title medium) |
 | `--text-small` | captions, labels, file names, small buttons: 12 px | written here (see below) |
 | `--text-medium` | what is being read: 14 px | written here |
 | `--text-large` | titles and the name: 16 px | written here |
@@ -136,12 +143,13 @@ holds, and none is over 200 lines.
 | `primer.css` | Primer's tokens: generated, see below |
 | `tokens.css` | isoshelf's names for the look (this document's table) |
 | `base.css` | reset, body, links, the page grid, cards, the focus ring |
-| `topbar.css` | the top bar and the jump bar |
-| `target.css` | the folder card |
-| `feedback.css` | progress bars, the spinner, the notice line |
-| `controls.css` | buttons, fields, chips, the switch |
-| `status.css` | status colours and the mark beside a status |
-| `images.css` | the list of images, its rows, the phone layout |
+| `topbar.css` | the top bar, the tab bar (Primer's UnderlineNav) and the skip link |
+| `target.css` | the page header: the folder as the title, its type, room left, its buttons |
+| `feedback.css` | progress bars, the spinner, the Banner, the blank slate, field errors |
+| `controls.css` | buttons (ordinary, primary, danger), fields, chips, the switch, tooltips |
+| `status.css` | status colours and the outlined pill that carries a status word |
+| `labels.css` | Primer's Label and Counter |
+| `images.css` | the list of images as a box of rows, and the phone layout |
 | `logos.css` | the logo tile |
 | `catalog.css` | Add images, Archive, History, Tools |
 | `menus.css` | drop-down menus |
@@ -175,6 +183,10 @@ nobody notices until someone who needs those does. All are in
 - The style guide uses the same files and has a section for each:
   `TestStyleGuideLinksTheSameStylesheetsAsThePage`, `TestStyleGuideShowsEveryStylesheet`.
 - No stylesheet runs past 200 lines: `TestStylesheetsStayShort`.
+- Every padding, margin and gap is on Primer's spacing scale: `TestSpacingIsOnPrimersScale`,
+  `TestSpacingTokensAreThePrimerScale` (`css_scale_test.go`).
+- Icons exist, are used, are Octicon sizes and keep their licence: `TestEveryIconAskedForExists`
+  and its neighbours (`octicons_test.go`).
 
 And in `internal/docs`: this document names every token, every stylesheet and
 the pinned Primer version.
@@ -211,13 +223,48 @@ guide.
 `primer.css`, and redefine the names in `tokens.css` from them. Components don't
 change. Link it from `index.html` and `styleguide.html`.
 
+## Icons
+
+Icons are GitHub's Octicons (MIT, "(c) GitHub, Inc.", licence in
+`internal/web/octicons/LICENSE`), at the size they are drawn: 16 px, or 12 px in a
+condensed place (a field's error message). They are one SVG sprite,
+`static/octicons.svg`, built from the names in `internal/web/octicons` by
+`go run ./internal/web/octicons/fetch` (it goes online, like the others), and drawn
+by `icon("name-16")` in `icons.js` or, in the HTML, `<use href="/static/octicons.svg#name-16">`.
+An icon takes the colour of the text around it; a decorative one is `aria-hidden`,
+one that says something alone has a label. Tests (`octicons_test.go`) hold the three
+together: what is asked for exists, what is in the sprite is used, and the licence
+stays.
+
+## Spacing
+
+Every padding, margin and gap is a `--sp-N` token, which is Primer's spacing scale in
+px at the default size and grows with Larger text. A test (`css_scale_test.go`) fails
+on any other value. A button, field or select is `--control-md` (32 px) or
+`--control-sm` (28 px) high. The page is one column at most 1012 px wide, 16 px
+inside, with a single breakpoint at 768 px, below which a row stacks and a dialog
+fills the screen.
+
+## Components, and where each is held to Primer
+
+`docs/primer-guidelines.md` is Primer's rules as a checklist and `docs/primer-audit.md`
+is the page checked against it. In short: the page has one `h1` (the folder, in a
+PageHeader) and a skip link; the tab bar is an UnderlineNav with counters and
+`aria-current`; the list is a box with a header strip and a row for each image;
+a status is an outlined Label; feedback is a Banner (an error has no dismiss
+button, anything else does); an empty place is a Blankslate with one action; a
+control that can't be used is `aria-disabled` with a reason, not `disabled`; every
+setting is a switch or a pick-one list and saves at once, and says so aloud; a
+dialog has a title, a close button, the quiet button left and the one that does the
+thing right (red if it deletes), and fills the phone screen; a field's error is
+under the field; and the queue can be reordered from the keyboard.
+
 ## What this does not cover yet
 
-**Spacing and layout.** Paddings, gaps and widths are still written as numbers in
-the stylesheets (4, 8, 12, 16 px and some in between). Primer has a spacing scale
-and `tokens.css` could carry it, but a sweep would nudge a hundred rules by a pixel
-or two, so it was left until it is wanted. Until then, changing the density of the
-page means editing numbers.
+**Motion.** The two animations are in `feedback.css` and `accessibility.css`;
+transitions only run when the operating system allows motion.
 
-**Icons and motion.** The few icons are inline SVG that take the text colour; the
-two animations are in `feedback.css` and `accessibility.css`.
+**Things Primer's pages could not be read for** (see the end of
+`docs/primer-guidelines.md`): per-role colour meanings, tab ARIA details, truncation
+and tooltip rules, and the CSS-only Box and Box-row list pattern. They are followed
+as far as they could be read.

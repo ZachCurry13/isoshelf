@@ -35,7 +35,7 @@ function systemFacts() {
   ];
   const started = new Date(sys.started);
   if (!isNaN(started)) {
-    facts.push(`Running for ${howLong(Date.now() - started.getTime())}, since ${started.toLocaleString()}`);
+    facts.push(`Running for ${howLong(Date.now() - started.getTime())}, since ${plainDateTime(started)}`);
   }
   if (sys.catalog_revision) facts.push(`Image list: revision ${sys.catalog_revision}`);
   return facts;

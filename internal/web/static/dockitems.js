@@ -101,10 +101,64 @@ function entryInfo(job) {
   return known || { name: job.name };
 }
 
+// announce says something to people who can't see the list move. It is the
+// only way a keyboard or screen-reader user learns where a drag put an item.
+function announce(text) {
+  const live = $("dock-announce");
+  live.textContent = "";
+  setTimeout(() => { live.textContent = text; }, 50);
+}
+
+// grabbed is the download picked up with the keyboard, and where it was
+// picked up from, so Escape can put it back.
+let grabbed = null;
+
+// gripFor is the keyboard way to do what dragging does (Primer's drag and
+// drop pattern): Space picks the item up, the arrow keys move it, Space drops
+// it, Escape puts it back, and each step is announced.
+function gripFor(job, i, count) {
+  const grip = el("button", {
+    type: "button", class: "grip", "data-focus": `${job.id}:grip`,
+    "aria-label": `Reorder ${job.name}`,
+    "aria-pressed": grabbed && grabbed.id === job.id ? "true" : "false",
+    "aria-description": "Press Space to pick it up, the arrow keys to move it, Space to drop it, Escape to cancel.",
+    "data-tooltip": "Drag to reorder",
+  }, icon("grabber-16"));
+  const where = (n) => `position ${n + 1} of ${count}`;
+  grip.addEventListener("keydown", async (e) => {
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      if (grabbed && grabbed.id === job.id) {
+        grabbed = null;
+        grip.setAttribute("aria-pressed", "false");
+        announce(`Dropped ${job.name} at ${where(i)}.`);
+      } else {
+        grabbed = { id: job.id, from: i };
+        grip.setAttribute("aria-pressed", "true");
+        announce(`Picked up ${job.name}, ${where(i)}. Use the arrow keys to move it, Space to drop it, Escape to cancel.`);
+      }
+    } else if (grabbed && grabbed.id === job.id && (e.key === "ArrowUp" || e.key === "ArrowDown")) {
+      e.preventDefault();
+      const to = i + (e.key === "ArrowUp" ? -1 : 1);
+      if (to < 0 || to >= count) return announce(`${job.name} is already ${to < 0 ? "first" : "last"}.`);
+      await moveJob(job, to);
+      announce(`Moved ${job.name} to ${where(to)}.`);
+    } else if (grabbed && grabbed.id === job.id && e.key === "Escape") {
+      e.preventDefault();
+      e.stopPropagation();
+      const back = grabbed.from;
+      grabbed = null;
+      await moveJob(job, back);
+      announce(`Cancelled. ${job.name} is back at ${where(back)}.`);
+    }
+  });
+  return grip;
+}
+
 function queuedItem(job, i, count) {
   const what = job.update ? "replaces the copy here" : "adds it to this folder";
   const li = el("li", { class: "dock-item queued", draggable: "true", "data-id": job.id },
-    el("span", { class: "grip", "aria-hidden": "true", title: "Drag to change the order" }, "⠇"),
+    gripFor(job, i, count),
     el("span", { class: "place" }, i + 1),
     logoTile(entryInfo(job)),
     el("div", { class: "info" },
@@ -113,24 +167,24 @@ function queuedItem(job, i, count) {
     el("div", { class: "dock-buttons" },
       el("button", {
         type: "button", class: "btn small icon", disabled: i === 0,
-        title: "Move up", "aria-label": `Move ${job.name} up`, "data-focus": `${job.id}:up`,
+        "data-tooltip": "Move up", "aria-label": `Move ${job.name} up`, "data-focus": `${job.id}:up`,
         onclick: () => moveJob(job, i - 1),
-      }, "↑"),
+      }, icon("arrow-up-16")),
       el("button", {
         type: "button", class: "btn small icon", disabled: i === count - 1,
-        title: "Move down", "aria-label": `Move ${job.name} down`, "data-focus": `${job.id}:down`,
+        "data-tooltip": "Move down", "aria-label": `Move ${job.name} down`, "data-focus": `${job.id}:down`,
         onclick: () => moveJob(job, i + 1),
-      }, "↓"),
+      }, icon("arrow-down-16")),
       el("button", {
         type: "button", class: "btn small icon", disabled: i === 0,
-        title: "Next in line", "aria-label": `Download ${job.name} next`, "data-focus": `${job.id}:top`,
+        "data-tooltip": "Move to next", "aria-label": `Download ${job.name} next`, "data-focus": `${job.id}:top`,
         onclick: () => moveJob(job, 0),
-      }, "⤒"),
+      }, icon("move-to-top-16")),
       el("button", {
         type: "button", class: "btn small icon",
-        title: "Take it off the queue", "aria-label": `Take ${job.name} off the queue`, "data-focus": `${job.id}:drop`,
+        "data-tooltip": "Take off the queue", "aria-label": `Take ${job.name} off the queue`, "data-focus": `${job.id}:drop`,
         onclick: () => dropJob(job),
-      }, "✕")));
+      }, icon("x-16"))));
 
   // Dragging: drop above or below another waiting download.
   li.addEventListener("dragstart", (e) => {
@@ -172,9 +226,9 @@ function queuedItem(job, i, count) {
 }
 
 const OUTCOME = {
-  done: ["✓", "s-ok"],
-  failed: ["✕", "s-bad"],
-  stopped: ["■", "s-muted"],
+  done: ["check-16", "s-ok"],
+  failed: ["x-16", "s-bad"],
+  stopped: ["stop-16", "s-muted"],
 };
 
 function finishedItem(job) {
@@ -183,16 +237,16 @@ function finishedItem(job) {
   if (job.from) what += ` from ${job.from}`;
   // Done, but with something to know: a file nothing could check.
   if (job.outcome === "done" && job.message) {
-    [mark, tone] = ["!", "s-warn"];
+    [mark, tone] = ["alert-16", "s-warn"];
     what += `. ${job.message}`;
   }
   if (job.outcome === "failed") what = job.conflict ? job.message : `Failed: ${job.message}`;
-  if (job.conflict) [mark, tone] = ["?", "s-update"];
+  if (job.conflict) [mark, tone] = ["question-16", "s-update"];
   if (job.outcome === "stopped") what = "Stopped. What has downloaded so far is kept, so Resume continues from there.";
   // Only the latest try gets the button, and not once it is queued again.
   const again = job.outcome !== "done" && jobFor(job.entry).job.id === job.id;
   return el("li", { class: "dock-item finished" },
-    el("span", { class: `pill ${tone} mark`, "aria-hidden": "true" }, mark),
+    el("span", { class: `pill ${tone} mark`, "aria-hidden": "true" }, mark ? icon(mark) : null),
     el("div", { class: "info" },
       el("div", { class: "name" }, job.name),
       el("div", { class: "kind" }, what, job.at ? ` · ${timeAgo(job.at)}` : "")),
