@@ -2075,16 +2075,12 @@ base = "https://cf.anduinos.com/"
 file = 'AnduinOS-{version}-amd64\.iso'
 manifest = "AnduinOS-{version}-amd64.sha256"
 
-# PikaOS lists an MD5 for each ISO on its own site (iso.pika-os.com). An MD5
-# catches a broken download but not a changed one, so isoshelf downloads what
-# it can check, and marks it weak (v0.8.10): never called verified. Only the
-# KDE edition qualifies: the server answers an automated request for the other
-# editions' .md5 files with 403, as it does for the folder's index (a bot
-# check, not something to get round), so those are links. Each is its own
-# entry because an update downloads one specific file, and must not put a KDE
-# image where a GNOME one was. The release number ("4.0") is written into the
-# file name here, since the folder can't be listed to find it; if PikaOS moves
-# on, the Monday check says so rather than anything going quietly wrong.
+# PikaOS lists an MD5 for each ISO on its own site (iso.pika-os.com), but the
+# server answers an automated request for those files with 403, as it does for
+# the folder's index (a bot check, not something to get round). It let the KDE
+# one through at first and it was downloaded, marked weak; on 2026-11-03 it
+# began refusing GitHub's check runners too, so KDE is a link like the rest.
+# Each is its own entry so the editions are never mixed up.
 
 [[entry]]
 id = "pikaos-kde"
@@ -2092,7 +2088,6 @@ name = "PikaOS KDE"
 arch = "x86_64"
 match = 'PikaOS-Nest-KDE-[\d.]+-amd64-v3-(?P<version>\d+\.\d+\.\d+-\d+)\.iso'
 samples = ["PikaOS-Nest-KDE-4.0-amd64-v3-26.08.20-4.iso"]
-size = 3262828544
 page = "https://pika-os.com/#editions"
 category = "gaming"
 family = "pikaos"
@@ -2103,11 +2098,6 @@ caution = "Built for x86-64-v3: it needs a processor with AVX2, roughly 2013 or 
 type = "listing"
 url = "https://pika-os.com/"
 regex = 'PikaOS-Nest-KDE-[\d.]+-amd64-v3-(?P<version>\d+\.\d+\.\d+-\d+)\.iso'
-
-[entry.artifact]
-base = "https://iso.pika-os.com/"
-file = 'PikaOS-Nest-KDE-4\.0-amd64-v3-{version}\.iso'
-manifest = "PikaOS-Nest-KDE-4.0-amd64-v3-{version}.md5"
 
 [[entry]]
 # Every other edition shares the KDE one's version. One entry for the lot

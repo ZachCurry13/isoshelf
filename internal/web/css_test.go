@@ -23,9 +23,10 @@ func handWritten(t *testing.T) map[string]string {
 }
 
 // Names that are set from outside the stylesheets, one per element, by the
-// scripts: a brand colour and a logo for a tile. Everything else must be
+// scripts: a brand colour and a logo for a tile, and how tall the downloads
+// bar is. Everything else must be
 // defined in a stylesheet.
-var setByScripts = map[string]bool{"--brand": true, "--logo": true}
+var setByScripts = map[string]bool{"--brand": true, "--logo": true, "--dock-height": true}
 
 // Every name a rule uses has to be defined somewhere, or the rule quietly does
 // nothing. This is how a misspelt token, or one Primer renamed, shows up.

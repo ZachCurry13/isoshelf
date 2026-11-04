@@ -14,7 +14,7 @@ four times in one evening. The releases page on GitHub is the answer, and
   change onto the folder's records rather than saving over them. Keeps a
   catalog that updates itself from this repository. Web page and CLI;
   Windows and Linux builds.
-- **Catalog:** 96 entries (68 downloadable, 10 update-check only, 18 link only),
+- **Catalog:** 96 entries (67 downloadable, 11 update-check only, 18 link only),
   revision `2026110303`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC, 1 pm

@@ -209,6 +209,7 @@
   <p>A group heading, a setting with its hint, and the "Saved" mark.</p>
   <div class="card settings-demo"><div class="setting-group"><h3>Updates</h3>
     <div class="setting"><div class="setting-name">Allow downloads <span class="saved-mark">Saved</span></div><div class="setting-hint">A Download button on each image, to save it onto the computer you are using.</div><div class="setting-control"><label class="switch"><input type="checkbox" checked aria-label="Allow downloads"><span class="track"></span></label></div></div>
+    <div class="setting"><div class="setting-name">Download speed limit</div><div class="setting-hint">The most of your internet connection isoshelf may use. Leave it empty to use all you have.</div><div class="setting-control"><label class="inline-select"><input type="text" inputmode="numeric" class="number-input" aria-label="Download speed limit" placeholder="No limit" value="200"> Mbit/s</label></div><div class="muted setting-note">Only downloads from the internet are limited.</div></div>
   </div></div>
 </section>
 
@@ -240,7 +241,8 @@
   <h2>Downloads bar</h2>
   <p>Along the bottom of the window while anything is queued; shown here in the page's flow.</p>
   <div class="card clip"><div class="dock">
-    <div class="dock-bar"><div class="dock-summary"><strong>Downloading</strong><span>Tails · 62%</span></div><div class="bar"><div class="bar-fill bar-62"></div></div><div class="dock-actions"><button class="btn small" type="button">Pause</button><button class="btn small" type="button">Open queue</button></div></div>
+    <ul class="dock-runs"><li class="dock-run"><span class="run-name">Tails</span><span class="run-text">0.9 GB of 1.4 GB · 8.2 MB/s · 1 min left</span><div class="bar"><div class="bar-fill bar-62"></div></div><button class="btn small" type="button" aria-label="Stop downloading Tails">Stop</button></li><li class="dock-run"><span class="run-name">Linux Mint Cinnamon</span><span class="run-text">1.0 GB of 2.9 GB · 3.1 MB/s · 10 min left</span><div class="bar"><div class="bar-fill bar-35"></div></div><button class="btn small" type="button" aria-label="Stop downloading Linux Mint Cinnamon">Stop</button></li></ul>
+    <div class="dock-bar"><div class="dock-summary"><strong>Downloads</strong><span>2 at once · 11.3 MB/s · limit 100 Mbit/s</span></div><div class="dock-actions"><button class="btn small" type="button">Pause</button><button class="btn small" type="button">Open queue</button></div></div>
     <div class="dock-panel"><ul class="dock-list"><li class="dock-item queued"><span class="grip">⠿</span><span class="place">1</span><div class="info"><div class="name">Linux Mint Cinnamon</div><div class="kind">Queued · 2.9 GB</div></div><div class="dock-buttons"><button class="btn small icon" type="button" aria-label="Remove">✕</button></div></li></ul></div>
   </div></div>
 </section>

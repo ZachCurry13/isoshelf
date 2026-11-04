@@ -6,6 +6,27 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.10.1] - 2026-11-03
+
+### Fixed
+- **The end of the page clears the downloads bar** however many downloads have a
+  row. It was a fixed gap sized for one download, so with two or three running
+  (new in v0.10.0), especially on a phone, the last cards sat behind the bar.
+  The page now measures the bar.
+- The style guide shows the per-download rows and the speed-limit field, as the
+  design system asks of every new component.
+
+### Under the hood
+- `downloads.js` (over 600 lines) and `settinglist.js` are split by
+  responsibility into `dockitems.js`, `dockprogress.js`, `notices.js` and
+  `updatesettings.js`. Nothing looks different.
+
+### Catalog
+- AnduinOS downloads, and the Ubuntu, Windows, NiceHash OS and AtlasOS entries
+  show the plain disc. PikaOS KDE is check-only again, because its server now
+  refuses the checksum file to GitHub's check runners (details in
+  CATALOG-CHANGES.md).
+
 ## [v0.10.0] - 2026-11-03
 
 ### Several downloads at once, and a speed limit

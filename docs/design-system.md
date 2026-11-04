@@ -164,7 +164,10 @@ nobody notices until someone who needs those does. All are in
 
 - A rule uses a name from `tokens.css`, never a colour: `TestNoRawColoursOutsideTokens`.
 - Only `tokens.css` names Primer: `TestOnlyTokensCssUsesPrimerNames`.
-- Every name a rule uses is defined: `TestEveryTokenUsedIsDefined`.
+- Every name a rule uses is defined: `TestEveryTokenUsedIsDefined`. Three are
+  set by the scripts instead, because they are measured or per-element, not part
+  of the look: `--brand` and `--logo` (a logo tile) and `--dock-height` (how tall
+  the downloads bar is, so the page's end clears it however many rows it has).
 - Every theme defines every Primer name the page uses: `TestEveryThemeDefinesEveryPrimerName`.
 - `primer.css` is from the pinned version: `TestPrimerFileMatchesThePinnedVersion`.
 - `index.html` links every stylesheet, `primer.css` then `tokens.css` first:

@@ -2,9 +2,9 @@
 
 /* Downloads: a bar along the bottom of the window while anything is queued,
    running or just finished, which opens into the queue. */
-body.has-dock { padding-bottom: 76px; }
+body.has-dock { padding-bottom: calc(var(--dock-height, 56px) + 20px); }
 /* Scrolling to something, or tabbing to it, stops short of the bar. */
-html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
+html:has(> body.has-dock) { scroll-padding-bottom: calc(var(--dock-height, 56px) + 28px); }
 .dock {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   background: var(--surface);
@@ -62,7 +62,6 @@ html:has(> body.has-dock) { scroll-padding-bottom: 84px; }
 .dock-buttons { display: flex; gap: 4px; flex: none; }
 
 @media (max-width: 720px) {
-  body.has-dock { padding-bottom: 120px; }
   .dock-bar { flex-wrap: wrap; padding: 10px 16px; gap: 8px 12px; }
   .dock-summary { flex-basis: 100%; }
   .dock-runs { padding: 8px 16px 0; }

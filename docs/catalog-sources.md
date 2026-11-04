@@ -217,14 +217,16 @@ Nothing yet.
   folder, and the compose in the checksum file's name is a named group in the
   file pattern. Each entry's `match` now captures only the release (`44`), not
   the compose, because that is what the source compares against.
-- **PikaOS KDE** and **BigLinux** (Linux 6.12, 6.18 and 7.2, one entry each)
-  download, checked against their MD5 and marked weak, as decided on
-  2026-10-05. Each is its own entry because an update downloads one specific
-  file and must not put one edition or kernel where another was.
+- **BigLinux** (Linux 6.12, 6.18 and 7.2, one entry each) downloads, checked
+  against its MD5 and marked weak, as decided on 2026-10-05. Each is its own
+  entry because an update downloads one specific file and must not put one
+  kernel where another was.
   PikaOS lists an MD5 for every edition on its own site, but the server
-  answers an automated request for all but the KDE one with 403, and has a
-  bot check on its folder index, so the other editions are one check-only
-  entry (`pikaos-other`): their ISOs answer, their checksums can't be fetched.
+  answers an automated request for the `.md5` files with 403 (it did for all
+  but the KDE one at first, then for GitHub's check runners too, on
+  2026-11-03, so KDE became check-only as well), and has a bot check on its
+  folder index. All its editions are check-only entries (`pikaos-kde`,
+  `pikaos-other`): their ISOs answer, their checksums can't be fetched.
   BigLinux's `.iso.md5` files are on its own site, and agree with the
   MD5 printed on its download page.
 - **AnduinOS** downloads (2026-11-03): the SHA-256 file on its own site is a bare
@@ -321,14 +323,8 @@ Checked live the same day, and all of them resolve in a full recorder run.
 
 These need a catalog edit when the project ships a new release, because the
 file name carries a number no version source reports and the folder can't be
-listed to find it:
-
-- `pikaos-kde`: "4.0" in `artifact.file` and `artifact.manifest`. PikaOS's
-  folder index is behind a bot check, so it is not read. If PikaOS moves on,
-  the Monday check fails for it.
-
-Fedora was one of these until 2026-11-03 (#6); it follows its newest release
-now.
+listed to find it. None is left. Fedora was one until 2026-11-03 (#6) and now
+follows its newest release; PikaOS KDE was another until it became check-only.
 
 ### Sizes
 

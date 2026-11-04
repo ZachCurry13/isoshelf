@@ -25,6 +25,10 @@ requests are looked at every Monday.
   their checksums to a program.
 
 ### Changed
+- **PikaOS KDE** is a check-only entry again, like the project's other
+  editions: PikaOS's server started refusing the checksum file to GitHub's
+  check runners, so it can no longer be checked before it goes in. A copy that
+  already downloaded it keeps the file.
 - The six Ubuntu entries, the three Windows ones, NiceHash OS and AtlasOS show
   the plain disc instead of initials.
 - **Logos by each project's own rules** (revision 2026110302). Of the 28
