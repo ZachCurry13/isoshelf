@@ -20,13 +20,12 @@
   cursor: pointer;
   white-space: nowrap;
 }
-.btn:hover:not(:disabled) { background: var(--button-bg-hover); }
-.btn:disabled { opacity: 0.5; cursor: default; }
+.btn:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--button-bg-hover); }
+.btn:disabled, .btn[aria-disabled="true"], select[aria-disabled="true"] { opacity: 0.5; cursor: default; }
 .btn.primary { background: var(--primary-bg); border-color: var(--primary-border); color: var(--primary-fg); }
-.btn.primary:hover:not(:disabled) { background: var(--primary-bg-hover); border-color: var(--primary-bg-hover); }
+.btn.primary:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--primary-bg-hover); border-color: var(--primary-bg-hover); }
 .btn.small { min-height: var(--control-sm); padding: 0 var(--sp-12); font-size: var(--text-small); }
 
-.number-input { width: 96px; }
 
 input[type="search"], input[type="text"], select {
   font: inherit;
@@ -67,14 +66,14 @@ input[type="search"], input[type="text"], select {
   background: var(--muted-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-full);
-  transition: background 0.15s;
+  /* transition under no-preference, below */
   pointer-events: none;
 }
 .switch .track::after {
   content: ""; position: absolute; top: 2px; left: 2px;
   width: 14px; height: 14px; border-radius: 50%;
   background: var(--knob-bg); box-shadow: var(--shadow);
-  transition: transform 0.15s;
+  /* transition under no-preference, below */
 }
 .switch input:checked + .track { background: var(--accent-fill); border-color: var(--accent-fill); }
 .switch input:checked + .track::after { transform: translateX(14px); }
@@ -94,3 +93,31 @@ input[type="search"], input[type="text"], select {
   color: var(--accent); font: inherit; font-size: var(--text-small); text-decoration: underline;
 }
 
+
+@media (prefers-reduced-motion: no-preference) {
+  .switch .track { transition: background 0.15s; }
+  .switch .track::after { transition: transform 0.15s; }
+}
+
+/* Primer's danger button: for what deletes for good, and only ever after asking. */
+.btn.danger { color: var(--danger-fg); }
+.btn.danger:hover:not(:disabled) { color: var(--danger-fg-hover); background: var(--danger-bg-hover); border-color: var(--danger-border-hover); }
+
+/* Primer's tooltip: short, dark, on an icon-only button (data-tooltip), shown
+   on hover and on keyboard focus. The button's own accessible name is its
+   aria-label; this is only for the eye. data-tooltip-end keeps it from running
+   off the right edge. */
+[data-tooltip] { position: relative; }
+[data-tooltip]:hover::after, [data-tooltip]:focus-visible::after {
+  content: attr(data-tooltip);
+  position: absolute; z-index: 40; top: calc(100% + var(--sp-4)); left: 50%; transform: translateX(-50%);
+  padding: var(--sp-4) var(--sp-8);
+  font-size: var(--text-small); font-weight: 400; line-height: var(--leading); white-space: nowrap;
+  color: var(--header-fg-strong); background: var(--header-bg); border-radius: var(--radius);
+  pointer-events: none;
+}
+[data-tooltip][data-tooltip-end]:hover::after, [data-tooltip][data-tooltip-end]:focus-visible::after { left: auto; right: 0; transform: none; }
+
+/* A setting with an on/off switch: what it controls on the left, the switch on the right. */
+.switch-row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-12); }
+.switch-label { min-width: 0; overflow-wrap: anywhere; }

@@ -143,7 +143,7 @@ function renderFilters() {
   const badge = $("filter-count");
   badge.hidden = count === 0;
   badge.textContent = count;
-  $("filter-clear").disabled = count === 0;
+  setAvailable($("filter-clear"), count > 0, "No filters are on.");
   renderChips();
 }
 
@@ -261,9 +261,12 @@ function renderRows() {
   const empty = $("empty");
   if (!state.report) {
     empty.hidden = false;
-    empty.textContent = state.target
-      ? "Scanning will list the images in this folder."
-      : "Choose a folder to see its images.";
+    empty.className = "empty";
+    empty.replaceChildren(state.target
+      ? blankslate("Nothing scanned yet", "Refresh reads the folder and lists the images in it.",
+        el("button", { type: "button", class: "btn primary", onclick: () => start("check") }, "Refresh"))
+      : blankslate("Choose a folder", "isoshelf lists, checks and updates the images in the folder you choose.",
+        el("button", { type: "button", class: "btn primary", onclick: openPicker }, "Choose folder")));
     $("shown").textContent = "";
     return;
   }
@@ -281,12 +284,12 @@ function renderRows() {
   empty.replaceChildren();
   if (items.length === 0) {
     if (total === 0) {
-      empty.append("No images found in this folder.");
+      empty.append(blankslate("No images in this folder", "Add some from the catalog, or drop a file onto this page.",
+        el("button", { type: "button", class: "btn primary", onclick: () => jumpTo("more") }, "Add images")));
     } else {
-      empty.append(
+      empty.append(blankslate("No images match",
         `None of the ${plural(total, "image")} here match ${activeFilters().map((c) => c.label).join(", ")}.`,
-        el("div", {},
-          el("button", { type: "button", class: "btn small", onclick: clearFilters }, "Clear filters")));
+        el("button", { type: "button", class: "btn primary", onclick: clearFilters }, "Clear filters")));
     }
   }
 }

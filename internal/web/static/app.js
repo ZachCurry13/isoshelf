@@ -277,9 +277,10 @@ function render() {
   $("target-parent").textContent = parentPath;
   $("target-name").textContent = folderName;
   $("profile").value = state.profile || "ventoy";
-  $("profile").disabled = engaged || !state.target;
-  $("choose").disabled = engaged;
-  $("refresh").disabled = busy || !state.target;
+  const wait = "Wait for what isoshelf is doing to finish.";
+  setAvailable($("profile"), !engaged && Boolean(state.target), engaged ? wait : "Choose a folder first.");
+  setAvailable($("choose"), !engaged, wait);
+  setAvailable($("refresh"), !busy && Boolean(state.target), busy ? wait : "Choose a folder first.");
   $("updated-at").textContent = freshness();
   renderSpace();
   renderRun();
@@ -287,7 +288,7 @@ function render() {
 
   if (state.error) showNotice(state.error, true);
   else if (flash && Date.now() < flash.until) showNotice(flash.message, false);
-  else if (state.warnings.length) showNotice(state.warnings.join(" "), false);
+  else if (state.warnings.length) showNotice(state.warnings.join(" "), false, "warning");
   else $("notice").hidden = true;
 
   renderJump();
@@ -360,6 +361,10 @@ function timeAgo(iso) {
 
 document.addEventListener("DOMContentLoaded", () => {
   markTab = followScroll();
+  // A control marked aria-disabled (setAvailable) stays reachable but does nothing.
+  document.addEventListener("click", (e) => {
+    if (e.target.closest('[aria-disabled="true"]')) { e.preventDefault(); e.stopImmediatePropagation(); }
+  }, true);
   // An open menu is pinned to the window; scrolling would leave it behind.
   document.addEventListener("scroll", closeMenus, true);
   window.addEventListener("resize", closeMenus);
@@ -368,7 +373,10 @@ document.addEventListener("DOMContentLoaded", () => {
   $("cancel").addEventListener("click", async () => {
     try { await api("POST", "/api/cancel"); } catch (err) { showNotice(err.message, true); }
   });
-  $("profile").addEventListener("change", (e) => changeProfile(e.target.value));
+  $("profile").addEventListener("change", (e) => {
+    if (e.target.getAttribute("aria-disabled") === "true") { e.target.value = state.profile || "ventoy"; return; }
+    changeProfile(e.target.value);
+  });
   $("dock-toggle").addEventListener("click", () => {
     dockOpen = !dockOpen;
     renderDock();

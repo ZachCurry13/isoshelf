@@ -9,7 +9,10 @@
 
 // ask shows a dialog and returns the value of the button the user picked, or
 // null if they closed it. body, when given, is shown under the text: a report
-// needs to show what it would send, which is more than a sentence.
+// needs to show what it would send, which is more than a sentence. As in
+// Primer's dialog the buttons run from the quiet one on the left to the one
+// that does the thing on the right, and one that deletes for good is a danger
+// button (choice.danger).
 function ask(title, text, choices, body) {
   const dialog = $("ask");
   $("ask-title").textContent = title;
@@ -21,11 +24,12 @@ function ask(title, text, choices, body) {
   if (body) extra.append(body);
   const buttons = $("ask-buttons");
   buttons.replaceChildren();
+  const weight = (choice) => (choice.primary ? 2 : choice.danger ? 1 : 0);
   return new Promise((resolve) => {
-    for (const choice of choices) {
+    for (const choice of [...choices].sort((a, b) => weight(a) - weight(b))) {
       buttons.append(el("button", {
         type: "button",
-        class: `btn ${choice.primary ? "primary" : ""}`,
+        class: `btn${choice.primary ? " primary" : ""}${choice.danger ? " danger" : ""}`,
         onclick: () => { dialog.close(); resolve(choice.value); },
       }, choice.label));
     }
@@ -98,7 +102,7 @@ async function removeItem(item) {
     `${pinned}This file uses ${formatBytes(item.size)}. Archiving keeps it in this folder, under Archive, where you can restore it or delete it later — the space is not freed until you do.`,
     [
       { label: "Archive it", value: "move-aside", primary: true },
-      { label: "Delete it now", value: "delete" },
+      { label: "Delete it now", value: "delete", danger: true },
       { label: "Cancel", value: null },
     ]);
   if (!how) return;
@@ -121,7 +125,7 @@ async function emptyRemoved() {
   const confirmed = await ask(
     "Empty the archive?",
     `${plural(state.removed.files, "file")} using ${formatBytes(state.removed.bytes)} will be deleted permanently. This frees the space.`,
-    [{ label: "Delete them", value: "yes", primary: true }, { label: "Cancel", value: null }]);
+    [{ label: "Delete them", value: "yes", danger: true }, { label: "Cancel", value: null }]);
   if (!confirmed) return;
   try {
     state = await api("POST", "/api/removed/empty");

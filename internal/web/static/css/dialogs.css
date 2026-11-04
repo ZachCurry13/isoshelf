@@ -16,7 +16,8 @@
 .ask::backdrop { background: var(--backdrop); }
 .ask-form { display: flex; flex-direction: column; max-height: inherit; padding: var(--sp-20); }
 .ask-body { overflow-y: auto; min-height: 0; }
-.ask h2 { margin: 0 0 var(--sp-6); font-size: var(--text-large); }
+.ask-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-8); margin-bottom: var(--sp-8); }
+.ask h1 { margin: 0; font-size: var(--text-large); font-weight: 600; }
 .ask p { margin: 0 0 var(--sp-16); color: var(--muted); overflow-wrap: anywhere; }
 .ask-buttons { display: flex; flex: none; gap: var(--sp-8); flex-wrap: wrap; justify-content: flex-end; padding-top: var(--sp-16); }
 /* The two files a records move is between, one to a line: a path run into a

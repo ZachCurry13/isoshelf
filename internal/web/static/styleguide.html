@@ -225,8 +225,8 @@
   <h2>Settings rows</h2>
   <p>A group heading, a setting with its hint, and the "Saved" mark.</p>
   <div class="card settings-demo"><div class="setting-group"><h3>Updates</h3>
-    <div class="setting"><div class="setting-name">Allow downloads <span class="saved-mark">Saved</span></div><div class="setting-hint">A Download button on each image, to save it onto the computer you are using.</div><div class="setting-control"><label class="switch"><input type="checkbox" checked aria-label="Allow downloads"><span class="track"></span></label></div></div>
-    <div class="setting"><div class="setting-name">Download speed limit</div><div class="setting-hint">The most of your internet connection isoshelf may use. Leave it empty to use all you have.</div><div class="setting-control"><label class="inline-select"><input type="text" inputmode="numeric" class="number-input" aria-label="Download speed limit" placeholder="No limit" value="200"> Mbit/s</label></div><div class="muted setting-note">Only downloads from the internet are limited.</div></div>
+    <div class="setting"><div class="setting-name">Allow downloads <span class="saved-mark">Saved</span></div><div class="setting-hint">A Download button on each image, to save it onto the computer you are using.</div><div class="setting-control"><span class="switch-row"><span class="switch-label">Allow downloads</span><label class="switch"><input type="checkbox" role="switch" checked aria-label="Allow downloads"><span class="track" aria-hidden="true"></span></label></span></div></div>
+    <div class="setting"><div class="setting-name">Download speed limit</div><div class="setting-hint">The most of your internet connection isoshelf may use. Leave it empty to use all you have.</div><div class="setting-control"><select aria-label="Download speed limit"><option>No limit</option><option selected>200 Mbit/s</option></select></div><div class="muted setting-note">Only downloads from the internet are limited.</div></div>
   </div></div>
 </section>
 

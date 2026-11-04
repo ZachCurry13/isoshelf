@@ -16,14 +16,14 @@ html:has(> body.has-dock) { scroll-padding-bottom: calc(var(--dock-height, var(-
   max-width: 1012px; margin: 0 auto; padding: var(--sp-12) var(--sp-16);
 }
 .dock-summary { flex: 0 1 auto; min-width: 0; display: flex; gap: var(--sp-8); align-items: baseline; }
-.dock-summary span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dock-summary span { min-width: 0; overflow-wrap: anywhere; }
 .dock .bar { flex: 1 1 120px; min-width: 80px; }
 .dock-actions { display: flex; gap: var(--sp-6); flex: none; margin-left: auto; }
 /* One row a download while more than one is running, each with its own Stop. */
 .dock-runs { list-style: none; margin: 0 auto; padding: var(--sp-8) var(--sp-16) 0; max-width: 1012px; display: grid; gap: var(--sp-6); }
 .dock-run { display: flex; gap: var(--sp-12); align-items: center; }
-.dock-run .run-name { flex: 0 1 240px; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.dock-run .run-text { flex: 0 1 auto; min-width: 0; font-size: var(--text-small); color: var(--muted); white-space: nowrap; }
+.dock-run .run-name { flex: 0 1 240px; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.dock-run .run-text { flex: 0 1 auto; min-width: 0; font-size: var(--text-small); color: var(--muted); overflow-wrap: anywhere; }
 .dock-run .bar { flex: 1 1 80px; min-width: 60px; }
 #dock-waiting { flex: none; font-size: var(--text-small); }
 .dock-panel {
@@ -53,7 +53,8 @@ html:has(> body.has-dock) { scroll-padding-bottom: calc(var(--dock-height, var(-
 .dock-item.dragging { opacity: 0.5; }
 .dock-item.drop-before { box-shadow: 0 -3px 0 var(--accent); }
 .dock-item.drop-after { box-shadow: 0 3px 0 var(--accent); }
-.dock-item .grip { color: var(--muted); font-size: var(--text-large); line-height: 1; }
+.dock-item .grip { display: inline-flex; background: none; border: none; padding: var(--sp-4); border-radius: var(--radius); color: var(--muted); cursor: grab; }
+.dock-item .grip[aria-pressed="true"] { color: var(--accent); background: var(--accent-muted); }
 .dock-item .place {
   min-width: 1.6em; text-align: center; font-variant-numeric: tabular-nums;
   color: var(--muted); font-weight: 600;

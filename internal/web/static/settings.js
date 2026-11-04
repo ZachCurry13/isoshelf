@@ -105,6 +105,11 @@ const SAVED_FOR = 3000;
 
 function saved(fields) {
   savedFields = fields;
+  // Said aloud too: the mark is only seen, and Primer asks that a save be
+  // told in words to everyone.
+  const live = $("settings-status");
+  live.textContent = "";
+  setTimeout(() => { live.textContent = "Setting saved"; }, 50);
   savedAt = Date.now();
   clearTimeout(savedTimer);
   // One redraw when the mark's time is up, rather than polling to notice:

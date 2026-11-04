@@ -29,3 +29,18 @@ function icon(name, label) {
   svg.append(use);
   return svg;
 }
+
+// setAvailable says whether a control can be used right now. Primer asks that
+// a control that can't be used is not `disabled` (a disabled button can't be
+// reached with the keyboard and can't say why), so it is marked
+// aria-disabled, stays in the tab order, and says why; a click on it does
+// nothing (app.js swallows it). Pass no reason when the control is available.
+function setAvailable(node, available, why) {
+  if (available) {
+    node.removeAttribute("aria-disabled");
+    node.removeAttribute("aria-description");
+    return;
+  }
+  node.setAttribute("aria-disabled", "true");
+  if (why) node.setAttribute("aria-description", why);
+}

@@ -13,7 +13,7 @@ async function renderArchive() {
   $("archive-count").textContent = here.length
     ? `${plural(here.length, "file")} · ${formatBytes(here.reduce((sum, i) => sum + (i.size || 0), 0))}`
     : "";
-  $("archive-empty").disabled = scanning() || downloading();
+  setAvailable($("archive-empty"), !(scanning() || downloading()), "Wait for what isoshelf is doing to finish.");
   $("archive-list").replaceChildren(...here.map((item) => pastItem(item)));
 }
 

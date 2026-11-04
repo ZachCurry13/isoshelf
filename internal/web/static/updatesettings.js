@@ -54,11 +54,21 @@ const UPDATE_SETTINGS = {
       {
         name: "Download speed limit",
         fields: ["download_limit"],
-        hint: "The most of your internet connection isoshelf may use. Leave it empty " +
-          "to use all you have; with a limit, it also downloads more than one image at once when there is room.",
+        hint: "The most of your internet connection isoshelf may use. Choose No limit " +
+          "to use all you have; with a limit it also downloads more than one image at once when there is room.",
         words: "download speed limit bandwidth megabits mbit throttle slow internet parallel several at once",
-        control: () => numberRow("Download speed limit", state && state.download_limit, "Mbit/s",
-          (download_limit) => ({ download_limit })),
+        control: () => {
+          // A pick-one list, so it saves the way every other setting here does.
+          // A value set some other way (an older copy, the config file) is
+          // kept in the list rather than quietly replaced.
+          const now = (state && state.download_limit) || 0;
+          const speeds = [10, 25, 50, 100, 200, 300, 500, 1000];
+          if (now && !speeds.includes(now)) speeds.push(now);
+          speeds.sort((a, b) => a - b);
+          return choiceRow("Download speed limit",
+            [["0", "No limit"], ...speeds.map((n) => [String(n), `${n.toLocaleString()} Mbit/s`])],
+            String(now), (value) => ({ download_limit: Number(value) }));
+        },
         note: () => "Only downloads from the internet are limited. Copying from another isoshelf on your network is not.",
       },
       {

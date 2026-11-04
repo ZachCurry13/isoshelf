@@ -145,7 +145,7 @@ function rememberedRow(folder, bookmarked) {
       el("button", {
         type: "button", class: "remembered-forget",
         "aria-label": `Forget ${folder.path}`,
-        title: "Take this folder off the list. Nothing in it is touched.",
+        "data-tooltip": "Forget this folder", "aria-description": "Takes this folder off the list. Nothing in it is touched.",
         onclick: () => forgetFolder(folder),
       }, icon("x-16"))),
     detail ? el("div", { class: "remembered-detail" }, detail) : null);

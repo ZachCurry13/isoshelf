@@ -15,7 +15,7 @@
 .picker::backdrop { background: var(--backdrop); }
 .picker-form { display: flex; flex-direction: column; max-height: inherit; }
 .picker-head { padding: var(--sp-16) var(--sp-20) var(--sp-8); }
-.picker-head h2 { margin: 0 0 var(--sp-2); font-size: var(--text-large); }
+.picker-head h1 { font-weight: 600; margin: 0 0 var(--sp-2); font-size: var(--text-large); }
 .picker-head p { margin: 0; }
 .picker-path { display: flex; gap: var(--sp-8); padding: var(--sp-8) var(--sp-20) var(--sp-12); }
 .picker-path input { flex: 1; font-family: var(--mono); font-size: var(--text-small); }
@@ -26,7 +26,7 @@
   font: inherit; display: block; width: 100%; text-align: left;
   background: none; border: none; color: var(--text);
   padding: var(--sp-6) var(--sp-8); border-radius: var(--radius); cursor: pointer;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 .picker-roots button:hover, .picker-list button:hover { background: color-mix(in srgb, var(--accent), transparent 88%); }
 /* A folder isoshelf remembers: its path, what it held under that, and a way
@@ -40,7 +40,7 @@
 .remembered-detail {
   font-size: var(--text-small); color: var(--muted);
   padding: 0 var(--sp-8) var(--sp-6); margin-top: calc(-1 * var(--sp-4));
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 /* Nothing hides on a touch screen, where there is no hovering to do it with. */
 @media (hover: none) {

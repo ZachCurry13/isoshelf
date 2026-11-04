@@ -2,10 +2,7 @@
 
 :root[data-contrast="high"] .muted { color: var(--muted); }
 
-@media (prefers-reduced-motion: reduce) {
-  .spinner, .bar.indeterminate .bar-fill { animation: none; }
-}
-/* The same, asked for in Settings rather than in the operating system. */
+/* Less motion, asked for in Settings. (The operating system's own preference is honoured by only starting a transition when it allows one, below and in each stylesheet; a spinner is an indicator, which Primer says to leave running.) */
 :root[data-motion="reduce"] .spinner,
 :root[data-motion="reduce"] .bar.indeterminate .bar-fill { animation: none; }
 :root[data-motion="reduce"] * { transition: none !important; scroll-behavior: auto !important; }
@@ -19,3 +16,14 @@
   background: var(--bgc);
 }
 
+
+/* The operating system's forced-colours (Windows high contrast) mode sets every
+   colour itself. The one thing that would be lost is a thing drawn only by its
+   fill, so the switch's track and the bars get an edge and a status keeps its
+   own border. Nothing else is overridden. */
+@media (forced-colors: active) {
+  .switch .track, .bar, .pill, .label, .counter { border: 1px solid CanvasText; }
+  .bar-fill { background: Highlight; }
+  .switch input:checked + .track { background: Highlight; }
+  .jump a[aria-current]::after { background: Highlight; }
+}

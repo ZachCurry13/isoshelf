@@ -61,7 +61,7 @@
 .legend { margin: var(--sp-12) var(--sp-16) var(--sp-4); font-size: var(--text-small); color: var(--muted); }
 .legend .caution { margin-right: var(--sp-4); }
 
-.empty { padding: var(--sp-40) var(--sp-16); text-align: center; color: var(--muted); display: grid; gap: var(--sp-8); justify-items: center; }
+.empty { text-align: center; }
 
 /* A dismissed update (v0.8.2): still listed, greyed, until it's undone. */
 .row.dismissed > :not(.row-actions) { opacity: 0.6; }

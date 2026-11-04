@@ -13,11 +13,12 @@ function renderRow(item) {
     type: "button",
     class: "star",
     "aria-pressed": track.starred ? "true" : "false",
-    title: track.starred
-      ? "Starred: isoshelf reports this image as missing if it disappears from this folder. Click to unstar."
+    "data-tooltip": track.starred ? "Unstar" : "Star",
+    "aria-description": track.starred
+      ? "Starred: isoshelf reports this image as missing if it disappears from this folder."
       : usual
         ? "Usually kept here (seen in recent scans). Star it to always report it if it goes missing."
-        : "Star to always report this image if it goes missing from this folder",
+        : "Star it to always report this image if it goes missing from this folder.",
     "aria-label": `Star ${item.name}`,
     disabled: !item.entry || scanning(),
     onclick: () => setTrack(item.entry, { starred: !track.starred }),
@@ -94,7 +95,7 @@ function renderRow(item) {
   if (item.path && state.allow_downloads) {
     actions.push(el("a", {
       class: "btn small icon", href: `/api/file?path=${encodeURIComponent(item.path)}`, download: "",
-      title: `Save ${item.path} on this computer`, "aria-label": `Download ${item.path}`,
+      "data-tooltip": "Save on this computer", "aria-label": `Download ${item.path}`,
     }, icon("download-16")));
   }
   actions.push(el("button", {

@@ -1,13 +1,7 @@
 /* The Filter menu and the chips that show what is switched on. */
 
 /* Filters: one menu, and a chip for everything that is on. */
-.filter-menu > summary { list-style: none; cursor: pointer; }
-.filter-menu > summary::-webkit-details-marker { display: none; }
-.filter-count {
-  display: inline-block; min-width: 18px; margin-left: var(--sp-4); padding: 0 var(--sp-4);
-  border-radius: var(--radius-full); background: var(--accent-fill); color: var(--on-accent);
-  font-size: var(--text-small); font-weight: 600; text-align: center;
-}
+.filter-menu > summary .counter { margin-left: var(--sp-4); }
 /* The filters scroll and the footer stays put, so a long list on a short
    screen shows that there is more of it, and Done is always in reach. */
 .filter-panel { display: flex; flex-direction: column; min-width: 230px; padding: 0; gap: 0; }
