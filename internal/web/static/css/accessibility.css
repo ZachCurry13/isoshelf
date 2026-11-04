@@ -1,6 +1,5 @@
 /* What the Settings choices change beyond colour: higher contrast, less motion. */
 
-:root[data-contrast="high"] :focus-visible { outline-width: 3px; }
 :root[data-contrast="high"] .muted { color: var(--muted); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -15,7 +14,7 @@
    shout. There a dot is the wrong answer, so every status goes back to being
    a filled chip - which is what that switch is for. */
 :root[data-contrast="high"] .pill {
-  padding: 2px 9px 2px 20px;
+  padding: var(--sp-2) var(--sp-8) var(--sp-2) var(--sp-20);
   border-radius: var(--radius-sm);
   font-weight: 600;
   color: var(--fg);

@@ -18,7 +18,7 @@
 .pill {
   display: inline-block;
   position: relative;
-  padding: 0 0 0 14px;
+  padding: 0 0 0 var(--sp-12);
   font-size: var(--text-small);
   font-weight: 500;
   white-space: nowrap;
@@ -39,12 +39,12 @@
 /* The two worth interrupting for: a file that doesn't match its checksum, and
    an update waiting to be taken. */
 .pill.s-bad, .pill.s-update {
-  padding: 1px 8px 1px 20px;
+  padding: var(--sp-2) var(--sp-8) var(--sp-2) var(--sp-20);
   border-radius: var(--radius-sm);
   font-weight: 600;
   color: var(--fg);
   background: var(--bgc);
 }
 .pill.s-bad::before, .pill.s-update::before { left: 8px; top: 0.55em; }
-.pill + .pill { margin-left: 8px; }
+.pill + .pill { margin-left: var(--sp-8); }
 

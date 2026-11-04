@@ -10,7 +10,12 @@
   border: 1px solid var(--button-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 5px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-md);
+  line-height: var(--leading);
+  padding: 0 var(--sp-16);
   cursor: pointer;
   white-space: nowrap;
 }
@@ -18,7 +23,7 @@
 .btn:disabled { opacity: 0.5; cursor: default; }
 .btn.primary { background: var(--primary-bg); border-color: var(--primary-border); color: var(--primary-fg); }
 .btn.primary:hover:not(:disabled) { background: var(--primary-bg-hover); border-color: var(--primary-bg-hover); }
-.btn.small { padding: 3px 12px; font-size: var(--text-small); }
+.btn.small { min-height: var(--control-sm); padding: 0 var(--sp-12); font-size: var(--text-small); }
 
 .number-input { width: 96px; }
 
@@ -28,21 +33,23 @@ input[type="search"], input[type="text"], select {
   background: var(--control-bg);
   border: 1px solid var(--control-border);
   border-radius: var(--radius);
-  padding: 5px 12px;
+  min-height: var(--control-md);
+  padding: 0 var(--sp-12);
 }
 
-.inline-select { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); }
-.inline-select select { padding: 3px 8px; color: var(--text); }
+.inline-select { display: inline-flex; align-items: center; gap: var(--sp-8); color: var(--muted); }
+.inline-select select { min-height: var(--control-sm); padding: 0 var(--sp-8); color: var(--text); }
 
 /* Summary chips */
 
-.summary { display: flex; gap: 8px; flex-wrap: wrap; }
+.summary { display: flex; gap: var(--sp-8); flex-wrap: wrap; }
 .chip {
   font: inherit;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 11px;
+  gap: var(--sp-8);
+  min-height: var(--control-sm);
+  padding: 0 var(--sp-12);
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--surface);
@@ -70,15 +77,16 @@ input[type="search"], input[type="text"], select {
 }
 .switch input:checked + .track { background: var(--accent-fill); border-color: var(--accent-fill); }
 .switch input:checked + .track::after { transform: translateX(14px); }
-.switch input:focus-visible + .track { outline: 3px solid var(--focus); outline-offset: 1px; }
+.switch input:focus-visible + .track { outline: 2px solid var(--focus); outline-offset: -2px; }
 .switch input:disabled { cursor: default; }
 .switch input:disabled + .track { opacity: 0.5; }
 
-.btn.icon { min-width: 30px; padding-left: 6px; padding-right: 6px; }
+.btn.icon { min-width: var(--control-md); padding: 0 var(--sp-6); }
+.btn.small.icon { min-width: var(--control-sm); }
 
 /* An Add or Update button while its image is in the downloads. */
 .btn.job-state { color: var(--accent); border-color: color-mix(in srgb, var(--accent), transparent 55%); font-variant-numeric: tabular-nums; }
-.job-done { color: var(--ok-fg); font-size: var(--text-small); font-weight: 600; white-space: nowrap; padding: 4px 6px; }
+.job-done { color: var(--ok-fg); font-size: var(--text-small); font-weight: 600; white-space: nowrap; padding: var(--sp-4) var(--sp-6); }
 
 .linkish {
   border: 0; background: none; padding: 0; cursor: pointer;

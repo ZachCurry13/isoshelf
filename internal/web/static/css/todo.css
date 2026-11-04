@@ -1,7 +1,7 @@
 /* What wants doing, as one line, and the first-run question. */
 
 .updates {
-  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  display: flex; align-items: center; gap: var(--sp-12); flex-wrap: wrap;
   border-left: 3px solid var(--accent);
 }
 .updates #updates-text { font-weight: 600; }
@@ -9,14 +9,14 @@
 
 /* What wants doing, as one line: every count shows those images. */
 .todo {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;
-  padding: 5px 6px 5px 8px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4);
+  padding: var(--sp-4) var(--sp-6) var(--sp-4) var(--sp-8);
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow);
 }
 .todo:empty { display: none; }
 .summary-part {
-  background: none; border: 0; border-radius: var(--radius); padding: 4px 6px;
+  background: none; border: 0; border-radius: var(--radius); padding: var(--sp-4) var(--sp-6);
   font: inherit; font-size: var(--text-small); color: var(--text); cursor: pointer;
 }
 .summary-part:hover { background: var(--surface-2); }
@@ -29,9 +29,9 @@
 .summary-go { margin-left: auto; }
 
 /* Asked once, in a container. */
-.first-run { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-left: 2px solid var(--accent); }
+.first-run { display: flex; flex-direction: column; gap: var(--sp-4); padding: var(--sp-12) var(--sp-12); border-left: 2px solid var(--accent); }
 .first-run[hidden] { display: none; }
 .first-run-title { font-weight: 600; font-size: var(--text-medium); }
 .first-run p { margin: 0; color: var(--muted); font-size: var(--text-small); max-width: 70ch; }
-.first-run-buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.first-run-buttons { display: flex; flex-wrap: wrap; gap: var(--sp-6); margin-top: var(--sp-6); }
 

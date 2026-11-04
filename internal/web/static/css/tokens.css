@@ -84,6 +84,22 @@
   --radius-lg: var(--borderRadius-large);
   --radius-full: var(--borderRadius-full);
 
+  /* Space. Primer's scale (2, 4, 6, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48
+     and 64 px), and nothing between: every padding, margin and gap in the
+     stylesheets is one of these, which a test holds in place. Written against
+     this page's 14 px root so each is its Primer size at the default and grows
+     with Larger text like everything else. The condensed (8), normal (16) and
+     spacious (24) steps are Primer's three densities. */
+  --sp-2: calc(2rem / 14);   --sp-4: calc(4rem / 14);   --sp-6: calc(6rem / 14);
+  --sp-8: calc(8rem / 14);   --sp-12: calc(12rem / 14); --sp-16: calc(16rem / 14);
+  --sp-20: calc(20rem / 14); --sp-24: calc(24rem / 14); --sp-28: calc(28rem / 14);
+  --sp-32: calc(32rem / 14); --sp-36: calc(36rem / 14); --sp-40: calc(40rem / 14);
+  --sp-44: calc(44rem / 14); --sp-48: calc(48rem / 14); --sp-64: calc(64rem / 14);
+
+  /* Control heights: Primer's small (28) and medium (32). */
+  --control-sm: var(--sp-28);
+  --control-md: var(--sp-32);
+
   /* Type. The size everything else is measured against is the one number at
      the bottom, and every other size is in rem against it, so Larger text
      raises all of them. Three steps, as in Primer's scale (12, 14 and 16 px at

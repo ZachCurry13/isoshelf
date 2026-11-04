@@ -2,8 +2,8 @@
 
 /* Progress */
 
-.run { display: flex; align-items: center; gap: 16px; padding: 12px 20px; }
-.run-text { display: flex; align-items: center; gap: 10px; min-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.run { display: flex; align-items: center; gap: var(--sp-16); padding: var(--sp-12) var(--sp-20); }
+.run-text { display: flex; align-items: center; gap: var(--sp-8); min-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bar { flex: 1; height: 8px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-full); overflow: hidden; }
 .bar-fill { height: 100%; width: 0; background: var(--accent-fill); border-radius: var(--radius-full); transition: width 0.3s ease; }
 .bar.indeterminate .bar-fill { width: 30%; animation: slide 1.2s ease-in-out infinite; }
@@ -19,7 +19,7 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .notice {
-  padding: 10px 14px;
+  padding: var(--sp-12) var(--sp-12);
   border-radius: var(--radius);
   background: var(--update-bg);
   color: var(--update-fg);
@@ -29,10 +29,10 @@
 
 /* The same message, inside a dialog. A modal is drawn above the whole page,
    so a notice left behind it cannot be seen at all. */
-.dialog-notice { margin: 0 20px 12px; flex: none; }
-.picker-head + .dialog-notice, .ask-form > .dialog-notice { margin-top: 12px; }
+.dialog-notice { margin: 0 var(--sp-20) var(--sp-12); flex: none; }
+.picker-head + .dialog-notice, .ask-form > .dialog-notice { margin-top: var(--sp-12); }
 
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   .run { flex-wrap: wrap; }
   .run-text { min-width: 0; flex-basis: 100%; }
 }

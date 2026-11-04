@@ -4,7 +4,7 @@
 .filter-menu > summary { list-style: none; cursor: pointer; }
 .filter-menu > summary::-webkit-details-marker { display: none; }
 .filter-count {
-  display: inline-block; min-width: 18px; margin-left: 4px; padding: 0 5px;
+  display: inline-block; min-width: 18px; margin-left: var(--sp-4); padding: 0 var(--sp-4);
   border-radius: var(--radius-full); background: var(--accent-fill); color: var(--on-accent);
   font-size: var(--text-small); font-weight: 600; text-align: center;
 }
@@ -13,23 +13,23 @@
 .filter-panel { display: flex; flex-direction: column; min-width: 230px; padding: 0; gap: 0; }
 .filter-panel.pinned { overflow: hidden; }
 .filter-items {
-  display: grid; gap: 10px; padding: 10px;
+  display: grid; gap: var(--sp-8); padding: var(--sp-12);
   min-height: 0; overflow-y: auto; overscroll-behavior: contain;
 }
 .filter-foot {
-  flex: none; display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 8px 10px; border-top: 1px solid var(--border);
+  flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-8);
+  padding: var(--sp-8) var(--sp-12); border-top: 1px solid var(--border);
 }
-.filter-group { display: grid; gap: 2px; }
-.filter-group + .filter-group { border-top: 1px solid var(--border); padding-top: 8px; }
+.filter-group { display: grid; gap: var(--sp-2); }
+.filter-group + .filter-group { border-top: 1px solid var(--border); padding-top: var(--sp-8); }
 .filter-title {
   font-size: var(--text-small); font-weight: 600;
-  color: var(--muted); padding-bottom: 2px;
+  color: var(--muted); padding-bottom: var(--sp-2);
 }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 10px; align-items: center; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--sp-6); padding: 0 var(--sp-16) var(--sp-12); align-items: center; }
 .chip-off {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 3px 8px; border-radius: var(--radius); cursor: pointer;
+  display: inline-flex; align-items: center; gap: var(--sp-6);
+  padding: var(--sp-4) var(--sp-8); border-radius: var(--radius); cursor: pointer;
   border: 1px solid color-mix(in srgb, var(--accent), transparent 60%);
   background: color-mix(in srgb, var(--accent), transparent 90%);
   color: var(--text); font: inherit; font-size: var(--text-small);
@@ -37,8 +37,8 @@
 .chip-off .x { color: var(--muted); }
 .chip-off:hover .x { color: var(--bad-fg); }
 
-.filter-group .check { display: flex; align-items: center; gap: 8px; justify-content: flex-start; padding: 2px 0; }
+.filter-group .check { display: flex; align-items: center; gap: var(--sp-8); justify-content: flex-start; padding: var(--sp-2) 0; }
 
-@media (max-width: 720px) {
-  .chips { padding: 0 12px 10px; }
+@media (max-width: 767px) {
+  .chips { padding: 0 var(--sp-12) var(--sp-12); }
 }

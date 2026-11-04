@@ -2,9 +2,9 @@
 
 /* Downloads: a bar along the bottom of the window while anything is queued,
    running or just finished, which opens into the queue. */
-body.has-dock { padding-bottom: calc(var(--dock-height, 56px) + 20px); }
+body.has-dock { padding-bottom: calc(var(--dock-height, var(--sp-48)) + var(--sp-20)); }
 /* Scrolling to something, or tabbing to it, stops short of the bar. */
-html:has(> body.has-dock) { scroll-padding-bottom: calc(var(--dock-height, 56px) + 28px); }
+html:has(> body.has-dock) { scroll-padding-bottom: calc(var(--dock-height, var(--sp-48)) + var(--sp-28)); }
 .dock {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   background: var(--surface);
@@ -12,16 +12,16 @@ html:has(> body.has-dock) { scroll-padding-bottom: calc(var(--dock-height, 56px)
   box-shadow: var(--shadow);
 }
 .dock-bar {
-  display: flex; align-items: center; gap: 14px;
-  max-width: 1320px; margin: 0 auto; padding: 10px 20px;
+  display: flex; align-items: center; gap: var(--sp-12);
+  max-width: 1012px; margin: 0 auto; padding: var(--sp-12) var(--sp-16);
 }
-.dock-summary { flex: 0 1 auto; min-width: 0; display: flex; gap: 8px; align-items: baseline; }
+.dock-summary { flex: 0 1 auto; min-width: 0; display: flex; gap: var(--sp-8); align-items: baseline; }
 .dock-summary span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dock .bar { flex: 1 1 120px; min-width: 80px; }
-.dock-actions { display: flex; gap: 6px; flex: none; margin-left: auto; }
+.dock-actions { display: flex; gap: var(--sp-6); flex: none; margin-left: auto; }
 /* One row a download while more than one is running, each with its own Stop. */
-.dock-runs { list-style: none; margin: 0 auto; padding: 8px 20px 0; max-width: 1320px; display: grid; gap: 6px; }
-.dock-run { display: flex; gap: 12px; align-items: center; }
+.dock-runs { list-style: none; margin: 0 auto; padding: var(--sp-8) var(--sp-16) 0; max-width: 1012px; display: grid; gap: var(--sp-6); }
+.dock-run { display: flex; gap: var(--sp-12); align-items: center; }
 .dock-run .run-name { flex: 0 1 240px; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dock-run .run-text { flex: 0 1 auto; min-width: 0; font-size: var(--text-small); color: var(--muted); white-space: nowrap; }
 .dock-run .bar { flex: 1 1 80px; min-width: 60px; }
@@ -31,24 +31,24 @@ html:has(> body.has-dock) { scroll-padding-bottom: calc(var(--dock-height, 56px)
   border-bottom: 1px solid var(--border);
   background: var(--surface-2);
 }
-.dock-list { list-style: none; margin: 0 auto; padding: 6px 20px 12px; max-width: 1320px; }
+.dock-list { list-style: none; margin: 0 auto; padding: var(--sp-6) var(--sp-16) var(--sp-12); max-width: 1012px; }
 .dock-heading {
   font-size: var(--text-small); font-weight: 600;
-  color: var(--muted); padding: 12px 0 6px;
+  color: var(--muted); padding: var(--sp-12) 0 var(--sp-6);
 }
 .dock-heading .muted { font-weight: 400; }
 .dock-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: var(--sp-8);
+  padding: var(--sp-8) var(--sp-12); margin-bottom: var(--sp-6);
   background: var(--surface);
   border: 1px solid var(--border); border-radius: var(--radius);
 }
 .dock-item .info { flex: 1; min-width: 0; }
-.conflict-choices { display: flex; flex-wrap: wrap; gap: 6px; }
+.conflict-choices { display: flex; flex-wrap: wrap; gap: var(--sp-6); }
 
 .dock-item .name { font-weight: 600; overflow-wrap: break-word; }
 .dock-item .kind { font-size: var(--text-small); color: var(--muted); }
-.dock-item .bar { margin-top: 6px; }
+.dock-item .bar { margin-top: var(--sp-6); }
 .dock-item.queued { cursor: grab; }
 .dock-item.dragging { opacity: 0.5; }
 .dock-item.drop-before { box-shadow: 0 -3px 0 var(--accent); }
@@ -59,49 +59,49 @@ html:has(> body.has-dock) { scroll-padding-bottom: calc(var(--dock-height, 56px)
   color: var(--muted); font-weight: 600;
 }
 .dock-item .mark { min-width: 1.8em; text-align: center; }
-.dock-buttons { display: flex; gap: 4px; flex: none; }
+.dock-buttons { display: flex; gap: var(--sp-4); flex: none; }
 
-@media (max-width: 720px) {
-  .dock-bar { flex-wrap: wrap; padding: 10px 16px; gap: 8px 12px; }
+@media (max-width: 767px) {
+  .dock-bar { flex-wrap: wrap; padding: var(--sp-12) var(--sp-16); gap: var(--sp-8) var(--sp-12); }
   .dock-summary { flex-basis: 100%; }
-  .dock-runs { padding: 8px 16px 0; }
-  .dock-run { flex-wrap: wrap; gap: 4px 10px; }
+  .dock-runs { padding: var(--sp-8) var(--sp-16) 0; }
+  .dock-run { flex-wrap: wrap; gap: var(--sp-4) var(--sp-8); }
   .dock-run .run-name { flex-basis: 100%; }
   .dock-run .run-text { white-space: normal; flex: 1 1 100%; }  .dock-summary span { white-space: normal; }
-  .dock-list { padding: 6px 16px 12px; }
+  .dock-list { padding: var(--sp-6) var(--sp-16) var(--sp-12); }
   .dock-item { flex-wrap: wrap; }
   .dock-buttons { margin-left: auto; }
 }
 
 /* Adding a file from this computer. The rows borrow the downloads dock's
    shape, because they are the same idea: one file, how far it has got. */
-.upload-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+.upload-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--sp-12); }
 .upload-words { flex: 1; min-width: 12rem; }
-.upload-words p { margin: 4px 0 0; }
-.upload-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.upload-words p { margin: var(--sp-4) 0 0; }
+.upload-list { list-style: none; margin: var(--sp-12) 0 0; padding: 0; }
 .upload-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: var(--sp-8);
+  padding: var(--sp-8) var(--sp-12); margin-bottom: var(--sp-6);
   background: var(--surface);
   border: 1px solid var(--border); border-radius: var(--radius);
 }
 .upload-item .info { flex: 1; min-width: 0; }
 .upload-item .name { font-weight: 600; overflow-wrap: anywhere; }
 .upload-item .kind { font-size: var(--text-small); color: var(--muted); }
-.upload-item .bar { margin-top: 6px; }
+.upload-item .bar { margin-top: var(--sp-6); }
 
 /* Shown while a file is held over the window. It covers the page so the
    answer to "can I drop this here?" is the whole window, not a rectangle. */
 .drop-overlay {
   position: fixed; inset: 0; z-index: 60;
   display: flex; align-items: center; justify-content: center;
-  padding: 24px;
+  padding: var(--sp-24);
   background: color-mix(in srgb, var(--bg) 78%, transparent);
   border: 3px dashed var(--accent);
 }
 .drop-overlay[hidden] { display: none; }
 .drop-sign {
-  padding: 18px 24px;
+  padding: var(--sp-16) var(--sp-24);
   font-size: var(--text-large); font-weight: 600;
   color: var(--fg);
   background: var(--surface);

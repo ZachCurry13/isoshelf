@@ -8,8 +8,8 @@
   /* Wraps rather than pushing Settings off the edge on the narrowest
      screens - a folded phone is about 280px across. */
   flex-wrap: wrap;
-  gap: 12px;
-  padding: 8px 20px;
+  gap: var(--sp-12);
+  padding: var(--sp-8) var(--sp-20);
   /* Primer's header: dark in every theme, its words a step down from white,
      the name and the links in it at full strength. */
   background: var(--header-bg);
@@ -19,7 +19,7 @@
   z-index: 5;
 }
 
-.brand { display: flex; align-items: center; gap: 10px; }
+.brand { display: flex; align-items: center; gap: var(--sp-8); }
 .logo { width: 20px; height: 20px; }
 /* A disc on a shelf: the name, drawn. It replaced three stacked bars in
    v0.6.1, which read as a menu button. The disc's hole is cut out of the
@@ -28,37 +28,37 @@
 .logo-disc { fill: var(--header-fg-strong); }
 .logo-shelf { fill: color-mix(in srgb, var(--header-fg-strong), transparent 35%); }
 .brand-name { font-size: var(--text-large); font-weight: 600; color: var(--header-fg-strong); }
-.version { color: var(--header-fg); font-size: var(--text-small); padding: 1px 6px; border: 1px solid color-mix(in srgb, var(--header-fg), transparent 55%); border-radius: var(--radius-full); }
+.version { color: var(--header-fg); font-size: var(--text-small); padding: var(--sp-2) var(--sp-6); border: 1px solid color-mix(in srgb, var(--header-fg), transparent 55%); border-radius: var(--radius-full); }
 
 .app-update {
   margin-left: auto;
   background: var(--update-bg);
   color: var(--update-fg);
-  padding: 3px 10px;
+  padding: var(--sp-4) var(--sp-12);
   border-radius: var(--radius-sm);
   font-weight: 500;
   font-size: var(--text-small);
 }
 /* Update now, and then how the update is going. It takes the link's place on
    the right while the update runs, so the bar doesn't jump about. */
-.self-update { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; margin-left: auto; font-size: var(--text-small); }
+.self-update { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--sp-8); min-width: 0; margin-left: auto; font-size: var(--text-small); }
 .app-update:not([hidden]) + .self-update { margin-left: 0; }
 /* On the dark bar a red word is hard to read, so the failure sits on its own tint. */
-.self-update-failed { color: var(--bad-fg); background: var(--bad-bg); padding: 1px 8px; border-radius: var(--radius-sm); font-weight: 500; overflow-wrap: anywhere; }
+.self-update-failed { color: var(--bad-fg); background: var(--bad-bg); padding: var(--sp-2) var(--sp-8); border-radius: var(--radius-sm); font-weight: 500; overflow-wrap: anywhere; }
 
 /* Primer's UnderlineNav: tabs along a rule, an underline under the one you point
    at. These are links to parts of this page, so none of them is "selected". */
 .jump {
   position: sticky; top: 0; z-index: 15;
   display: flex; gap: 0; flex-wrap: wrap;
-  padding: 0 12px;
+  padding: 0 var(--sp-12);
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
 /* A part of the page jumped to stops below the bar rather than under it. */
 main > section[id] { scroll-margin-top: 52px; }
 .jump a {
-  padding: 10px 14px 8px;
+  padding: var(--sp-12) var(--sp-12) var(--sp-8);
   border-bottom: 2px solid transparent;
   color: var(--text); font-size: var(--text-medium); text-decoration: none;
 }
@@ -66,7 +66,7 @@ main > section[id] { scroll-margin-top: 52px; }
 
 .settings-button { margin-left: auto; }
 
-@media (max-width: 720px) {
-  .topbar { padding: 10px 12px; }
-  .jump { padding: 0 6px; }
+@media (max-width: 767px) {
+  .topbar { padding: var(--sp-12) var(--sp-12); }
+  .jump { padding: 0 var(--sp-6); }
 }

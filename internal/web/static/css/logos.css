@@ -11,7 +11,7 @@
   font-size: var(--text-small);
   font-weight: 600;
   color: var(--on-accent);
-  margin-top: 1px;
+  margin-top: var(--sp-2);
 }
 .logo.has-logo {
   /* A logo with no brand colour (the plain disc) is drawn in the tile's text
