@@ -11,6 +11,11 @@ requests are looked at every Monday.
 
 ## 2026-11-13
 
+### Added
+- **Nobara (KDE)**, the plain KDE edition next to the Official one, which is
+  Nobara's own customised KDE (revision 2026111302). Downloads, checked against
+  the checksum file Nobara publishes beside it.
+
 ### Fixed
 - **FreeBSD bootonly** (64-bit) said it couldn't find its checksum (revision
   2026111301). FreeBSD's download folder already holds 15.2, which is still a
