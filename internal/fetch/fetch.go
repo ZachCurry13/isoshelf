@@ -43,6 +43,9 @@ type Request struct {
 	// old file aside, so nothing is touched until the new file is known to be
 	// good. If it fails, the file is not placed.
 	BeforePlace func() error
+	// Signature, when set, is the project's signature over the image, which
+	// must verify before the file is placed (#5).
+	Signature *ImageSignature
 }
 
 // Stage says what a download is doing.
@@ -81,6 +84,8 @@ type Result struct {
 	// it catches a damaged download, not a deliberately changed one, so the
 	// caller treats the file as one nothing proved.
 	Weak bool
+	// Signed is true when the project's signature over the image verified.
+	Signed bool
 	// URL is where the file came from.
 	URL string
 	// Resumed reports whether an earlier, unfinished download was continued.

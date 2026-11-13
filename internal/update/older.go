@@ -54,7 +54,7 @@ func (e said) Unwrap() error { return e.kind }
 
 // checkedEnough refuses an older version that can't be checked.
 func checkedEnough(opts Options, a *resolve.Artifact) error {
-	if opts.Version != "" && (a.Checksum == nil || a.Checksum.Algorithm.Weak()) {
+	if opts.Version != "" && (a.Checksum == nil || a.Checksum.Algorithm.Weak()) && a.ImageSignature == nil {
 		return said{ErrOlderUnchecked, fmt.Sprintf("The project publishes no checksum for %s %s, so isoshelf won't download it: an older version is only installed when it can be proven to be the project's own. Nothing was downloaded.", opts.Entry.Name, opts.Version)}
 	}
 	return nil

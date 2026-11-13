@@ -6,6 +6,30 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.14.0] - 2026-11-13
+
+### OpenPGP signatures
+- **isoshelf can now check a project's signature, not just its checksum.** A
+  checksum only proves a download matches the checksum file; if somebody
+  replaced the checksum file, it proves nothing. Where a project signs its
+  checksum file (or the image itself), isoshelf checks the signature against
+  the project's key before it believes a single checksum in it.
+- **A signature that fails stops everything**, exactly as a checksum mismatch
+  does: nothing is downloaded, or a downloaded file is thrown away, and
+  nothing is replaced.
+- **Keys are pinned.** Each key sits in the catalog with the fingerprints the
+  project publishes in its own documentation, and a key that doesn't match
+  them is refused when the catalog loads. The key is never fetched from
+  beside what it checks.
+- **Where it came from** says when a project's signature proved a file.
+- **Not in use yet:** the built-in catalog names no project's key in this
+  release, because copies of isoshelf before this one would refuse a catalog
+  that did. The keys arrive in a catalog update once this version has been
+  out for a while; no new release will be needed.
+- New library: `github.com/ProtonMail/go-crypto` (accepted for this in
+  September), with what it uses: `cloudflare/circl`, `golang.org/x/crypto`
+  and `golang.org/x/sys`.
+
 ## [v0.13.0] - 2026-11-13
 
 ### Make bootable

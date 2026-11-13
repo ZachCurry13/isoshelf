@@ -166,7 +166,9 @@ isoshelf manages files you care about, so it is deliberately cautious:
   64-bit one, and an LTS release never jumps to a non-LTS one.
 - **Checksums come only from the project's own HTTPS site.** Image bytes may
   come from a mirror, because they're verified against those checksums.
-  (Checking OpenPGP signatures as well is on the roadmap.)
+  isoshelf can also check a project's OpenPGP signature on its checksum
+  file, and refuses a download whose signature fails; the catalog starts
+  naming projects' keys in a later update, once every copy can read them.
 
 ## Where it runs
 
@@ -276,8 +278,8 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 
 **Next:** more notes on where to find the images you fetch yourself.
 
-**Also planned:** [signature checking for the images
-themselves](https://github.com/ZachCurry13/isoshelf/issues/5).
+**Also planned:** the catalog naming each project's signing key, so the
+signature checking added in v0.14.0 is used.
 
 **1.0:** an official TrueNAS app, so it installs from the store rather than as
 a custom app.

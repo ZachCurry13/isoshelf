@@ -63,10 +63,14 @@ function proofOf(item, o) {
     };
   }
   const against = o.checked || item.matched;
+  // A signature (#5) proves the checksum file, or the image, is the
+  // project's own and not one put in its place.
+  const signed = o.signed ? ` The project's signature on it checked out (${hostOf(o.signed)}).` : "";
   if (against) {
     const when = o.checked_at ? `, checked ${shortDate(o.checked_at)}` : "";
-    return { text: `Matches the checksum the project publishes (${hostOf(against)})${when}.` };
+    return { text: `Matches the checksum the project publishes (${hostOf(against)})${when}.${signed}` };
   }
+  if (o.signed) return { text: signed.trim() };
   if (item.status === "checksum mismatch") {
     return { text: "Doesn't match the checksum the project publishes." };
   }

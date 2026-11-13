@@ -1455,3 +1455,12 @@ trailer holds its size only modulo 4 GB, so the free-space check takes the
 smallest size at least as big as the compressed file; and the won't-boot
 note had a test making sure it never mentioned a button that didn't exist,
 which now checks it mentions the one that does.
+
+## [#5] OpenPGP signatures (v0.14.0, 2026-11-13)
+
+Built: detached, clearsigned and image signatures, keys pinned by
+fingerprint at catalog load, a failed signature blocking like a mismatch.
+Learned: a self-updating catalog fetches only its one file, so a key has to
+live inside it (`armored`) rather than beside it; and released copies refuse
+that new field, so the catalog can't use signatures until they age out -
+the same wait `find` had. The catalog side is in TODO.

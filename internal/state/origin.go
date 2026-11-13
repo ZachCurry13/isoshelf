@@ -43,6 +43,10 @@ type Origin struct {
 	// and CheckedAt when. Empty means nothing has shown it is the release.
 	Checked   string    `json:"checked,omitempty"`
 	CheckedAt time.Time `json:"checked_at,omitzero"`
+	// Signed is the address of the project's OpenPGP signature that proved
+	// the checksum file (or the image itself) when it arrived (#5). Empty
+	// when the project signs neither, or isoshelf wasn't told how to check.
+	Signed string `json:"signed,omitempty"`
 	// Replaced is the version of the file this one took the place of, when
 	// an update put it where an older file of the same name was (v0.8.13).
 	// The note about the file that left goes at the next scan, because its
