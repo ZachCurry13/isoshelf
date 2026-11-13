@@ -11,9 +11,10 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next:** the open items at the end of `docs/primer-audit.md` (contrast in every theme, the pages of the manual that could not be read), then the list under *After those*. AnduinOS downloads
-and the plain discs are in (catalog revision 2026110303). Finished work is in
-`docs/archive.md`.
+**Next:** the list under *After those* ([#2] first). The Primer audit's
+leftovers are done (v0.11.2) except a wording pass on the longer button
+descriptions, written at the end of `docs/primer-audit.md`. Finished work is
+in `docs/archive.md`.
 19. **Default credentials, where the project publishes them** (the
    maintainer, 2026-09-23: "if any of these systems have default passwords
    like below, that should be noted - user demo: demo, user root: root").
