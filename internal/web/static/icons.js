@@ -44,3 +44,22 @@ function setAvailable(node, available, why) {
   node.setAttribute("aria-disabled", "true");
   if (why) node.setAttribute("aria-description", why);
 }
+
+// Escape hides a tooltip (css/controls.css) without moving focus or the
+// pointer, as Primer's Tooltip must; it comes back once both have left.
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  const focused = document.activeElement && document.activeElement.closest("[data-tooltip]");
+  for (const t of [...document.querySelectorAll("[data-tooltip]:hover"), focused]) {
+    if (t) t.setAttribute("data-tooltip-off", "");
+  }
+});
+// On blur the pointer must have gone too; on mouseout, the focus.
+document.addEventListener("blur", (e) => {
+  const t = e.target instanceof Element && e.target.closest("[data-tooltip-off]");
+  if (t && !t.matches(":hover")) t.removeAttribute("data-tooltip-off");
+}, true);
+document.addEventListener("mouseout", (e) => {
+  const t = e.target instanceof Element && e.target.closest("[data-tooltip-off]");
+  if (t && !t.matches(":hover") && document.activeElement !== t) t.removeAttribute("data-tooltip-off");
+}, true);
