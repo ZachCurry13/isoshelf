@@ -151,19 +151,6 @@ func writeFileQuietly(name string, data []byte) {
 	os.Rename(tmp.Name(), name)
 }
 
-// forgetServed drops one drive from the record.
-func forgetServed(configDir, id string) error {
-	servedMu.Lock()
-	defer servedMu.Unlock()
-	all := loadServed(configDir)
-	kept := slices.DeleteFunc(all, func(d Served) bool { return d.ID == id })
-	if len(kept) == len(all) {
-		return nil
-	}
-	saveServed(configDir, kept)
-	return nil
-}
-
 // askerFrom reads who is asking, from the headers the asking isoshelf sets.
 // Anything in them came from another machine, so it is kept short, stripped
 // of line breaks, and never used as a path.
