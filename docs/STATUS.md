@@ -288,7 +288,7 @@ Earlier releases, v0.9.2 back to the start, are written up in
 - `docs/primer-guidelines.md` is the manual as a checklist; `docs/primer-audit.md` is the page checked against it, with what
   is open or decided at the end. Next: read the pages the researchers couldn't (tab ARIA, truncation, tooltip), measure contrast.
 
-## Latest (v0.11.1, 2026-11-13: on branch `maintenance-sweep`, in a pull request, not merged)
+## Latest (v0.11.1, 2026-11-13)
 
 - A maintenance sweep, one pull request: requests are cut off at one megabyte
   (`internal/web/bodylimit.go`, uploads excepted, with tests); catalog revision
@@ -300,9 +300,6 @@ Earlier releases, v0.9.2 back to the start, are written up in
 - Checked: build, vet, gofmt and all tests on Go 1.27.4, and the recorder run
   (all 78 checkable entries answer). Not checked: the page in a browser (nothing
   on it changed).
-- **Next, for the maintainer:** merge the pull request, then release v0.11.1
-  straight away (push the `v0.11.1` tag on `main`): once merged, the changelog
-  and the TrueNAS files name v0.11.1, and that image exists only after the
-  release. The release is also the whole fix for the v0.11.0 programs having
-  been built with Go 1.27.3. Closing #108 follows from the merge.
+- Released 2026-11-13 (#109), built with Go 1.27.4, which fixes GO-2026-6859
+  in the programs people download. #108 is closed.
 
