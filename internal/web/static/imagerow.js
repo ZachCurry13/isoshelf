@@ -27,11 +27,11 @@ function renderRow(item) {
   // Status: Primer's Label, in the colour of what it means.
   const status = el("div", { class: "row-status" },
     isDismissed(item)
-      ? el("span", { class: "pill s-muted", title: "You dismissed this update. Its details panel can bring it back." }, dismissedWords(item))
-      : el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}`, title: statusHelp(item.status) },
+      ? el("span", { class: "pill s-muted" }, dismissedWords(item))
+      : el("span", { class: `pill ${STATUS_CLASS[item.status] || "s-muted"}` },
         statusWord(item.status)),
     item.eol && item.status !== "EOL"
-      ? el("span", { class: "pill s-eol", title: statusHelp("EOL") }, "End of life")
+      ? el("span", { class: "pill s-eol" }, "End of life")
       : null);
 
   const name = item.page

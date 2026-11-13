@@ -6,6 +6,23 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.11.2] - 2026-11-13
+
+### The last of the design manual: contrast, tooltips, line length
+- **Every colour pair the page draws is now measured in all twelve themes**
+  (light and dark, the colour-blind sets, high contrast). All 300 meet the
+  accessibility standard for small text, and a test keeps them there, so a
+  future Primer update can't quietly make something hard to read.
+- **Tooltips do what Primer's must:** Escape hides one without moving you, and
+  a long one wraps instead of running off a narrow screen.
+- **Tooltips come off things you can't click.** Primer keeps them for buttons
+  and links, because nobody using a keyboard or a touch screen can reach the
+  others. The status pills are explained by "What do the statuses mean?" and
+  the details panel, the 32-bit and ARM badges' full names are in the details
+  panel, and "popular" is explained on the Popular filter instead.
+- **Long hints in Settings stop at about 80 characters a line**, so they're
+  easier to read on a wide screen.
+
 ## [v0.11.1] - 2026-11-13
 
 ### Upkeep: a request can't fill the memory, and two catalog entries answer again

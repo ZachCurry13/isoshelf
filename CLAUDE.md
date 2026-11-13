@@ -13,7 +13,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
 - `internal/{auth,peer}`: the username and password on a network; copying an image from another isoshelf
 - `internal/appupdate`: isoshelf's own releases: the update notice, the signature check, and swapping in the new program
 - `internal/web`: HTTP server and the embedded page. `static/index.html` loads
-  one script per part of the page: `icons.js` (Octicons), `jumpnav.js` (the tab bar), `app.js` (state, asking, drawing, wiring),
+  one script per part of the page: `icons.js` (Octicons, and Escape hiding a tooltip), `jumpnav.js` (the tab bar), `app.js` (state, asking, drawing, wiring),
   `images.js`, `logotile.js`, `menus.js`, `imagerow.js` (one image), `blankslate.js`, `summary.js` (the line saying what wants doing), `details.js`,
   `checklist.js`, `downloads.js` (the queue), `dockitems.js`, `dockprogress.js`
   (the downloads bar), `notices.js`, `actions.js`, `catalog.js` (Add images),
