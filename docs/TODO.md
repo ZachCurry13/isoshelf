@@ -11,7 +11,7 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next:** the list under *After those* ([#2] first). The Primer audit's
+**Next:** the list under *After those* ([#3] first; [#2] is done, v0.12.0). The Primer audit's
 leftovers are done (v0.11.2) except a wording pass on the longer button
 descriptions, written at the end of `docs/primer-audit.md`. Finished work is
 in `docs/archive.md`.
@@ -72,7 +72,7 @@ has a reputation. Self-update already means the warning appears only on the
 first download, because files isoshelf downloads itself don't carry the
 browser's "came from the internet" mark.
 
-**After those, in this order:** [#2] older versions with a hold, [#3] make bootable (rename and extract
+**After those, in this order:** [#3] make bootable (rename and extract
 only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12]. Any time a real
 USB drive is to hand: [#7], trying the portable zip on one.

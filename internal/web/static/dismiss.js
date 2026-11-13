@@ -14,12 +14,14 @@ function dismissal(entry) {
   return null;
 }
 
-// isDismissed is whether this row's update is dismissed.
+// isDismissed is whether this row's update is dismissed, or held at an
+// older version (older.js), which every count and button treats the same.
 function isDismissed(item) {
-  return item.status === "update available" && Boolean(dismissal(item.entry));
+  return item.status === "update available" && Boolean(dismissal(item.entry) || heldAt(item.entry));
 }
 
 function dismissedWords(item) {
+  if (heldAt(item.entry)) return `Held at ${heldAt(item.entry)}`;
   const d = dismissal(item.entry);
   return d.forever ? "Dismissed for good" : `Dismissed until ${untilDate(d.until)}`;
 }

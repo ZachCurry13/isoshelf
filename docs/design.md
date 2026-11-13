@@ -433,8 +433,8 @@ alone is not an update.
 5. Adding catalog images that aren't on the target (the "Add" button), and
    a download queue for Add and Update. *Done.*
 6. Growing the catalog without a new release (below). *Done.*
-Moved later, and still to come: installing older versions with a hold
-(below), Make bootable fix-ups, a CLI `isoshelf update` command (the web UI
+Moved later: installing older versions with a hold (below; done in v0.12.0),
+and still to come: Make bootable fix-ups, a CLI `isoshelf update` command (the web UI
 has it; done in v0.8.5), two downloads at once from different hosts, and
 OpenPGP signature checking.
 
@@ -617,6 +617,16 @@ For when a new release breaks something and the user needs the previous one.
   show "held at <version>" instead of "update available", and the scheduler
   never updates or replaces a held track until the user releases the hold.
   The keep/replace checkbox applies as usual.
+- Built in v0.12.0 (#2): `source.Versions` lists them (`Latest` is its first),
+  `update.Options.Version` installs one (`update/older.go`), `GET
+  /api/versions` serves the list, and `older.js` is the details panel's
+  *Older versions* and *Held* rows. Unlike the newest, an older version with
+  no strong checksum is refused before anything downloads
+  (`ErrOlderUnchecked`): going back is a step to something known. Installing
+  the newest by hand releases the hold too. On the page a hold counts as a
+  dismissal (`isDismissed`), so the counts, Update all and the filter need no
+  second case. The list is asked for only when somebody presses *Choose an
+  older version*: it is a request to the project's site.
 
 ### App updates
 

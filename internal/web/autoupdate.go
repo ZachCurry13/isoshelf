@@ -143,7 +143,9 @@ func (s *Server) queueUpdatesLocked(room space.Usage) (int, string) {
 		}
 		// Dismissed means not now, or never: automatic updates leave it be,
 		// exactly as Update all does (#56).
-		if s.st.Track(item.Entry.ID).Dismissed(s.cfg.Now()) {
+		// Held at an older version (#2): nothing moves it on until the hold
+		// is released.
+		if t := s.st.Track(item.Entry.ID); t.Dismissed(s.cfg.Now()) || t.Hold != "" {
 			continue
 		}
 		// Room first. A download that fills the disk helps nobody, and the

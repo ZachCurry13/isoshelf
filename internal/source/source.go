@@ -14,7 +14,6 @@ import (
 
 	"github.com/ZachCurry13/isoshelf/internal/catalog"
 	"github.com/ZachCurry13/isoshelf/internal/remote"
-	"github.com/ZachCurry13/isoshelf/internal/version"
 )
 
 // ErrManual means the entry is manual and has no source to ask.
@@ -80,6 +79,19 @@ func (r *Release) CycleFor(v string) *Cycle {
 
 // Latest asks an entry's source for the latest release of its track.
 func Latest(ctx context.Context, client *remote.Client, e *catalog.Entry) (*Release, error) {
+	all, err := Versions(ctx, client, e)
+	if err != nil {
+		return nil, err
+	}
+	return &all[0], nil
+}
+
+// Versions asks an entry's source for every release of its track it still
+// publishes, newest first: each endoflife.date cycle of the track (its latest
+// version), each matching GitHub release, each version a listing shows. A
+// static entry has the one; a manual entry has none (ErrManual). There is
+// always at least one when the error is nil.
+func Versions(ctx context.Context, client *remote.Client, e *catalog.Entry) ([]Release, error) {
 	s := e.Source
 	switch s.Type {
 	case catalog.SourceEndOfLife:
@@ -89,14 +101,16 @@ func Latest(ctx context.Context, client *remote.Client, e *catalog.Entry) (*Rele
 	case catalog.SourceListing:
 		return listing(ctx, client, s)
 	case catalog.SourceStatic:
-		return &Release{Version: s.Version}, nil
+		return []Release{{Version: s.Version}}, nil
 	case catalog.SourceManual:
 		return nil, ErrManual
 	}
 	return nil, fmt.Errorf("unknown source type %q", s.Type)
 }
 
-func endOfLife(ctx context.Context, client *remote.Client, s catalog.Source) (*Release, error) {
+// endOfLife lists the latest version of each cycle on the track, newest
+// first.
+func endOfLife(ctx context.Context, client *remote.Client, s catalog.Source) ([]Release, error) {
 	u := "https://endoflife.date/api/v1/products/" + url.PathEscape(s.Product) + "/"
 	resp, err := client.Get(ctx, u)
 	if err != nil {
@@ -145,111 +159,32 @@ func endOfLife(ctx context.Context, client *remote.Client, s catalog.Source) (*R
 	}
 	slices.SortStableFunc(rel.Cycles, func(a, b Cycle) int { return strings.Compare(b.ReleaseDate, a.ReleaseDate) })
 
-	i := slices.IndexFunc(rel.Cycles, func(c Cycle) bool {
-		switch s.Channel {
-		case "latest":
-			return true
-		case "lts":
-			return c.LTS
-		}
-		return c.Name == s.Channel
-	})
-	if i < 0 {
-		return nil, fmt.Errorf("endoflife.date has no %q release of %s", s.Channel, s.Product)
-	}
-	chosen := rel.Cycles[i]
-	rel.Cycle, rel.Version, rel.URL = chosen.Name, chosen.Latest, links[chosen.Name]
-	if rel.Version == "" {
-		rel.Version = chosen.Name // cycles like Linux Mint's "22.3" are the version
-	}
-	return rel, nil
-}
-
-func gitHub(ctx context.Context, client *remote.Client, s catalog.Source) (*Release, error) {
-	resp, err := client.Get(ctx, "https://api.github.com/repos/"+s.Repo+"/releases?per_page=100")
-	if err != nil {
-		return nil, err
-	}
-	var releases []struct {
-		TagName    string `json:"tag_name"`
-		Draft      bool   `json:"draft"`
-		Prerelease bool   `json:"prerelease"`
-		HTMLURL    string `json:"html_url"`
-		Assets     []struct {
-			Name   string  `json:"name"`
-			Size   int64   `json:"size"`
-			Digest *string `json:"digest"`
-			URL    string  `json:"browser_download_url"`
-		} `json:"assets"`
-	}
-	if err := json.Unmarshal(resp.Body, &releases); err != nil {
-		return nil, fmt.Errorf("GitHub releases of %s: %w", s.Repo, err)
-	}
-
-	tagRE, err := catalog.WholeRegexp(s.Tag)
-	if err != nil {
-		return nil, err
-	}
-	var assetRE *regexp.Regexp
-	if s.Asset != "" {
-		if assetRE, err = catalog.WholeRegexp(s.Asset); err != nil {
-			return nil, err
-		}
-	}
-
-	// GitHub lists the newest releases first. Drafts and prereleases never
-	// count as updates.
-	for _, r := range releases {
-		m := tagRE.FindStringSubmatch(r.TagName)
-		if r.Draft || r.Prerelease || m == nil {
+	var out []Release
+	for _, c := range rel.Cycles {
+		if !onChannel(c, s.Channel) {
 			continue
 		}
-		rel := &Release{Version: r.TagName, Tag: r.TagName, URL: r.HTMLURL}
-		if i := tagRE.SubexpIndex("version"); i >= 0 && m[i] != "" {
-			rel.Version = m[i]
+		r := *rel
+		r.Cycle, r.Version, r.URL = c.Name, c.Latest, links[c.Name]
+		if r.Version == "" {
+			r.Version = c.Name // cycles like Linux Mint's "22.3" are the version
 		}
-		if assetRE == nil {
-			return rel, nil
-		}
-		for _, a := range r.Assets {
-			if assetRE.MatchString(a.Name) {
-				rel.Asset = &Asset{Name: a.Name, URL: a.URL, Size: a.Size}
-				if a.Digest != nil {
-					if hex, ok := strings.CutPrefix(*a.Digest, "sha256:"); ok {
-						rel.Asset.SHA256 = strings.ToLower(hex)
-					}
-				}
-				return rel, nil
-			}
-		}
+		out = append(out, r)
 	}
-	if assetRE != nil {
-		return nil, fmt.Errorf("no release of %s has a tag matching %q and an asset matching %q", s.Repo, s.Tag, s.Asset)
+	if len(out) == 0 {
+		return nil, fmt.Errorf("endoflife.date has no %q release of %s", s.Channel, s.Product)
 	}
-	return nil, fmt.Errorf("no release of %s has a tag matching %q", s.Repo, s.Tag)
+	return out, nil
 }
 
-func listing(ctx context.Context, client *remote.Client, s catalog.Source) (*Release, error) {
-	resp, err := client.Get(ctx, s.URL)
-	if err != nil {
-		return nil, err
+// onChannel says whether a cycle belongs to the track a channel names: every
+// cycle for "latest", the long-term ones for "lts", or the one named.
+func onChannel(c Cycle, channel string) bool {
+	switch channel {
+	case "latest":
+		return true
+	case "lts":
+		return c.LTS
 	}
-	re, err := regexp.Compile(s.Regex)
-	if err != nil {
-		return nil, err
-	}
-	i := re.SubexpIndex("version")
-	if i < 0 {
-		return nil, fmt.Errorf("source.regex %q has no version group", s.Regex)
-	}
-	var latest, matched string
-	for _, m := range re.FindAllSubmatch(resp.Body, -1) {
-		if v := string(m[i]); v != "" && (latest == "" || version.Compare(v, latest) > 0) {
-			latest, matched = v, string(m[0])
-		}
-	}
-	if latest == "" {
-		return nil, fmt.Errorf("no version matching %q found at %s", s.Regex, s.URL)
-	}
-	return &Release{Version: latest, Matched: matched}, nil
+	return c.Name == channel
 }

@@ -112,6 +112,11 @@ type Track struct {
 	// See Dismissed.
 	DismissedUntil   time.Time `json:"dismissed_until,omitzero"`
 	DismissedForever bool      `json:"dismissed_forever,omitempty"`
+	// Hold is the version this image is held at, after an older version was
+	// installed on purpose (#2): nothing updates it, and the page says "held
+	// at" rather than offering the newest, until the hold is released or the
+	// newest is installed by hand. Empty means not held.
+	Hold string `json:"hold,omitempty"`
 }
 
 // Dismissed says whether this image's updates are dismissed at now.

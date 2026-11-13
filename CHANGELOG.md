@@ -6,6 +6,23 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.12.0] - 2026-11-13
+
+### Back to the version that worked
+- **Install an older version.** When a new release breaks something, open the
+  image's details and choose *Choose an older version*: isoshelf asks the
+  project which versions it still publishes and installs the one you pick.
+  It's downloaded and checked against the project's own checksum like any
+  update, and what happens to the newer file follows your Settings as usual.
+- **The image is then held there.** Its row says *Held at* the version, it
+  isn't counted as an update, Update all and updating by itself leave it
+  alone, and the details panel has *Release hold*. Installing the newest by
+  hand releases it too.
+- **No checksum, no step back.** The newest version can still download without
+  a checksum and wait for you to look before it replaces anything. An older
+  one can't: if the project no longer publishes a checksum for it, nothing is
+  downloaded.
+
 ## [v0.11.2] - 2026-11-13
 
 ### The last of the design manual: contrast, tooltips, line length
