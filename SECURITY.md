@@ -92,9 +92,11 @@ broken is a security report, not a feature request.
 
 - **That an image is what its project says it is.** isoshelf checks that the
   bytes match the checksum the project published. If a project's own site is
-  compromised, a matching checksum proves nothing. Checking images' own
-  signatures is planned and not done yet; isoshelf's updates of itself are
-  signed (see above).
+  compromised, a matching checksum proves nothing. isoshelf can check a
+  project's OpenPGP signature on its checksum file (or image) and refuses a
+  download whose signature fails (v0.14.0), but the catalog doesn't name any
+  project's key yet, so today no image is checked that way. isoshelf's
+  updates of itself are signed (see above).
 - **That an image is safe to boot.** It's an operating system image; isoshelf
   only manages the file.
 - **Anything about a catalog you or someone else wrote by hand.** Entries in

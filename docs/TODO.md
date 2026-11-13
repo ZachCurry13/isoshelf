@@ -11,8 +11,8 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next:** the list under *After those* ([#5] first; [#2] and [#3] are done,
-v0.12.0 and v0.13.0). The Primer audit's
+**Next:** the list under *After those* ([#11] and [#12]; [#2], [#3] and
+[#5] are done, v0.12.0 to v0.14.0). The Primer audit's
 leftovers are done (v0.11.2) except a wording pass on the longer button
 descriptions, written at the end of `docs/primer-audit.md`. Finished work is
 in `docs/archive.md`.
@@ -73,9 +73,17 @@ has a reputation. Self-update already means the warning appears only on the
 first download, because files isoshelf downloads itself don't carry the
 browser's "came from the internet" mark.
 
-**After those, in this order:** [#5] OpenPGP signatures (the second dependency is
-accepted - decided 2026-09-23), then [#11] and [#12]. Any time a real
+**After those, in this order:** [#11] and [#12]. Any time a real
 USB drive is to hand: [#7], trying the portable zip on one.
+
+**Signing keys in the catalog**, once v0.14.0 has been the latest release
+for a release or two (older copies refuse `armored`, as they refused
+`find`). Then, for each project that signs its checksum file: the key from
+the project's own HTTPS site, the fingerprint from its own documentation
+(not from the key), `signature`, `sig` and `key` on its entries, and a
+re-record. Debian (`SHA256SUMS.sign`), Ubuntu (`SHA256SUMS.gpg`), Fedora
+(clearsigned `CHECKSUM`), Kali and Linux Mint are the obvious first ones.
+The weekly catalog task can do it; nothing in isoshelf needs changing.
 
 On what [#3] left: Make bootable does rename and extract, by hand. Convert
 (bin/cue), `.zip`/`.7z`, and applying the catalog's `fixup` to a download by

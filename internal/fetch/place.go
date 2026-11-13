@@ -1,8 +1,10 @@
 package fetch
 
 import (
+	"bufio"
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 
@@ -39,6 +41,21 @@ func (c *Client) place(ctx context.Context, req Request, part, final, url string
 		result.Weak = req.Checksum.Algorithm.Weak()
 	}
 
+	// The project's signature over the image itself (#5), read from the
+	// finished file. A file it doesn't match is thrown away like one whose
+	// checksum doesn't: it can only ever be the wrong file.
+	if req.Signature != nil {
+		progress(Progress{Stage: Verifying, Filename: req.Filename, Total: st.size, URL: url})
+		if err := checkImageSignature(part, req.Signature); err != nil {
+			if errors.Is(err, verify.ErrBadSignature) {
+				os.Remove(part)
+				os.Remove(part + ".json")
+			}
+			return nil, err
+		}
+		result.Signed = true
+	}
+
 	progress(Progress{Stage: Placing, Filename: req.Filename, Done: st.size, Total: st.size, URL: url})
 	if req.BeforePlace != nil {
 		if err := req.BeforePlace(); err != nil {
@@ -50,4 +67,23 @@ func (c *Client) place(ctx context.Context, req Request, part, final, url string
 	}
 	os.Remove(part + ".json")
 	return result, nil
+}
+
+// ImageSignature is a detached signature over the image and the key that
+// must have made it.
+type ImageSignature struct {
+	Key *verify.Keyring
+	Sig []byte
+}
+
+func checkImageSignature(part string, s *ImageSignature) error {
+	f, err := os.Open(part)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	if err := s.Key.CheckDetached(bufio.NewReaderSize(f, 1<<20), s.Sig); err != nil {
+		return fmt.Errorf("the download isn't signed by the project's key, so it was thrown away: %w", err)
+	}
+	return nil
 }

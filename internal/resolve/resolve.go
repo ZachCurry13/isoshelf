@@ -36,6 +36,13 @@ type Artifact struct {
 	Checksum *verify.Checksum
 	// ChecksumURL is where the checksum came from.
 	ChecksumURL string
+	// Signed is the address of the signature that proved the checksum file,
+	// or (with ImageSignature) the one the image itself must carry; empty
+	// when the project signs neither.
+	Signed string
+	// ImageSignature is a detached signature over the image, checked once it
+	// has downloaded and before it is placed (signature = "image").
+	ImageSignature []byte
 }
 
 // Resolve finds the file for rel, the latest release of entry e.
@@ -103,7 +110,11 @@ func Resolve(ctx context.Context, client *remote.Client, e *catalog.Entry, rel *
 		if resp.URL.Host != manifestURL.Host {
 			return nil, fmt.Errorf("checksum file %s redirected to %s; checksums must come from the official site", manifestURL, resp.URL.Host)
 		}
-		checksums := verify.ParseManifest(resp.Body)
+		body, err := checkSigned(ctx, client, spec, base, manifestURL, vars, resp.Body, a)
+		if err != nil {
+			return nil, err
+		}
+		checksums := verify.ParseManifest(body)
 		if a.Filename == "" {
 			var names []string
 			for _, c := range checksums {
@@ -133,6 +144,12 @@ func Resolve(ctx context.Context, client *remote.Client, e *catalog.Entry, rel *
 			return nil, fmt.Errorf("%s has no checksum for %s", manifestURL, a.Filename)
 		}
 		a.Checksum, a.ChecksumURL = &c, manifestURL.String()
+	}
+
+	if spec.Signature == catalog.SignatureImage {
+		if err := fetchImageSignature(ctx, client, spec, base, vars, a); err != nil {
+			return nil, err
+		}
 	}
 
 	fileRef := &url.URL{Path: a.Filename}
