@@ -656,6 +656,27 @@ For when a new release breaks something and the user needs the previous one.
   second case. The list is asked for only when somebody presses *Choose an
   older version*: it is a request to the project's site.
 
+### A drive's list: rebuilding and moving (v0.15.0, #11, #12)
+
+- Backup means the list, not the files (decided 2026-09-21): everything on
+  a drive that isoshelf can name is still on its project's own server.
+- `internal/drivelist`: a small TOML file, `[[image]]` with `id` (all that
+  matters), and `name`, `version`, `file`, `starred` so it reads well and a
+  star comes back. Lenient on reading, since people edit it.
+- `GET /api/list` saves this folder's list: what the last scan found that
+  the catalog knows (not older copies), plus the usual set's missing ones.
+- A remembered folder's list comes from its mirror on this computer
+  (`state.Mirror`): its usual set and what its last scan held, since a drive
+  scanned once has no usual set yet.
+- `POST /api/fill/plan` works a list out against this folder: to download,
+  already here or queued, and can't (with why: unknown, link only, check
+  only). `POST /api/fill` queues the chosen ones as ordinary downloads,
+  stars what the list starred, and refuses before starting if they don't
+  fit (`space.Usage.Fits`).
+- On the page, `drivelist.js` is *Drive list* in This folder, using the
+  same checklist as Update all. It says what can't come back, and that a
+  byte-for-byte copy is a job for the user's own disk tools.
+
 ### App updates
 
 - Release builds embed their version (`-ldflags "-X main.version=vX.Y.Z"`).
@@ -778,8 +799,9 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
     that isn't a record isn't a path - and the size and modification time
     have to match the record, or the file has changed since anybody hashed it.
   - **The sharer records which drives it served** (`internal/web/served.go`),
-    keyed by the asking folder's target id. That list is most of what #11
-    needs to rebuild a lost drive.
+    keyed by the asking folder's target id. #11 was built from the mirror
+    and a list file instead (below), which cover a lost drive without a
+    server.
   - **Copying anything the server has** (v0.8.1, #62 part two). The sharing
     isoshelf lists every hashed file with its entry, version and `Origin`
     (`/api/share/list`); the laptop asks through `/api/peer/files`, leaves
@@ -1023,7 +1045,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   (copying from your server in Add images), `dismiss.js` (dismissing an
   update for a while or for good), `older.js` (installing an older version,
   and the hold), `bootable.js` (Make bootable), `duplicates.js` (copies of one image),
-  `folders.js` (the chooser), `thisfolder.js` (This folder in Settings), `archive.js`, `settings.js` (the Settings
+  `folders.js` (the chooser), `drivelist.js` (a folder's list, saved and
+  filled from), `thisfolder.js` (This folder in Settings), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` and `updatesettings.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`
   (dragging a file onto the page, or picking one), `selfupdate.js` (isoshelf
