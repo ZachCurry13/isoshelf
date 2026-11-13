@@ -238,7 +238,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/peer/copy", s.copyFromPeer)
 	mux.HandleFunc("POST /api/catalog/mine", s.addMyImage)
 	mux.HandleFunc("POST /api/bookmark", s.setBookmark)
-	s.handler = s.guard(mux)
+	s.handler = limitBody(s.guard(mux))
 
 	if settings.On(s.loadSettings().AppUpdateCheck) {
 		go s.checkAppUpdate()
