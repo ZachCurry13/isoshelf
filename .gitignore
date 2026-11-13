@@ -2,6 +2,10 @@
 /isoshelf
 /isoshelf.exe
 
+# A Windows program built in place by "go build" inside any command's folder
+# (one was committed by accident once: internal/remote/remotetest/record)
+*.exe
+
 # Local browser-preview config (holds machine-specific paths)
 /.claude/launch.json
 /isoshelf.exe~
