@@ -32,7 +32,7 @@ redirects, and a checksum file that redirects to another host is refused).
 | Alpine Extended / Standard / Virtual | endoflife `alpine-linux` (`alpine` redirects there) | `dl-cdn.alpinelinux.org/alpine/v{cycle}/releases/x86_64/{file}.sha256` | |
 | Proxmox VE, Proxmox Backup Server | endoflife `proxmox-ve`, `proxmox-backup-server` (cycles are majors: 9, 4) | `enterprise.proxmox.com/iso/SHA256SUMS` | Also lists arm64 PVE images and older majors; the file pattern keeps the track. |
 | TrueNAS CORE 13.0 | listing `download.freenas.org/13.0/STABLE/latest/x64/` | `TrueNAS-{version}.iso.sha256` (BSD format with a build path) | No endoflife product. |
-| FreeBSD bootonly, 64- and 32-bit | listing of `download.freebsd.org/releases/{arch}/{arch}/ISO-IMAGES/` | `CHECKSUM.SHA256-FreeBSD-{version}-RELEASE-{arch}` (BSD format) | endoflife `freebsd` orders the 14.x and 15.x branches by date, so it would pick 14.5 over 15.1. No i386 images for 15. |
+| FreeBSD bootonly, 64- and 32-bit | the release links on `www.freebsd.org/where/` (`releases/{arch}/{arch}/ISO-IMAGES/{version}/`) | `CHECKSUM.SHA256-FreeBSD-{version}-RELEASE-{arch}` (BSD format) | endoflife `freebsd` orders the 14.x and 15.x branches by date, so it would pick 14.5 over 15.1. The download folder itself is no good as a source: it holds the next version while it is a beta, with no RELEASE files (15.2, found 2026-11-13). No i386 images for 15. |
 | pfSense CE installer | listing `atxfiles.netgate.com/mirror/downloads/` | `{file}.sha256` | Published as `.iso.gz`; 2.7.2 is the last CE ISO (newer releases use Netgate's online installer). |
 | Ubuntu Core amd64 / Raspberry Pi arm64 | listing `cdimage.ubuntu.com/ubuntu-core/` | `{version}/stable/current/SHA256SUMS` | `.img.xz`. The Intel IoT and armhf Raspberry Pi images only exist for Core 20 (static version). |
 | Kali installer / Purple | listing `kali.download/base-images/` | `kali-{version}/SHA256SUMS` | `cdimage.kali.org` redirects to `kali.download`. The live image is check-only (below). |
@@ -344,7 +344,7 @@ check-only, with nothing to measure.
 | Proxmox Mail Gateway | listing of `enterprise.proxmox.com/iso/SHA256SUMS` | the same file | The same checksum file as Proxmox VE and Backup Server. |
 | Raspberry Pi OS (desktop, Lite), 64-bit | listing of the dated `images/` folder | `{file}.sha256` next to each image | Written to a card, not booted from a menu, so kept as `.img.xz`. The checksum file is `.sha256`; there are `.sha1` files too. |
 | Home Assistant OS (Pi 5, x86-64) | github `home-assistant/operating-system` | asset digest | |
-| Omarchy | listing of `omarchy.org` | `iso.omarchy.org/omarchy-{version}.iso.sha256` | |
+| Omarchy | listing of `omarchy.org` | `iso.omarchy.org/omarchy-{version}-x86.iso.sha256` | The file gained `-x86` with 4.5 (2026-11-13), when `omarchy-{version}-aarch64.iso` appeared beside it; the ARM image has no entry yet. |
 | Nobara (Official, GNOME, Steam Handheld, Steam HTPC) | listing of `nobaraproject.org/download.html` | `{file}.sha256sum` | Dated releases. The image server can't be listed, so the exact filename comes from what the listing matched on the download page. The checksum files name the image `./Nobara-…`, which the parser handles. The old address `/download-nobara/` redirects. |
 | NixOS (graphical) | endoflife `nixos` | — (check-only) | The `latest-` images redirect to a versioned folder named after a build (`26.05.9989.ecc58f32d106`), and catalog addresses must be final. |
 

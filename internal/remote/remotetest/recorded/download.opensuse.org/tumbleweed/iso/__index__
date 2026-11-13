@@ -7,7 +7,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <meta name="author" content="MirrorCache contributors">
 
-      <meta name="csrf-token" content="c884a14bce58ca21d94e653cccb6f17a3a7b763e1a452a5a1c7d2e27304e52293a390132ad1d82d2" />
+      <meta name="csrf-token" content="4a8c50486afc00fa9b9e203eba923e6dd2350ac7354a40abdf148d2288867f0a2b557eda9acab0ae" />
       <meta name="csrf-param" content="csrf_token" />
 
 
@@ -1289,6 +1289,46 @@ tr.td.a::after{
         <td class="size"><a href="./Changes.20261102.txt.mirrorlist">1220 Byte</a></td>
       </tr>
       <tr>
+        <td  class="name"><a href="./Changes.20261103.txt">Changes.20261103.txt</a></td>
+        <td class="mtime"><a href="./Changes.20261103.txt.mirrorlist">04-Nov-2026 13:38</a></td>
+        <td class="size"><a href="./Changes.20261103.txt.mirrorlist">25KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.20261104.txt">Changes.20261104.txt</a></td>
+        <td class="mtime"><a href="./Changes.20261104.txt.mirrorlist">06-Nov-2026 13:54</a></td>
+        <td class="size"><a href="./Changes.20261104.txt.mirrorlist">19KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.20261105.txt">Changes.20261105.txt</a></td>
+        <td class="mtime"><a href="./Changes.20261105.txt.mirrorlist">06-Nov-2026 15:12</a></td>
+        <td class="size"><a href="./Changes.20261105.txt.mirrorlist">36KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.20261106.txt">Changes.20261106.txt</a></td>
+        <td class="mtime"><a href="./Changes.20261106.txt.mirrorlist">07-Nov-2026 23:11</a></td>
+        <td class="size"><a href="./Changes.20261106.txt.mirrorlist">73KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.20261107.txt">Changes.20261107.txt</a></td>
+        <td class="mtime"><a href="./Changes.20261107.txt.mirrorlist">08-Nov-2026 17:08</a></td>
+        <td class="size"><a href="./Changes.20261107.txt.mirrorlist">2225 Byte</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.20261108.txt">Changes.20261108.txt</a></td>
+        <td class="mtime"><a href="./Changes.20261108.txt.mirrorlist">09-Nov-2026 14:11</a></td>
+        <td class="size"><a href="./Changes.20261108.txt.mirrorlist">24KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.20261109.txt">Changes.20261109.txt</a></td>
+        <td class="mtime"><a href="./Changes.20261109.txt.mirrorlist">10-Nov-2026 13:11</a></td>
+        <td class="size"><a href="./Changes.20261109.txt.mirrorlist">29KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.20261110.txt">Changes.20261110.txt</a></td>
+        <td class="mtime"><a href="./Changes.20261110.txt.mirrorlist">11-Nov-2026 12:52</a></td>
+        <td class="size"><a href="./Changes.20261110.txt.mirrorlist">20KiB</a></td>
+      </tr>
+      <tr>
         <td  class="name"><a href="./Changes.MicroOS.20260101.txt">Changes.MicroOS.20260101.txt</a></td>
         <td class="mtime"><a href="./Changes.MicroOS.20260101.txt.mirrorlist">02-Jan-2026 09:03</a></td>
         <td class="size"><a href="./Changes.MicroOS.20260101.txt.mirrorlist">3.6KiB</a></td>
@@ -2354,219 +2394,284 @@ tr.td.a::after{
         <td class="size"><a href="./Changes.MicroOS.20261102.txt.mirrorlist">731 Byte</a></td>
       </tr>
       <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261103.txt">Changes.MicroOS.20261103.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261103.txt.mirrorlist">04-Nov-2026 13:37</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261103.txt.mirrorlist">19KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261104.txt">Changes.MicroOS.20261104.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261104.txt.mirrorlist">06-Nov-2026 00:36</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261104.txt.mirrorlist">3.1KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261105.txt">Changes.MicroOS.20261105.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261105.txt.mirrorlist">06-Nov-2026 15:12</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261105.txt.mirrorlist">29KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261106.txt">Changes.MicroOS.20261106.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261106.txt.mirrorlist">07-Nov-2026 23:11</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261106.txt.mirrorlist">30KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261107.txt">Changes.MicroOS.20261107.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261107.txt.mirrorlist">08-Nov-2026 17:08</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261107.txt.mirrorlist">905 Byte</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261108.txt">Changes.MicroOS.20261108.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261108.txt.mirrorlist">09-Nov-2026 14:11</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261108.txt.mirrorlist">18KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261109.txt">Changes.MicroOS.20261109.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261109.txt.mirrorlist">10-Nov-2026 13:11</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261109.txt.mirrorlist">17KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261110.txt">Changes.MicroOS.20261110.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261110.txt.mirrorlist">11-Nov-2026 12:52</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261110.txt.mirrorlist">9.1KiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./Changes.MicroOS.20261111.txt">Changes.MicroOS.20261111.txt</a></td>
+        <td class="mtime"><a href="./Changes.MicroOS.20261111.txt.mirrorlist">12-Nov-2026 11:23</a></td>
+        <td class="size"><a href="./Changes.MicroOS.20261111.txt.mirrorlist">3.4KiB</a></td>
+      </tr>
+      <tr>
         <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso">openSUSE-MicroOS-DVD-x86_64-Current.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.mirrorlist">02-Nov-2026 21:26</a></td>
+        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.mirrorlist">11-Nov-2026 20:36</a></td>
         <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.mirrorlist">2.7GiB</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256">openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256.mirrorlist">03-Nov-2026 15:35</a></td>
+        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256.mirrorlist">12-Nov-2026 11:23</a></td>
         <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256.mirrorlist">121 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256.asc">openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256.asc.mirrorlist">03-Nov-2026 15:35</a></td>
+        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256.asc.mirrorlist">12-Nov-2026 11:23</a></td>
         <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Current.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso">openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.mirrorlist">02-Nov-2026 21:26</a></td>
-        <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.mirrorlist">2.7GiB</a></td>
+        <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso">openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso</a></td>
+        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.mirrorlist">11-Nov-2026 20:36</a></td>
+        <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.mirrorlist">2.7GiB</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.sha256">openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">03-Nov-2026 15:35</a></td>
-        <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">121 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.sha256">openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.sha256</a></td>
+        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">12-Nov-2026 11:23</a></td>
+        <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">121 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.sha256.asc">openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">03-Nov-2026 15:35</a></td>
-        <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.sha256.asc">openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.sha256.asc</a></td>
+        <td class="mtime"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">12-Nov-2026 11:23</a></td>
+        <td class="size"><a href="./openSUSE-MicroOS-DVD-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso">openSUSE-Tumbleweed-DVD-x86_64-Current.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.mirrorlist">02-Nov-2026 21:28</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.mirrorlist">11-Nov-2026 20:47</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.mirrorlist">4.3GiB</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256">openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256.mirrorlist">03-Nov-2026 15:38</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256.mirrorlist">12-Nov-2026 11:24</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256.mirrorlist">124 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256.asc">openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256.asc.mirrorlist">03-Nov-2026 15:38</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256.asc.mirrorlist">12-Nov-2026 11:24</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Current.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso">openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.mirrorlist">02-Nov-2026 21:28</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.mirrorlist">4.3GiB</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso">openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.mirrorlist">11-Nov-2026 20:47</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.mirrorlist">4.3GiB</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.sha256">openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">03-Nov-2026 15:38</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">124 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.sha256">openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.sha256</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">12-Nov-2026 11:24</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">124 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.sha256.asc">openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">03-Nov-2026 15:38</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.sha256.asc">openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.sha256.asc</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">12-Nov-2026 11:24</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-DVD-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso">openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.mirrorlist">02-Nov-2026 21:15</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.mirrorlist">11-Nov-2026 20:18</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.mirrorlist">1.2GiB</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256">openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256.mirrorlist">03-Nov-2026 15:54</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256.mirrorlist">12-Nov-2026 11:20</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256.mirrorlist">131 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256.asc">openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256.asc.mirrorlist">03-Nov-2026 15:54</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256.asc.mirrorlist">12-Nov-2026 11:20</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso">openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.mirrorlist">02-Nov-2026 21:15</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.mirrorlist">1.2GiB</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso">openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.mirrorlist">11-Nov-2026 20:18</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.mirrorlist">1.2GiB</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.sha256">openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">03-Nov-2026 15:54</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">131 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.sha256">openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.sha256</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">12-Nov-2026 11:20</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">131 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc">openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">03-Nov-2026 15:54</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc">openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">12-Nov-2026 11:20</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso">openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.mirrorlist">02-Nov-2026 21:16</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.mirrorlist">11-Nov-2026 20:19</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.mirrorlist">1.2GiB</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256">openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256.mirrorlist">03-Nov-2026 15:55</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256.mirrorlist">12-Nov-2026 11:20</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256.mirrorlist">129 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256.asc">openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256.asc.mirrorlist">03-Nov-2026 15:55</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256.asc.mirrorlist">12-Nov-2026 11:20</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso">openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.mirrorlist">02-Nov-2026 21:16</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.mirrorlist">1.2GiB</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso">openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.mirrorlist">11-Nov-2026 20:19</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.mirrorlist">1.2GiB</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.sha256">openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">03-Nov-2026 15:55</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">129 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.sha256">openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.sha256</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">12-Nov-2026 11:20</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">129 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc">openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">03-Nov-2026 15:55</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc">openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">12-Nov-2026 11:20</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso">openSUSE-Tumbleweed-NET-x86_64-Current.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.mirrorlist">02-Nov-2026 21:24</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.mirrorlist">399MiB</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.mirrorlist">11-Nov-2026 20:34</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.mirrorlist">400MiB</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256">openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256.mirrorlist">03-Nov-2026 15:38</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256.mirrorlist">12-Nov-2026 11:25</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256.mirrorlist">124 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256.asc">openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256.asc.mirrorlist">03-Nov-2026 15:38</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256.asc.mirrorlist">12-Nov-2026 11:25</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Current.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso">openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.mirrorlist">02-Nov-2026 21:24</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.mirrorlist">399MiB</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso">openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.mirrorlist">11-Nov-2026 20:34</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.mirrorlist">400MiB</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.sha256">openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">03-Nov-2026 15:38</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">124 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.sha256">openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.sha256</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">12-Nov-2026 11:25</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">124 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.sha256.asc">openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">03-Nov-2026 15:38</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.sha256.asc">openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.sha256.asc</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">12-Nov-2026 11:25</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-NET-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso">openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.mirrorlist">02-Nov-2026 21:12</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.mirrorlist">852MiB</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.mirrorlist">11-Nov-2026 20:15</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.mirrorlist">858MiB</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256">openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256.mirrorlist">03-Nov-2026 15:55</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256.mirrorlist">12-Nov-2026 11:21</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256.mirrorlist">130 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256.asc">openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256.asc.mirrorlist">03-Nov-2026 15:55</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256.asc.mirrorlist">12-Nov-2026 11:21</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Current.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso">openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.mirrorlist">02-Nov-2026 21:12</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.mirrorlist">852MiB</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso">openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.mirrorlist">11-Nov-2026 20:15</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.mirrorlist">858MiB</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.sha256">openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">03-Nov-2026 15:55</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">130 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.sha256">openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.sha256</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">12-Nov-2026 11:21</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">130 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.sha256.asc">openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">03-Nov-2026 15:55</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.sha256.asc">openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.sha256.asc</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">12-Nov-2026 11:21</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-Rescue-CD-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso">openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.mirrorlist">02-Nov-2026 21:15</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.mirrorlist">11-Nov-2026 20:19</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.mirrorlist">1.2GiB</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256">openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256.mirrorlist">03-Nov-2026 15:55</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256.mirrorlist">12-Nov-2026 11:21</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256.mirrorlist">130 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256.asc">openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256.asc.mirrorlist">03-Nov-2026 15:55</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256.asc.mirrorlist">12-Nov-2026 11:21</a></td>
         <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Current.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso">openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.mirrorlist">02-Nov-2026 21:15</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.mirrorlist">1.2GiB</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso">openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.mirrorlist">11-Nov-2026 20:19</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.mirrorlist">1.2GiB</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.sha256">openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.sha256</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">03-Nov-2026 15:55</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.sha256.mirrorlist">130 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.sha256">openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.sha256</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">12-Nov-2026 11:21</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.sha256.mirrorlist">130 Byte</a></td>
       </tr>
       <tr>
-        <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc">openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc</a></td>
-        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">03-Nov-2026 15:55</a></td>
-        <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261102-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
+        <td  class="name"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc">openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc</a></td>
+        <td class="mtime"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">12-Nov-2026 11:21</a></td>
+        <td class="size"><a href="./openSUSE-Tumbleweed-XFCE-Live-x86_64-Snapshot20261111-Media.iso.sha256.asc.mirrorlist">827 Byte</a></td>
       </tr>
       <tr>
         <td  class="name"><a href="./README.FIRST">README.FIRST</a></td>
-        <td class="mtime"><a href="./README.FIRST.mirrorlist">03-Nov-2026 15:55</a></td>
+        <td class="mtime"><a href="./README.FIRST.mirrorlist">12-Nov-2026 11:25</a></td>
         <td class="size"><a href="./README.FIRST.mirrorlist">340 Byte</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso">TW-offline-installer-x86_64-Snapshot20261111.install.iso</a></td>
+        <td class="mtime"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso.mirrorlist">11-Nov-2026 20:28</a></td>
+        <td class="size"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso.mirrorlist">4.5GiB</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso.sha512">TW-offline-installer-x86_64-Snapshot20261111.install.iso.sha512</a></td>
+        <td class="mtime"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso.sha512.mirrorlist">12-Nov-2026 11:23</a></td>
+        <td class="size"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso.sha512.mirrorlist">187 Byte</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso.sha512.asc">TW-offline-installer-x86_64-Snapshot20261111.install.iso.sha512.asc</a></td>
+        <td class="mtime"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso.sha512.asc.mirrorlist">12-Nov-2026 11:23</a></td>
+        <td class="size"><a href="./TW-offline-installer-x86_64-Snapshot20261111.install.iso.sha512.asc.mirrorlist">827 Byte</a></td>
+      </tr>
+      <tr>
+        <td  class="name"><a href="./TW-offline-installer-x86_64.iso">TW-offline-installer-x86_64.iso</a></td>
+        <td class="mtime"><a href="./TW-offline-installer-x86_64.iso.mirrorlist">11-Nov-2026 20:28</a></td>
+        <td class="size"><a href="./TW-offline-installer-x86_64.iso.mirrorlist">4.5GiB</a></td>
       </tr>
     </tbody>
   </table>

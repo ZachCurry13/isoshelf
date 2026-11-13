@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="  ">
+  <meta name="keywords" content="">
+  <meta name="copyright" content="1995-2026 The FreeBSD Project">
+  <link rel="canonical" href="https://www.freebsd.org/where/">
+
+  <title>
+    Get FreeBSD |
+    The FreeBSD Project
+  </title>
+
+  <meta name="theme-color" content="#790000">
+  <meta name="color-scheme" content="system light dark high-contrast">
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/styles/main.min.css">
+  <link rel="stylesheet" href="/css/font-awesome-min.css">
+
+  <meta property="og:title" content=" Get FreeBSD " >
+  <meta property="og:description" content="  " >
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/favicon.ico">
+  <meta property="og:image:alt" content="FreeBSD Logo">
+  <meta property="og:locale" content="en" >
+  <meta property="og:url" content="https://www.freebsd.org/where/">
+  <meta property="og:site_name" content="The FreeBSD Project">
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Article",
+      "url": "https:\/\/www.freebsd.org\/where\/",
+      "name": "The FreeBSD Project",
+      "headline": "The FreeBSD Project",
+      "description": ""
+    }
+  </script>
+  
+  <script defer src="/js/theme-chooser.min.js"></script>
+    <script async src="https://plausible.io/js/pa-QLSHWxEIso-L-cKLRNOUO.js" ></script>
+    <script>
+      ((window.plausible =
+        window.plausible ||
+        function () {
+          (plausible.q = plausible.q || []).push(arguments);
+        }),
+        (plausible.init =
+          plausible.init ||
+          function (i) {
+            plausible.o = i || {};
+          }));
+      plausible.init();
+    </script></head>
+
+  <body>
+    <input type="checkbox" class="theme-switch" id="theme-switch">
+    <div id="page">
+      
+<header>
+  <div class="header-container">
+    <div class="logo-menu-bars-container">
+      <a href="/" class="logo">
+        <img src="/images/FreeBSD-monochromatic.svg" width="160" height="50" alt="FreeBSD logo">
+      </a>
+      <label class="menu-bars" for="menu-bars">
+        <span class="menu-bars-icon" aria-hidden="true"></span>
+      </label>
+    </div>
+    <input id="menu-bars" type="checkbox">
+    <nav>
+      <ul class="menu">
+        <li class="menu-item">
+          <input id="header-about-title" type="checkbox">
+          <label class="menu-item-description" for="header-about-title">
+            About
+            <i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+          </label>
+          <ul class="sub-menu">
+            <li class="title">
+              <a href="/about">About</a>
+            </li>
+            <li>
+              <a href="/projects/newbies">Introduction</a>
+            </li>
+            <li>
+              <a href="/features">Features</a>
+            </li>
+            <li>
+              <a href="/privacy">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="/projects">Projects</a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <input id="header-download-title" type="checkbox">
+          <label class="menu-item-description" for="header-download-title">
+            Get FreeBSD
+            <i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+          </label>
+          <ul class="sub-menu">
+            <li class="title">
+              <a href="/where">Get FreeBSD</a>
+            </li>
+            <li>
+              <a href="/releases">Release Information</a>
+            </li>
+            <li>
+              <a href="/releng">Release Engineering</a>
+            </li>
+            <li>
+              <a href=/ports>Ported Applications</a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <input id="header-documentation-title" type="checkbox">
+          <label class="menu-item-description" for="header-documentation-title">
+            Documentation
+            <i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+          </label>
+          <ul class="sub-menu">
+            <li class="title">
+              <a href="https://docs.FreeBSD.org/en/">Documentation</a>
+            </li>
+            <li>
+              <a href="https://docs.FreeBSD.org/en/books/handbook/">Handbook</a>
+            </li>
+            <li>
+              <a href="https://docs.FreeBSD.org/en/books/faq/">FAQ</a>
+            </li>
+            <li>
+              <a href="https://docs.FreeBSD.org/en/books/porters-handbook/">Porter&#39;s Handbook</a>
+            </li>
+            <li>
+              <a href="https://docs.FreeBSD.org/en/books/fdp-primer">Documentation Project Primer</a>
+            </li>
+            <li>
+              <a href="https://man.FreeBSD.org">Manual pages</a>
+            </li>
+            <li>
+              <a href="https://papers.FreeBSD.org">Presentations and papers</a>
+            </li>
+            <li>
+              <a href="https://docs.FreeBSD.org/en/books">Books</a>
+            </li>
+            <li>
+              <a href="https://docs.FreeBSD.org/en/articles">Articles</a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <input id="header-community-title" type="checkbox">
+          <label class="menu-item-description" for="header-community-title">
+            Community
+            <i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+          </label>
+          <ul class="sub-menu">
+            <li class="title">
+              <a href="/community">Community</a>
+            </li>
+            <li>
+              <a href="/community/mailinglists">Mailing lists</a>
+            </li>
+            <li>
+              <a href="https://forums.FreeBSD.org">Forums</a>
+            </li>
+            <li>
+              <a href="/usergroups">User Groups</a>
+            </li>
+            <li>
+              <a href="/events">Events</a>
+            </li>
+            <li>
+              <a href="https://freebsdfoundation.org/our-work/journal/">FreeBSD Journal</a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <input id="header-developers-title" type="checkbox">
+          <label class="menu-item-description" for="header-developers-title">
+            Developers
+            <i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+          </label>
+          <ul class="sub-menu">
+            <li class="title">
+              <a href="/projects">Developers</a>
+            </li>
+            <li>
+              <a href="https://wiki.FreeBSD.org/IdeasPage">Project Ideas</a>
+            </li>
+            <li>
+              <a href="https://cgit.FreeBSD.org">Git Repository</a>
+            </li>
+            <li>
+              <a href="https://github.com/freebsd">GitHub Mirror</a>
+            </li>
+            <li>
+              <a href="https://reviews.FreeBSD.org">Code Review (Phabricator)</a>
+            </li>
+            <li>
+              <a href="https://wiki.FreeBSD.org">Wiki</a>
+            </li>
+            <li>
+              <a href="https://ci.FreeBSD.org">Continuous Integration Service</a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <input id="header-support-title" type="checkbox">
+          <label class="menu-item-description" for="header-support-title">
+            Support
+            <i class="fa fa-angle-down fa-lg" aria-hidden="true"></i>
+          </label>
+          <ul class="sub-menu">
+            <li class="title">
+              <a href="/support">Support</a>
+            </li>
+            <li>
+              <a href="/commercial">Vendors</a>
+            </li>
+            <li>
+              <a href="/security">Security Information</a>
+            </li>
+            <li>
+              <a href="https://bugs.FreeBSD.org/search/">Bug Reports</a>
+            </li>
+            <li>
+              <a href="/support">Submitting Bug Reports</a>
+            </li>
+            <li>
+              <a href="/support/webresources">Web Resources</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <div class="search-donate-container">
+      
+      <form
+        class="search"
+        method="get"
+        id="search-header-form"
+        action="https://duckduckgo.com"
+        name="search-header-form"
+        onsubmit="document.getElementById('words').value+=' site:FreeBSD.org'">
+        <input type="hidden" name="DB" value="en">
+        <input type="hidden" name="ka" value="v">
+        <input type="hidden" name="kt" value="v">
+        <input type="hidden" name="kh" value="1">
+        <input type="hidden" name="kj" value="r2">
+        <input
+          id="words"
+          name="q"
+          type="text"
+          size="20"
+          maxlength="25"
+          onfocus="if( this.value==this.defaultValue ) this.value='';"
+          value=""
+          placeholder="">
+        <button>
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+      </form>
+      <details class="i18n">
+        <summary class="lang-toggle">
+          <img src="/images/language.png" class="language-image" alt="">
+        </summary>
+        <ul class="lang-dropdown">
+          <li>
+            <a href="/" class="current-lang" aria-current="page">English</a>
+          </li>
+          
+            <li>
+              <a href="/ru/where/" lang="ru">Русский</a>
+            </li>
+          
+            <li>
+              <a href="/zh-tw/where/" lang="zh-tw">繁體中文</a>
+            </li>
+          
+        </ul>
+      </details>
+      <div class="donate">
+	<a href="/donations" class="column-element">
+          <span class="heart">❤️</span>
+          Donate
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <main>
+        
+<div id="content">
+  <aside id="sidewrap">
+    <div id="sidenav">
+      
+
+<ul>
+  <li><a href=/where></a></li>
+  <li>
+    <a href=/releases>Release Information</a>
+    <ul>
+      <li>Production Release: <a href=https://www.FreeBSD.org/releases/15.1R/announce/>15.1</a></li>
+      <li>Legacy Release: <a href=https://www.FreeBSD.org/releases/15.0R/announce/>15.0</a></li>
+      <li>Legacy Release: <a href=https://www.FreeBSD.org/releases/14.5R/announce/>14.5</a></li>
+      <li>Legacy Release: <a href=https://www.FreeBSD.org/releases/14.4R/announce/>14.4</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href=/snapshots>Snapshot Releases</a>
+      <ul>
+        
+        
+        <li>Upcoming Release: <a href=https://www.FreeBSD.org/releases/14.6R/schedule/>14.6</a></li>
+        
+        
+        
+        <li>Upcoming Release: <a href=https://www.FreeBSD.org/releases/15.2R/schedule/>15.2</a></li>
+        
+        
+        
+      </ul>
+  </li>
+</ul>
+
+
+    </div>
+  </aside>
+
+  <div id="contentwrap">
+    <h1>Get FreeBSD</h1>
+    <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The FreeBSD Operating System is available via images on this page or directly from cloud vendors.
+Please read the <a href="https://docs.freebsd.org/en/books/handbook/bsdinstall/"><strong>installation guide</strong></a> before downloading an image.</p>
+</div>
+<div class="paragraph">
+<p>For information on supported architectures, see the <a href="../platforms/#_supported_platforms">Platforms page</a>.</p>
+</div>
+<div class="paragraph">
+<p>For general information about past, present and future releases, see <a href="../releases/">Release Information</a>
+or the <a href="http://ftp-archive.FreeBSD.org/pub/FreeBSD-Archive/old-releases/">Historical Release Archive</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="choose-image">Choosing an Image</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>FreeBSD images are provided in several formats to cover different installation and deployment scenarios:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Installer images: DVD ISOs (<code>disc1</code>, <code>dvd1</code>) allow offline installation; <code>bootonly</code> ISO requires a network connection. USB images come as full <code>memstick</code> (offline) or <code>mini-memstick</code> (network required).</p>
+</li>
+<li>
+<p>Virtual machine images: Pre-installed systems for hypervisors and cloud environments. <code>BASIC-CI</code> images are minimal FreeBSD builds with cloudinit-compatible <a href="https://man.freebsd.org/cgi/man.cgi?query=nuageinit&amp;sektion=7&amp;format=html">nuageinit(7)</a> scripting installed by default, to enable custom automated scripting on startup. These are used by other projects to run test suites; they are not part of FreeBSD’s own CI infrastructure.</p>
+</li>
+<li>
+<p>SD Card images: Pre-installed systems for single-board computers such as the Raspberry Pi.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="download">Production Quality</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Production Releases are the latest supported versions produced by <a href="../releng">Release Engineering</a> for new installations.</p>
+</div>
+<div class="sect2">
+<h3 id="download-rel151">FreeBSD 15.1-RELEASE</h3>
+<table class="tableblock frame-all grid-all stretch tblbasic tblDownload">
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Installer</th>
+<th class="tableblock halign-left valign-top">VM</th>
+<th class="tableblock halign-left valign-top">SD Card</th>
+<th class="tableblock halign-left valign-top">Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/amd64/amd64/ISO-IMAGES/15.1/">amd64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/15.1/">aarch64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm/armv7/ISO-IMAGES/15.1/">armv7</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpc64/ISO-IMAGES/15.1/">powerpc64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpc64le/ISO-IMAGES/15.1/">powerpc64le</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/riscv/riscv64/ISO-IMAGES/15.1/">riscv64</a></p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/README.txt">README</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/15.1-RELEASE/amd64/Latest/">amd64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/15.1-RELEASE/aarch64/Latest/">aarch64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/15.1-RELEASE/riscv64/Latest/">riscv64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/CI-IMAGES/15.1-RELEASE/amd64/Latest/">amd64</a> (BASIC-CI)</p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/CI-IMAGES/15.1-RELEASE/aarch64/Latest/">aarch64</a> (BASIC-CI)</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p>aarch64</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/15.1/">PINE64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/15.1/">PINE64-LTS</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/15.1/">ROCK64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/15.1/">ROCKPRO64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/15.1/">RPI</a> (3/4)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>armv7</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm/armv7/ISO-IMAGES/15.1/">GENERICSD</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>riscv64</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/riscv/riscv64/ISO-IMAGES/15.1/">GENERICSD</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p></p>
+</li>
+<li>
+<p><a href="../releases/#current">Released</a>: June 16, 2026</p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/15.1R/relnotes/">Release Notes</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/15.1R/readme/">Readme</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/15.1R/hardware/">Hardware Compatibility List</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/15.1R/installation/">Installation Instructions</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/15.1R/errata/">Errata</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/15.1R/signatures/">Signed Checksums</a></p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_legacy_production_quality">Legacy Production Quality</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Legacy Production Releases are previous releases still under support for maintaining existing installations.</p>
+</div>
+<div class="sect2">
+<h3 id="download-rel145">FreeBSD 14.5-RELEASE</h3>
+<table class="tableblock frame-all grid-all stretch tblbasic tblDownload">
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Installer</th>
+<th class="tableblock halign-left valign-top">VM</th>
+<th class="tableblock halign-left valign-top">SD Card</th>
+<th class="tableblock halign-left valign-top">Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/amd64/amd64/ISO-IMAGES/14.5/">amd64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/i386/i386/ISO-IMAGES/14.5/">i386</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.5/">aarch64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm/armv7/ISO-IMAGES/14.5/">armv7</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpc/ISO-IMAGES/14.5/">powerpc</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpc64/ISO-IMAGES/14.5/">powerpc64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpc64le/ISO-IMAGES/14.5/">powerpc64le</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpcspe/ISO-IMAGES/14.5/">powerpcspe</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/riscv/riscv64/ISO-IMAGES/14.5/">riscv64</a></p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/README.txt">README</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/14.5-RELEASE/amd64/Latest/">amd64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/14.5-RELEASE/i386/Latest/">i386</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/14.5-RELEASE/aarch64/Latest/">aarch64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/14.5-RELEASE/riscv64/Latest/">riscv64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/CI-IMAGES/14.5-RELEASE/amd64/Latest/">amd64</a> (BASIC-CI)</p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/CI-IMAGES/14.5-RELEASE/aarch64/Latest/">aarch64</a> (BASIC-CI)</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p>aarch64</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.5/">PINE64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.5/">PINE64-LTS</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.5/">ROCK64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.5/">ROCKPRO64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.5/">RPI</a> (3/4)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>armv7</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm/armv7/ISO-IMAGES/14.5/">GENERICSD</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>riscv64</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/riscv/riscv64/ISO-IMAGES/14.5/">GENERICSD</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p></p>
+</li>
+<li>
+<p><a href="../releases/#current">Released</a>: September 8, 2026</p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.5R/relnotes/">Release Notes</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.5R/readme/">Readme</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.5R/hardware/">Hardware Compatibility List</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.5R/installation/">Installation Instructions</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.5R/errata/">Errata</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.5R/signatures/">Signed Checksums</a></p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="download-rel144">FreeBSD 14.4-RELEASE</h3>
+<table class="tableblock frame-all grid-all stretch tblbasic tblDownload">
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Installer</th>
+<th class="tableblock halign-left valign-top">VM</th>
+<th class="tableblock halign-left valign-top">SD Card</th>
+<th class="tableblock halign-left valign-top">Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/amd64/amd64/ISO-IMAGES/14.4/">amd64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/i386/i386/ISO-IMAGES/14.4/">i386</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.4/">aarch64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm/armv7/ISO-IMAGES/14.4/">armv7</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpc/ISO-IMAGES/14.4/">powerpc</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpc64/ISO-IMAGES/14.4/">powerpc64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpc64le/ISO-IMAGES/14.4/">powerpc64le</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/powerpc/powerpcspe/ISO-IMAGES/14.4/">powerpcspe</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/riscv/riscv64/ISO-IMAGES/14.4/">riscv64</a></p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/README.txt">README</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/14.4-RELEASE/amd64/Latest/">amd64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/14.4-RELEASE/i386/Latest/">i386</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/14.4-RELEASE/aarch64/Latest/">aarch64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/VM-IMAGES/14.4-RELEASE/riscv64/Latest/">riscv64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/CI-IMAGES/14.4-RELEASE/amd64/Latest/">amd64</a> (BASIC-CI)</p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/CI-IMAGES/14.4-RELEASE/aarch64/Latest/">aarch64</a> (BASIC-CI)</p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p>aarch64</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.4/">PINE64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.4/">PINE64-LTS</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.4/">ROCK64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.4/">ROCKPRO64</a></p>
+</li>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm64/aarch64/ISO-IMAGES/14.4/">RPI</a> (3/4)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>armv7</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/arm/armv7/ISO-IMAGES/14.4/">GENERICSD</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>riscv64</p>
+</li>
+<li>
+<p></p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://download.FreeBSD.org/releases/riscv/riscv64/ISO-IMAGES/14.4/">GENERICSD</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<ul>
+<li>
+<p></p>
+</li>
+<li>
+<p><a href="../releases/#current">Released</a>: March 10, 2026</p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.4R/relnotes/">Release Notes</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.4R/readme/">Readme</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.4R/hardware/">Hardware Compatibility List</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.4R/installation/">Installation Instructions</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.4R/errata/">Errata</a></p>
+</li>
+<li>
+<p><a href="https://www.FreeBSD.org/releases/14.4R/signatures/">Signed Checksums</a></p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="download-snapshots">Development Snapshots</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="../snapshots/">Development snapshot images</a> are provided for testing experimental features and regressions.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CURRENT</code> images are weekly snapshots built for testing the bleeding-edge main development branch.</p>
+</li>
+<li>
+<p><code>STABLE</code> images are weekly snapshots built for testing what will become pre-release images.</p>
+</li>
+<li>
+<p><code>ALPHA</code>, <code>BETA</code>, and release candidates (<code>RC</code>) are pre-release images, please test these if available.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Please read the <a href="https://docs.freebsd.org/en/books/handbook/cutting-edge/#current-stable"><strong>development tracking guide</strong></a> before downloading one of these images.</p>
+</div>
+<div class="sect2">
+<h3 id="_freebsd_16_0_current">FreeBSD 16.0-CURRENT</h3>
+<div class="paragraph">
+<p>Installer and SD card images are available for <a href="https://download.freebsd.org/snapshots/amd64/amd64/ISO-IMAGES/16.0/">amd64</a>, <a href="https://download.freebsd.org/snapshots/powerpc/powerpc64/ISO-IMAGES/16.0/">powerpc64</a>, <a href="https://download.freebsd.org/snapshots/powerpc/powerpc64le/ISO-IMAGES/16.0/">powerpc64le</a>, <a href="https://download.freebsd.org/snapshots/arm/armv7/ISO-IMAGES/16.0/">armv7</a>, <a href="https://download.freebsd.org/snapshots/arm64/aarch64/ISO-IMAGES/16.0/">aarch64</a>, and <a href="https://download.freebsd.org/snapshots/riscv/riscv64/ISO-IMAGES/16.0/">riscv64</a>.</p>
+</div>
+<div class="paragraph">
+<p>VM images are available for <a href="https://download.freebsd.org/snapshots/VM-IMAGES/16.0-CURRENT/amd64/Latest/">amd64</a>, <a href="https://download.freebsd.org/snapshots/VM-IMAGES/16.0-CURRENT/aarch64/Latest/">aarch64</a>, and <a href="https://download.freebsd.org/snapshots/VM-IMAGES/16.0-CURRENT/riscv64/Latest/">riscv64</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_freebsd_15_2_stable">FreeBSD 15.2-STABLE</h3>
+<div class="paragraph">
+<p>Installer and SD card images are available for <a href="https://download.freebsd.org/snapshots/amd64/amd64/ISO-IMAGES/15.2/">amd64</a>, <a href="https://download.freebsd.org/snapshots/powerpc/powerpc64/ISO-IMAGES/15.2/">powerpc64</a>, <a href="https://download.freebsd.org/snapshots/powerpc/powerpc64le/ISO-IMAGES/15.2/">powerpc64le</a>, <a href="https://download.freebsd.org/snapshots/arm/armv7/ISO-IMAGES/15.2/">armv7</a>, <a href="https://download.freebsd.org/snapshots/arm64/aarch64/ISO-IMAGES/15.2/">aarch64</a>, and <a href="https://download.freebsd.org/snapshots/riscv/riscv64/ISO-IMAGES/15.2/">riscv64</a>.</p>
+</div>
+<div class="paragraph">
+<p>VM images are available for <a href="https://download.freebsd.org/snapshots/VM-IMAGES/15.2-STABLE/amd64/Latest/">amd64</a>, <a href="https://download.freebsd.org/snapshots/VM-IMAGES/15.2-STABLE/aarch64/Latest/">aarch64</a>, and <a href="https://download.freebsd.org/snapshots/VM-IMAGES/15.2-STABLE/riscv64/Latest/">riscv64</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_freebsd_14_5_stable">FreeBSD 14.5-STABLE</h3>
+<div class="paragraph">
+<p>Installer and SD card images are available for <a href="https://download.freebsd.org/snapshots/amd64/amd64/ISO-IMAGES/14.5/">amd64</a>, <a href="https://download.freebsd.org/snapshots/i386/i386/ISO-IMAGES/14.5/">i386</a>, <a href="https://download.freebsd.org/snapshots/powerpc/powerpc/ISO-IMAGES/14.5/">powerpc</a>, <a href="https://download.freebsd.org/snapshots/powerpc/powerpc64/ISO-IMAGES/14.5/">powerpc64</a>, <a href="https://download.freebsd.org/snapshots/powerpc/powerpc64le/ISO-IMAGES/14.5/">powerpc64le</a>, <a href="https://download.freebsd.org/snapshots/powerpc/powerpcspe/ISO-IMAGES/14.5/">powerpcspe</a>, <a href="https://download.freebsd.org/snapshots/arm/armv7/ISO-IMAGES/14.5/">armv7</a>, <a href="https://download.freebsd.org/snapshots/arm64/aarch64/ISO-IMAGES/14.5/">aarch64</a>, and <a href="https://download.freebsd.org/snapshots/riscv/riscv64/ISO-IMAGES/14.5/">riscv64</a>.</p>
+</div>
+<div class="paragraph">
+<p>VM images are available for <a href="https://download.freebsd.org/snapshots/VM-IMAGES/14.5-STABLE/amd64/Latest/">amd64</a>, <a href="https://download.freebsd.org/snapshots/VM-IMAGES/14.5-STABLE/i386/Latest/">i386</a>, <a href="https://download.freebsd.org/snapshots/VM-IMAGES/14.5-STABLE/aarch64/Latest/">aarch64</a>, and <a href="https://download.freebsd.org/snapshots/VM-IMAGES/14.5-STABLE/riscv64/Latest/">riscv64</a>.</p>
+</div>
+<div id="fastly" class="imageblock">
+<div class="content">
+<img src="../gifs/fastlyLogo-red-SVG.svg" alt="Fastly Logo" width="120"/>
+</div>
+</div>
+<div class="paragraph">
+<p>The FreeBSD project gratefully acknowledges the support of <a href="https://www.fastly.com">Fastly</a>, providing CDN acceleration, caching, and bandwidth to bring FreeBSD images and packages to our globally distributed community. See also the <a href="https://docs.freebsd.org/en/books/handbook/mirrors">FreeBSD project mirrors</a>.</p>
+</div>
+</div>
+</div>
+</div>
+
+    <hr>
+    <div>
+      <p><strong>Last modified on</strong>: November 12, 2026 by <a href="https://cgit.freebsd.org/doc/commit/?id=04f38fa909" target="_blank">Colin Percival</a></p>
+    </div>
+    
+  </div>
+</div>
+
+      </main>
+      
+<footer>
+  <div class="footer-container">
+    <div class="logo-column">
+      <img src="/images/beastie-right.svg" width="160" height="250" alt="FreeBSD logo">
+      <div class="theme-container">
+        <label for="theme-switch" class="theme-switch-label">
+          <span class="visually-hidden">Switch color theme</span>
+          <i class="fa fa-moon-o theme-icon theme-icon-dark" aria-hidden="true"></i>
+          <i class="fa fa-sun-o theme-icon theme-icon-light" aria-hidden="true"></i>
+        </label>
+      </div>
+      </div>
+      <div class="about-column">
+        <p class="column-title" id="footer-about-title">About</p>
+        <ul class="column-elements-container">
+          <li>
+            <a href="/about" class="column-element">FreeBSD</a>
+          </li>
+          <li>
+            <a href="https://freebsdfoundation.org/" class="column-element">FreeBSD Foundation</a>
+          </li>
+          <li>
+            <a href="https://freebsdfoundation.org/our-work/journal/" class="column-element">FreeBSD Journal</a>
+          </li>
+          <li>
+            <a href="/where" class="column-element">Get FreeBSD</a>
+          </li>
+          <li>
+            <a href="/security" class="column-element">Security Advisories</a>
+          </li>
+        </ul>
+      </div>
+      <div class="documentation-column">
+        <p class="column-title" id="footer-documentation-title">Documentation</p>
+        <ul class="column-elements-container">
+          <li>
+            <a href="https://docs.freebsd.org" class="column-element">Documentation portal</a>
+          </li>
+          <li>
+            <a href="https://man.FreeBSD.org" target="_blank" class="column-element">Manual pages</a>
+          </li>
+          <li>
+            <a href="https://ports.freebsd.org" target="_blank" class="column-element">Ported Applications</a>
+          </li>
+          <li>
+            <a href="https://papers.FreeBSD.org" target="_blank" class="column-element">Presentations and papers</a>
+          </li>
+          <li>
+            <a href="https://wiki.freebsd.org/" target="_blank" class="column-element">Wiki</a>
+          </li>
+        </ul>
+      </div>
+      <div class="community-column">
+        <p class="column-title" id="footer-community-title">Community</p>
+        <ul class="column-elements-container">
+          <li>
+            <a href="https://docs.FreeBSD.org/en/articles/contributing" class="column-element">Get involved</a>
+          </li>
+          <li>
+            <a href="https://forums.freebsd.org/" target="_blank" class="column-element">Community forum</a>
+          </li>
+          <li>
+            <a href="https://lists.freebsd.org/" target="_blank" class="column-element">Mailing lists</a>
+          </li>
+          <li>
+            <a href="https://wiki.freebsd.org/IRC/Channels" target="_blank" class="column-element">IRC Channels</a>
+          </li>
+          <li>
+            <a href="https://bugs.freebsd.org/bugzilla/" target="_blank" class="column-element">Bug Tracker</a>
+          </li>
+        </ul>
+      </div>
+      <div class="legal-column">
+        <p class="column-title" id="footer-legal-title">Legal</p>
+        <ul class="column-elements-container">
+          <li>
+            <a href="/contact" class="column-element">Contact</a>
+          </li>
+          <li>
+            <a href="/donations" class="column-element">Donations</a>
+          </li>
+          <li>
+            <a href="/copyright" class="column-element">Licensing</a>
+          </li>
+          <li>
+            <a href="/privacy" class="column-element">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="/internal/code-of-conduct" class="column-element">Code of Conduct</a>
+          </li>
+        </ul>
+      </div>
+      <div class="copyright-column">
+        <p>&copy; 1994-2026 The FreeBSD Project. All rights reserved</p>
+        <span>Made with <span class="heart">❤️</span> by the FreeBSD Community</span>
+      </div>
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>
