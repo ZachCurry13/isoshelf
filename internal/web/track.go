@@ -22,6 +22,9 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		// Dismiss hides the image's updates (#56): "7", "30" or "90" days,
 		// "forever", or "" to show them again.
 		Dismiss *string `json:"dismiss"`
+		// ReleaseHold lets an image held at an older version be updated
+		// again (#2).
+		ReleaseHold bool `json:"release_hold"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
@@ -79,6 +82,9 @@ func (s *Server) setTrack(w http.ResponseWriter, r *http.Request) {
 		if days > 0 {
 			t.DismissedUntil = s.cfg.Now().AddDate(0, 0, days).UTC()
 		}
+	}
+	if req.ReleaseHold {
+		t.Hold = ""
 	}
 	s.st.SetTrack(req.Entry, t)
 	s.dropMissingLocked(req.Entry)

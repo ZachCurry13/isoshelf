@@ -21,6 +21,9 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 		// Removal is "keep", "move-aside" or "delete": what happens to the
 		// files the new one replaces.
 		Removal string `json:"removal"`
+		// Version, when set, is an older version to install, which holds
+		// the image there (#2, versions.go).
+		Version string `json:"version"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		writeError(w, http.StatusBadRequest, "That request wasn't understood. Reload the page and try again.")
@@ -61,11 +64,17 @@ func (s *Server) startUpdate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// An older version says which in the downloads bar, so going back is
+	// never mistaken for an ordinary update.
+	name := entry.Name
+	if req.Version != "" {
+		name += " " + req.Version
+	}
 	s.nextJob++
 	id := s.nextJob
 	s.queue = append(s.queue, &job{
-		id: id, target: s.target, entry: entry.ID, name: entry.Name,
-		size: entry.Size, removal: removal, old: old,
+		id: id, target: s.target, entry: entry.ID, name: name,
+		size: entry.Size, removal: removal, old: old, version: req.Version,
 	})
 	s.lastErr = ""
 	s.startNextLocked()
@@ -107,7 +116,7 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 
 	res, err := update.Run(ctx, update.Options{
 		Target: j.target, Entry: s.catalog().Entry(j.entry), Client: client, Fetcher: fetcher,
-		State: st, Old: j.old, Removal: j.removal, Now: s.cfg.Now,
+		State: st, Old: j.old, Removal: j.removal, Version: j.version, Now: s.cfg.Now,
 		Pinned: pinnedAmong(st, j.old),
 		// Somewhere closer than the internet, when one is set up.
 		Nearer: nearer(near, s.noteAboutPeer),
