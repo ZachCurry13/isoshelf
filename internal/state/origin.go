@@ -26,6 +26,9 @@ const (
 	// OriginUpload is a file added from the page, from somebody's own
 	// computer.
 	OriginUpload = "upload"
+	// OriginExtract is an image unpacked from a compressed file in the
+	// folder (Make bootable, #3); From is that file's name.
+	OriginExtract = "extract"
 )
 
 // Origin says how a file arrived and what proved it.

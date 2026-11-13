@@ -87,6 +87,9 @@ func (s *Server) runUpdate(ctx context.Context, j *job) (string, error) {
 	if j.copy != nil {
 		return s.runCopy(ctx, j)
 	}
+	if j.fix != nil {
+		return s.runFix(ctx, j)
+	}
 	st, err := s.recordsFor(j.target).Load(j.target)
 	if err != nil {
 		return "", err

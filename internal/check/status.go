@@ -14,16 +14,15 @@ import (
 )
 
 // notBootableNote says why a file won't boot from this folder and, where the
-// catalog knows, what to do about it by hand. It used to promise that "Make
-// bootable" could fix it, in the catalog's own word for how ("rename:.img") -
-// but there is no such button yet, so it promised what the page couldn't do.
+// catalog knows, what the fix is. Make bootable (#3) does a rename or an
+// extract; a conversion is still by hand.
 func notBootableNote(e *catalog.Entry, profile scan.Profile) string {
 	lists := fmt.Sprintf("%s only lists %s files", bootMenu(profile), strings.Join(profile.Extensions(), ", "))
 	switch {
 	case strings.HasPrefix(e.Fixup, "rename:"):
-		return fmt.Sprintf("%s. Rename it to end in %s and it will boot.", lists, strings.TrimPrefix(e.Fixup, "rename:"))
+		return fmt.Sprintf("%s. Make bootable renames it to end in %s, and then it will boot.", lists, strings.TrimPrefix(e.Fixup, "rename:"))
 	case e.Fixup == "extract":
-		return lists + ". It's compressed: unpack it here and the file inside will boot."
+		return lists + ". It's compressed: Make bootable unpacks it here, and the file inside will boot."
 	case e.Fixup == "convert":
 		return lists + ". It has to be converted to another format first."
 	}

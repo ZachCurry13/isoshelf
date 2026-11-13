@@ -78,6 +78,8 @@ function renderRow(item) {
       title: `Download ${item.latest || "the newest version"} and put it in this folder`,
       onclick: () => updateItem(item),
     }, "Update"), true));
+  } else if (item.fixable) {
+    actions.push(bootableButton(item, true));
   } else if (item.status === "missing" && item.entry) {
     const back = missingAction(item, true);
     if (back) actions.push(back);

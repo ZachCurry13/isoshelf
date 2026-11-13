@@ -9,7 +9,8 @@ four times in one evening. The releases page on GitHub is the answer, and
 - **What it does:** scans a folder, works out each image, checks for updates
   online, downloads and verifies (resumable, queued two at a time with an optional speed limit,
   reorderable), replaces or archives old files, goes back to an older version
-  and holds it there, and identifies unknown ones.
+  and holds it there, renames or unpacks files Ventoy won't list (Make
+  bootable), and identifies unknown ones.
   Images can be added from the user's own computer as well as downloaded. A
   scan and a download run side by side, and every writer merges its own
   change onto the folder's records rather than saving over them. Keeps a
@@ -22,8 +23,8 @@ four times in one evening. The releases page on GitHub is the answer, and
   `docs/catalog-sources.md` and opens one pull request last ran on
   2026-11-03; the cloud routine is paused, and on 2026-11-13 no scheduled task
   for it existed on the Linux computer.
-- **GitHub:** public; open issues #3, #5-#7, #11 and #12 are the
-  roadmap (#1, isoshelf update, #2, older versions with a hold, #10, the phone layout, #54, the simpler shelf, #55, missing
+- **GitHub:** public; open issues #5-#7, #11 and #12 are the
+  roadmap (#1, isoshelf update, #2, older versions with a hold, #3, make bootable, #10, the phone layout, #54, the simpler shelf, #55, missing
   images, #56, dismissing an update, #57, duplicates, #58, where to find
   it, #59, gentler with servers, and #62, where each file came from, are
   closed); Discussions on.
