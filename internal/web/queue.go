@@ -36,6 +36,8 @@ type job struct {
 	name    string
 	size    int64
 	removal update.Removal
+	// version is an older version to install; empty means the newest.
+	version string
 	// old holds the entry's files at the time it was queued, replaced once
 	// the new one is in place. Empty when the image is being added.
 	old []string

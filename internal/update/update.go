@@ -57,8 +57,8 @@ type Options struct {
 	// stay exactly where they are: the new file goes beside them, taking a
 	// name with its version in it if it would otherwise land on one.
 	Pinned []string
-	// Version, when set, is the version to install instead of the newest.
-	// (Reserved for "install an older version"; not used yet.)
+	// Version, when set, is the version to install instead of the newest: an
+	// older one, which puts the track on hold (older.go).
 	Version  string
 	Progress func(fetch.Progress)
 	Now      func() time.Time
@@ -104,8 +104,9 @@ var ErrNothingToDownload = errors.New("this image has no download source yet")
 // download stops and asks rather than guessing.
 var ErrSameName = errors.New("the new file would take the old one's place")
 
-// Run downloads the entry's newest file, verifies it, places it in the
-// target, and then keeps or removes the old files as Removal says.
+// Run downloads the entry's newest file (or the version Options.Version
+// names), verifies it, places it in the target, and then keeps or removes the
+// old files as Removal says.
 func Run(ctx context.Context, opts Options) (*Result, error) {
 	if opts.Now == nil {
 		opts.Now = time.Now
@@ -113,11 +114,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	if opts.Entry == nil || opts.State == nil || opts.Client == nil || opts.Fetcher == nil {
 		return nil, errors.New("update: missing entry, state or clients")
 	}
-	if opts.Version != "" {
-		return nil, errors.New("installing a chosen version isn't supported yet")
-	}
-
-	rel, err := source.Latest(ctx, opts.Client, opts.Entry)
+	rel, err := release(ctx, opts)
 	if errors.Is(err, source.ErrManual) {
 		return nil, ErrNothingToDownload
 	}
@@ -129,6 +126,9 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		return nil, ErrNothingToDownload
 	}
 	if err != nil {
+		return nil, err
+	}
+	if err := checkedEnough(opts, artifact); err != nil {
 		return nil, err
 	}
 
@@ -242,6 +242,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}); err != nil {
 		return result, err
 	}
+	hold(opts)
 
 	for _, old := range opts.Old {
 		if old == placeAs {

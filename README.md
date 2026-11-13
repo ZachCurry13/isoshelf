@@ -81,6 +81,11 @@ And the rest:
 - **Not now, or never.** Dismiss any update for 7, 30 or 90 days, or for
   good. It stays listed, greyed, and isn't counted; Settings lists what
   you've dismissed, with Undo.
+- **Back to the version that worked.** When a new release breaks something,
+  pick an older one the project still publishes, from the image's details.
+  It's checked against the project's checksum like any download (no
+  checksum, no download), and the image is held there: no update is offered
+  or made until you release it.
 - **Missing images come back in one click.** *Restore* if the file is still
   in the archive, *Download again* if isoshelf can fetch it, or its download
   page if not. Removed one on purpose? *Stop expecting it*.
@@ -266,8 +271,7 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 
 **Next:** more notes on where to find the images you fetch yourself.
 
-**Also planned:** [installing an older version when a new one breaks something](https://github.com/ZachCurry13/isoshelf/issues/2),
-[fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
+**Also planned:** [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
 and [signature checking for the images
 themselves](https://github.com/ZachCurry13/isoshelf/issues/5).
 

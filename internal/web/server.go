@@ -212,6 +212,7 @@ func New(cfg Config) *Server {
 	mux.HandleFunc("POST /api/removed/empty", s.emptyRemoved)
 	mux.HandleFunc("POST /api/cancel", s.cancel)
 	mux.HandleFunc("POST /api/track", s.setTrack)
+	mux.HandleFunc("GET /api/versions", s.getVersions)
 	mux.HandleFunc("POST /api/pin", s.setPin)
 	mux.HandleFunc("POST /api/checkfile", s.checkFile)
 	mux.HandleFunc("GET /api/file", s.saveFile)

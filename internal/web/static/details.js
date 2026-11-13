@@ -77,8 +77,13 @@ function renderDetails() {
   if (item.path && item.entry) {
     parts.push(detailRow("Keep this file", [pinField(item)]));
   }
-  if (item.entry && item.status === "update available") {
+  if (item.entry && heldAt(item.entry)) {
+    parts.push(detailRow("Held", [holdField(item)]));
+  } else if (item.entry && item.status === "update available") {
     parts.push(detailRow("This update", [dismissField(item)]));
+  }
+  if (item.entry && item.path && item.updates === "download") {
+    parts.push(detailRow("Older versions", [olderField(item)]));
   }
   if (item.status === "missing" && item.entry) {
     parts.push(detailRow("Expected here", [expectField(item)]));
