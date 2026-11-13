@@ -1428,3 +1428,13 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
 - What: three researchers read primer.style into `docs/primer-guidelines.md`; three audits of the page against it are
   `docs/primer-audit.md` (about 60 findings and 79 wording fixes); the build followed it package by package. Tests now hold the
   spacing scale and the icons.
+
+## The Primer audit's leftovers (v0.11.2, 2026-11-13)
+
+What v0.11.0 left open: contrast is now measured in all twelve themes by
+`internal/web/contrast_test.go` (300 pairs, tightest 4.54:1); Primer's
+tooltip and truncation pages were read, so the tooltip hides on Escape and
+wraps, and no longer sits on anything you can't press; Settings hints stop at
+80 characters. Learned: the pages that "could not be read" in the cloud
+sandbox read fine from the maintainer's computer, and the guidance lives on
+each component's Guidelines and Accessibility tabs, not its overview.
