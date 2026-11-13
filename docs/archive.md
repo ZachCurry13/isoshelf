@@ -731,7 +731,7 @@ ran off the left edge at phone width, and Escape didn't close an open menu.
   Dependabot proposes Go library, Actions and container base updates.
 - **Download button** (#84, @paulbmueller), off unless turned on; a race in
   it fixed. The weekly catalog job now runs on the maintainer's computer
-  (Mondays at noon Central), since the cloud one could not reach any project.
+  (once a week), since the cloud one could not reach any project.
 - **Next:** the Dependabot pull requests (the Actions are three majors
   behind); bug #78 (Tails); Usage folded into History and Settings (v0.8.12,
   on the `history-timeline` branch).

@@ -172,7 +172,7 @@ func TestSampleDrive(t *testing.T) {
 		{"CentOS-7-i386-Minimal-2009.iso", EOL, "2009", true, ""},
 		// The stand-in files can't match the published checksums.
 		{"netboot.xyz.iso", UpdateAvailable, "3.0.3", false, "checksum changed"},
-		{"bazzite-deck-gnome-stable-live-amd64.iso", UpdateAvailable, "44.20261026", false, "checksum changed"},
+		{"bazzite-deck-gnome-stable-live-amd64.iso", UpdateAvailable, "45.20261112", false, "checksum changed"},
 		{"FydeOS_for_PC_iris_v22.0-SP1-io.bin", NotBootable, "", false, "Rename it to end in .img"},
 		{"HBCD_PE_x64.iso", Manual, "", false, ""},
 		{"Windows.iso", Unrecognized, "", false, ""},

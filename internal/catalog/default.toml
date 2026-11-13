@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026110303 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026111301 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -511,9 +511,13 @@ site = "https://www.freebsd.org/"
 forum = "https://forums.freebsd.org/"
 
 [entry.source]
-type = "listing" # endoflife.date orders FreeBSD's two branches by date, not version
-url = "https://download.freebsd.org/releases/amd64/amd64/ISO-IMAGES/"
-regex = 'href="(?P<version>\d+\.\d+)/"'
+# The project's "Get FreeBSD" page links only what is released. The download
+# folder itself also holds the next version while it is still a beta, with no
+# RELEASE files in it yet. (endoflife.date orders FreeBSD's two branches by
+# date, not version.)
+type = "listing"
+url = "https://www.freebsd.org/where/"
+regex = 'releases/amd64/amd64/ISO-IMAGES/(?P<version>\d+\.\d+)/'
 
 [entry.artifact]
 base = "https://download.freebsd.org/releases/amd64/amd64/ISO-IMAGES/{version}/"
@@ -535,9 +539,11 @@ site = "https://www.freebsd.org/"
 forum = "https://forums.freebsd.org/"
 
 [entry.source]
-type = "listing" # FreeBSD 15 has no i386 images, so this stays on 14.x
-url = "https://download.freebsd.org/releases/i386/i386/ISO-IMAGES/"
-regex = 'href="(?P<version>\d+\.\d+)/"'
+# The same page as the 64-bit entry, for the same reason. FreeBSD 15 has no
+# i386 images, so this stays on 14.x.
+type = "listing"
+url = "https://www.freebsd.org/where/"
+regex = 'releases/i386/i386/ISO-IMAGES/(?P<version>\d+\.\d+)/'
 
 [entry.artifact]
 base = "https://download.freebsd.org/releases/i386/i386/ISO-IMAGES/{version}/"
@@ -1876,9 +1882,9 @@ asset = 'haos_generic-x86-64-[\d.]+\.img\.xz'
 id = "omarchy"
 name = "Omarchy"
 arch = "x86_64"
-match = 'omarchy-(?P<version>\d+\.\d+\.\d+)\.iso'
-samples = ["omarchy-4.0.4.iso"]
-size = 6448529408
+match = 'omarchy-(?P<version>\d+\.\d+\.\d+)(?:-x86)?\.iso' # the name gained "-x86" with 4.5, when an ARM image appeared beside it
+samples = ["omarchy-4.0.4.iso", "omarchy-4.5.0-x86.iso"]
+size = 6540910592
 page = "https://omarchy.org/"
 category = "desktop"
 family = "omarchy"
@@ -1888,12 +1894,12 @@ popular = true
 [entry.source]
 type = "listing"
 url = "https://omarchy.org/"
-regex = 'omarchy-(?P<version>\d+\.\d+\.\d+)\.iso'
+regex = 'omarchy-(?P<version>\d+\.\d+\.\d+)-x86\.iso'
 
 [entry.artifact]
 base = "https://iso.omarchy.org/"
-file = 'omarchy-{version}\.iso'
-manifest = "omarchy-{version}.iso.sha256"
+file = 'omarchy-{version}-x86\.iso'
+manifest = "omarchy-{version}-x86.iso.sha256"
 
 [[entry]]
 id = "nobara-official"

@@ -7,7 +7,7 @@ title: isoshelf
 description: Keeps the bootable images in a folder up to date, and verifies every download.
 # The version of isoshelf this entry packages. Moves with every release,
 # alongside the image tag in ix_values.yaml; internal/docs checks both.
-app_version: 0.11.0
+app_version: 0.11.1
 version: 1.0.0
 train: community
 categories:
@@ -24,7 +24,7 @@ changelog_url: https://github.com/ZachCurry13/isoshelf/blob/main/CHANGELOG.md
 maintainers:
   - name: ZachCurry13
     url: https://github.com/ZachCurry13
-    email: zjboever@gmail.com
+    email: 39880825+ZachCurry13@users.noreply.github.com
 # TrueNAS runs apps as its own "apps" user. isoshelf needs no home directory
 # and no passwd entry, so it is happy as any uid - what matters is that this
 # one can write to the folders the install form asks for.

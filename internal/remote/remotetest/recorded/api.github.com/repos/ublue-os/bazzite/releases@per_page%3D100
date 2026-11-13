@@ -2,92 +2,119 @@
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261103.8",
-    "name": "unstable-45.20261103.8: Unstable (F45.20261103, #cdf96ec)",
-    "prerelease": true,
-    "published_at": "2026-11-03T20:39:03Z",
-    "tag_name": "unstable-45.20261103.8"
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/45.20261112",
+    "name": "45.20261112: Stable (F45.20261112)",
+    "prerelease": false,
+    "published_at": "2026-11-12T02:55:20Z",
+    "tag_name": "45.20261112"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261103.6",
-    "name": "unstable-45.20261103.6: Unstable (F45.20261103, #227f092)",
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261112.3",
+    "name": "unstable-45.20261112.3: Unstable (F45.20261112, #fc47143)",
     "prerelease": true,
-    "published_at": "2026-11-03T17:59:30Z",
-    "tag_name": "unstable-45.20261103.6"
+    "published_at": "2026-11-12T16:05:22Z",
+    "tag_name": "unstable-45.20261112.3"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261103.5",
-    "name": "unstable-45.20261103.5: Unstable (F45.20261103, #5671fd4)",
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261112.2",
+    "name": "unstable-45.20261112.2: Unstable (F45.20261112, #1dc570f)",
     "prerelease": true,
-    "published_at": "2026-11-03T17:18:52Z",
-    "tag_name": "unstable-45.20261103.5"
+    "published_at": "2026-11-12T02:54:00Z",
+    "tag_name": "unstable-45.20261112.2"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261103.4",
-    "name": "unstable-45.20261103.4: Unstable (F45.20261103, #59f518b)",
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-45.20261112.2",
+    "name": "testing-45.20261112.2: Testing (F45.20261112, #c846ca1)",
     "prerelease": true,
-    "published_at": "2026-11-03T16:24:25Z",
-    "tag_name": "unstable-45.20261103.4"
+    "published_at": "2026-11-12T03:02:02Z",
+    "tag_name": "testing-45.20261112.2"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261103.3",
-    "name": "unstable-45.20261103.3: Unstable (F45.20261103, #59f518b)",
-    "prerelease": true,
-    "published_at": "2026-11-03T06:00:59Z",
-    "tag_name": "unstable-45.20261103.3"
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/45.20261111",
+    "name": "45.20261111: Stable (F45.20261111)",
+    "prerelease": false,
+    "published_at": "2026-11-11T02:45:16Z",
+    "tag_name": "45.20261111"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-45.20261103.7",
-    "name": "testing-45.20261103.7: Testing (F45.20261103, #cdf96ec)",
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261111.2",
+    "name": "unstable-45.20261111.2: Unstable (F45.20261111, #09dca06)",
     "prerelease": true,
-    "published_at": "2026-11-03T20:22:48Z",
-    "tag_name": "testing-45.20261103.7"
+    "published_at": "2026-11-12T00:29:52Z",
+    "tag_name": "unstable-45.20261111.2"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-45.20261103.6",
-    "name": "testing-45.20261103.6: Testing (F45.20261103, #227f092)",
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261111.1",
+    "name": "unstable-45.20261111.1: Unstable (F45.20261111, #f26be33)",
     "prerelease": true,
-    "published_at": "2026-11-03T17:59:22Z",
-    "tag_name": "testing-45.20261103.6"
+    "published_at": "2026-11-11T06:54:43Z",
+    "tag_name": "unstable-45.20261111.1"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-45.20261103.5",
-    "name": "testing-45.20261103.5: Testing (F45.20261103, #5671fd4)",
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/unstable-45.20261111",
+    "name": "unstable-45.20261111: Unstable (F45.20261111, #b8881a9)",
     "prerelease": true,
-    "published_at": "2026-11-03T17:19:27Z",
-    "tag_name": "testing-45.20261103.5"
+    "published_at": "2026-11-11T02:03:00Z",
+    "tag_name": "unstable-45.20261111"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-45.20261103.4",
-    "name": "testing-45.20261103.4: Testing (F45.20261103, #e7571d4)",
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-45.20261111.1",
+    "name": "testing-45.20261111.1: Testing (F45.20261111, #47153a9)",
     "prerelease": true,
-    "published_at": "2026-11-03T15:48:37Z",
-    "tag_name": "testing-45.20261103.4"
+    "published_at": "2026-11-12T00:31:31Z",
+    "tag_name": "testing-45.20261111.1"
   },
   {
     "assets": [],
     "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-45.20261103.3",
-    "name": "testing-45.20261103.3: Testing (F45.20261103, #59f518b)",
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/testing-45.20261111",
+    "name": "testing-45.20261111: Testing (F45.20261111, #b8881a9)",
     "prerelease": true,
-    "published_at": "2026-11-03T05:53:31Z",
-    "tag_name": "testing-45.20261103.3"
+    "published_at": "2026-11-11T02:03:00Z",
+    "tag_name": "testing-45.20261111"
+  },
+  {
+    "assets": [],
+    "draft": false,
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/45.20261105",
+    "name": "45.20261105: Stable (F45.20261105)",
+    "prerelease": false,
+    "published_at": "2026-11-05T23:49:28Z",
+    "tag_name": "45.20261105"
+  },
+  {
+    "assets": [],
+    "draft": false,
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/45.20261104",
+    "name": "45.20261104: Stable (F45.20261104)",
+    "prerelease": false,
+    "published_at": "2026-11-04T00:50:05Z",
+    "tag_name": "45.20261104"
+  },
+  {
+    "assets": [],
+    "draft": false,
+    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/45.20261103",
+    "name": "45.20261103: Stable (F45.20261103)",
+    "prerelease": false,
+    "published_at": "2026-11-03T23:01:31Z",
+    "tag_name": "45.20261103"
   },
   {
     "assets": [],
@@ -97,14 +124,5 @@
     "prerelease": false,
     "published_at": "2026-10-26T20:54:27Z",
     "tag_name": "44.20261026"
-  },
-  {
-    "assets": [],
-    "draft": false,
-    "html_url": "https://github.com/ublue-os/bazzite/releases/tag/44.20261023",
-    "name": "44.20261023: Stable (F44.20261023)",
-    "prerelease": false,
-    "published_at": "2026-10-23T18:09:38Z",
-    "tag_name": "44.20261023"
   }
 ]

@@ -9,7 +9,19 @@ Every image here was checked against the project's own site before it went in.
 Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml);
 requests are looked at every Monday.
 
-## 2026-11-03
+## 2026-11-13
+
+### Fixed
+- **FreeBSD bootonly** (64-bit) said it couldn't find its checksum (revision
+  2026111301). FreeBSD's download folder already holds 15.2, which is still a
+  beta and has no release files in it, and isoshelf took the highest number it
+  saw. Both FreeBSD entries now read the project's own "Get FreeBSD" page,
+  which links only what is released: 15.1 for 64-bit, 14.5 for 32-bit.
+- **Omarchy** stopped being found when its file gained `-x86` in the name
+  (`omarchy-4.5.0-x86.iso`; an ARM image now sits beside it). isoshelf looks
+  for the new name, and still recognises the older `omarchy-4.0.x.iso` files
+  already on a drive, so they show an update.
+
 
 ### Added
 - **AnduinOS** now downloads (revision 2026110303). Its checksum is a bare line
