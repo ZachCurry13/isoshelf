@@ -29,6 +29,7 @@ function arrivedHow(item, o) {
     case "download": return `Downloaded from ${hostOf(o.from)}${when}.`;
     case "copy": return `Copied from your server, ${hostOf(o.from)}${when}.`;
     case "upload": return `Added from a computer, through this page${when}.`;
+    case "extract": return `Unpacked from ${o.from} by Make bootable${when}.`;
   }
   // Downloaded by an isoshelf from before these records were kept.
   if (item.placed) return `Downloaded by isoshelf${item.added ? `, ${shortDate(item.added)}` : ""}.`;
@@ -51,6 +52,16 @@ function serverSaid(b) {
 // proofOf says what shows the file is the release, or why nothing does, and
 // whether Check it could.
 function proofOf(item, o) {
+  // The project's checksum is for the compressed file, so there is nothing
+  // to check the image inside against; the unpacking itself checked that
+  // every byte came out as it went in.
+  if (o.how === "extract") {
+    return {
+      text: o.checked
+        ? `The compressed file matched the checksum the project publishes (${hostOf(o.checked)}), and unpacking checked that every byte came out as it went in.`
+        : "The project's checksum is for the compressed file, so this one can't be checked against it. Unpacking checked that every byte came out as it went in.",
+    };
+  }
   const against = o.checked || item.matched;
   if (against) {
     const when = o.checked_at ? `, checked ${shortDate(o.checked_at)}` : "";

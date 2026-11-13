@@ -19,7 +19,7 @@ Go app (Windows, Linux) that inventories, update-checks, downloads and verifies 
   (the downloads bar), `notices.js`, `actions.js`, `catalog.js` (Add images),
   `identify.js` (What is this?), `missing.js` (getting a missing image back),
   `origin.js` (where a file came from, and Check it), `fromserver.js`
-  (copying from your server), `dismiss.js` (dismissing an update), `older.js` (installing an older version, and the hold),
+  (copying from your server), `dismiss.js` (dismissing an update), `older.js` (installing an older version, and the hold), `bootable.js` (Make bootable: renaming or unpacking a file the boot menu won't list),
   `duplicates.js` (copies of one image),
   `folders.js`, `thisfolder.js` (the This folder group in Settings),
   `archive.js`, `settings.js` (the panel), `settinglist.js`, `updatesettings.js` (what each
@@ -87,9 +87,10 @@ people have downloaded. Work never happens directly on it.
   project itself, so it stays out of the documents people read.
 
 ## Maintenance (adapted 2026-10-26 from the maintainer's protocol)
-- What can be updated on its own: the one Go library (`go-toml`), the GitHub
-  Actions versions, the container base image, and the catalog (live from
-  `main`, no release needed). There are no other modules. Go is named only
+- What can be updated on its own: the Go libraries (`go-toml`, and `xz` for
+  Make bootable), the GitHub Actions versions, the container base image, and
+  the catalog (live from `main`, no release needed). There are no other
+  modules. Go is named only
   by its line (`go 1.27` in go.mod, `golang:1.27-alpine`), and every build
   takes the newest patch; moving to 1.28 is a decision, made by hand.
 - Checking: `ci.yml` runs `govulncheck` on every change. Every Monday

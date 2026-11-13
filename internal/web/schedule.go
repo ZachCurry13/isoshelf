@@ -50,6 +50,9 @@ func (s *Server) hostOfLocked(j *job) string {
 	if j.copy != nil {
 		return "your server"
 	}
+	if j.fix != nil {
+		return "this disk"
+	}
 	if e := s.cat.Entry(j.entry); e != nil {
 		if e.Artifact != nil {
 			if u, err := url.Parse(e.Artifact.Base); err == nil && u.Host != "" {

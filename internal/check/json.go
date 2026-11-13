@@ -52,6 +52,9 @@ type ItemJSON struct {
 	// Find says where to find the file on the download page, with the newest
 	// version filled in when it is known (v0.8.3).
 	Find string `json:"find,omitempty"`
+	// Fixable marks a file that won't boot from here but that Make bootable
+	// can fix (#3): the catalog names a fix-up isoshelf knows how to do.
+	Fixable bool `json:"fixable,omitempty"`
 	// Category and Family group the image; the rest are for showing it.
 	Category  string `json:"category,omitempty"`
 	Family    string `json:"family,omitempty"`
@@ -112,6 +115,7 @@ func (r *Report) JSON() ReportJSON {
 		if e := it.Entry; e != nil {
 			j.Entry, j.Arch, j.Page, j.Updates = e.ID, e.Arch, e.Page, e.Updates()
 			j.Category, j.Family, j.Caution = e.Category, e.Family, e.Caution
+			j.Fixable = it.Status == NotBootable && it.Path != "" && (e.Fixup == "extract" || strings.HasPrefix(e.Fixup, "rename:"))
 			if e.Find != "" {
 				newest := it.Latest
 				if newest == "" {

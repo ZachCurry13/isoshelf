@@ -79,16 +79,16 @@ project, not affiliated with Ventoy.
 - No native macOS build (decided 2026-09-19): Mac users run the container
   with Docker Desktop. A native one would need a Mac or a macOS CI runner, and
   Apple's signing and notarization for a first launch without warnings.
-- Dependencies today: `github.com/pelletier/go-toml/v2` and nothing else.
-  Free space comes from the standard library's `syscall` (`statfs`, and
-  `GetDiskFreeSpaceExW` on Windows).
+- Dependencies today: `github.com/pelletier/go-toml/v2`, and
+  `github.com/ulikunitz/xz` for unpacking `.xz` images in Make bootable
+  ([#3](https://github.com/ZachCurry13/isoshelf/issues/3), v0.13.0; `.gz` is
+  the standard library's). Free space comes from the standard library's
+  `syscall` (`statfs`, and `GetDiskFreeSpaceExW` on Windows).
 - Accepted for when they are built, not in `go.mod` yet: OpenPGP
   ([#5](https://github.com/ZachCurry13/isoshelf/issues/5)) with
   `github.com/ProtonMail/go-crypto` (not the deprecated `x/crypto/openpgp`);
-  extracting archives for Make bootable
-  ([#3](https://github.com/ZachCurry13/isoshelf/issues/3)), pure Go only:
-  stdlib `compress/gzip` and `archive/zip`, `github.com/ulikunitz/xz`,
-  `github.com/bodgit/sevenzip`.
+  and, should a catalog image ever be published as a `.zip` or `.7z`, stdlib
+  `archive/zip` and `github.com/bodgit/sevenzip` (none is today).
 - Catalog: TOML, regexes in single-quoted literal strings. Parsed with
   `github.com/pelletier/go-toml/v2` in strict mode, so a misspelled key is an
   error with a line number.
@@ -307,6 +307,20 @@ alone is not an update.
 - Catalog entries may declare a fix-up (`fixup = "rename:.img"`,
   `fixup = "extract"`) so downloads get it applied automatically.
 - Extract and convert need a free-space preflight; rename is instant.
+- Built in v0.13.0 (#3), rename and extract only (decided 2026-09-23):
+  `update/fixup.go` plans (`PlanFix`: the catalog's `fixup`, and the file's
+  first bytes must agree - a `.bin` renamed to `.img` has to start like a
+  disk), `update/extract.go` does it (`ApplyFix`). An extract is written to
+  `.isoshelf/partial` and moved into place only once the compressor's own
+  check has passed; the compressed file is then archived or kept, never
+  deleted. The free-space preflight reads the unpacked size from the file's
+  trailer (`unpackedsize.go`: gzip's last four bytes, xz's index). On the
+  page, `bootable.js`: a rename happens at once, an extract runs through the
+  downloads with its progress. The unpacked file's origin is `extract`, and
+  the page says its checksum was the compressed file's rather than claiming
+  a check of its own. **Still to do:** convert (bin/cue to iso), `.zip` and
+  `.7z`, and applying a fix-up to a download by itself, which runs against
+  "every fix is asked for" and wants deciding first.
 
 ## Catalog
 
@@ -434,9 +448,9 @@ alone is not an update.
    a download queue for Add and Update. *Done.*
 6. Growing the catalog without a new release (below). *Done.*
 Moved later: installing older versions with a hold (below; done in v0.12.0),
-and still to come: Make bootable fix-ups, a CLI `isoshelf update` command (the web UI
-has it; done in v0.8.5), two downloads at once from different hosts, and
-OpenPGP signature checking.
+Make bootable's rename and extract (done in v0.13.0), a CLI `isoshelf update`
+command (done in v0.8.5) and two downloads at once (done in v0.10.0); still to
+come: Make bootable's convert, and OpenPGP signature checking.
 
 **v0.3** - a redesign of the page and Settings (decided 2026-09-18; the list
 of decisions is in [STATUS.md](STATUS.md)).
@@ -667,7 +681,7 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   internet can't allow) or given in `ISOSHELF_USERNAME`/`ISOSHELF_PASSWORD`. One login, not user accounts -
   isoshelf looks after a folder, and there is one person's worth of access to
   give. `internal/auth` keeps it: PBKDF2-HMAC-SHA256 with a random salt, from
-  the standard library, so the one dependency stays one.
+  the standard library, so it adds no dependency.
   - The session is **signed, not remembered**: the cookie says who and until
     when, with an HMAC under a key in the config folder. A restart therefore
     keeps everyone logged in, which matters because a NAS app restarts on
@@ -993,7 +1007,8 @@ browser. Shipped in v0.4.0; see `docs/docker.md`.
   `missing.js` (getting a missing image back, or not expecting it),
   `origin.js` (where each file came from, and Check it), `fromserver.js`
   (copying from your server in Add images), `dismiss.js` (dismissing an
-  update for a while or for good), `duplicates.js` (copies of one image),
+  update for a while or for good), `older.js` (installing an older version,
+  and the hold), `bootable.js` (Make bootable), `duplicates.js` (copies of one image),
   `folders.js` (the chooser), `thisfolder.js` (This folder in Settings), `archive.js`, `settings.js` (the Settings
   panel), `settinglist.js` and `updatesettings.js` (what each setting is), `access.js` (sign-in and
   sharing), `records.js` (where a folder's records live), `upload.js`

@@ -38,6 +38,9 @@ type job struct {
 	removal update.Removal
 	// version is an older version to install; empty means the newest.
 	version string
+	// fix, when set, is a file to unpack rather than an image to download
+	// (fixup.go); removal then says what happens to the compressed file.
+	fix *update.Fix
 	// old holds the entry's files at the time it was queued, replaced once
 	// the new one is in place. Empty when the image is being added.
 	old []string
@@ -80,7 +83,10 @@ type jobJSON struct {
 	Size int64 `json:"size,omitempty"`
 	// Update is set when the download replaces files already in the folder,
 	// rather than adding an image that isn't there.
-	Update  bool   `json:"update,omitempty"`
+	Update bool `json:"update,omitempty"`
+	// Unpack marks Make bootable unpacking a file (fixup.go), not a
+	// download.
+	Unpack  bool   `json:"unpack,omitempty"`
 	Outcome string `json:"outcome,omitempty"`
 	Message string `json:"message,omitempty"`
 	// Conflict marks a download that stopped to ask what happens to the file
@@ -100,7 +106,7 @@ type jobJSON struct {
 }
 
 func (j *job) json() jobJSON {
-	return jobJSON{ID: j.id, Entry: j.entry, Name: j.name, Size: j.size, Update: len(j.old) > 0}
+	return jobJSON{ID: j.id, Entry: j.entry, Name: j.name, Size: j.size, Update: len(j.old) > 0, Unpack: j.fix != nil}
 }
 
 // downloadsLocked describes the queue; s.mu must be held.

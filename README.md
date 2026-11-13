@@ -86,6 +86,11 @@ And the rest:
   It's checked against the project's checksum like any download (no
   checksum, no download), and the image is held there: no update is offered
   or made until you release it.
+- **Make bootable.** A file Ventoy won't list gets a button that fixes it:
+  FydeOS's `.bin` is renamed to `.img`, and an image published compressed
+  (`.img.xz`, `.iso.gz`) is unpacked beside it. isoshelf checks the file's
+  content agrees first, keeps the original until the result is complete, and
+  then archives or keeps it, as you choose.
 - **Missing images come back in one click.** *Restore* if the file is still
   in the archive, *Download again* if isoshelf can fetch it, or its download
   page if not. Removed one on purpose? *Stop expecting it*.
@@ -271,8 +276,7 @@ up to date              Linux Mint Cinnamon                  22.3      22.3     
 
 **Next:** more notes on where to find the images you fetch yourself.
 
-**Also planned:** [fixes for files the boot menu won't list](https://github.com/ZachCurry13/isoshelf/issues/3),
-and [signature checking for the images
+**Also planned:** [signature checking for the images
 themselves](https://github.com/ZachCurry13/isoshelf/issues/5).
 
 **1.0:** an official TrueNAS app, so it installs from the store rather than as
