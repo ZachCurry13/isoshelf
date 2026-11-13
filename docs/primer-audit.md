@@ -131,14 +131,36 @@ of labels, or the absence of toasts, "click here", "oops" and exclamation marks.
 Every item above was done, except these, which are open or a decision, so that
 nobody reading this is told the page is more finished than it is:
 
+**Closed after v0.11.1 (the three that were open):**
+- **Contrast (F15) is measured, in all twelve themes**, by
+  `internal/web/contrast_test.go`: 25 pairs of words or icons on their
+  background (body, muted, link, header, buttons, every status pill on its tint
+  and on the page), 300 measurements, each at least WCAG's 4.5:1 for text or
+  3:1 for an icon or the focus ring. The tightest is "End of life" on its tint
+  in the light themes, 4.54:1. A Primer update that makes something hard to
+  read fails the build.
+- **The measure (F11):** Settings hints stop at 80 characters, as the
+  first-run text already did at 70.
+- **Truncation and tooltips (C16, C21), read in the manual this time.**
+  Nothing truncates (no `text-overflow` anywhere), which is the manual's first
+  choice. The tooltip now does what Primer's must: Escape hides it without
+  moving focus or the pointer, and a long one wraps instead of running off a
+  320 px screen. Tooltips came off everything you can't press (the status
+  pills, which the status key and the details panel explain; the 32-bit and
+  ARM badges, whose full name is in the details panel; the "popular" pill,
+  whose explanation moved to the Popular filter's checkbox) and off a download's
+  name in the bar, which repeated the words it sat on.
+
 **Open (not done):**
-- **Contrast was not measured** (F15) for the muted text and the pills in every
-  one of the twelve themes; the colours are Primer's, used as Primer uses them.
-- **A measure of about 80 characters** (F11) is held only where the page sets one
-  (the first-run text); long hints in Settings run the width of the panel.
-- **Truncation and tooltip rules** (C16, C21) could not be read in the manual. Text
-  now wraps rather than truncates, and the tooltip is a CSS version of Primer's:
-  short, dark, on hover and keyboard focus, on icon-only buttons.
+- **Longer descriptions on buttons with a visible label** are still the
+  browser's own `title` tooltip (about forty of them, such as what each of the
+  three "replace" choices does). Primer allows a short description on such a
+  button, but its own is shown on keyboard focus too and the browser's isn't, so
+  a keyboard user without a screen reader can't see them. The fix is to put the
+  ones that matter on the page (Primer: "persist the content") and drop the
+  rest, which is a wording pass, not a style one.
+- **The exact time on a History entry** is a `title` on plain text. Primer's own
+  RelativeTime does the same, so it stays.
 
 **Decided, with the reason:**
 - **The tab bar is links to places on one page**, not tabs that swap panels, so it

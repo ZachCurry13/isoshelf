@@ -106,17 +106,20 @@ input[type="search"], input[type="text"], select {
 /* Primer's tooltip: short, dark, on an icon-only button (data-tooltip), shown
    on hover and on keyboard focus. The button's own accessible name is its
    aria-label; this is only for the eye. data-tooltip-end keeps it from running
-   off the right edge. */
+   off the right edge. Escape hides it without moving focus or the pointer
+   (app.js sets data-tooltip-off until they leave), and a long one wraps rather
+   than running off a narrow screen, both as Primer's Tooltip requires. */
 [data-tooltip] { position: relative; }
 [data-tooltip]:hover::after, [data-tooltip]:focus-visible::after {
   content: attr(data-tooltip);
   position: absolute; z-index: 40; top: calc(100% + var(--sp-4)); left: 50%; transform: translateX(-50%);
   padding: var(--sp-4) var(--sp-8);
-  font-size: var(--text-small); font-weight: 400; line-height: var(--leading); white-space: nowrap;
+  font-size: var(--text-small); font-weight: 400; line-height: var(--leading); width: max-content; max-width: 20em;
   color: var(--header-fg-strong); background: var(--header-bg); border-radius: var(--radius);
   pointer-events: none;
 }
 [data-tooltip][data-tooltip-end]:hover::after, [data-tooltip][data-tooltip-end]:focus-visible::after { left: auto; right: 0; transform: none; }
+[data-tooltip][data-tooltip-off]::after { display: none; }
 
 /* A setting with an on/off switch: what it controls on the left, the switch on the right. */
 .switch-row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-12); }

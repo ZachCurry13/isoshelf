@@ -79,7 +79,7 @@ function renderRunRows(running, many) {
         };
         barRows.rows.set(run.id, row);
         list.append(el("li", { class: "dock-run" },
-          el("span", { class: "run-name", title: run.name }, run.name),
+          el("span", { class: "run-name" }, run.name),
           row.text,
           el("div", { class: "bar" }, row.fill),
           el("button", {
