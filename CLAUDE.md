@@ -169,4 +169,9 @@ people have downloaded. Work never happens directly on it.
 - **The look lives in `css/tokens.css`.** A rule uses isoshelf's names from there and never a colour, a shadow or a Primer name of its own; tests fail if it does (`internal/web/css_test.go`). Change the look by changing values there, and read `docs/design-system.md` first. `static/styleguide.html` shows every token and component in every theme: look at a change there.
 - **The page follows Primer's manual, all of it, not only its colours** (the maintainer, 2026-11-04: "what's the point of having a design guide if you don't follow it"). `docs/primer-guidelines.md` is the manual as a checklist and `docs/primer-audit.md` is the page checked against it. A new or changed piece of the page uses Primer's component for the job (Banner, Blankslate, Label, Counter, UnderlineNav, Box and rows, ActionMenu or SelectPanel, ToggleSwitch, Dialog), Primer's spacing scale (`--sp-N`), Octicons, and Primer's content rules (sentence case, no punctuation on buttons, errors that say how to fix it). Check it against the checklist and `static/styleguide.html`, and against the chosen draft's look, before calling it done; add anything new to the style guide.
 - Commit and push after each step; keep README and docs current.
+- **Two computers work on this repository.** Before starting, and again after a
+  few hours away, `git fetch` and read `docs/TODO.md` and `docs/STATUS.md` as
+  they are on `main`: the other computer may have moved on. What is on a branch
+  and not merged yet is said in `docs/STATUS.md`, so neither computer has to
+  guess.
 - Never stop or restart the maintainer's preview (port 8765) without asking; test downloads in a scratch folder.

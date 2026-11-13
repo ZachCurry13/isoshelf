@@ -15,7 +15,7 @@ four times in one evening. The releases page on GitHub is the answer, and
   catalog that updates itself from this repository. Web page and CLI;
   Windows and Linux builds.
 - **Catalog:** 96 entries (67 downloadable, 11 update-check only, 18 link only),
-  revision `2026110303`. Checked live every Monday by
+  revision `2026111301`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request; a
   weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC;
   https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
@@ -287,3 +287,22 @@ Earlier releases, v0.9.2 back to the start, are written up in
   outlined status pills, Octicons, Primer's spacing scale (a test holds it), Banner, Blankslate, switches, dialogs, wording.
 - `docs/primer-guidelines.md` is the manual as a checklist; `docs/primer-audit.md` is the page checked against it, with what
   is open or decided at the end. Next: read the pages the researchers couldn't (tab ARIA, truncation, tooltip), measure contrast.
+
+## Latest (v0.11.1, 2026-11-13: on branch `maintenance-sweep`, in a pull request, not merged)
+
+- A maintenance sweep, one pull request: requests are cut off at one megabyte
+  (`internal/web/bodylimit.go`, uploads excepted, with tests); catalog revision
+  2026111301 fixes the two entries of #108 (FreeBSD reads the "Get FreeBSD" page,
+  Omarchy's new file name) and re-records everything; one unused function gone.
+- Out of the repository: `record.exe` (committed by accident in #98; `*.exe` is
+  ignored now), a personal email in `deploy/truenas/app.yaml`, and the
+  maintainer's time zone and a PC folder path in four documents.
+- Checked: build, vet, gofmt and all tests on Go 1.27.4, and the recorder run
+  (all 78 checkable entries answer). Not checked: the page in a browser (nothing
+  on it changed).
+- **Next, for the maintainer:** merge the pull request, then release v0.11.1
+  straight away (push the `v0.11.1` tag on `main`): once merged, the changelog
+  and the TrueNAS files name v0.11.1, and that image exists only after the
+  release. The release is also the whole fix for the v0.11.0 programs having
+  been built with Go 1.27.3. Closing #108 follows from the merge.
+

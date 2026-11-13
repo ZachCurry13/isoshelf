@@ -6,7 +6,25 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
-## [v0.11.0] - 2026-11-04
+## [v0.11.1] - 2026-11-13
+
+### Upkeep: a request can't fill the memory, and two catalog entries answer again
+- **A request can no longer be used to fill the computer's memory.** isoshelf
+  read whatever it was sent as one piece, however long, the sign-in included,
+  so anybody who could reach it on a network could send one enormous request.
+  Requests are now cut off at one megabyte, far more than the page ever sends.
+  An upload is the exception: an image goes straight to the drive as it
+  arrives.
+- **FreeBSD and Omarchy answer again** in the catalog. Like every catalog
+  change this reaches copies already installed without this release; the
+  details are in [CATALOG-CHANGES.md](CATALOG-CHANGES.md).
+- **Built with a newer Go**, as every release is: this one picks up the fix for
+  a way to crash Go's web server (GO-2026-6859) that the previous release was
+  built just before.
+- **Out of the repository:** an 11 MB Windows program committed by accident, a
+  personal email address, and notes about when and where the maintainer's own
+  computer runs things.
+
 
 ### The page now follows GitHub's design manual, all of it
 v0.9.0 took Primer's colours and type; this takes the rest, so that someone who
