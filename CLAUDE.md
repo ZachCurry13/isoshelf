@@ -87,8 +87,9 @@ people have downloaded. Work never happens directly on it.
   project itself, so it stays out of the documents people read.
 
 ## Maintenance (adapted 2026-10-26 from the maintainer's protocol)
-- What can be updated on its own: the Go libraries (`go-toml`, and `xz` for
-  Make bootable), the GitHub Actions versions, the container base image, and
+- What can be updated on its own: the Go libraries (`go-toml`, `xz` for
+  Make bootable, `go-crypto` for OpenPGP and what it brings: `circl`,
+  `x/crypto`, `x/sys`), the GitHub Actions versions, the container base image, and
   the catalog (live from `main`, no release needed). There are no other
   modules. Go is named only
   by its line (`go 1.27` in go.mod, `golang:1.27-alpine`), and every build

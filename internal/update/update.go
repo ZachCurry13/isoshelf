@@ -168,7 +168,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	// A checksum that is only MD5 or SHA-1 counts the same (v0.8.10): it is
 	// still checked, so a damaged download is thrown away, but it proves
 	// nothing about the file being the one the project made.
-	unverified := artifact.Checksum == nil || artifact.Checksum.Algorithm.Weak()
+	unverified := (artifact.Checksum == nil || artifact.Checksum.Algorithm.Weak()) && artifact.ImageSignature == nil
 	beforeRemoval := opts.Removal
 	if unverified {
 		beforeRemoval = MoveAside
@@ -193,6 +193,9 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 		Size:     artifact.Size,
 		Checksum: artifact.Checksum,
 		Replace:  sameName,
+	}
+	if artifact.ImageSignature != nil {
+		request.Signature = &fetch.ImageSignature{Key: opts.Entry.Artifact.Signer(), Sig: artifact.ImageSignature}
 	}
 	if sameName {
 		request.BeforePlace = func() error {
@@ -221,7 +224,7 @@ func Run(ctx context.Context, opts Options) (*Result, error) {
 	}
 	result := &Result{
 		File: placeAs, Version: version, Size: downloaded.Size,
-		SHA256: downloaded.SHA256, Verified: downloaded.Verified && !downloaded.Weak, Weak: downloaded.Weak,
+		SHA256: downloaded.SHA256, Verified: (downloaded.Verified && !downloaded.Weak) || downloaded.Signed, Weak: downloaded.Weak,
 		URL: downloaded.URL,
 	}
 	if replaced != "" {
@@ -285,6 +288,10 @@ func originOf(got *fetch.Result, artifact *resolve.Artifact, near []string, repl
 	}
 	if got.Verified && !got.Weak {
 		o.Checked, o.CheckedAt = artifact.ChecksumURL, now.UTC()
+	}
+	// The signature that proved the checksum file, or the image (#5).
+	if artifact.Signed != "" && (got.Signed || got.Verified) {
+		o.Signed = artifact.Signed
 	}
 	return o
 }

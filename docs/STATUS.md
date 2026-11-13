@@ -23,8 +23,8 @@ four times in one evening. The releases page on GitHub is the answer, and
   `docs/catalog-sources.md` and opens one pull request last ran on
   2026-11-03; the cloud routine is paused, and on 2026-11-13 no scheduled task
   for it existed on the Linux computer.
-- **GitHub:** public; open issues #5-#7, #11 and #12 are the
-  roadmap (#1, isoshelf update, #2, older versions with a hold, #3, make bootable, #10, the phone layout, #54, the simpler shelf, #55, missing
+- **GitHub:** public; open issues #6, #7, #11 and #12 are the
+  roadmap (#1, isoshelf update, #2, older versions with a hold, #3, make bootable, #5, OpenPGP signatures, #10, the phone layout, #54, the simpler shelf, #55, missing
   images, #56, dismissing an update, #57, duplicates, #58, where to find
   it, #59, gentler with servers, and #62, where each file came from, are
   closed); Discussions on.

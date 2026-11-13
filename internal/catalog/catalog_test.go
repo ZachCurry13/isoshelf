@@ -81,9 +81,10 @@ regex = 'example-beta-(?P<version>\d+)-arm64\.iso'
 // validCatalog refers to.
 func load(t *testing.T, text string) (*Catalog, error) {
 	t.Helper()
+	armored, _ := testKey()
 	fsys := fstest.MapFS{
-		"catalog.toml":     {Data: []byte(text)},
-		"keys/example.asc": {Data: []byte("not a real key")},
+		"catalog.toml":     {Data: []byte(withTestKey(text))},
+		"keys/example.asc": {Data: []byte(armored)},
 	}
 	return Load(fsys, "catalog.toml")
 }
@@ -133,7 +134,8 @@ func TestLoadValid(t *testing.T) {
 	if e := c.Entry("nope"); e != nil {
 		t.Errorf("Entry(nope) = %v, want nil", e)
 	}
-	if got, want := c.Keys["example"].Fingerprints[0], "0123456789ABCDEF0123456789ABCDEF01234567"; got != want {
+	if _, want := testKey(); c.Keys["example"].Fingerprints[0] != want {
+		got := c.Keys["example"].Fingerprints[0]
 		t.Errorf("fingerprint not normalized: got %q, want %q", got, want)
 	}
 	if got, want := c.Entry("example-setup").KnownHashes[0], "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"; got != want {

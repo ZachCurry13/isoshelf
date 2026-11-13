@@ -17,6 +17,8 @@ import (
 	"strings"
 
 	"github.com/pelletier/go-toml/v2"
+
+	"github.com/ZachCurry13/isoshelf/internal/verify"
 )
 
 // SchemaVersion is the catalog format this build reads.
@@ -56,8 +58,12 @@ type Catalog struct {
 
 // SigningKey is an OpenPGP public key that signs manifests or images.
 type SigningKey struct {
-	// File is the armored key, relative to the catalog file.
-	File string `toml:"file"`
+	// File is the armored key, relative to the catalog file. Armored is the
+	// key itself, written in the catalog: the one a published catalog uses,
+	// since isoshelf fetches only the catalog file and never a key beside it.
+	// One or the other.
+	File    string `toml:"file"`
+	Armored string `toml:"armored"`
 	// Fingerprints are the primary key fingerprints the file must contain,
 	// normalized to uppercase hex without spaces.
 	Fingerprints []string `toml:"fingerprints"`
@@ -177,7 +183,15 @@ type Artifact struct {
 	// Mirrors are extra folders for the image bytes only. Checksums and
 	// signatures always come from Base.
 	Mirrors []string `toml:"mirrors"`
+
+	// signer is the key named by Key, read and checked against its
+	// fingerprints when the catalog loaded.
+	signer *verify.Keyring
 }
+
+// Signer is the key that signs this artifact's manifest or image, or nil
+// when it isn't signed.
+func (a *Artifact) Signer() *verify.Keyring { return a.signer }
 
 //go:embed default.toml
 var defaultFS embed.FS

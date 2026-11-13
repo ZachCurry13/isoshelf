@@ -7,6 +7,13 @@ module github.com/ZachCurry13/isoshelf
 go 1.27
 
 require (
+	github.com/ProtonMail/go-crypto v1.5.2
 	github.com/pelletier/go-toml/v2 v2.4.3
 	github.com/ulikunitz/xz v0.5.17
+)
+
+require (
+	github.com/cloudflare/circl v1.6.5 // indirect
+	golang.org/x/crypto v0.59.0 // indirect
+	golang.org/x/sys v0.50.0 // indirect
 )
