@@ -14,7 +14,7 @@ func TestFind(t *testing.T) {
 		t.Fatal(err)
 	}
 	exe := filepath.Join(app, "isoshelf-linux-amd64")
-	userConfig := func() (string, error) { return "/home/zach/.config", nil }
+	userConfig := func() (string, error) { return "/home/user/.config", nil }
 	temp := func() string { return "/tmp" }
 
 	// Without the marker: installed mode.
@@ -24,7 +24,7 @@ func TestFind(t *testing.T) {
 	}
 	want := Dirs{
 		App:    app,
-		Config: filepath.Join("/home/zach/.config", "isoshelf"),
+		Config: filepath.Join("/home/user/.config", "isoshelf"),
 		Temp:   filepath.Join("/tmp", "isoshelf"),
 	}
 	if got != want {

@@ -71,9 +71,10 @@ people have downloaded. Work never happens directly on it.
   repositories attached to the session, so a `type = "github"` source is
   refused whatever token is set. `releases.ubuntu.com` answers, so it is an
   allowlist rather than a blanket block. This is why the weekly catalog
-  job moved on 2026-10-26 from a cloud routine (paused) to a scheduled task
-  on the maintainer's computer, Mondays at noon Central, working in its own
-  checkout at `C:\isoshelf-catalog`. **The live check belongs in GitHub Actions**
+  job moved on 2026-10-26 from a cloud routine (paused) to a weekly scheduled
+  task on the maintainer's computer, working in its own checkout (a second
+  clone of this repository, kept apart from the one where other work
+  happens). **The live check belongs in GitHub Actions**
   (`.github/workflows/catalog-check.yml`, `workflow_dispatch`), which has
   real network and a real token; read its result and write the catalog from
   that, rather than trying to fetch anything here.
