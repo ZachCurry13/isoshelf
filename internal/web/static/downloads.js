@@ -96,6 +96,14 @@ function downloadProgress(run = downloads().running[0]) {
     };
   }
   if (run.stage === "placing") return { text: "Putting it in place…", fraction: 1, short: "Almost done" };
+  if (run.stage === "unpacking") {
+    const fraction = run.total > 0 ? Math.min(run.done / run.total, 1) : null;
+    return {
+      text: run.total > 0 ? `Unpacking: ${formatBytes(run.done)} of about ${formatBytes(run.total)}` : `Unpacking: ${formatBytes(run.done)} so far`,
+      fraction,
+      short: fraction === null ? "Unpacking" : `Unpacking ${Math.floor(fraction * 100)}%`,
+    };
+  }
   return { text: "Finding the download…", fraction: null, short: "Starting" };
 }
 
@@ -207,7 +215,7 @@ function jobButton(entry, idle, fresh) {
       // Once the folder has been looked at again, the list shows the file
       // itself and the tick has done its job.
       if (!fresh || arrivedSinceScan(at.job)) {
-        return el("span", { class: "job-done" }, icon("check-16"), at.job.update ? "Updated" : "Added");
+        return el("span", { class: "job-done" }, icon("check-16"), at.job.unpack ? "Unpacked" : at.job.update ? "Updated" : "Added");
       }
       return idle;
     default:
