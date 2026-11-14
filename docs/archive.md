@@ -1464,3 +1464,10 @@ Learned: a self-updating catalog fetches only its one file, so a key has to
 live inside it (`armored`) rather than beside it; and released copies refuse
 that new field, so the catalog can't use signatures until they age out -
 the same wait `find` had. The catalog side is in TODO.
+
+## [#11] and [#12] Rebuilding and moving a drive (v0.15.0, 2026-11-13)
+
+One feature: a drive list (saved as a file, or the mirror this computer
+already kept) and *Fill from it*. Learned: the mirror's usual set is empty
+after a single scan, which is exactly the drive somebody loses first, so a
+remembered folder's list adds what its last scan held.

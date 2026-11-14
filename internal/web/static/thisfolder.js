@@ -50,6 +50,7 @@ const FOLDER_SETTINGS = {
       control: () => recordsControl(),
       note: () => recordsNote(),
     },
+    DRIVE_LIST_SETTING,
   ],
 };
 
