@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // saveFile hands one image in the folder to the browser, so it can be saved
@@ -40,7 +41,14 @@ func (s *Server) saveFile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "That file isn't in the folder any more. Scan again.", http.StatusNotFound)
 		return
 	}
-	f, err := os.Open(filepath.Join(target, filepath.FromSlash(rel)))
+	full := filepath.Join(target, filepath.FromSlash(rel))
+	// The scan follows links, so a link in the folder can name a file outside
+	// it. Serving one would hand out whatever isoshelf can read.
+	if !within(target, full) {
+		http.NotFound(w, r)
+		return
+	}
+	f, err := os.Open(full)
 	if err != nil {
 		http.NotFound(w, r)
 		return
@@ -57,4 +65,15 @@ func (s *Server) saveFile(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Disposition", mime.FormatMediaType("attachment", map[string]string{"filename": info.Name()}))
 	w.Header().Set("Cache-Control", "no-store")
 	http.ServeContent(w, r, info.Name(), info.ModTime(), f)
+}
+
+// within says whether path, once its links are followed, is inside dir.
+func within(dir, path string) bool {
+	d, err1 := filepath.EvalSymlinks(dir)
+	p, err2 := filepath.EvalSymlinks(path)
+	if err1 != nil || err2 != nil {
+		return false
+	}
+	rel, err := filepath.Rel(d, p)
+	return err == nil && rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator))
 }

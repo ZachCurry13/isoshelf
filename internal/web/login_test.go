@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/ZachCurry13/isoshelf/internal/auth"
 )
@@ -436,5 +437,23 @@ func TestNoLoginMeansNoWarningAboutLosingIt(t *testing.T) {
 	s.mu.Unlock()
 	if note != "" {
 		t.Errorf("warned about losing a login nobody has set: %s", note)
+	}
+}
+
+// Failures from one address never wipe another's count: alternating between
+// two addresses still reaches the lockout on each, and an address not heard
+// from for an hour is forgotten, locked or not.
+func TestLockoutSurvivesOtherAddresses(t *testing.T) {
+	a, now := newAttempts(), time.Now()
+	for range tooMany {
+		a.failure("one", now)
+		a.failure("two", now)
+	}
+	if a.wait("one", now) == 0 || a.wait("two", now) == 0 {
+		t.Error("alternating between two addresses avoided the lockout")
+	}
+	a.failure("three", now.Add(2*time.Hour))
+	if len(a.failed) != 1 {
+		t.Errorf("%d addresses remembered after two quiet hours, want only the newest", len(a.failed))
 	}
 }

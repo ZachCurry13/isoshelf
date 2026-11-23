@@ -59,3 +59,30 @@ func TestDownloadButtonServesOnlyImagesInTheRecords(t *testing.T) {
 		t.Errorf("with downloads off: %d, want 403", rec.Code)
 	}
 }
+
+// A link in the folder to a file outside it is listed (the scan follows
+// links) but never handed out; a link to a file inside is fine.
+func TestDownloadButtonWontFollowALinkOutOfTheFolder(t *testing.T) {
+	dirs, target := testDirs(t), t.TempDir()
+	outside := filepath.Join(t.TempDir(), "secret.txt")
+	if err := os.WriteFile(outside, []byte("not an image"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	const real, out, in = "linuxmint-22.3-cinnamon-64bit.iso", "ubuntu-24.04.3-desktop-amd64.iso", "ubuntu-24.04.2-desktop-amd64.iso"
+	if err := os.WriteFile(filepath.Join(target, real), []byte("an image"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if os.Symlink(outside, filepath.Join(target, out)) != nil || os.Symlink(real, filepath.Join(target, in)) != nil {
+		t.Skip("this system won't make links")
+	}
+	s := newServer(t, dirs, target)
+	request(t, s, http.MethodPost, "/api/scan", nil)
+	waitIdle(t, s)
+	request(t, s, http.MethodPost, "/api/settings", map[string]bool{"allow_downloads": true})
+	if rec := request(t, s, http.MethodGet, "/api/file?path="+url.QueryEscape(out), nil); rec.Code != http.StatusNotFound || strings.Contains(rec.Body.String(), "not an image") {
+		t.Errorf("a link out of the folder: %d %q, want 404", rec.Code, rec.Body)
+	}
+	if rec := request(t, s, http.MethodGet, "/api/file?path="+url.QueryEscape(in), nil); rec.Code != http.StatusOK {
+		t.Errorf("a link inside the folder: %d, want 200", rec.Code)
+	}
+}

@@ -6,6 +6,24 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.15.1] - 2026-11-23
+
+### Upkeep: three holes from an audit
+- **A link in the folder can no longer hand out files from outside it.**
+  isoshelf follows links when it scans, so a link named like an image but
+  pointing elsewhere was listed, and *Save on this computer* (and sharing with
+  another isoshelf) would have served whatever it pointed at. Both now refuse
+  a file whose real location is outside the folder. Only someone who can
+  already put files in the folder, and sign in, could have used this.
+- **The wrong-password lockout works across addresses.** A failed sign-in from
+  one address used to wipe the count of every other, so alternating between
+  two addresses never reached the lockout, and addresses that had reached it
+  were never forgotten. Now each address is forgotten only after an hour of
+  quiet.
+- **An upload that doesn't say how big it is can't fill the disk.** It is
+  cut off at the room there is and refused, leaving nothing behind. The
+  browser's own uploads always say, so the page never ran into this.
+
 ## [v0.15.0] - 2026-11-13
 
 ### A lost drive comes back, and a new one fills itself

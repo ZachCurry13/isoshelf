@@ -27,8 +27,12 @@ func (u Usage) Fits(size int64) bool {
 	if !u.Known() || size <= 0 {
 		return true
 	}
-	return u.Free-size >= spare(u.Total)
+	return size <= u.Left()
 }
+
+// Left is how many bytes can still be written while keeping the spare room
+// (negative when the disk is already below it).
+func (u Usage) Left() int64 { return u.Free - spare(u.Total) }
 
 // spare is the room left alone so the disk never ends up completely full:
 // 1% of it, at most 1 GB.
