@@ -6,6 +6,24 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.15.0] - 2026-11-13
+
+### A lost drive comes back, and a new one fills itself
+- **Save a drive's list.** Settings, This folder, *Save list* writes a small
+  file naming every image the folder carries. Keep it anywhere: it's the
+  backup, because every image on it is still on its project's own site.
+  isoshelf already keeps the same list on this computer for each folder it
+  has seen.
+- **Fill a folder from a list.** Point isoshelf at an empty, reformatted or
+  bigger drive and choose a folder it remembers, or a saved list, then *Fill
+  from it*. It shows every image it would download with the total size, lets
+  you untick any, checks there's room before starting, and downloads and
+  verifies each one as usual. Stars come across too.
+- **It says what it can't bring back**: images it only links to (Windows
+  among them), ones it only checks, ones it doesn't know, and anything that
+  isn't a catalog image, like persistence files or your own files. For a
+  byte-for-byte copy of a drive, use your own disk tools.
+
 ## [v0.14.0] - 2026-11-13
 
 ### OpenPGP signatures

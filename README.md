@@ -86,6 +86,13 @@ And the rest:
   It's checked against the project's checksum like any download (no
   checksum, no download), and the image is held there: no update is offered
   or made until you release it.
+- **A lost drive comes back.** Each folder's list of images is kept on your
+  computer as well, and *Save list* (Settings, This folder) writes it to a
+  small file you can keep anywhere. Point isoshelf at an empty, reformatted
+  or bigger drive and *Fill from it*: every image it can download comes back
+  from its project's own site, checked as usual, with room checked first.
+  It says plainly what it can't bring back: your own files, persistence
+  files, Windows, anything it doesn't know.
 - **Make bootable.** A file Ventoy won't list gets a button that fixes it:
   FydeOS's `.bin` is renamed to `.img`, and an image published compressed
   (`.img.xz`, `.iso.gz`) is unpacked beside it. isoshelf checks the file's
@@ -288,10 +295,7 @@ a custom app.
 [docs/catalog-sources.md](docs/catalog-sources.md), and requests go through
 [the catalog form](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml).
 
-**Later:** [rebuild a drive from your usual
-set](https://github.com/ZachCurry13/isoshelf/issues/11); [move a drive's
-images to a new or bigger one](https://github.com/ZachCurry13/isoshelf/issues/12);
-managing a NAS's folder from a desktop isoshelf, without mounting the share
+**Later:** managing a NAS's folder from a desktop isoshelf, without mounting the share
 (copying an image from another isoshelf already works; this is the folder
 itself); a Proxmox LXC with the ISO storage bind-mounted, written down.
 

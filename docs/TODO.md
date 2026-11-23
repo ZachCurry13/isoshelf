@@ -11,8 +11,9 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next:** the list under *After those* ([#11] and [#12]; [#2], [#3] and
-[#5] are done, v0.12.0 to v0.14.0). The Primer audit's
+**Next:** the roadmap issues are done ([#2], [#3], [#5], [#11] and [#12],
+v0.12.0 to v0.15.0); what's left of them is written just below *After
+those*. Then item 13 and the older items. The Primer audit's
 leftovers are done (v0.11.2) except a wording pass on the longer button
 descriptions, written at the end of `docs/primer-audit.md`. Finished work is
 in `docs/archive.md`.
@@ -73,8 +74,14 @@ has a reputation. Self-update already means the warning appears only on the
 first download, because files isoshelf downloads itself don't carry the
 browser's "came from the internet" mark.
 
-**After those, in this order:** [#11] and [#12]. Any time a real
-USB drive is to hand: [#7], trying the portable zip on one.
+**After those:** any time a real USB drive is to hand, [#7], trying the
+portable zip on one.
+
+On what [#11] and [#12] left: *Sets* (2026-09-21, a named list several
+drives follow) isn't built; the drive list file is the piece it would rest
+on. A rebuild from a server's own record of what it served
+(`internal/web/served.go`) isn't either: the mirror on this computer and
+the list file cover the cases in both issues.
 
 **Signing keys in the catalog**, once v0.14.0 has been the latest release
 for a release or two (older copies refuse `armored`, as they refused
@@ -158,13 +165,6 @@ starts it thinking it is a form to fill in:
 
 These are older items, kept under the numbers they were given.
 
-11. **Rebuild a drive** ([#11]) and **move a drive to a bigger one** ([#12]).
-   Same feature, two reasons for wanting it, both from real r/Ventoy posts
-   where people lost a drive's worth of images. The list is already kept off
-   the drive: `internal/state/mirror.go` copies each folder's state into the
-   config folder, including the entry ids seen by each scan. What's missing is
-   the verb, plus exporting the list to a file someone can keep elsewhere.
-
 Then:
 
 13. **From the maintainer's own use, 2026-09-22**
@@ -205,7 +205,7 @@ Then:
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `icons.js`, `jumpnav.js`, `app.js` (state, asking, drawing, wiring),
   `images.js`, `logotile.js`, `menus.js`, `imagerow.js`, `blankslate.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`, `dockitems.js`, `dockprogress.js`, `notices.js`,
-  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `older.js`, `bootable.js`, `duplicates.js`, `folders.js`, `thisfolder.js`,
+  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `older.js`, `bootable.js`, `duplicates.js`, `folders.js`, `drivelist.js`, `thisfolder.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `updatesettings.js`, `access.js`, `records.js`,
   `upload.js`, `report.js`, `selfupdate.js`, `history.js` and `system.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in

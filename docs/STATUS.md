@@ -10,7 +10,8 @@ four times in one evening. The releases page on GitHub is the answer, and
   online, downloads and verifies (resumable, queued two at a time with an optional speed limit,
   reorderable), replaces or archives old files, goes back to an older version
   and holds it there, renames or unpacks files Ventoy won't list (Make
-  bootable), and identifies unknown ones.
+  bootable), fills a lost or new drive from a saved list of its images, and
+  identifies unknown ones.
   Images can be added from the user's own computer as well as downloaded. A
   scan and a download run side by side, and every writer merges its own
   change onto the folder's records rather than saving over them. Keeps a
@@ -20,14 +21,17 @@ four times in one evening. The releases page on GitHub is the answer, and
   revision `2026111302`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request. The
   weekly Claude task that works through `catalog` issues and the wish list in
-  `docs/catalog-sources.md` and opens one pull request last ran on
-  2026-11-03; the cloud routine is paused, and on 2026-11-13 no scheduled task
-  for it existed on the Linux computer.
-- **GitHub:** public; open issues #6, #7, #11 and #12 are the
+  `docs/catalog-sources.md` and opens one pull request is a scheduled task
+  on the Linux computer (the cloud routine is paused), working in its own
+  checkout (`isoshelf-catalog`). It runs every hour on Monday from noon local
+  time until one run finishes: a run that hits the account's 5-hour usage
+  limit dies at once, so the next hour is the retry (2026-11-16's single run
+  failed that way). It last did the work on 2026-11-03.
+- **GitHub:** public; open issues #6 and #7 are the
   roadmap (#1, isoshelf update, #2, older versions with a hold, #3, make bootable, #5, OpenPGP signatures, #10, the phone layout, #54, the simpler shelf, #55, missing
   images, #56, dismissing an update, #57, duplicates, #58, where to find
-  it, #59, gentler with servers, and #62, where each file came from, are
-  closed); Discussions on.
+  it, #59, gentler with servers, #62, where each file came from, and #11 and
+  #12, rebuilding and moving a drive, are closed); Discussions on.
 
 ## Guiding principle (the maintainer, 2026-09-18)
 
