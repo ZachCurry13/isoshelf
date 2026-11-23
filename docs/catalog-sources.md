@@ -108,41 +108,38 @@ checked on the project's own site before it goes in. The weekly catalog job
 works from the top, up to three a week, takes each name off when it's added,
 and moves ruled-out ones to "Ruled out" with the reason.
 
-1. antiX
-2. KDE neon
-3. Garuda Linux (its build server's folders didn't list on 2026-09-18)
-4. MiniOS
-5. TUXEDO OS
-6. Puppy Linux
-7. AerynOS
-8. PCLinuxOS
-9. SparkyLinux
-10. ZimaOS
-11. Devuan
-12. Mageia
-13. Linux Lite
-14. Solus
-15. pearOS
-16. ChromeOS Flex (Google's own installer; probably link only)
-17. Exton
-18. CentOS Stream
-19. HackerOS
-20. Linuxfx
-21. KDE Linux
-22. Linux Mint MATE
-23. openSUSE Leap
-24. Manjaro KDE and GNOME
-25. Bazzite's KDE, desktop and NVIDIA variants
-26. Aurora
-27. Bluefin
-28. OPNsense
-29. Talos Linux
-30. Proxmox Datacenter Manager
-31. LibreELEC
-32. DietPi
-33. Umbrel
-34. Memtest86+
-35. ShredOS
+1. MiniOS
+2. TUXEDO OS
+3. Puppy Linux
+4. AerynOS
+5. PCLinuxOS
+6. SparkyLinux
+7. ZimaOS
+8. Devuan
+9. Mageia
+10. Linux Lite
+11. Solus
+12. pearOS
+13. ChromeOS Flex (Google's own installer; probably link only)
+14. Exton
+15. CentOS Stream
+16. HackerOS
+17. Linuxfx
+18. KDE Linux
+19. Linux Mint MATE
+20. openSUSE Leap
+21. Manjaro KDE and GNOME
+22. Bazzite's KDE, desktop and NVIDIA variants
+23. Aurora
+24. Bluefin
+25. OPNsense
+26. Talos Linux
+27. Proxmox Datacenter Manager
+28. LibreELEC
+29. DietPi
+30. Umbrel
+31. Memtest86+
+32. ShredOS
 
 ### Manual entries to look at again
 
@@ -175,7 +172,20 @@ discontinued.
 
 ### Ruled out
 
-Nothing yet.
+- **antiX** (2026-11-23): its download page lists only third-party mirrors and
+  SourceForge, no address of the project's own.
+- **Garuda Linux** (2026-11-23): `iso.builds.garudalinux.org` lists now, with
+  checksums beside each image, but its newest dated folder is a daily build;
+  the released image is only the `latest/` link, which has no version in its
+  name. Version checks would announce untested builds. Worth another look if
+  the project publishes a release list.
+
+### Added 2026-11-23
+
+- **KDE neon** (check only): `files.kde.org/neon/images/desk/user/` lists
+  dated folders (`YYYYMMDD-HHMM`), each with the ISO, a `.sig` and a
+  `.sha256sum`. The `.sha256sum` address redirects to `mirrors.xtom.com`, so
+  it can't be used; the entry only checks for new versions.
 
 ### Added 2026-10-05, check-only for now
 

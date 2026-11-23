@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026111302 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026112301 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -1003,6 +1003,25 @@ manifest = "sha256sum.txt"
 # ---------------------------------------------------------------------------
 # 2. Check-only
 # ---------------------------------------------------------------------------
+
+[[entry]]
+id = "kde-neon"
+name = "KDE neon"
+arch = "x86_64"
+match = 'neon-user-desk-(?P<version>\d{8}-\d{4})\.iso'
+samples = ["neon-user-desk-20261025-1825.iso"]
+page = "https://neon.kde.org/download"
+category = "desktop"
+family = "kde-neon"
+icon = "kdeplasma"
+icon_color = "#1D99F3"
+site = "https://neon.kde.org/"
+forum = "https://discuss.kde.org/"
+
+[entry.source]
+type = "listing"
+url = "https://files.kde.org/neon/images/desk/user/"
+regex = 'href="(?P<version>\d{8}-\d{4})/"'
 
 [[entry]]
 id = "mx-linux-xfce-x64"

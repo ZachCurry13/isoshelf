@@ -1,31 +1,31 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
 
-# AlmaLinux-10.2-x86_64-boot.iso: 1056202752 bytes
-SHA256 (AlmaLinux-10.2-x86_64-boot.iso) = b3f865468075bcada8f208d830289302c67529789d668041d24e8d6fc697ba6a
-# AlmaLinux-10-latest-x86_64-boot.iso: 1056202752 bytes
-SHA256 (AlmaLinux-10-latest-x86_64-boot.iso) = b3f865468075bcada8f208d830289302c67529789d668041d24e8d6fc697ba6a
-# AlmaLinux-10.2-x86_64-dvd.iso: 10106372096 bytes
-SHA256 (AlmaLinux-10.2-x86_64-dvd.iso) = 90244ac532f67c978831a381b420da8bda363729e1f4cf8fb8991daca70ee287
-# AlmaLinux-10-latest-x86_64-dvd.iso: 10106372096 bytes
-SHA256 (AlmaLinux-10-latest-x86_64-dvd.iso) = 90244ac532f67c978831a381b420da8bda363729e1f4cf8fb8991daca70ee287
-# AlmaLinux-10.2-x86_64-minimal.iso: 1651376128 bytes
-SHA256 (AlmaLinux-10.2-x86_64-minimal.iso) = 1b532f534231da0d1cd0ccae622bea6cd588d8a0d7b259f1f131501a6eed41a4
-# AlmaLinux-10-latest-x86_64-minimal.iso: 1651376128 bytes
-SHA256 (AlmaLinux-10-latest-x86_64-minimal.iso) = 1b532f534231da0d1cd0ccae622bea6cd588d8a0d7b259f1f131501a6eed41a4
+# AlmaLinux-10.3-x86_64-boot.iso: 953014272 bytes
+SHA256 (AlmaLinux-10.3-x86_64-boot.iso) = d842df0dca98a3bf79c84cfcce49505ba7a7f56f03dcb02639b8377410154f4d
+# AlmaLinux-10-latest-x86_64-boot.iso: 953014272 bytes
+SHA256 (AlmaLinux-10-latest-x86_64-boot.iso) = d842df0dca98a3bf79c84cfcce49505ba7a7f56f03dcb02639b8377410154f4d
+# AlmaLinux-10.3-x86_64-dvd.iso: 10824908800 bytes
+SHA256 (AlmaLinux-10.3-x86_64-dvd.iso) = f74ae9c4a8e7e3e70147534856ea276f71649d16c70b7d3ec80d0905a7b93982
+# AlmaLinux-10-latest-x86_64-dvd.iso: 10824908800 bytes
+SHA256 (AlmaLinux-10-latest-x86_64-dvd.iso) = f74ae9c4a8e7e3e70147534856ea276f71649d16c70b7d3ec80d0905a7b93982
+# AlmaLinux-10.3-x86_64-minimal.iso: 1567490048 bytes
+SHA256 (AlmaLinux-10.3-x86_64-minimal.iso) = 3fa350594c8b3d8200b5bb4c7bda23a8e05607ea482a06f9cc862f6f477c4965
+# AlmaLinux-10-latest-x86_64-minimal.iso: 1567490048 bytes
+SHA256 (AlmaLinux-10-latest-x86_64-minimal.iso) = 3fa350594c8b3d8200b5bb4c7bda23a8e05607ea482a06f9cc862f6f477c4965
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEE7m23uY9b9e3Z2g3l3uXBHMKh5XIFAmoSIBQACgkQ3uXBHMKh
-5XLSlQ/9F2sSnEGDfdk7Jbs5r4NmgwtUhmU7IVbcP3apZUS2cZtRy+/f8UIgjBUD
-/WGbSiE2ciG7eiE4vhT4XaC2PYZEjqKSzA/n1eOpIYuRPKt99fSdLB/4P+BO+8IN
-8C3nIDkJrhCqUScF2a0uMW+YPeOXoeffY+ql0V2eIcBRJzPxh0QPE0lW5hZgRDwE
-LjQGl4Pk5es5xoco0DifnDivKKZ1I273kLs5gyveuhSiIpbTzH85cfzz1G6EvV3S
-aWTjghA8jOJt1/RbEyCy5XDUaFOp0TYOgkqP3t6aU0qCn5EFh+BylLno3S/R0nwW
-yZ+hzaMEw89ZFYAbtMDk8dNDo9BwX2n8ZLy72+WfY78JfblPQAEYHuu5wxRL0Cf6
-itRbER+BwsZUiI7b1tK8gqhA44bbBqvopZRF7lSiCwFgZkToY3+yQlV1scMgn7MH
-S+Qxtcq/EBtc37NtamQl0KLH+strP9I8FI9CJLfZjepAfSpH9B44cLtmsEbJJXV/
-eR8sn4hmsDKEJr4aI65cW4rROIWLKParQzURabq9XSTzVGgjvh1M3eu7lYfQeSgO
-EjbzLhnC7nIMOKj2+5QvzN4emRcm8qbdYE1jnK9OxzxuN3tcs7CD26/JZzSHMjBw
-9DKkAgCTFT8+HGnhhY4o9cegXrE6N6uy+hvkC6Pzl+qQoG/YMCQ=
-=oTPJ
+iQIzBAEBCAAdFiEE7m23uY9b9e3Z2g3l3uXBHMKh5XIFAmr3OCcACgkQ3uXBHMKh
+5XLwBxAAoF3E2aGeJN2TTfOhWs7sjn8Lr2hCxA13FY/MS45JSXPNUDxmOgNVssdT
+CnMbmz1A2g5LMwTfnKq7q0qaZtLGye1JZRq3O75gQTloZWGnWr7FStGKz7DYiQc7
+TRIoGvQasC7eDiZrMY4/lMxv3VV00p56uoYU8HrcqMpz4oiZ2lbRpUYlXKtMajCL
+JpRg9zS8wz/BViYNbJNEN/aFtgi68hocpDGBCDxIeGpZBNk+fcBfR6Ae8UVBc6YD
+WAzsE6tj2R7TvWU8+v2vqeM4BVoPVSboMnPF3Uz30jmVpzT7M0ixgrxK8wI2TPoL
+6dIle5ntPgtyyoYzD53i8MMjbWQarCsbawNyV1LYkp80rOn2cZyHeYqcudvliIx9
+ZFzyzeWcRbcBFo3t54YBgIoL4bWo01ugRhvEj2QgQ9dzu/r27ztYH+9Ahcoqy62E
+8wXWdeaGFw1JYDyRH2WrMdAPIQqv+WImD+7YsKrfDJG+4cNDptLs8cR6qHuqITtW
+kwk9j8q8SLNvIBx661tQaXA/mRjTmr7jGR2SXVHs7uCAn85J/ySuUsS0z1FVwvV2
+A9LsrlifLK6F0Xvmycxe8jih8okzGFexi18NUwtFUwOy6EhsiDxAh+8IstvCm/Tj
+PnfCoGwi1EgXehQb5s29u+V0S143g5msmDbP7dYc3b0YAMx8cFo=
+=uwkS
 -----END PGP SIGNATURE-----

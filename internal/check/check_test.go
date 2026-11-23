@@ -163,8 +163,8 @@ func TestSampleDrive(t *testing.T) {
 		note   string
 	}{
 		{"pop-os_22.04_amd64_intel_56.iso", UpdateAvailable, "58", false, ""},
-		{"cachyos-desktop-linux-260308.iso", UpdateAvailable, "260809", false, ""},
-		{"old/cachyos-desktop-linux-251129.iso", UpdateAvailable, "260809", false, "older copy"},
+		{"cachyos-desktop-linux-260308.iso", UpdateAvailable, "261123", false, ""},
+		{"old/cachyos-desktop-linux-251129.iso", UpdateAvailable, "261123", false, "older copy"},
 		{"MX-21.3_x64.iso", UpdateAvailable, "25.3", true, ""},
 		{"MX-23.3_x32.iso", UpdateAvailable, "23.6", false, ""},
 		{"manjaro-xfce-23.0.4-231015-linux65.iso", UpdateAvailable, "26.1.0", false, ""},
@@ -172,7 +172,7 @@ func TestSampleDrive(t *testing.T) {
 		{"CentOS-7-i386-Minimal-2009.iso", EOL, "2009", true, ""},
 		// The stand-in files can't match the published checksums.
 		{"netboot.xyz.iso", UpdateAvailable, "3.0.3", false, "checksum changed"},
-		{"bazzite-deck-gnome-stable-live-amd64.iso", UpdateAvailable, "45.20261112", false, "checksum changed"},
+		{"bazzite-deck-gnome-stable-live-amd64.iso", UpdateAvailable, "45.20261123", false, "checksum changed"},
 		{"FydeOS_for_PC_iris_v22.0-SP1-io.bin", NotBootable, "", false, "renames it to end in .img"},
 		{"HBCD_PE_x64.iso", Manual, "", false, ""},
 		{"Windows.iso", Unrecognized, "", false, ""},
