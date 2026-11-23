@@ -6,6 +6,27 @@ Version numbers: the middle number rises for new abilities or a new look
 (v0.3.0 was the redesign, v0.3.1 Settings, v0.3.2 checking by itself); the
 last number rises for improvements to what it already does, like v0.3.3.
 
+## [v0.13.0] - 2026-11-13
+
+### Make bootable
+- **A file Ventoy won't list now has a button that fixes it.** FydeOS is
+  published as a `.bin` that Ventoy only boots as `.img`: *Make bootable*
+  renames it. Ubuntu Core, Manjaro ARM, pfSense and Batocera are published
+  compressed (`.img.xz`, `.iso.gz`, `.img.gz`): *Make bootable* unpacks the
+  image beside it.
+- **The file has to agree first.** isoshelf reads the start of the file, and
+  only renames something to `.img` that really is a disk image, and only
+  unpacks something that really is compressed.
+- **The original stays until the result is complete.** The image is unpacked
+  to one side and only takes its name once every byte has come out with the
+  compressor's own check intact. A damaged file stops with nothing changed.
+  Then the compressed file is archived, where you can restore it, or kept,
+  as you choose. Room is checked before it starts.
+- **Unpacking shows in the downloads bar**, with how far it has got, and
+  runs beside downloads rather than waiting behind them.
+- New library: `github.com/ulikunitz/xz`, for `.xz` (already accepted in the
+  design for this; `.gz` needs none).
+
 ## [v0.12.0] - 2026-11-13
 
 ### Back to the version that worked

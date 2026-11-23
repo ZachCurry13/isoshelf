@@ -11,7 +11,8 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next:** the list under *After those* ([#3] first; [#2] is done, v0.12.0). The Primer audit's
+**Next:** the list under *After those* ([#5] first; [#2] and [#3] are done,
+v0.12.0 and v0.13.0). The Primer audit's
 leftovers are done (v0.11.2) except a wording pass on the longer button
 descriptions, written at the end of `docs/primer-audit.md`. Finished work is
 in `docs/archive.md`.
@@ -72,17 +73,14 @@ has a reputation. Self-update already means the warning appears only on the
 first download, because files isoshelf downloads itself don't carry the
 browser's "came from the internet" mark.
 
-**After those, in this order:** [#3] make bootable (rename and extract
-only - decided 2026-09-23), [#5] OpenPGP signatures (the second dependency is
+**After those, in this order:** [#5] OpenPGP signatures (the second dependency is
 accepted - decided 2026-09-23), then [#11] and [#12]. Any time a real
 USB drive is to hand: [#7], trying the portable zip on one.
 
-On [#3]: the maintainer asked again for a one-click fix for a file that only
-needs renaming, and chose on 2026-09-23 to keep it in this order. Until it is
-built, the won't-boot note says what to do by hand (`notBootableNote`); when
-it is, the note is where the button's words come from, and the catalog's
-`fixup` field (`rename:.img`, `extract`) already says which fix each image
-needs.
+On what [#3] left: Make bootable does rename and extract, by hand. Convert
+(bin/cue), `.zip`/`.7z`, and applying the catalog's `fixup` to a download by
+itself are not built; the last runs against "every fix-up is asked for" in
+`docs/design.md`, so it is the maintainer's call before anyone builds it.
 
 ## Releasing
 
@@ -199,7 +197,7 @@ Then:
 - **The page is one script per part**, not one script. `app.js` was 2,544
   lines until v0.3.1; it is now `icons.js`, `jumpnav.js`, `app.js` (state, asking, drawing, wiring),
   `images.js`, `logotile.js`, `menus.js`, `imagerow.js`, `blankslate.js`, `summary.js`, `details.js`, `checklist.js`, `downloads.js`, `dockitems.js`, `dockprogress.js`, `notices.js`,
-  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `duplicates.js`, `folders.js`, `thisfolder.js`,
+  `actions.js`, `catalog.js`, `identify.js`, `missing.js`, `origin.js`, `fromserver.js`, `dismiss.js`, `older.js`, `bootable.js`, `duplicates.js`, `folders.js`, `thisfolder.js`,
   `archive.js`, `settings.js`, `settinglist.js`, `updatesettings.js`, `access.js`, `records.js`,
   `upload.js`, `report.js`, `selfupdate.js`, `history.js` and `system.js`. Read the one you
   need. A new one goes in `index.html`, in `scripts` in

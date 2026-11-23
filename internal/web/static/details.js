@@ -113,6 +113,7 @@ function renderDetails() {
       onclick: () => openIdentify(item),
     }, "What is this?"));
   }
+  buttons.push(bootableButton(item, false));
   if (item.path && item.assigned) {
     buttons.push(el("button", {
       type: "button", class: "btn", disabled: scanning(),

@@ -1446,3 +1446,12 @@ update code had kept a `Version` option reserved for this since early on, so
 the change was a list of versions per source plus the hold, not a second
 download path; and treating a hold as a dismissal on the page meant none of
 the counts or filters needed touching.
+
+## [#3] Make bootable, rename and extract (v0.13.0, 2026-11-13)
+
+Shipped as decided on 2026-09-23. Learned: the scan already had `sniff` to
+read a file's first bytes, so "content must agree" cost nothing; a gzip's
+trailer holds its size only modulo 4 GB, so the free-space check takes the
+smallest size at least as big as the compressed file; and the won't-boot
+note had a test making sure it never mentioned a button that didn't exist,
+which now checks it mentions the one that does.
