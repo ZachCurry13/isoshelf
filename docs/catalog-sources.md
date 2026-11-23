@@ -185,8 +185,6 @@ Nothing yet.
   download but not a changed one. Both sites refuse curl's default user
   agent with 403 but answer isoshelf's. The maintainer decided on 2026-10-05
   that MD5-only images download, marked weak; done 2026-11-03, below.
-- Also seen: Nobara's page lists a plain KDE edition the catalog doesn't
-  have yet.
 
 ### Added 2026-10-26
 
@@ -345,7 +343,7 @@ check-only, with nothing to measure.
 | Raspberry Pi OS (desktop, Lite), 64-bit | listing of the dated `images/` folder | `{file}.sha256` next to each image | Written to a card, not booted from a menu, so kept as `.img.xz`. The checksum file is `.sha256`; there are `.sha1` files too. |
 | Home Assistant OS (Pi 5, x86-64) | github `home-assistant/operating-system` | asset digest | |
 | Omarchy | listing of `omarchy.org` | `iso.omarchy.org/omarchy-{version}-x86.iso.sha256` | The file gained `-x86` with 4.5 (2026-11-13), when `omarchy-{version}-aarch64.iso` appeared beside it; the ARM image has no entry yet. |
-| Nobara (Official, GNOME, Steam Handheld, Steam HTPC) | listing of `nobaraproject.org/download.html` | `{file}.sha256sum` | Dated releases. The image server can't be listed, so the exact filename comes from what the listing matched on the download page. The checksum files name the image `./Nobara-…`, which the parser handles. The old address `/download-nobara/` redirects. |
+| Nobara (Official, GNOME, KDE, Steam Handheld, Steam HTPC) | listing of `nobaraproject.org/download.html` | `{file}.sha256sum` | Dated releases. The image server can't be listed, so the exact filename comes from what the listing matched on the download page. The checksum files name the image `./Nobara-…`, which the parser handles. The old address `/download-nobara/` redirects. |
 | NixOS (graphical) | endoflife `nixos` | — (check-only) | The `latest-` images redirect to a versioned folder named after a build (`26.05.9989.ecc58f32d106`), and catalog addresses must be final. |
 
 Link-only for now, because checksums aren't on the project's own site:

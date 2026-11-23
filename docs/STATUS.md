@@ -14,13 +14,13 @@ four times in one evening. The releases page on GitHub is the answer, and
   change onto the folder's records rather than saving over them. Keeps a
   catalog that updates itself from this repository. Web page and CLI;
   Windows and Linux builds.
-- **Catalog:** 96 entries (67 downloadable, 11 update-check only, 18 link only),
-  revision `2026111301`. Checked live every Monday by
-  `.github/workflows/catalog-check.yml` and on every catalog pull request; a
-  weekly Claude routine ("isoshelf weekly catalog", Mondays 18:00 UTC;
-  https://claude.ai/code/routines/trig_01UzAxtUxF8jd4RwavQXAYdL) works through
-  `catalog` issues and the wish list in `docs/catalog-sources.md` and opens
-  one pull request.
+- **Catalog:** 97 entries (68 downloadable, 11 update-check only, 18 link only),
+  revision `2026111302`. Checked live every Monday by
+  `.github/workflows/catalog-check.yml` and on every catalog pull request. The
+  weekly Claude task that works through `catalog` issues and the wish list in
+  `docs/catalog-sources.md` and opens one pull request last ran on
+  2026-11-03; the cloud routine is paused, and on 2026-11-13 no scheduled task
+  for it existed on the Linux computer.
 - **GitHub:** public; open issues #2, #3, #5-#7, #11 and #12 are the
   roadmap (#1, isoshelf update, #10, the phone layout, #54, the simpler shelf, #55, missing
   images, #56, dismissing an update, #57, duplicates, #58, where to find

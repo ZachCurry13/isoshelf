@@ -11,8 +11,7 @@ to them by number; a gap in the numbering is an item in the archive.
 
 ## Right now
 
-**Next:** the open items at the end of `docs/primer-audit.md` (contrast in every theme, the pages of the manual that could not be read), possibly a Nobara KDE entry (its page lists a plain KDE edition the
-catalog doesn't have), then the list under *After those*. AnduinOS downloads
+**Next:** the open items at the end of `docs/primer-audit.md` (contrast in every theme, the pages of the manual that could not be read), then the list under *After those*. AnduinOS downloads
 and the plain discs are in (catalog revision 2026110303). Finished work is in
 `docs/archive.md`.
 19. **Default credentials, where the project publishes them** (the

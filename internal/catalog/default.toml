@@ -8,7 +8,7 @@
 #   3. manual: recognized, with a download page link
 
 schema = 1
-revision = 2026111301 # YYYYMMDDNN: the date, plus a counter for same-day changes
+revision = 2026111302 # YYYYMMDDNN: the date, plus a counter for same-day changes
 
 # ---------------------------------------------------------------------------
 # 1. Download
@@ -1946,6 +1946,28 @@ regex = 'Nobara-\d+-GNOME-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
 [entry.artifact]
 base = "https://nobara-images.nobaraproject.org/"
 file = 'Nobara-\d+-GNOME-{version}\.iso'
+manifest = "{file}.sha256sum"
+
+[[entry]]
+id = "nobara-kde"
+name = "Nobara (KDE)"
+arch = "x86_64"
+match = 'Nobara-\d+-KDE-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+samples = ["Nobara-44-KDE-2026-10-13.iso"]
+size = 7594487808
+page = "https://nobaraproject.org/download.html"
+category = "gaming"
+family = "nobara"
+site = "https://nobaraproject.org/"
+
+[entry.source]
+type = "listing"
+url = "https://nobaraproject.org/download.html"
+regex = 'Nobara-\d+-KDE-(?P<version>\d{4}-\d{2}-\d{2})\.iso'
+
+[entry.artifact]
+base = "https://nobara-images.nobaraproject.org/"
+file = 'Nobara-\d+-KDE-{version}\.iso'
 manifest = "{file}.sha256sum"
 
 [[entry]]
