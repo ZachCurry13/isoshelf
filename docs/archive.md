@@ -1438,3 +1438,11 @@ wraps, and no longer sits on anything you can't press; Settings hints stop at
 80 characters. Learned: the pages that "could not be read" in the cloud
 sandbox read fine from the maintainer's computer, and the guidance lives on
 each component's Guidelines and Accessibility tabs, not its overview.
+
+## [#2] Older versions with a hold (v0.12.0, 2026-11-13)
+
+Shipped as designed in `docs/design.md` ("Older versions"). Learned: the
+update code had kept a `Version` option reserved for this since early on, so
+the change was a list of versions per source plus the hold, not a second
+download path; and treating a hold as a dismissal on the page meant none of
+the counts or filters needed touching.
