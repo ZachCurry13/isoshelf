@@ -134,7 +134,7 @@ func (s *Server) sharedFile(name, sum string) (string, int64) {
 		}
 		full := filepath.Join(target, filepath.FromSlash(path))
 		info, err := os.Stat(full)
-		if err != nil || !info.Mode().IsRegular() {
+		if err != nil || !info.Mode().IsRegular() || !within(target, full) {
 			return "", 0
 		}
 		// The record is only as fresh as the last scan. A file that has

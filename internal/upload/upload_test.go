@@ -215,3 +215,23 @@ type failingReader struct{}
 func (failingReader) Read([]byte) (int, error) {
 	return 0, errors.New("the connection dropped")
 }
+
+// A file whose length the browser didn't say is cut off at the room there
+// is: too big is refused with nothing left behind, and one that fits goes in.
+func TestPlaceCutsOffAnUploadOfUnknownLength(t *testing.T) {
+	dir := t.TempDir()
+	room := space.Usage{Free: 2 << 20, Total: 100 << 20} // 1 MB left after the spare
+	big := strings.Repeat("x", 3<<20)
+	if _, err := place(t, dir, "big.iso", big, Options{Room: room}); !errors.Is(err, ErrNoRoom) {
+		t.Fatalf("an upload too big for the room: %v, want ErrNoRoom", err)
+	}
+	if left, _ := filepath.Glob(filepath.Join(dir, "*", "*", "*")); len(left) != 0 {
+		t.Errorf("left behind: %v", left)
+	}
+	if _, err := os.Stat(filepath.Join(dir, "big.iso")); err == nil {
+		t.Error("the file that didn't fit is in the folder")
+	}
+	if _, err := place(t, dir, "small.iso", "fits", Options{Room: room}); err != nil {
+		t.Errorf("an upload that fits: %v", err)
+	}
+}

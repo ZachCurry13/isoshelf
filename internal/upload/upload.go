@@ -112,9 +112,21 @@ func Place(ctx context.Context, src io.Reader, opts Options) (*Result, error) {
 	}
 	replacing := statErr == nil
 
+	// A browser that doesn't say how long the file is can't be checked up
+	// front, so what it sends is cut off at the room there is: one byte past
+	// it means it doesn't fit, and it never fills the disk to find out.
+	room := opts.Room.Left()
+	unknownSize := opts.Size <= 0 && opts.Room.Known()
+	if unknownSize {
+		src = io.LimitReader(src, max(room, 0)+1)
+	}
 	written, tmp, err := receive(ctx, src, opts.Target)
 	if err != nil {
 		return nil, err
+	}
+	if unknownSize && written > room {
+		os.Remove(tmp)
+		return nil, fmt.Errorf("%w: %s needs more space than this folder has left", ErrNoRoom, name)
 	}
 	// From here the file is on the disk in full. Clean it up unless it makes
 	// it all the way into place.
