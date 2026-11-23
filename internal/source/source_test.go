@@ -48,9 +48,9 @@ func TestLatestRecorded(t *testing.T) {
 		{"centos-7-i386-minimal", "7 (2009)", "7", ""},
 		{"netbootxyz", "3.0.3", "", "3.0.3"},
 		{"netbootxyz-multiarch", "3.0.3", "", "3.0.3"},
-		{"bazzite-deck-gnome", "45.20261112", "", "45.20261112"},
+		{"bazzite-deck-gnome", "45.20261123", "", "45.20261123"},
 		{"popos-2204-intel", "58", "", ""},
-		{"cachyos-desktop", "260809", "", ""},
+		{"cachyos-desktop", "261123", "", ""},
 		{"manjaro-xfce", "26.1.0", "", ""},
 		{"clonezilla-alternative", "20260913", "", ""},
 	}

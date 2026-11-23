@@ -9,6 +9,14 @@ Every image here was checked against the project's own site before it went in.
 Something missing? [Ask for it](https://github.com/ZachCurry13/isoshelf/issues/new?template=missing-image.yml);
 requests are looked at every Monday.
 
+## 2026-11-23
+
+### Added
+- **KDE neon** (update check only): the newest dated folder of the User
+  edition's images on files.kde.org. Not downloadable: the project's checksum
+  file redirects to a mirror (mirrors.xtom.com), and checksums have to come
+  from the project's own site.
+
 ## 2026-11-13
 
 ### Added

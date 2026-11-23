@@ -70,7 +70,7 @@ func TestParseRecordedManifests(t *testing.T) {
 		"https://vault.centos.org/altarch/7.9.2009/isos/i386/sha256sum.txt":                     "CentOS-7-i386-Minimal-2009.iso",
 		"https://iso.pop-os.org/22.04/amd64/intel/58/SHA256SUMS":                                "pop-os_22.04_amd64_intel_58.iso",
 		"https://download.bazzite.gg/bazzite-deck-gnome-stable-live-amd64.iso-CHECKSUM":         "bazzite-deck-gnome-stable-live-amd64.iso",
-		"https://mirror.cachyos.org/ISO/desktop/260809/cachyos-desktop-linux-260809.iso.sha256": "cachyos-desktop-linux-260809.iso",
+		"https://mirror.cachyos.org/ISO/desktop/261123/cachyos-desktop-linux-261123.iso.sha256": "cachyos-desktop-linux-261123.iso",
 	}
 	for rawURL, name := range tests {
 		body := remotetest.MustGet(t, rawURL)
