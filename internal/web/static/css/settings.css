@@ -24,7 +24,7 @@
 }
 .setting { padding: var(--sp-12) 0; border-bottom: 1px solid var(--border); }
 .setting-name { font-weight: 600; }
-.setting-hint { color: var(--muted); font-size: var(--text-small); margin: var(--sp-2) 0 var(--sp-6); }
+.setting-hint { color: var(--muted); font-size: var(--text-small); margin: var(--sp-2) 0 var(--sp-6); max-width: 80ch; }
 .setting-control { display: grid; gap: var(--sp-6); }
 .setting-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-8); }
 .setting-controls .file { flex: 1; min-width: 0; }

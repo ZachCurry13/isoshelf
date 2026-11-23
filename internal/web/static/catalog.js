@@ -125,7 +125,7 @@ async function renderCatalog() {
         el("div", { class: "info-line" }, el("span", { class: "name" }, entry.name)),
         el("div", { class: "meta-line" },
           archBadge(entry.arch),
-          entry.popular ? el("span", { class: "pill s-ok", title: "Turns up in public round-ups of what people are running. A hand-picked hint, not a rating." }, "popular") : null,
+          entry.popular ? el("span", { class: "pill s-ok" }, "popular") : null,
           theirs ? serverMark(theirs) : null,
           entry.size ? el("span", { class: "muted" }, `about ${formatBytes(entry.size)}`) : null),
         el("div", { class: "kind" },

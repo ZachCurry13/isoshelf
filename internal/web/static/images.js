@@ -74,8 +74,9 @@ const ARCHES = [
 // The badge used to show the catalog's own word for it, which for 32-bit
 // images is "x86" - and "x86" reads to most people as the ordinary kind,
 // which is to say 64-bit. The catalog was never wrong (every x86 entry says
-// "(32-bit)" in its name); the badge was. So the badge says the bit width and
-// the full name waits in the tooltip.
+// "(32-bit)" in its name); the badge was. So the badge says the bit width, and
+// the full name is in the details panel (no tooltip: Primer puts them only on
+// things you can press).
 const ARCH_BADGE = {
   "x86_64": "64-bit",
   "x86": "32-bit",
@@ -93,7 +94,7 @@ const ARCH_FULL = Object.fromEntries(ARCHES);
 // naming a file.
 function archBadge(arch, always) {
   if (!arch || (arch === "x86_64" && !always)) return null;
-  return el("span", { class: "label", title: ARCH_FULL[arch] || arch },
+  return el("span", { class: "label" },
     ARCH_BADGE[arch] || arch);
 }
 
