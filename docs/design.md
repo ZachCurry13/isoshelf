@@ -84,10 +84,11 @@ project, not affiliated with Ventoy.
   ([#3](https://github.com/ZachCurry13/isoshelf/issues/3), v0.13.0; `.gz` is
   the standard library's). Free space comes from the standard library's
   `syscall` (`statfs`, and `GetDiskFreeSpaceExW` on Windows).
-- Accepted for when they are built, not in `go.mod` yet: OpenPGP
-  ([#5](https://github.com/ZachCurry13/isoshelf/issues/5)) with
-  `github.com/ProtonMail/go-crypto` (not the deprecated `x/crypto/openpgp`);
-  and, should a catalog image ever be published as a `.zip` or `.7z`, stdlib
+- And `github.com/ProtonMail/go-crypto` for OpenPGP signatures
+  ([#5](https://github.com/ZachCurry13/isoshelf/issues/5), v0.14.0; not the
+  deprecated `x/crypto/openpgp`), which brings `cloudflare/circl`,
+  `x/crypto` and `x/sys`.
+- Accepted for when they are built, not in `go.mod` yet: should a catalog image ever be published as a `.zip` or `.7z`, stdlib
   `archive/zip` and `github.com/bodgit/sevenzip` (none is today).
 - Catalog: TOML, regexes in single-quoted literal strings. Parsed with
   `github.com/pelletier/go-toml/v2` in strict mode, so a misspelled key is an
@@ -131,9 +132,22 @@ Every catalog entry runs through four stages:
    unverified (it never replaces anything), the record never calls it
    checked, and the page explains (`weak_checksum`). The maintainer chose to
    let MD5-only images download on those terms rather than stay check-only.
-   Signatures are planned ([#5](https://github.com/ZachCurry13/isoshelf/issues/5)),
-   not built: detached over manifest, clearsigned manifest, detached over the
-   image, with armored keys whose fingerprints are pinned in the catalog.
+   Signatures (v0.14.0, [#5](https://github.com/ZachCurry13/isoshelf/issues/5),
+   `github.com/ProtonMail/go-crypto`): detached over the manifest, a
+   clearsigned manifest, or detached over the image. The catalog's
+   `[keys.<name>]` holds the key (`armored`, in the catalog itself, since a
+   self-updating catalog fetches nothing else; or `file` for a catalog on
+   disk) and the fingerprints from the project's own documentation; a key
+   that doesn't hold every one is refused when the catalog loads
+   (`verify.ReadKeyring`), and each entry carries its checked key
+   (`Artifact.Signer`). `resolve/signed.go` checks a manifest's signature
+   before a checksum in it is read (a clearsigned one is read only as far as
+   the signature covers), so a failure means nothing downloads at all; an
+   image's signature is checked by `fetch` after the checksum and before
+   placing, and a file that fails is thrown away like a mismatch. A file
+   proved this way records the signature's address (`Origin.Signed`).
+   **The built-in catalog names no key yet**: copies before v0.14.0 refuse
+   `armored`, so it waits until they no longer matter, like `find` did.
 4. **Fetcher** (`internal/fetch`) - `.part` files in `<target>/.isoshelf/partial/`
    plus a sidecar (URL, ETag, offset, SHA-256 state), resume via `Range` +
    `If-Range`, backoff on timeouts, 5xx and HTTP/2 stream resets (seen on
@@ -384,8 +398,8 @@ alone is not an update.
   built-in catalog waits a release before using one.
 - A fixed-name entry that isn't manual needs a published checksum
   (`artifact.manifest` or a GitHub `asset`), since that is how updates show up.
-- `[keys.<name>]`: `file` (armored key, relative to the catalog file) and
-  `fingerprints`.
+- `[keys.<name>]`: `armored` (the key, written in the catalog) or `file`
+  (relative to the catalog file), and `fingerprints`, which the key must hold.
 - Validation: regexes compile, templates are valid, referenced keys exist, each
   sample filename matches exactly one entry. Every problem is reported at once.
 - Scope: the sample drive is only an example. The default catalog should cover
@@ -450,7 +464,7 @@ alone is not an update.
 Moved later: installing older versions with a hold (below; done in v0.12.0),
 Make bootable's rename and extract (done in v0.13.0), a CLI `isoshelf update`
 command (done in v0.8.5) and two downloads at once (done in v0.10.0); still to
-come: Make bootable's convert, and OpenPGP signature checking.
+come: Make bootable's convert. OpenPGP signature checking came in v0.14.0.
 
 **v0.3** - a redesign of the page and Settings (decided 2026-09-18; the list
 of decisions is in [STATUS.md](STATUS.md)).

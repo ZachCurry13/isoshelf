@@ -8,6 +8,8 @@ import (
 	"path"
 	"regexp"
 	"slices"
+
+	"github.com/ZachCurry13/isoshelf/internal/verify"
 )
 
 // Arches are the valid values of Entry.Arch.
@@ -65,6 +67,8 @@ type validator struct {
 	fsys     fs.FS
 	dir      string // folder of the catalog file inside fsys
 	problems []Problem
+	// keyrings are the [keys] tables that read and held every fingerprint.
+	keyrings map[string]*verify.Keyring
 }
 
 func (v *validator) problem(field, format string, args ...any) {
@@ -74,7 +78,7 @@ func (v *validator) problem(field, format string, args ...any) {
 // validate checks everything that can be checked offline, compiles the match
 // patterns and normalizes hashes and fingerprints.
 func (c *Catalog) validate(fsys fs.FS, file string) error {
-	v := &validator{fsys: fsys, dir: path.Dir(file)}
+	v := &validator{fsys: fsys, dir: path.Dir(file), keyrings: map[string]*verify.Keyring{}}
 
 	switch c.Schema {
 	case SchemaVersion:
@@ -102,6 +106,9 @@ func (c *Catalog) validate(fsys fs.FS, file string) error {
 		ec.checkSamples()
 		ec.checkExtras(hashes)
 		ec.checkArtifact(c.Keys)
+		if a := c.Entries[i].Artifact; a != nil && a.Signature != "" {
+			a.signer = v.keyrings[a.Key]
+		}
 	}
 	v.checkSampleMatches(c)
 

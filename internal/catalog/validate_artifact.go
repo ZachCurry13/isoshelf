@@ -2,6 +2,8 @@ package catalog
 
 import (
 	"io/fs"
+
+	"github.com/ZachCurry13/isoshelf/internal/verify"
 	"path"
 	"slices"
 	"strings"
@@ -12,13 +14,19 @@ func (v *validator) checkKey(name string, k SigningKey) {
 	if !idPattern.MatchString(name) {
 		v.problem(field, "name must be lowercase letters, digits and single dashes")
 	}
+	var armored []byte
 	switch p := path.Join(v.dir, k.File); {
-	case k.File == "":
-		v.problem(field+".file", "required")
+	case k.File == "" && k.Armored == "":
+		v.problem(field+".armored", "required: the armored key (or file, a path to it)")
+	case k.File != "" && k.Armored != "":
+		v.problem(field+".file", "set file or armored, not both")
+	case k.Armored != "":
+		armored = []byte(k.Armored)
 	case path.IsAbs(k.File) || strings.Contains(k.File, `\`) || !fs.ValidPath(p):
 		v.problem(field+".file", "%q must be a relative path inside the catalog folder, using /", k.File)
 	default:
-		if _, err := fs.Stat(v.fsys, p); err != nil {
+		var err error
+		if armored, err = fs.ReadFile(v.fsys, p); err != nil {
 			v.problem(field+".file", "cannot read %q: %v", k.File, err)
 		}
 	}
@@ -30,6 +38,16 @@ func (v *validator) checkKey(name string, k SigningKey) {
 		if !fingerprintPattern.MatchString(k.Fingerprints[i]) {
 			v.problem(field+".fingerprints", "%q is not a 40 or 64 digit hex fingerprint", fp)
 		}
+	}
+	// The key has to be the one its fingerprints name: they come from the
+	// project's own documentation, the key from wherever it was copied.
+	if armored != nil && len(k.Fingerprints) > 0 {
+		kr, err := verify.ReadKeyring(armored, k.Fingerprints)
+		if err != nil {
+			v.problem(field, "%v", err)
+			return
+		}
+		v.keyrings[name] = kr
 	}
 }
 
