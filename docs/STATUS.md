@@ -21,11 +21,12 @@ four times in one evening. The releases page on GitHub is the answer, and
   revision `2026111302`. Checked live every Monday by
   `.github/workflows/catalog-check.yml` and on every catalog pull request. The
   weekly Claude task that works through `catalog` issues and the wish list in
-  `docs/catalog-sources.md` and opens one pull request last ran on
-  2026-11-03; the cloud routine is paused. On 2026-11-13 it was set up again
-  as a scheduled task on the Linux computer, Mondays at noon local time,
-  working in its own checkout (`isoshelf-catalog`); its first run is
-  2026-11-16.
+  `docs/catalog-sources.md` and opens one pull request is a scheduled task
+  on the Linux computer (the cloud routine is paused), working in its own
+  checkout (`isoshelf-catalog`). It runs every hour on Monday from noon local
+  time until one run finishes: a run that hits the account's 5-hour usage
+  limit dies at once, so the next hour is the retry (2026-11-16's single run
+  failed that way). It last did the work on 2026-11-03.
 - **GitHub:** public; open issues #6 and #7 are the
   roadmap (#1, isoshelf update, #2, older versions with a hold, #3, make bootable, #5, OpenPGP signatures, #10, the phone layout, #54, the simpler shelf, #55, missing
   images, #56, dismissing an update, #57, duplicates, #58, where to find
